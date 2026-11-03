@@ -165,6 +165,16 @@ class MailingsController extends CrudController
                     'documentation'     => 'usermanual/adherents.html#e-mailing'
                 ]
             );
+
+            if ($mailing->current_step !== Mailing::STEP_SENT) {
+                //members dropdown of the recipients selection
+                $m = new Members();
+                $params['members'] = [
+                    'list'      => $m->getDropdownMembers($this->zdb, $this->login),
+                    'filters'   => $m->getFilters(),
+                    'count'     => $m->getCount()
+                ];
+            }
         }
 
         // display page
@@ -807,10 +817,18 @@ class MailingsController extends CrudController
 
         $post = $request->getParsedBody();
         $mailing = $this->session->mailing;
+        if (!$mailing instanceof Mailing) {
+            return $this->withJson(
+                $response,
+                ['error' => _T("No mailing in progress.")],
+                400
+            );
+        }
 
         $m = new Members();
         $members = [];
 
+        //an emptied selection posts no recipients at all
         if (isset($post['recipients'])) {
             $members = $m->getArrayList(
                 ids: $post['recipients'],
@@ -823,9 +841,10 @@ class MailingsController extends CrudController
                 parent: true
             );
         }
-        $mailing->setRecipients($members);
+        $mailing->setRecipients($members !== false ? $members : []);
 
         $this->session->mailing = $mailing;
+        $this->session->labels = $mailing->unreachables;
 
         // display page
         $this->view->render(
@@ -834,6 +853,52 @@ class MailingsController extends CrudController
             [
                 'mailing'       => $mailing
 
+            ]
+        );
+        return $response;
+    }
+
+    /**
+     * Recipient row ajax loader, for a member added from the recipients selection
+     */
+    #[Route(
+        name: 'mailingRecipientRow',
+        pattern: '/ajax/mailing/recipient',
+        methods: ['POST']
+    )]
+    public function recipientRow(Request $request, Response $response): Response
+    {
+        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+            return $this->withJson(
+                $response,
+                ['error' => _T("You do not have permission for requested URL.")],
+                403
+            );
+        }
+
+        $post = $request->getParsedBody();
+        $m = new Members();
+        //members list is restricted to the managed ones for groups managers
+        $members = $m->getArrayList([(int)($post['id_adh'] ?? 0)]);
+        if (!is_array($members) || count($members) === 0) {
+            Analog::log(
+                'Missing or unknown member for mailingRecipientRow',
+                Analog::INFO
+            );
+            return $response->withStatus(404);
+        }
+
+        $member = reset($members);
+        $email = $member->getEmail();
+
+        // display page
+        $this->view->render(
+            $response,
+            'elements/mailing_recipient_row.html.twig',
+            [
+                'person'    => $member,
+                'reachable' => trim($email) !== '' && Mailing::isValidEmail($email),
+                'linked'    => false
             ]
         );
         return $response;

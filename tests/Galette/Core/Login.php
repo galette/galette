@@ -343,6 +343,33 @@ class Login extends GaletteTestCase
     }
 
     /**
+     * Logging out forgets managed groups: staff members and admins do not
+     * load them at login, and would get the ones of a previous login
+     */
+    public function testLogoutForgetsManagedGroups(): void
+    {
+        $login = new class ($this->zdb, $this->i18n) extends \Galette\Core\Login {
+            /**
+             * Pretend a group manager has just logged in
+             */
+            public function logManager(): void
+            {
+                $this->logged = true;
+                $this->surname = 'Manager';
+                $this->managed_groups = [1];
+            }
+        };
+
+        $login->logManager();
+        $this->assertTrue($login->isGroupManager(1));
+
+        $login->logOut();
+        $this->assertSame([], $login->getManagedGroups());
+        $this->assertFalse($login->isGroupManager());
+        $this->assertFalse(isset($login->surname));
+    }
+
+    /**
      * A session owing a second factor must hold none of its privileges:
      * several routes carry no middleware and are gated on those predicates
      * alone -- public pages, and the public documents

@@ -59,6 +59,8 @@
     {% for key, value in modal_other_options %}
         {% if key == "observeChanges" and value == "1" %}
             {{ key }}: true,
+        {% elseif value is same as(true) or value is same as(false) %}
+            {{ key }}: {{ value ? 'true' : 'false' }},
         {% else %}
             {{ key }}: "{{ value }}",
         {% endif %}

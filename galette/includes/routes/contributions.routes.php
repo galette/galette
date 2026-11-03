@@ -63,7 +63,7 @@ $app->post(
 //contributions list CSV export
 $app->map(
     ['GET', 'POST'],
-    '/{type:contributions|transactions}/export/csv',
+    '/contributions/export/csv',
     [CsvController::class, 'contributionsExport']
 )->setName('csv-contributionslist')->add(Authenticate::class);
 
@@ -142,6 +142,21 @@ $app->post(
     '/contribution/do-mass-add',
     [Crud\ContributionsController::class, 'doMassAddContributions']
 )->setName('doMassAddContributions')->add(Authenticate::class);
+
+$app->get(
+    '/contributions/mass-change',
+    [Crud\ContributionsController::class, 'massChange']
+)->setName('masschangeContributions')->add(Authenticate::class);
+
+$app->post(
+    '/contributions/mass-change/validate',
+    [Crud\ContributionsController::class, 'validateMassChange']
+)->setName('masschangeContributionsReview')->add(Authenticate::class);
+
+$app->post(
+    '/contributions/mass-change',
+    [Crud\ContributionsController::class, 'doMassChange']
+)->setName('massstorecontributions')->add(Authenticate::class);
 
 $app->get(
     '/scheduled-payments/mine',

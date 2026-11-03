@@ -28,7 +28,7 @@ class SavedSearchesList extends Pagination
      */
     protected function getDefaultOrder(): int|string
     {
-        return 'creation_date';
+        return self::ORDERBY_DATE;
     }
 
     /**

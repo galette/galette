@@ -24,13 +24,13 @@
         {{ _T("Groups") }}
     </div>
     <div class="active content">
-        <table class="ui very basic unstackable table" id="member_groups">
+        <table class="ui very basic table" id="member_groups">
             <caption class="visually-hidden">{{ _T("Groups") }}</caption>
             <thead>
                 <tr>
                     <th scope="col">{{ _T("Group") }}</th>
-                    <th scope="col" class="center aligned collapsing">{{ _T("Member of group") }}</th>
-                    <th scope="col" class="center aligned collapsing">{{ _T("Group manager") }}</th>
+                    <th scope="col" class="center aligned">{{ _T("Member of group") }}</th>
+                    <th scope="col" class="center aligned">{{ _T("Group manager") }}</th>
                     <th scope="col" class="collapsing"><span class="visually-hidden">{{ _T("Actions") }}</span></th>
                 </tr>
             </thead>
@@ -44,7 +44,7 @@
     {% if linked or row_editable %}
         {% set full_name = group.getFullName() %}
                 <tr id="group_row_{{ gid }}" data-group="{{ gid }}" data-member="{{ is_member ? 1 : 0 }}" data-manager="{{ is_manager ? 1 : 0 }}" data-linked="{{ linked ? 1 : 0 }}"{% if not linked %} hidden{% endif %}>
-                    <th scope="row">
+                    <th scope="row" data-col-label="{{ _T("Group") }} :">
         {% for parent in group.getParents() %}
                         <span class="ui grey text">{{ parent }} /</span>
         {% endfor %}
@@ -53,13 +53,13 @@
                         <span class="ui mini orange basic label group-state displaynone" data-state="changed">{{ _Tx("member groups", "changed") }}</span>
                         <span class="ui mini orange basic label group-state displaynone" data-state="removed">{{ _Tx("member groups", "will be removed") }}</span>
         {% if linked and can_edit_members and not row_editable %}
-                        <div class="ui small grey text">
+                        <span class="ui small grey text">
                             <i class="lock icon" aria-hidden="true"></i>
                             {{ _T("Group you do not manage") }}
-                        </div>
+                        </span>
         {% endif %}
                     </th>
-                    <td class="center aligned">
+                    <td class="center aligned" data-col-label="{{ _T("Member of group") }} :">
                         <div class="ui fitted toggle checkbox{% if not (row_editable and linked) %} disabled{% endif %}">
                             <input
                                 type="checkbox"
@@ -74,7 +74,7 @@
                             <label for="group_member_{{ gid }}"><span class="visually-hidden">{{ _T("Member of group %1$s")|format(full_name) }}</span></label>
                         </div>
                     </td>
-                    <td class="center aligned">
+                    <td class="center aligned" data-col-label="{{ _T("Group manager") }} :">
                         <div class="ui fitted toggle checkbox{% if not (can_edit_managers and linked) %} disabled{% endif %}">
                             <input
                                 type="checkbox"
@@ -91,7 +91,7 @@
                     </td>
                     <td class="right aligned">
         {% if row_editable %}
-                        <button type="button" class="ui mini basic icon button group-remove" aria-label="{{ _T("Remove from group %1$s")|format(full_name) }}">
+                        <button type="button" class="ui mini basic red icon button group-remove" aria-label="{{ _T("Remove from group %1$s")|format(full_name) }}">
                             <i class="times icon" aria-hidden="true"></i>
                         </button>
                         <button type="button" class="ui mini basic labeled icon button group-undo displaynone" aria-label="{{ _T("Keep group %1$s")|format(full_name) }}">
@@ -109,8 +109,9 @@
             </tbody>
         </table>
 {% if addable_groups|length > 0 %}
-        <div class="fields">
-            <div class="twelve wide field">
+        <div class="ui divider"></div>
+        <div class="fields group-add">
+            <div class="field group">
                 <label for="group_add">{{ _T("Add to group") }}</label>
                 <select id="group_add" class="ui search dropdown">
                     <option value="">{{ _T("Select a group") }}</option>
@@ -119,10 +120,10 @@
     {% endfor %}
                 </select>
             </div>
-            <div class="four wide field">
+            <div class="field action">
                 <label aria-hidden="true">&nbsp;</label>
-                <button type="button" id="group_add_btn" class="ui fluid labeled icon button">
-                    <i class="plus green icon" aria-hidden="true"></i>
+                <button type="button" id="group_add_btn" class="ui tiny green labeled icon button">
+                    <i class="plus icon" aria-hidden="true"></i>
                     {{ _T("Add") }}
                 </button>
             </div>

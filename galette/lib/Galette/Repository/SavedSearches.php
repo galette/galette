@@ -163,7 +163,8 @@ class SavedSearches
     private function buildOrderClause(): array
     {
         $order = [];
-        $order[] = $this->filters->orderby . ' ' . $this->filters->getDirection();
+        //searches can only be ordered by date, orderby is never used as a column name
+        $order[] = 'creation_date ' . $this->filters->getDirection();
 
         return $order;
     }

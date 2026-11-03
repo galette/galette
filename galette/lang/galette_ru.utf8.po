@@ -29,10 +29,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-11-02 13:04+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Johan Cwiklinski "
+"<trasher@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Russian <https://hosted.weblate.org/projects/galette/galette/"
 "ru/>\n"
 "Language: ru\n"
@@ -183,6 +183,15 @@ msgstr "Доступен новый релиз Galette."
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr "Сейчас используется Galette %1$s. Доступно %2$s."
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, fuzzy, php-format
+#| msgid "A new Galette release is available."
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] "Доступен новый релиз Galette."
+msgstr[1] "Доступен новый релиз Galette."
+msgstr[2] "Доступен новый релиз Galette."
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr "Ваш пароль слишком ненадежен! Пожалуйста, усложните его."
@@ -361,6 +370,51 @@ msgstr "При сохранении вклада произошла ошибка
 
 msgid "Contribution has been successfully stored"
 msgstr "Вклад успешно сохранен"
+
+msgid "Payment type:"
+msgstr "Тип платежа:"
+
+msgid "Record date:"
+msgstr "Дата записи:"
+
+msgid "Comments:"
+msgstr "Комментарии:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Mass add contributions"
+msgid "Mass change %1$s contributions"
+msgstr "Массовое добавление взносов"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "Массовые изменения не подтверждены!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "Обзор массового изменения %1$s членов"
+
+msgid "Nothing to do!"
+msgstr "Нечего делать!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Взносы"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "Участник %1$s был успешно изменен!"
+msgstr[1] "Участника %1$s были успешно изменены!"
+msgstr[2] "Участники %1$s были успешно изменены!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Что-то пошло не так во время массового выпуска!"
 
 #, php-format
 msgid "Remove %1$s %2$s"
@@ -561,6 +615,11 @@ msgid "Mailing preview"
 msgstr "Пред. просмотр рассылки"
 
 #, fuzzy
+#| msgid "Test email settings"
+msgid "No mailing in progress."
+msgstr "Проверить настройки почты"
+
+#, fuzzy
 #| msgid "Sent mailings:"
 msgid "Sending mailing"
 msgstr "Отправленные рассылки:"
@@ -625,9 +684,6 @@ msgstr "Новый участник"
 msgid "Mass change %1$s members"
 msgstr "Массовое изменение %1$s членов"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "Массовые изменения не подтверждены!"
-
 msgid "Add to group"
 msgstr "Добавить в группу"
 
@@ -637,9 +693,6 @@ msgstr "Удалить из группы"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "Обзор массового изменения %1$s членов"
-
-msgid "Nothing to do!"
-msgstr "Нечего делать!"
 
 msgid "An error occurred while saving the member."
 msgstr "При сохранении участника произошла ошибка."
@@ -653,9 +706,6 @@ msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "Участник %1$s был успешно изменен!"
 msgstr[1] "Участника %1$s были успешно изменены!"
 msgstr[2] "Участники %1$s были успешно изменены!"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Что-то пошло не так во время массового выпуска!"
 
 msgid "Login required"
 msgstr "Требуется вход"
@@ -1302,6 +1352,9 @@ msgstr "Минимальная версия для движка %1$s — %2$s, �
 msgid "My Account"
 msgstr "Мой аккаунт"
 
+msgid "View my member card"
+msgstr "Открыть карту участника"
+
 msgid "My contributions"
 msgstr "Мой вклад"
 
@@ -1320,22 +1373,19 @@ msgstr "Мои сделки"
 msgid "View and filter all my transactions"
 msgstr "Просмотр и фильтрация всех моих транзакций"
 
-msgid "View my member card"
-msgstr "Открыть карту участника"
-
 #, fuzzy
 #| msgid "Fill all empty login and passwords"
 msgid "Modify my login and password"
 msgstr "Заполнить все пустые логины и пароли"
-
-msgid "Manage my two-factor authentication"
-msgstr ""
 
 msgid "Add a child member"
 msgstr "Добавить дочернего участника"
 
 msgid "Add new child member in database"
 msgstr "Добавить нового дочернего участника в базу данных"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 msgid "View, search into and filter member's list"
 msgstr "Просмотр, поиск и фильтрация списка участников"
@@ -1413,6 +1463,9 @@ msgstr "Экспорт данных в различных форматах"
 msgid "Import members from CSV files"
 msgstr "Импорт участников из CSV-файлов"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "View application's logs"
 msgstr "Просмотреть лог-файлы приложения"
 
@@ -1424,9 +1477,6 @@ msgid ""
 "configuration, ...)"
 msgstr ""
 "Изменить настройки (адрес, веб-сайт, конфигурация карты участника, ...)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
 
 msgid "Information about available plugins"
 msgstr "Данные о доступных плагинах"
@@ -2076,12 +2126,6 @@ msgstr "Тип взноса:"
 msgid "Amount:"
 msgstr "Сумма:"
 
-msgid "Payment type:"
-msgstr "Тип платежа:"
-
-msgid "Comments:"
-msgstr "Комментарии:"
-
 msgid "Date"
 msgstr "Дата"
 
@@ -2308,9 +2352,6 @@ msgstr "ID запланированного платежа"
 
 msgid "Contribution ID"
 msgstr "ID взноса"
-
-msgid "Record date:"
-msgstr "Дата записи:"
 
 msgid "Scheduled date:"
 msgstr "Запланированная дата:"
@@ -2681,6 +2722,21 @@ msgstr "Дата начала"
 msgid "End date"
 msgstr "Дата окончания"
 
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, fuzzy, php-format
+#| msgid "%1$s document"
+#| msgid_plural "%1$s documents"
+msgid "Links to \"%1$s\" documents"
+msgstr "%1$s документ"
+
+#, fuzzy, php-format
+#| msgid "Email sent to user %1$s (%2$s)"
+msgid "Link to document \"%1$s\" (%2$s)"
+msgstr "Письмо отправлено пользователю %1$s (%2$s)"
+
 msgid "Member information"
 msgstr "Информация об участнике"
 
@@ -2778,7 +2834,7 @@ msgid "Non members"
 msgstr "Не участники"
 
 msgid "Y"
-msgstr "Г"
+msgstr "Y"
 
 msgid "Y-m"
 msgstr "Y-m"
@@ -3317,7 +3373,7 @@ msgstr "Документация"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
 msgid "YYYY-MM-DD"
-msgstr "ГГГГ-ММ-ДД"
+msgstr "YYYY-MM-DD"
 
 msgid "Member id:"
 msgstr "ID участника:"
@@ -3423,6 +3479,9 @@ msgstr "Родитель:"
 
 msgid "Member number:"
 msgstr "Номер участника:"
+
+msgid "Picture:"
+msgstr "Изображение:"
 
 msgid "State of dues"
 msgstr "Состояние взносов"
@@ -3948,6 +4007,17 @@ msgstr ""
 "Для обновления Galette необходимы права на запись для файлов, перечисленных "
 "выше."
 
+#. TRANS: %1$s is the directory path
+#, fuzzy, php-format
+#| msgid "Title %1$s does not exists!"
+msgid "%1$s does not exist"
+msgstr "Обращение %1$s не существует!"
+
+#. TRANS: %1$s is the directory path
+#, php-format
+msgid "%1$s is not writable"
+msgstr ""
+
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "В UNIX/Linux вы можете выдать права с помощью следующих команд"
 
@@ -4223,7 +4293,7 @@ msgstr ""
 msgid "Unable to copy, please select the text and copy it by hand."
 msgstr ""
 
-msgid "Additionnal fields:"
+msgid "Additional fields:"
 msgstr "Дополнительные поля:"
 
 msgid "Enter as many occurrences you want."
@@ -4369,6 +4439,11 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr "Элементы в этом списке были изменены. Не забудьте сохранить изменения."
 
+#, fuzzy, php-format
+#| msgid "Update"
+msgid "Update %1$s"
+msgstr "Обновить"
+
 msgid "Groups:"
 msgstr "Группы:"
 
@@ -4394,9 +4469,6 @@ msgstr "Найдите по имени или ID и выберите участ�
 
 msgid "Password confirmation:"
 msgstr "Подтверждение пароля:"
-
-msgid "Picture:"
-msgstr "Изображение:"
 
 msgid "Delete image"
 msgstr "Удалить изображение"
@@ -4439,27 +4511,6 @@ msgstr "Право"
 msgid "Not supplied"
 msgstr "Не указано"
 
-msgid "Zip - Town"
-msgstr "Индекс - Город"
-
-msgid "Company"
-msgstr "Компания"
-
-msgid "no member"
-msgstr "нет участников"
-
-msgid "Pages:"
-msgstr "Страницы:"
-
-msgid "Selected members"
-msgstr "Выбранные участники"
-
-msgid "No members has been selected yet."
-msgstr "Пока не выбрано ни одного участника."
-
-msgid "Validate"
-msgstr "Подтвердить"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Открыть «%s» в новом окне"
@@ -4472,6 +4523,12 @@ msgstr "Требуется"
 
 msgid "Width in forms"
 msgstr "Ширина в формах"
+
+#, fuzzy
+#| msgid "Remove"
+msgctxt "member groups"
+msgid "moved"
+msgstr "Убрать"
 
 #, php-format
 msgid "Change '%1$s' permissions"
@@ -4569,6 +4626,9 @@ msgstr "Информация"
 
 msgid "Parent group:"
 msgstr "Родительская группа:"
+
+msgid "Company"
+msgstr "Компания"
 
 #, fuzzy, php-format
 #| msgid "Member of group"
@@ -4743,6 +4803,9 @@ msgstr ""
 msgid "Later"
 msgstr "Позже"
 
+msgid "Pages:"
+msgstr "Страницы:"
+
 msgid "Records per page:"
 msgstr "Записей на странице:"
 
@@ -4773,6 +4836,34 @@ msgstr "Выйти из режима"
 msgid "User menu"
 msgstr "Меню пользователя"
 
+#, fuzzy
+#| msgid "Email address"
+msgid "No email address"
+msgstr "Адрес электронной почты"
+
+#, fuzzy
+#| msgid "Group added"
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "Группа добавлена"
+
+#, fuzzy
+#| msgid "Parent removed"
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "Исходник удалён"
+
+#, fuzzy, php-format
+#| msgid "Remove '%1$s' from disk"
+msgid "Remove %1$s from recipients"
+msgstr "Удалить «%1$s» с диска"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in recipients"
+msgstr "%1$s управляемая группа"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Ваше сообщение отправлено <strong>%s участникам</strong>"
@@ -4800,11 +4891,33 @@ msgstr ""
 "У некоторых выбранных вами участников нет адреса электронной почты. Однако "
 "вы можете создать конвертные этикетки, чтобы связаться с ними по почте."
 
+msgid "Manage selected members"
+msgstr "Управление выбранными участниками"
+
+#, fuzzy
+#| msgid "Add a document"
+msgid "Add a recipient"
+msgstr "Добавить документ"
+
+#, fuzzy
+#| msgid ""
+#| "Items in this list have been modified. Don't forget to save your changes."
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr "Элементы в этом списке были изменены. Не забудьте сохранить изменения."
+
+msgid "Recipients"
+msgstr "Получатели"
+
+msgid "See member profile"
+msgstr "Посмотреть профиль участника"
+
 msgid "Modification"
 msgstr "Изменение"
 
-msgid "Display"
-msgstr "Отображение"
+#, fuzzy
+#| msgid "creation"
+msgid "More actions"
+msgstr "создание"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -4978,6 +5091,11 @@ msgstr "Будут обновлены только отмеченные поля
 
 msgid "No changes selected"
 msgstr "Не выбрано ни одного изменения"
+
+#, fuzzy
+#| msgid "You are about to proceed following changes for selected members:"
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr "Вы собираетесь выполнить следующие изменения для выбранных участников:"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr "Вы собираетесь выполнить следующие изменения для выбранных участников:"
@@ -5395,6 +5513,11 @@ msgstr "Статус членства"
 msgid "Account activity"
 msgstr "Активность учётной записи"
 
+#, fuzzy
+#| msgid "Not managed group"
+msgid "Not in any group"
+msgstr "Неуправляемая группа"
+
 msgid "With email:"
 msgstr "С email:"
 
@@ -5453,6 +5576,16 @@ msgid "is"
 msgstr "равно"
 
 msgid "is not"
+msgstr "не равно"
+
+#, fuzzy
+#| msgid "File is empty!"
+msgid "is empty"
+msgstr "Файл пуст!"
+
+#, fuzzy
+#| msgid "is not"
+msgid "is not empty"
 msgstr "не равно"
 
 msgid "before"
@@ -5571,11 +5704,21 @@ msgstr "Пожалуйста, исправьте указанные выше п�
 msgid "Warning"
 msgstr "Предупреждение"
 
+#, fuzzy
+#| msgid "Dynamic fields"
+msgid "Dynamic field"
+msgstr "Динамические поля"
+
 msgid "Field name"
 msgstr "Имя поля"
 
 msgid "Available fields"
 msgstr "Доступные поля"
+
+#, fuzzy, php-format
+#| msgid "Edit field %1$s"
+msgid "Keep field %1$s"
+msgstr "Редактировать поле %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5865,9 +6008,6 @@ msgstr "Покажи ваши вклады"
 msgid "Show all members contributions"
 msgstr "Показать все взносы участников"
 
-msgid "See member profile"
-msgstr "Посмотреть профиль участника"
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -6027,7 +6167,7 @@ msgstr "Нет доступных параметризованных экспо�
 msgid "Galette tables exports"
 msgstr "Экспорт таблиц Galette"
 
-msgid "Additionnaly, which table(s) do you want to export?"
+msgid "Additionally, which table(s) do you want to export?"
 msgstr "Дополнительно, какие таблицы вы хотите экспортировать?"
 
 msgid "Table name"
@@ -6072,6 +6212,9 @@ msgstr "Создать"
 
 msgid "Export as PDF"
 msgstr "Экспорт в PDF"
+
+msgid "Display"
+msgstr "Отображение"
 
 msgid "IP"
 msgstr "IP"
@@ -6191,14 +6334,8 @@ msgstr "Забыли пароль?"
 msgid "Mailing information"
 msgstr "Информация о рассылке"
 
-msgid "Recipients"
-msgstr "Получатели"
-
 msgid "Go back to members list"
 msgstr "Вернуться к списку участников"
-
-msgid "Manage selected members"
-msgstr "Управление выбранными участниками"
 
 msgid "Existing attachments:"
 msgstr "Существующие вложения:"
@@ -6241,11 +6378,8 @@ msgstr "Изменить рассылку"
 msgid "An error occurred displaying preview :("
 msgstr "Произошла ошибка при отображении предпросмотра :("
 
-msgid "Members selection"
-msgstr "Выбор участников"
-
-msgid "Click on a row to select a member"
-msgstr "Нажмите на строку, чтобы выбрать участника"
+msgid "Validate"
+msgstr "Подтвердить"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Вы уверены, что хотите удалить это вложение?"
@@ -6566,6 +6700,21 @@ msgstr "Путь:"
 
 msgid "Main route:"
 msgstr "Главный маршрут:"
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove transaction #%1$s"
+msgid "New version: %1$s"
+msgstr "Удалить транзакцию #%1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
 
 msgid "ACLs"
 msgstr "ACL"
@@ -7184,6 +7333,9 @@ msgstr "(Показывать или нет обращение перед име
 msgid "Address type:"
 msgstr "Тип адреса:"
 
+msgid "Zip - Town"
+msgstr "Индекс - Город"
+
 msgid "(Choose address printed below name)"
 msgstr "(Выберите адрес, печатаемый под именем)"
 
@@ -7657,6 +7809,21 @@ msgstr ""
 msgid "Public page content"
 msgstr "Содержание публичной страницы"
 
+#~ msgid "no member"
+#~ msgstr "нет участников"
+
+#~ msgid "Selected members"
+#~ msgstr "Выбранные участники"
+
+#~ msgid "No members has been selected yet."
+#~ msgstr "Пока не выбрано ни одного участника."
+
+#~ msgid "Members selection"
+#~ msgstr "Выбор участников"
+
+#~ msgid "Click on a row to select a member"
+#~ msgstr "Нажмите на строку, чтобы выбрать участника"
+
 #~ msgid "An error occurred."
 #~ msgstr "Произошла ошибка."
 
@@ -7761,9 +7928,6 @@ msgstr "Содержание публичной страницы"
 
 #~ msgid "modification"
 #~ msgstr "модификация"
-
-#~ msgid "creation"
-#~ msgstr "создание"
 
 #~ msgid "Edit payment type"
 #~ msgstr "Редактирование типа платежа"

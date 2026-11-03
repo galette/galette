@@ -22,7 +22,7 @@
             <i class="dropdown icon" aria-hidden="true"></i>
             <div class="menu">
                 {% for item in items %}
-                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route ?? null, null, null, 'right center', mode, item.children ?? null) }}
+                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route ?? null, null, null, 'right center', mode, item.children ?? null, item.badge ?? null) }}
                 {% endfor %}
             </div>
         </div>
@@ -35,14 +35,14 @@
             </div>
             <div class="content{% if cur_route in my_routes %} active{% endif %}">
                 {% for item in items %}
-                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route ?? null, item.icon ?? null, null, null, mode, item.children ?? null) }}
+                    {{ _self.renderMenuItem(item.label, item.title ?? null, item.route ?? null, item.icon ?? null, null, null, mode, item.children ?? null, item.badge ?? null) }}
                 {% endfor %}
             </div>
         </div>
     {% endif %}
 {% endmacro %}
 
-{% macro renderMenuItem(label, title, route, icon, class, tips_position, mode, children) %}
+{% macro renderMenuItem(label, title, route, icon, class, tips_position, mode, children, badge) %}
     {% if class is empty %}
         {% if route is not null %}
             {% if is_current_url(route.name, route.args ?? [] + cur_route_args ?? []) or cur_route in route.aliases ?? [] %}
@@ -69,11 +69,15 @@
             <i class="{{ icon }} icon" aria-hidden="true"></i>
         {% endif %}
             {{ label }}
+        {% if badge %}
+            <span class="ui mini orange label" aria-hidden="true"><i class="arrow alternate circle up icon"></i>{{ badge }}</span>
+            <span class="visually-hidden">{{ title }}</span>
+        {% endif %}
         </a>
     {% elseif (mode != 'topbar') and login.isLogged() %}
         {% for item in children %}
             {% set icon = mode == "compact" ? null : item.icon %}
-            {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, icon, null, item.tips_position ?? null, mode, null) }}
+            {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, icon, null, item.tips_position ?? null, mode, null, item.badge ?? null) }}
         {% endfor %}
     {% else %}
         {{ _self.renderMenuDropdown(label, title ?? null, icon ?? null, tips_position ?? null, mode, children) }}
@@ -97,14 +101,18 @@
     {% endif %}
         <div class="{{ mode != 'sidebar' ? 'menu' : 'content' }}{{ mode == 'sidebar' and cur_route in my_routes ?? ' active' }}">
             {% for item in children %}
-                {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, null, null, null, mode, null) }}
+                {{ _self.renderMenuItem(item.label, item.title ?? null, item.route, null, null, null, mode, null, item.badge ?? null) }}
             {% endfor %}
         </div>
     </div>
 {% endmacro %}
 
-{% macro dashboardCard(label, title, route, icon) %}
+{% macro dashboardCard(label, title, route, icon, badge) %}
     <a class="ui card" href="{{ url_for(route.name, route.args|default([])) }}"{% if title %} title="{{ title }}"{% endif %}>
+        {% if badge %}
+            <span class="floating ui orange label" aria-hidden="true">{{ badge }}</span>
+            <span class="visually-hidden">{{ title }}</span>
+        {% endif %}
         <div class="content">
             <div class="ui header">
                 <em data-emoji="{{ icon }}" class="medium" aria-hidden="true"></em>

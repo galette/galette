@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core;
 
+use Galette\Core\GaletteMail;
 use Galette\Tests\Fixtures\RecordingGaletteMail;
+use Galette\Tests\Fixtures\RecordsMails;
 use Galette\Tests\GaletteTestCase;
 
 /**
@@ -20,6 +22,8 @@ use Galette\Tests\GaletteTestCase;
  */
 class MailingQueue extends GaletteTestCase
 {
+    use RecordsMails;
+
     protected int $seed = 20240131082139;
 
     /**
@@ -878,5 +882,126 @@ class MailingQueue extends GaletteTestCase
         $this->assertSame(9, $queue->getRemainingQuota());
 
         $this->preferences->pref_mail_daily_limit = 0;
+    }
+
+    /**
+     * Get queue rows statuses and errors, by recipient
+     *
+     * @return array<int, array{status: int, error: ?string}>
+     */
+    private function getQueueRows(): array
+    {
+        $rows = [];
+        $select = $this->zdb->select(\Galette\Core\MailingQueue::TABLE);
+        $select->order('mailing_queue_id ASC');
+        foreach ($this->zdb->execute($select) as $row) {
+            $rows[] = ['status' => (int)$row->status, 'error' => $row->last_error];
+        }
+        return $rows;
+    }
+
+    /**
+     * Test queued recipients that cannot be reached are not sent
+     */
+    public function testUnreachableQueuedRecipients(): void
+    {
+        $this->logSuperAdmin();
+        $this->recordMails();
+        $mail_method = $this->preferences->pref_mail_method;
+        $this->preferences->pref_mail_method = GaletteMail::METHOD_PHPMAIL;
+
+        $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
+        $mailing = $this->buildStoredMailing();
+        $mailing_id = (int)$mailing->id;
+        $this->assertSame(2, $queue->enqueue($mailing_id, $mailing->recipients));
+
+        //first recipient is gone, second one has no email address anymore
+        $select = $this->zdb->select(\Galette\Core\MailingQueue::TABLE);
+        $select->columns(['mailing_queue_id'])->order('mailing_queue_id ASC')->limit(1);
+        $first_id = (int)$this->zdb->execute($select)->current()->mailing_queue_id;
+        $update = $this->zdb->update(\Galette\Core\MailingQueue::TABLE);
+        $update->set(['recipient_id' => null])->where(['mailing_queue_id' => $first_id]);
+        $this->zdb->execute($update);
+
+        $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+        $update->set(['email_adh' => ''])->where([\Galette\Entity\Adherent::PK => $this->getMemberTwo()->id]);
+        $this->zdb->execute($update);
+
+        $progress = $queue->processBatch($mailing_id);
+        $this->preferences->pref_mail_method = $mail_method;
+
+        $this->assertSame(0, $progress['batch_sent']);
+        $this->assertSame(2, $progress['batch_failed']);
+        $this->assertTrue($progress['done']);
+        $this->assertSame(
+            [
+                ['status' => \Galette\Core\MailingQueue::STATUS_FAILED, 'error' => 'No recipient to send to'],
+                ['status' => \Galette\Core\MailingQueue::STATUS_FAILED, 'error' => 'No valid email address']
+            ],
+            $this->getQueueRows()
+        );
+        //nothing reached the sender alone
+        $this->assertSame([], $this->getRecordedMails());
+    }
+
+    /**
+     * Test queued reminders are sent, or reported as failed
+     */
+    public function testSendQueuedReminders(): void
+    {
+        $this->logSuperAdmin();
+        //second message fails
+        $this->recordMails([2]);
+        $mail_method = $this->preferences->pref_mail_method;
+        $this->preferences->pref_mail_method = GaletteMail::METHOD_PHPMAIL;
+
+        $adh1 = $this->getMemberOne();
+        $adh2 = $this->getMemberTwo();
+        $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
+        $queue->enqueueReminders([
+            $this->buildReminder(\Galette\Entity\Reminder::LATE, $adh1),
+            $this->buildReminder(\Galette\Entity\Reminder::LATE, $adh2)
+        ]);
+        $queue->setReminderContext($this->history, $this->login, $this->routeparser);
+
+        //one reminder per call
+        $progress = $queue->processBatch(only_mailing_id: null, kind: \Galette\Core\MailingQueue::KIND_REMINDER);
+        $this->assertSame(1, $progress['batch_sent']);
+        $progress = $queue->processBatch(only_mailing_id: null, kind: \Galette\Core\MailingQueue::KIND_REMINDER);
+        $this->preferences->pref_mail_method = $mail_method;
+        $this->assertSame(0, $progress['batch_sent']);
+        $this->assertSame(1, $progress['batch_failed']);
+        $this->assertTrue($progress['done']);
+
+        $mails = $this->getRecordedMails();
+        $this->assertCount(2, $mails);
+        $this->assertSame([$adh1->getEmail()], $mails[0]['recipients']);
+        $this->assertSame([$adh2->getEmail()], $mails[1]['recipients']);
+
+        $rows = $this->getQueueRows();
+        $this->assertSame(\Galette\Core\MailingQueue::STATUS_SENT, $rows[0]['status']);
+        $this->assertSame(\Galette\Core\MailingQueue::STATUS_FAILED, $rows[1]['status']);
+        $this->assertStringContainsString($adh2->getEmail(), (string)$rows[1]['error']);
+    }
+
+    /**
+     * Test queued reminders cannot be sent without their context
+     */
+    public function testQueuedRemindersWithoutContext(): void
+    {
+        $this->logSuperAdmin();
+        $this->recordMails();
+
+        $queue = new \Galette\Core\MailingQueue($this->zdb, $this->preferences);
+        $queue->enqueueReminders([$this->buildReminder(\Galette\Entity\Reminder::LATE, $this->getMemberOne())]);
+
+        $progress = $queue->processBatch(only_mailing_id: null, kind: \Galette\Core\MailingQueue::KIND_REMINDER);
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Cannot send queued reminders: reminder context not set');
+        $this->assertSame(1, $progress['batch_failed']);
+        $this->assertSame(
+            [['status' => \Galette\Core\MailingQueue::STATUS_FAILED, 'error' => 'Reminder context not configured']],
+            $this->getQueueRows()
+        );
+        $this->assertSame([], $this->getRecordedMails());
     }
 }

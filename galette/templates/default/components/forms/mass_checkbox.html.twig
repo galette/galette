@@ -1,0 +1,17 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # Checkbox to select a field to update on mass edition
+ # Parameters:
+ # - name: field name, the checkbox is named mass_<name>
+ # - label: field label, given to screen readers
+ #}
+<span class="ui checkbox masschange">
+    <input type="checkbox" name="mass_{{ name }}" id="mass_{{ name }}" class="mass_checkbox"/>
+    {# Fomantic draws the box from the label, only its text is hidden #}
+    <label for="mass_{{ name }}"><span class="visually-hidden">{{ _T("Update %1$s")|format(label|trim(' :', 'right')) }}</span></label>
+</span>

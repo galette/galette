@@ -27,10 +27,12 @@ use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Entity\FieldsConfig;
+use Galette\Entity\ListsConfig;
 use Galette\Entity\Social;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Util\RelativeDate;
 use Galette\Filters\MembersList;
+use Galette\Repository\DynamicFieldsSet;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
 use Galette\Repository\PaymentTypes;
@@ -38,6 +40,7 @@ use Galette\Repository\Titles;
 use Analog\Analog;
 
 use function Safe\preg_match;
+use function Safe\preg_replace;
 
 /**
  * Galette members controller
@@ -676,6 +679,9 @@ class MembersController extends CrudController
             $members_list = $members->getManagedMembersList(as_members: true);
         }
 
+        $galette_list = $this->lists_config->getDisplayElements($this->login);
+        $dynamic_values = is_array($members_list) ? $this->getListDynamicValues($galette_list, $members_list) : [];
+
         $groups = new Groups($this->zdb, $this->login);
         $groups_list = $groups->getList();
 
@@ -697,11 +703,65 @@ class MembersController extends CrudController
                 'nb_members'            => $members->getCount(),
                 'filters'               => $filters,
                 'adv_filters'           => $filters instanceof AdvancedMembersList,
-                'galette_list'          => $this->lists_config->getDisplayElements($this->login),
+                'galette_list'          => $galette_list,
+                'dynamic_values'        => $dynamic_values,
                 'documentation'         => 'usermanual/adherents.html#members-list'
             ]
         );
         return $response;
+    }
+
+    /**
+     * Get dynamic fields values displayed in members list
+     *
+     * @param array<int,object> $galette_list List display elements
+     * @param array<Adherent>   $members      Displayed members
+     *
+     * @return array<int, array<string, array{full: string, short: string}>> values per member id and list field
+     */
+    private function getListDynamicValues(array $galette_list, array $members): array
+    {
+        $fields = [];
+        foreach ($galette_list as $column) {
+            if ($column->is_dynamic ?? false) {
+                $fields[$column->dynamic_id] = $column;
+            }
+        }
+        if (count($fields) === 0 || count($members) === 0) {
+            return [];
+        }
+
+        $fieldset = new DynamicFieldsSet($this->zdb, $this->login);
+        $values = $fieldset->getValuesFor(
+            'adh',
+            array_map(fn(Adherent $member) => (int)$member->id, $members),
+            array_keys($fields)
+        );
+
+        $dynamic_values = [];
+        foreach ($values as $field_id => $members_values) {
+            $column = $fields[$field_id];
+            foreach ($members_values as $member_id => $occurrences) {
+                $texts = array_map(
+                    fn(string $value) => DynamicFieldsSet::getTextValue($column->field, $value),
+                    $occurrences
+                );
+                $full = trim(preg_replace('/\s+/u', ' ', implode(', ', $texts)));
+                if ($full === '') {
+                    continue;
+                }
+                $short = $full;
+                if (mb_strlen($full) > ListsConfig::DYNAMIC_VALUE_LENGTH) {
+                    $short = rtrim(mb_substr($full, 0, ListsConfig::DYNAMIC_VALUE_LENGTH)) . '…';
+                }
+                $dynamic_values[$member_id][$column->field_id] = [
+                    'full'  => $full,
+                    'short' => $short
+                ];
+            }
+        }
+
+        return $dynamic_values;
     }
 
     /**
@@ -754,7 +814,10 @@ class MembersController extends CrudController
             }
             //group filter
             if (isset($post['group_filter'])) {
-                $filters->group_filter = $post['group_filter'] > 0 ? (int)$post['group_filter'] : null;
+                $group_filter = (int)$post['group_filter'];
+                $filters->group_filter = $group_filter > 0 || $group_filter === Members::GROUP_NONE
+                    ? $group_filter
+                    : null;
             }
             //number of rows to show
             if (isset($post['nbshow'])) {
@@ -774,15 +837,20 @@ class MembersController extends CrudController
                         if (!$freed) {
                             $i = 0;
                             foreach ($post['free_field'] as $f) {
+                                $qry_op = (int)$post['free_query_operator'][$i];
+                                //emptiness operators do not need any value
+                                $no_value = in_array(
+                                    $qry_op,
+                                    [AdvancedMembersList::OP_IS_EMPTY, AdvancedMembersList::OP_IS_NOT_EMPTY],
+                                    strict: true
+                                );
                                 if (
                                     trim((string)$f) !== ''
-                                    && trim((string)$post['free_text'][$i]) !== ''
+                                    && ($no_value || trim((string)($post['free_text'][$i] ?? '')) !== '')
                                 ) {
-                                    $fs_search = (string)$post['free_text'][$i];
+                                    $fs_search = $no_value ? '' : (string)$post['free_text'][$i];
                                     $log_op
                                         = (int)$post['free_logical_operator'][$i];
-                                    $qry_op
-                                        = (int)$post['free_query_operator'][$i];
                                     $type = (int)$post['free_type'][$i];
                                     $fs = [
                                         'idx'       => $i,
@@ -922,106 +990,6 @@ class MembersController extends CrudController
                 'relative_units'        => RelativeDate::getUnits(),
                 'documentation'         => 'usermanual/recherche.html#advanced-search'
             ]
-        );
-        return $response;
-    }
-
-    /**
-     * Members list for ajax
-     *
-     * @param string|null     $option One of 'page' or 'order'
-     * @param string|int|null $value  Value of the option
-     */
-    #[Route(
-        name: 'ajaxMembers',
-        pattern: '/ajax/members[/{option:page|order}/{value:\d+}]',
-        methods: ['POST']
-    )]
-    public function ajaxList(Request $request, Response $response, ?string $option = null, string|int|null $value = null): Response
-    {
-        $post = $request->getParsedBody();
-
-        $filters = $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'ajax'])} ?? new MembersList();
-
-        if ($option == 'page') {
-            $filters->current_page = (int)$value;
-        }
-
-        //numbers of rows to display
-        if (isset($post['nbshow']) && is_numeric($post['nbshow'])) {
-            $filters->show = (int)$post['nbshow'];
-        }
-
-        $members = new Members($filters);
-        if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-            if ($this->login->isGroupManager()) {
-                $members_list = $members->getManagedMembersList(as_members: true);
-            } else {
-                Analog::log(
-                    str_replace(
-                        ['%id', '%login'],
-                        [(string)$this->login->id, $this->login->login],
-                        'Trying to list group members without access from #%id (%login)'
-                    ),
-                    Analog::ERROR
-                );
-                throw new \Exception('Access denied.');
-            }
-        } else {
-            $members_list = $members->getMembersList(as_members: true);
-        }
-
-        //assign pagination variables to the template and add pagination links
-        $filters->setViewPagination($this->routeparser, $this->view, false);
-
-        $this->session->{$this->getFilterName(static::getDefaultFilterName(), ['prefix' => 'ajax'])} = $filters;
-
-        $selected_members = null;
-        $unreachables_members = null;
-        if (!isset($post['from'])) {
-            $mailing = $this->session->mailing;
-            if (!isset($post['members'])) {
-                $selected_members = $mailing->recipients;
-                $unreachables_members = $mailing->unreachables;
-            } else {
-                $m = new Members();
-                $selected_members = $m->getArrayList($post['members']);
-                if (isset($post['unreachables']) && is_array($post['unreachables'])) {
-                    $unreachables_members = $m->getArrayList($post['unreachables']);
-                }
-            }
-        } else {
-            switch ($post['from']) {
-                case 'attach':
-                    if (!isset($post['id_adh'])) {
-                        throw new \RuntimeException(
-                            'Current selected member must be excluded while attaching!'
-                        );
-                    }
-                    break;
-            }
-        }
-
-        $params = [
-            'filters'               => $filters,
-            'members_list'          => $members_list,
-            'selected_members'      => $selected_members,
-            'unreachables_members'  => $unreachables_members
-        ];
-
-        if (isset($post['multiple'])) {
-            $params['multiple'] = true;
-        }
-
-        if (isset($post['id_adh'])) {
-            $params['excluded'] = (int)$post['id_adh'];
-        }
-
-        // display page
-        $this->view->render(
-            $response,
-            'elements/ajax_members.html.twig',
-            $params
         );
         return $response;
     }
@@ -1391,8 +1359,6 @@ class MembersController extends CrudController
 
         //Titles
         $titles = new Titles($this->zdb);
-        //Groups
-        $groups = new Groups($this->zdb, $this->login);
 
         // display page
         $this->view->render(
@@ -1409,7 +1375,6 @@ class MembersController extends CrudController
                 'data'          => $data,
                 'titles_list'   => $titles->getList(),
                 'statuts'       => $this->status->getList(),
-                'groups'        => $groups->getSimpleList(),
                 'changes'       => $changes
             ]
         );
@@ -1496,6 +1461,26 @@ class MembersController extends CrudController
                     unset($post[$key]);
                 } else {
                     unset($disabled[$key]);
+                }
+            }
+
+            //dynamic fields that have not been posted must be left untouched
+            if ($dynamic_fields === null) {
+                $member = new Adherent($this->zdb);
+                $member
+                    ->enableAllDeps()
+                    ->setDependencies(
+                        $this->preferences,
+                        $this->members_fields,
+                        $this->history
+                    );
+                $dynamic_fields = $member->getDynamicFields()->getFields();
+            }
+            foreach ($dynamic_fields as $field) {
+                $field_id = 'info_field_' . $field->getId() . '_1';
+                if (!isset($post[$field_id])) {
+                    //value is the key as well: Adherent::check() looks for values, dynamics for keys
+                    $disabled[$field_id] = $field_id;
                 }
             }
 

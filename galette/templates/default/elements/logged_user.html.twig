@@ -28,7 +28,7 @@
                 class="ui fluid {% if login.isImpersonated() %}purple{% else %}red{% endif %} basic button"
                 href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
             >
-                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}" aria-hidden="true"></i>
+                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alternate{% endif %}" aria-hidden="true"></i>
                 {% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}
             </a>
         </div>
@@ -56,7 +56,7 @@
                                 title="{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}"
                                 data-position="bottom right"
                             >
-                                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}" aria-hidden="true"></i>
+                                <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alternate{% endif %}" aria-hidden="true"></i>
                                 <span class="visually-hidden">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
                             </a>
                         </div>
@@ -110,7 +110,7 @@
                     title="{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}"
                     data-position="right center"
                 >
-                    <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alt{% endif %}" aria-hidden="true"></i>
+                    <i class="icon {% if login.isImpersonated() %}user secret{% else %}sign out alternate{% endif %}" aria-hidden="true"></i>
                     <span class="visually-hidden">{% if login.isImpersonated() %}{{ _T("Unimpersonate") }}{% else %}{{ _T("Log off") }}{% endif %}</span>
                 </a>
             </nav>

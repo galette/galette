@@ -106,6 +106,20 @@ abstract class GaletteRoutingTestCase extends GaletteTestCase
     }
 
     /**
+     * Assert request has been redirected, with expected flash messages
+     *
+     * @param Response|ResponseInterface $test_response Response to test
+     * @param string                     $url           Expected redirection URL
+     * @param array<string, string[]>    $flash         Expected flash data
+     */
+    protected function expectRedirect(Response|ResponseInterface $test_response, string $url, array $flash = []): void
+    {
+        $this->assertSame(['Location' => [$url]], $test_response->getHeaders());
+        $this->assertSame(301, $test_response->getStatusCode());
+        $this->expectFlashData($flash);
+    }
+
+    /**
      * Assert Flash data correspond to what is expected, and reset it
      *
      * @param array<string, string[]> $expected Expected flash data

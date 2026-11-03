@@ -104,6 +104,8 @@ final readonly class Signature
      */
     public function getSocialReplacements(array $core_types, array $done_replacements, string $website): array
     {
+        //replacements are HTML: plain values are escaped
+        $website = htmlspecialchars($website);
         $replacements = [
             '_asso_name' => $done_replacements['asso_name'],
             'asso_website' => $website,
@@ -112,7 +114,7 @@ final readonly class Signature
 
         foreach ($this->types($core_types) as $type) {
             $urls = array_map(
-                static fn(Social $social): string => $social->url,
+                static fn(Social $social): string => htmlspecialchars($social->url),
                 Social::getListForMember(id_adh: null, type: $type)
             );
 

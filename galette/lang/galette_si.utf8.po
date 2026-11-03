@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-11-02 13:04+0100\n"
 "PO-Revision-Date: 2026-09-02 16:09+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Sinhala <https://hosted.weblate.org/projects/galette/galette/"
@@ -151,6 +151,13 @@ msgstr ""
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr ""
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, php-format
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr ""
@@ -312,6 +319,49 @@ msgid "An error occurred while saving the contribution."
 msgstr ""
 
 msgid "Contribution has been successfully stored"
+msgstr ""
+
+msgid "Payment type:"
+msgstr ""
+
+msgid "Record date:"
+msgstr ""
+
+msgid "Comments:"
+msgstr ""
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Unable to attach contribution to transaction"
+msgid "Mass change %1$s contributions"
+msgstr "ගනුදෙනුවට දායකත්වයක් සම්බන්ධ කළ නොහැක"
+
+msgid "Mass changes has not been confirmed!"
+msgstr ""
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Unable to attach contribution to transaction"
+msgid "Review mass change %1$s contributions"
+msgstr "ගනුදෙනුවට දායකත්වයක් සම්බන්ධ කළ නොහැක"
+
+msgid "Nothing to do!"
+msgstr ""
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has not been added!"
+msgid "Contribution #%1$s: %2$s"
+msgstr "'%1$s' ගෙවීමේ ක්‍රමය ඇතුලත් ව නොමැත!"
+
+#, fuzzy, php-format
+#| msgid "Payment type '%1$s' has been successfully added."
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
+msgstr[1] "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
+
+msgid "Something went wrong during mass edition!"
 msgstr ""
 
 #, php-format
@@ -529,6 +579,9 @@ msgstr ""
 msgid "Mailing preview"
 msgstr ""
 
+msgid "No mailing in progress."
+msgstr ""
+
 msgid "Sending mailing"
 msgstr ""
 
@@ -584,9 +637,6 @@ msgstr ""
 msgid "Mass change %1$s members"
 msgstr ""
 
-msgid "Mass changes has not been confirmed!"
-msgstr ""
-
 #, fuzzy
 #| msgid "Groups"
 msgid "Add to group"
@@ -597,9 +647,6 @@ msgstr ""
 
 #, php-format
 msgid "Review mass change %1$s members"
-msgstr ""
-
-msgid "Nothing to do!"
 msgstr ""
 
 msgid "An error occurred while saving the member."
@@ -614,9 +661,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
 msgstr[1] "'%s' ගෙවීමේ ක්‍රමය සාර්ථක ව ඇතුලත් වී ඇත."
-
-msgid "Something went wrong during mass edition!"
-msgstr ""
 
 msgid "Login required"
 msgstr ""
@@ -1260,6 +1304,9 @@ msgstr ""
 msgid "My Account"
 msgstr ""
 
+msgid "View my member card"
+msgstr ""
+
 msgid "My contributions"
 msgstr ""
 
@@ -1278,19 +1325,16 @@ msgstr ""
 msgid "View and filter all my transactions"
 msgstr ""
 
-msgid "View my member card"
-msgstr ""
-
 msgid "Modify my login and password"
-msgstr ""
-
-msgid "Manage my two-factor authentication"
 msgstr ""
 
 msgid "Add a child member"
 msgstr ""
 
 msgid "Add new child member in database"
+msgstr ""
+
+msgid "Manage my two-factor authentication"
 msgstr ""
 
 msgid "View, search into and filter member's list"
@@ -1367,6 +1411,9 @@ msgstr ""
 msgid "Import members from CSV files"
 msgstr ""
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "View application's logs"
 msgstr ""
 
@@ -1376,9 +1423,6 @@ msgstr ""
 msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
-msgstr ""
-
-msgid "See what is being refused after repeated failures, and lift it"
 msgstr ""
 
 msgid "Information about available plugins"
@@ -2015,12 +2059,6 @@ msgstr ""
 msgid "Amount:"
 msgstr ""
 
-msgid "Payment type:"
-msgstr ""
-
-msgid "Comments:"
-msgstr ""
-
 msgid "Date"
 msgstr ""
 
@@ -2254,9 +2292,6 @@ msgid "Scheduled payment ID"
 msgstr ""
 
 msgid "Contribution ID"
-msgstr ""
-
-msgid "Record date:"
 msgstr ""
 
 msgid "Scheduled date:"
@@ -2618,6 +2653,18 @@ msgid "Begin date"
 msgstr ""
 
 msgid "End date"
+msgstr ""
+
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, php-format
+msgid "Links to \"%1$s\" documents"
+msgstr ""
+
+#, php-format
+msgid "Link to document \"%1$s\" (%2$s)"
 msgstr ""
 
 msgid "Member information"
@@ -3314,6 +3361,9 @@ msgstr ""
 msgid "Member number:"
 msgstr ""
 
+msgid "Picture:"
+msgstr ""
+
 msgid "State of dues"
 msgstr ""
 
@@ -3770,6 +3820,16 @@ msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
 
+#. TRANS: %1$s is the directory path
+#, php-format
+msgid "%1$s does not exist"
+msgstr ""
+
+#. TRANS: %1$s is the directory path
+#, php-format
+msgid "%1$s is not writable"
+msgstr ""
+
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr ""
 
@@ -4027,7 +4087,7 @@ msgstr ""
 msgid "Unable to copy, please select the text and copy it by hand."
 msgstr ""
 
-msgid "Additionnal fields:"
+msgid "Additional fields:"
 msgstr ""
 
 msgid "Enter as many occurrences you want."
@@ -4151,6 +4211,10 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
+#, php-format
+msgid "Update %1$s"
+msgstr ""
+
 msgid "Groups:"
 msgstr ""
 
@@ -4174,9 +4238,6 @@ msgid "Search for name or ID and pick member"
 msgstr ""
 
 msgid "Password confirmation:"
-msgstr ""
-
-msgid "Picture:"
 msgstr ""
 
 msgid "Delete image"
@@ -4218,27 +4279,6 @@ msgstr ""
 msgid "Not supplied"
 msgstr ""
 
-msgid "Zip - Town"
-msgstr ""
-
-msgid "Company"
-msgstr ""
-
-msgid "no member"
-msgstr ""
-
-msgid "Pages:"
-msgstr ""
-
-msgid "Selected members"
-msgstr ""
-
-msgid "No members has been selected yet."
-msgstr ""
-
-msgid "Validate"
-msgstr ""
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr ""
@@ -4250,6 +4290,10 @@ msgid "Required"
 msgstr ""
 
 msgid "Width in forms"
+msgstr ""
+
+msgctxt "member groups"
+msgid "moved"
 msgstr ""
 
 #, php-format
@@ -4349,6 +4393,9 @@ msgid "Information"
 msgstr "නිර්මාණය"
 
 msgid "Parent group:"
+msgstr ""
+
+msgid "Company"
 msgstr ""
 
 #, php-format
@@ -4517,6 +4564,9 @@ msgstr ""
 msgid "Later"
 msgstr ""
 
+msgid "Pages:"
+msgstr ""
+
 msgid "Records per page:"
 msgstr ""
 
@@ -4547,6 +4597,26 @@ msgstr ""
 msgid "User menu"
 msgstr ""
 
+msgid "No email address"
+msgstr ""
+
+msgctxt "mailing recipients"
+msgid "added"
+msgstr ""
+
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove payment type %1$s"
+msgid "Remove %1$s from recipients"
+msgstr "%1$s ගෙවීමේ ක්‍රමය ඉවත් කරන්න"
+
+#, php-format
+msgid "Keep %1$s in recipients"
+msgstr ""
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr ""
@@ -4572,11 +4642,28 @@ msgid ""
 "generate envelope labels to contact them by snail mail."
 msgstr ""
 
+msgid "Manage selected members"
+msgstr ""
+
+msgid "Add a recipient"
+msgstr ""
+
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+
+msgid "Recipients"
+msgstr ""
+
+msgid "See member profile"
+msgstr ""
+
 msgid "Modification"
 msgstr ""
 
-msgid "Display"
-msgstr ""
+#, fuzzy
+#| msgid "Transaction"
+msgid "More actions"
+msgstr "ගණුදෙනුව"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -4740,6 +4827,9 @@ msgid "Only checked fields will be updated."
 msgstr ""
 
 msgid "No changes selected"
+msgstr ""
+
+msgid "You are about to proceed following changes for selected contributions:"
 msgstr ""
 
 msgid "You are about to proceed following changes for selected members:"
@@ -5109,6 +5199,9 @@ msgstr ""
 msgid "Account activity"
 msgstr ""
 
+msgid "Not in any group"
+msgstr ""
+
 msgid "With email:"
 msgstr ""
 
@@ -5167,6 +5260,12 @@ msgid "is"
 msgstr ""
 
 msgid "is not"
+msgstr ""
+
+msgid "is empty"
+msgstr ""
+
+msgid "is not empty"
 msgstr ""
 
 msgid "before"
@@ -5279,10 +5378,17 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
+msgid "Dynamic field"
+msgstr ""
+
 msgid "Field name"
 msgstr ""
 
 msgid "Available fields"
+msgstr ""
+
+#, php-format
+msgid "Keep field %1$s"
 msgstr ""
 
 msgid ""
@@ -5564,9 +5670,6 @@ msgstr ""
 msgid "Show all members contributions"
 msgstr ""
 
-msgid "See member profile"
-msgstr ""
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -5718,7 +5821,7 @@ msgstr ""
 msgid "Galette tables exports"
 msgstr ""
 
-msgid "Additionnaly, which table(s) do you want to export?"
+msgid "Additionally, which table(s) do you want to export?"
 msgstr ""
 
 msgid "Table name"
@@ -5758,6 +5861,9 @@ msgid "Create"
 msgstr ""
 
 msgid "Export as PDF"
+msgstr ""
+
+msgid "Display"
 msgstr ""
 
 msgid "IP"
@@ -5874,13 +5980,7 @@ msgstr ""
 msgid "Mailing information"
 msgstr ""
 
-msgid "Recipients"
-msgstr ""
-
 msgid "Go back to members list"
-msgstr ""
-
-msgid "Manage selected members"
 msgstr ""
 
 msgid "Existing attachments:"
@@ -5921,10 +6021,7 @@ msgstr ""
 msgid "An error occurred displaying preview :("
 msgstr ""
 
-msgid "Members selection"
-msgstr ""
-
-msgid "Click on a row to select a member"
+msgid "Validate"
 msgstr ""
 
 msgid "Are you sure you want to remove this attachment?"
@@ -6223,6 +6320,21 @@ msgid "Path:"
 msgstr ""
 
 msgid "Main route:"
+msgstr ""
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove payment type %1$s"
+msgid "New version: %1$s"
+msgstr "%1$s ගෙවීමේ ක්‍රමය ඉවත් කරන්න"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
 msgstr ""
 
 msgid "ACLs"
@@ -6787,6 +6899,9 @@ msgstr ""
 msgid "Address type:"
 msgstr ""
 
+msgid "Zip - Town"
+msgstr ""
+
 msgid "(Choose address printed below name)"
 msgstr ""
 
@@ -7236,11 +7351,6 @@ msgstr ""
 
 #~ msgid "An error occurred"
 #~ msgstr "ගණුදෙනුව සටහන් කර ගැනීමේදී දෝෂයක් මතු විය"
-
-#, fuzzy
-#~| msgid "Unable to attach contribution to transaction"
-#~ msgid "Use paid flag on contributions"
-#~ msgstr "ගනුදෙනුවට දායකත්වයක් සම්බන්ධ කළ නොහැක"
 
 #~ msgid "Payment types management"
 #~ msgstr "ගෙවීමේ ක්‍රම කළමනාකරණය"

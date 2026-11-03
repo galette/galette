@@ -20,7 +20,7 @@ use PHPMailer\PHPMailer\PHPMailer;
  */
 class RecordingPHPMailer extends PHPMailer
 {
-    /** @var array<int, array{bcc: int, to: int, ok: bool}> Recipients count per message */
+    /** @var array<int, array{bcc: int, to: int, ok: bool, recipients: string[], subject: string, body: string}> Sent messages */
     public array $sent = [];
     /** @var array<int, int> Messages, 1-based, that must fail instead of leaving */
     public array $fail_on = [];
@@ -39,7 +39,13 @@ class RecordingPHPMailer extends PHPMailer
         $this->sent[] = [
             'bcc' => count($this->getBccAddresses()),
             'to'  => count($this->getToAddresses()),
-            'ok'  => $ok
+            'ok'  => $ok,
+            'recipients' => array_column(
+                array_merge($this->getToAddresses(), $this->getBccAddresses()),
+                0
+            ),
+            'subject' => $this->Subject,
+            'body' => $this->Body
         ];
         if (!$ok) {
             $this->ErrorInfo = 'Recorded failure for message ' . count($this->sent);

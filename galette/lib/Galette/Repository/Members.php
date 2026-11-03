@@ -17,6 +17,7 @@ use Galette\Events\GaletteEvent;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\Sql\Predicate\In;
 use Laminas\Db\Sql\Predicate\IsNull;
+use Laminas\Db\Sql\Predicate\NotIn;
 use Throwable;
 use Galette\DynamicFields\DynamicField;
 use Galette\DynamicFields\File;
@@ -30,6 +31,7 @@ use Laminas\Db\Sql\Predicate\PredicateSet;
 use Laminas\Db\Sql\Predicate\Operator;
 use Galette\Entity\Adherent;
 use Galette\Entity\FieldsConfig;
+use Galette\Entity\ListsConfig;
 use Galette\Entity\Contribution;
 use Galette\Entity\Transaction;
 use Galette\Entity\Reminder;
@@ -89,6 +91,9 @@ class Members
     public const int MEMBERSHIP_ADMIN = 6;
     public const int MEMBERSHIP_NONE = 7;
 
+    //group filter value for members that do not belong to any group
+    public const int GROUP_NONE = -1;
+
     public const string ORDERBY_NAME = 'name';
     public const string ORDERBY_NICKNAME = 'nickname';
     public const string ORDERBY_STATUS = 'status';
@@ -103,6 +108,7 @@ class Members
     private array $errors = [];
     /** @var string[] */
     private array $extra_order = [];
+    private ?DynamicField $order_dynamic = null;
 
     /**
      * Default constructor
@@ -845,6 +851,35 @@ class Members
                 }
             }
 
+            //order by a dynamic field: its value has to be selected, DISTINCT requires it on PostgreSQL
+            $this->order_dynamic = $this->getOrderDynamicField();
+            if ($this->order_dynamic !== null) {
+                $subselect = $zdb->select(DynamicFieldsHandle::TABLE, 'dfs');
+                $subselect->columns(
+                    [
+                        'item_id'   => 'item_id',
+                        'val'       => 'field_val'
+                    ]
+                );
+                $subselect->where([
+                    'dfs.field_form'    => 'adh',
+                    'dfs.field_id'      => $this->order_dynamic->getId(),
+                    'dfs.val_index'     => 1
+                ]);
+                $select->join(
+                    name: ['dfsort' => $subselect],
+                    on: 'a.id_adh = dfsort.item_id',
+                    columns: [
+                        //empty values last, whatever the direction and the database engine
+                        'dyn_sort_empty'    => new Expression(
+                            'CASE WHEN NULLIF(dfsort.val, \'\') IS NULL THEN 1 ELSE 0 END'
+                        ),
+                        'dyn_sort'          => new Expression('NULLIF(dfsort.val, \'\')')
+                    ],
+                    type: $select::JOIN_LEFT
+                );
+            }
+
             if ($mode == self::SHOW_LIST || $mode == self::SHOW_MANAGED) {
                 $this->buildWhereClause($select);
             } elseif ($mode == self::SHOW_PUBLIC_LIST) {
@@ -1025,7 +1060,13 @@ class Members
                 //defaults
                 break;
             default:
-                if ($this->canOrderBy($this->filters->orderby, $fields)) {
+                if (ListsConfig::getDynamicId((string)$this->filters->orderby) !== null) {
+                    //invalid dynamic fields fall back to default order
+                    if ($this->order_dynamic !== null) {
+                        $order[] = 'dyn_sort_empty ASC';
+                        $order[] = 'dyn_sort ' . $this->filters->getDirection();
+                    }
+                } elseif ($this->canOrderBy($this->filters->orderby, $fields)) {
                     $order[] = 'a.' . $this->filters->orderby . ' ' . $this->filters->getDirection();
                 }
                 break;
@@ -1235,7 +1276,11 @@ class Members
                 }
             }
 
-            if ($this->filters->group_filter) {
+            if ($this->filters->group_filter === self::GROUP_NONE) {
+                $grouped = $zdb->select(Group::GROUPSUSERS_TABLE, 'gn');
+                $grouped->columns([Adherent::PK]);
+                $select->where(new NotIn('a.' . self::PK, $grouped));
+            } elseif ($this->filters->group_filter) {
                 $select->join(
                     name: ['g' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
                     on: 'a.' . Adherent::PK . '=g.' . Adherent::PK,
@@ -1266,6 +1311,33 @@ class Members
             Logs::exception($e, __METHOD__, Analog::WARNING);
             throw $e;
         }
+    }
+
+    /**
+     * Get the dynamic field list is ordered by, if any
+     *
+     * @return ?DynamicField null if order is not on a dynamic field that can be used to sort
+     */
+    private function getOrderDynamicField(): ?DynamicField
+    {
+        /** @var Db $zdb */
+        global $zdb;
+
+        $field_id = ListsConfig::getDynamicId((string)$this->filters->orderby);
+        if ($field_id === null) {
+            return null;
+        }
+
+        $field = DynamicField::loadFieldType($zdb, $field_id);
+        if (!$this->canSearchDynamicField($field, 'adh') || !ListsConfig::isSortable($field)) {
+            Analog::log(
+                'Cannot order members by dynamic field #' . $field_id,
+                Analog::WARNING
+            );
+            return null;
+        }
+
+        return $field;
     }
 
     /**
@@ -1549,6 +1621,11 @@ class Members
                     case AdvancedMembersList::OP_AFTER:
                         $qop = '>';
                         break;
+                    case AdvancedMembersList::OP_IS_EMPTY:
+                    case AdvancedMembersList::OP_IS_NOT_EMPTY:
+                        //no value to compare with, predicate is built below
+                        $qop = '';
+                        break;
                     default:
                         Analog::log(
                             'Unknown query operator: ' . $fs['qry_op']
@@ -1578,9 +1655,25 @@ class Members
                     }
                 } elseif (str_starts_with((string)$fs['field'], 'socials_')) {
                     //social networks: type is filtered as a value, search runs on the URL
-                    $select->where(
-                        ['so.type' => str_replace('socials_', '', (string)$fs['field'])]
-                    );
+                    $social_type = str_replace('socials_', '', (string)$fs['field']);
+                    if ($qop === '') {
+                        //members without any social network have no type at all,
+                        //look for members that do have one of the requested type instead
+                        $socials = $zdb->select(Social::TABLE, 'se');
+                        $socials->columns([Adherent::PK]);
+                        $socials->where(['se.type' => $social_type]);
+                        $socials->where(new Operator('se.url', Operator::OP_NE, ''));
+                        $predicate = $fs['qry_op'] === AdvancedMembersList::OP_IS_EMPTY
+                            ? new NotIn('a.' . self::PK, $socials)
+                            : new In('a.' . self::PK, $socials);
+                        if ($fs['log_op'] === AdvancedMembersList::OP_AND) {
+                            $select->where($predicate);
+                        } elseif ($fs['log_op'] === AdvancedMembersList::OP_OR) {
+                            $select->where($predicate, PredicateSet::OP_OR);
+                        }
+                        continue;
+                    }
+                    $select->where(['so.type' => $social_type]);
                     $column = 'so.url';
                 } else {
                     $column = $allowed[(string)$fs['field']] ?? null;
@@ -1602,7 +1695,15 @@ class Members
                     }
                 }
 
-                if ($dyn_field instanceof \Galette\DynamicFields\Boolean) {
+                if ($qop === '') {
+                    //NULL or empty string, whatever the column type
+                    $field = $zdb->isPostgres() ? 'CAST(' . $column . ' AS TEXT)' : $column;
+                    $predicate = new Expression(
+                        'COALESCE(' . $field . ', \'\') '
+                        . ($fs['qry_op'] === AdvancedMembersList::OP_IS_EMPTY ? '=' : '!=')
+                        . ' \'\''
+                    );
+                } elseif ($dyn_field instanceof \Galette\DynamicFields\Boolean) {
                     if ($fs['search'] != 0) {
                         $predicate = new Expression(
                             $column . ' ' . $qop . ' ?',

@@ -1,0 +1,37 @@
+# Qodo review configuration
+# https://docs.qodo.ai/configuration/configuration-and-command-reference
+#
+# Review guidelines are shared with CodeRabbit in REVIEW.md
+
+[config]
+ignore_pr_authors = ["dependabot\\[bot\\]", "hosted-weblate\\[bot\\]"]
+
+[github_app]
+pr_commands = ["/agentic_describe", "/agentic_review"]
+feedback_on_draft_pr = false
+
+[qodo_describe_agent]
+# Summary in the pull request body, not as a separate comment
+publish_mode = "pr_description"
+publish_review_time_estimate_labels = false
+
+[review_agent]
+enable_review_md = true
+publish_in_progress_comment = false
+publish_blast_radius_labels = false
+enable_commitable_suggestions = false
+
+[review_agent_ux]
+show_daily_tips = false
+use_images_and_animations = false
+show_dividers = false
+show_comment_footer = false
+show_context_used = false
+show_resolved_findings = false
+
+# Changes are pushed by their authors only
+[fixer_agent]
+enable = false
+
+[checks]
+enable_auto_checks_feedback = false

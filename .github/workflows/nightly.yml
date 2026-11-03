@@ -178,22 +178,15 @@ jobs:
           header=$(printf 'Automatic build of the `develop` branch, rebuilt every night. Not meant for production use.\n\nCommit: %s\nBuilt: %s UTC' \
             "$SHA" "$(date -u '+%Y-%m-%d %H:%M')")
 
-          # What the nightly carries over the last stable release. previous_tag is
-          # passed explicitly: left to itself GitHub would take the most recent
-          # release, which is the nightly itself, and produce nothing.
+          # What the nightly carries over the last stable release, as links: a list
+          # of every merged pull request says less than the changelog and the
+          # compare view. Excluding prereleases skips the nightly itself.
           previous_tag=$(gh release list --repo "$REPO" --exclude-pre-releases --limit 1 --json tagName --jq '.[0].tagName // empty' || true)
-          changelog=''
+          notes=$(printf '%s\n\n[Changelog](https://github.com/%s/blob/%s/galette/docs/CHANGES)' \
+            "$header" "$REPO" "$SHA")
           if [ -n "$previous_tag" ]; then
-            changelog=$(gh api "repos/${REPO}/releases/generate-notes" \
-              -f tag_name="$TAG" \
-              -f target_commitish="$SHA" \
-              -f previous_tag_name="$previous_tag" \
-              --jq '.body' || true)
-          fi
-          if [ -n "$changelog" ]; then
-            notes=$(printf '%s\n\n%s' "$header" "$changelog")
-          else
-            notes="$header"
+            notes=$(printf '%s\n\n**Full Changelog**: https://github.com/%s/compare/%s...%s' \
+              "$notes" "$REPO" "$previous_tag" "$SHA")
           fi
 
           if ! gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then

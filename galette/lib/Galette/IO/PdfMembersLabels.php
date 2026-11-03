@@ -123,32 +123,30 @@ class PdfMembersLabels extends Pdf
                 $this->Rect(x: $x, y: $y, w: $this->lw, h: $this->lh);
             }
 
-            // Prepare full address
-            $full_address_array = [];
-            $full_address_array[] = $member->sfullname;
-            // Transform member's address in array and merge it with $full_address_array
-            $address_array = explode(PHP_EOL, (string)$member->address);
-            $full_address_array = array_merge($full_address_array, $address_array);
-            $full_address_array[] = $member->zipcode . ' ' . $member->town;
-            $full_address_array[] = $member->country;
-            $full_address = implode(PHP_EOL, $full_address_array);
-            // Find longest line in full address
-            $address_lengths = array_map(strlen(...), $full_address_array);
-            $address_longest = $full_address_array[array_search(max($address_lengths), $address_lengths)];
-            // Calculate font size to always display full address inside the frame
-            $max_text_size = $this->preferences->pref_etiq_hsize;
-            $this->fixSize(
-                $address_longest,
-                $max_text_size,
-                $this->preferences->pref_etiq_corps
-            );
+            $lines = $this->getLabelLines($member);
+            // Calculate font size to always display each line inside the frame;
+            // company name is not taken into account, it wraps if too long
+            $fontsize = $this->preferences->pref_etiq_corps;
+            foreach ($lines as $key => $line) {
+                if ($key !== 'company') {
+                    $this->fixSize($line, $this->preferences->pref_etiq_hsize, $fontsize);
+                    $fontsize = (int)$this->getFontSizePt();
+                }
+            }
+            // Reduce font size until full address fits in label height
+            $full_address = implode("\n", $lines);
+            while ($fontsize > 1 && $this->getStringHeight($this->lw, $full_address) > $this->lh) {
+                --$fontsize;
+                $this->SetFontSize($fontsize);
+            }
+            $full_address = nl2br(htmlspecialchars($full_address), use_xhtml: false);
             // Print full address
             $this->writeHTMLCell(
                 w: $this->lw,
                 h: $this->line_h,
                 x: $x,
                 y: $y,
-                html: nl2br($full_address),
+                html: $full_address,
                 border: 0,
                 ln: 0,
                 fill: false,
@@ -160,5 +158,26 @@ class PdfMembersLabels extends Pdf
             // Next label
             $nb_etiq++;
         }
+    }
+
+    /**
+     * Get lines to print on a member label
+     *
+     * @param Adherent $member Member
+     *
+     * @return array<string, string>
+     */
+    public function getLabelLines(Adherent $member): array
+    {
+        $lines = ['name' => $member->sfullname];
+        if ($member->isCompany()) {
+            $lines['company'] = trim($member->company_name);
+        }
+        foreach (explode(PHP_EOL, (string)$member->address) as $i => $address_line) {
+            $lines['address_' . $i] = $address_line;
+        }
+        $lines['town'] = $member->zipcode . ' ' . $member->town;
+        $lines['country'] = (string)$member->country;
+        return $lines;
     }
 }

@@ -10,15 +10,27 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Util;
 
+use Galette\Core\Plugins;
 use Galette\Tests\GaletteTestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Promise\Create;
+use GuzzleHttp\Promise\PromiseInterface;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Psr\Http\Message\RequestInterface;
+
+use function Safe\file_get_contents;
+use function Safe\json_encode;
 
 /**
  * Release tests class
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
+#[AllowMockObjectsWithoutExpectations]
 class Release extends GaletteTestCase
 {
     /**
@@ -32,8 +44,10 @@ class Release extends GaletteTestCase
             ['0.7.0', '1.1.0', true],
             ['1.0.0', '1.1.0', true],
             ['1.0.1', '1.1.0', true],
+            ['v1.0.1', '1.1.0', true],
             ['1.1.0', '1.1.0', false],
             ['1.2.0', '1.1.0', false],
+            ['1.2.0-dev', '1.3.0', false],
         ];
     }
 
@@ -44,204 +58,336 @@ class Release extends GaletteTestCase
      * @param string $latest   Latest release
      * @param bool   $expected Expected result
      */
-    #[AllowMockObjectsWithoutExpectations]
     #[DataProvider('releasesProvider')]
     public function testNewRelease(string $current, string $latest, bool $expected): void
     {
         $release = $this->getMockBuilder(\Galette\Util\Release::class)
             ->setConstructorArgs([true])
-            ->onlyMethods(['getCurrentRelease', 'getLatestRelease', 'findLatestRelease'])
+            ->onlyMethods(['getCurrentRelease', 'getLatestRelease'])
             ->getMock();
 
         $release->method('getCurrentRelease')->willReturn($current);
         $release->method('getLatestRelease')->willReturn($latest);
-        $release->method('findLatestRelease')->willReturn($latest);
 
         $this->assertSame($expected, $release->checkNewRelease());
     }
 
     /**
-     * Releases provider
+     * Get a client serving responses per repository
      *
-     * @return array<int, array<int, string|bool>>
+     * @param array<string, Response|\Throwable> $responses Responses, per repository
      */
-    public static function releasesPageProvider(): array
+    private function getClient(array $responses): Client
     {
-        return [
-            [
-                '0.7.0',
-                '1.0.2',
-                true,
-                '<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-<title>Index of /galette/</title>
-<style type="text/css">
-a, a:active {text-decoration: none; color: blue;}
-a:visited {color: #48468F;}
-a:hover, a:focus {text-decoration: underline; color: red;}
-body {background-color: #F5F5F5;}
-h2 {margin-bottom: 12px;}
-table {margin-left: 12px;}
-th, td { font: 90% monospace; text-align: left;}
-th { font-weight: bold; padding-right: 14px; padding-bottom: 3px;}
-td {padding-right: 14px;}
-td.s, th.s {text-align: right;}
-div.list { background-color: white; border-top: 1px solid #646464; border-bottom: 1px solid #646464; padding-top: 10px; padding-bottom: 14px;}
-div.foot { font: 90% monospace; color: #787878; padding-top: 4px;}
-</style>
-</head>
-<body>
-<h2>Index of /galette/</h2>
-<div class="list">
-<table summary="Directory Listing" cellpadding="0" cellspacing="0">
-<thead><tr><th class="n">Name</th><th class="m">Last Modified</th><th class="s">Size</th><th class="t">Type</th></tr></thead>
-<tbody>
-<tr><td class="n"><a href="../">Parent Directory</a>/</td><td class="m">&nbsp;</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="archives/">archives</a>/</td><td class="m">2024-Jan-16 09:01:57</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="com/">com</a>/</td><td class="m">2016-Sep-22 22:23:10</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="dev/">dev</a>/</td><td class="m">2023-Nov-22 18:56:34</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="listes-galette/">listes-galette</a>/</td><td class="m">2017-Feb-02 02:06:43</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="plugins/">plugins</a>/</td><td class="m">2024-Jan-16 17:23:37</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="README">README</a></td><td class="m">2021-Sep-22 07:29:48</td><td class="s">0.1K</td><td class="t">text/plain</td></tr>
-<tr><td class="n"><a href="galette-1.0.0.tar.bz2">galette-1.0.0.tar.bz2</a></td><td class="m">2023-Dec-07 07:57:12</td><td class="s">8.7M</td><td class="t">application/octet-stream</td></tr>
-<tr><td class="n"><a href="galette-1.0.1.tar.bz2">galette-1.0.1.tar.bz2</a></td><td class="m">2024-Jan-16 09:00:19</td><td class="s">8.7M</td><td class="t">application/octet-stream</td></tr>
-<tr><td class="n"><a href="galette-1.0.2.tar.bz2">galette-1.0.2.tar.bz2</a></td><td class="m">2024-Feb-03 09:32:46</td><td class="s">8.7M</td><td class="t">application/octet-stream</td></tr>
-<tr><td class="n"><a href="galette-1.0.2.tar.bz2.asc">galette-1.0.2.tar.bz2.asc</a></td><td class="m">2024-Feb-03 09:32:46</td><td class="s">0.1K</td><td class="t">text/plain</td></tr>
-<tr><td class="n"><a href="galette-dev.tar.bz2">galette-dev.tar.bz2</a></td><td class="m">2024-Feb-16 00:34:58</td><td class="s">8.7M</td><td class="t">application/octet-stream</td></tr>
-<tr><td class="n"><a href="galette-dev.tar.bz2.asc">galette-dev.tar.bz2.asc</a></td><td class="m">2023-Oct-19 17:32:27</td><td class="s">0.1K</td><td class="t">text/plain</td></tr>
-</tbody>
-</table>
-</div>
-<div class="foot">lighttpd/1.4.35</div>
-</body>
-</html>' //real content as of 1.0.2 release
-            ],
-            [
-                '1.0.0',
-                '1.1.0',
-                true,
-                '<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head>
-<title>Index of /galette/</title>
-<style type="text/css">
-a, a:active {text-decoration: none; color: blue;}
-a:visited {color: #48468F;}
-a:hover, a:focus {text-decoration: underline; color: red;}
-body {background-color: #F5F5F5;}
-h2 {margin-bottom: 12px;}
-table {margin-left: 12px;}
-th, td { font: 90% monospace; text-align: left;}
-th { font-weight: bold; padding-right: 14px; padding-bottom: 3px;}
-td {padding-right: 14px;}
-td.s, th.s {text-align: right;}
-div.list { background-color: white; border-top: 1px solid #646464; border-bottom: 1px solid #646464; padding-top: 10px; padding-bottom: 14px;}
-div.foot { font: 90% monospace; color: #787878; padding-top: 4px;}
-</style>
-</head>
-<body>
-<h2>Index of /galette/</h2>
-<div class="list">
-<table summary="Directory Listing" cellpadding="0" cellspacing="0">
-<thead><tr><th class="n">Name</th><th class="m">Last Modified</th><th class="s">Size</th><th class="t">Type</th></tr></thead>
-<tbody>
-<tr><td class="n"><a href="../">Parent Directory</a>/</td><td class="m">&nbsp;</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="archives/">archives</a>/</td><td class="m">2024-Jan-16 09:01:57</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="com/">com</a>/</td><td class="m">2016-Sep-22 22:23:10</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="dev/">dev</a>/</td><td class="m">2023-Nov-22 18:56:34</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="listes-galette/">listes-galette</a>/</td><td class="m">2017-Feb-02 02:06:43</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="plugins/">plugins</a>/</td><td class="m">2024-Jan-16 17:23:37</td><td class="s">- &nbsp;</td><td class="t">Directory</td></tr>
-<tr><td class="n"><a href="README">README</a></td><td class="m">2021-Sep-22 07:29:48</td><td class="s">0.1K</td><td class="t">text/plain</td></tr>
-<tr><td class="n"><a href="galette-1.0.0.tar.bz2">galette-1.0.0.tar.bz2</a></td><td class="m">2023-Dec-07 07:57:12</td><td class="s">8.7M</td><td class="t">application/octet-stream</td></tr>
-<tr><td class="n"><a href="galette-1.0.1.tar.bz2">galette-1.0.1.tar.bz2</a></td><td class="m">2024-Jan-16 09:00:19</td><td class="s">8.7M</td><td class="t">application/octet-stream</td></tr>
-<tr><td class="n"><a href="galette-1.0.2.tar.bz2">galette-1.0.2.tar.bz2</a></td><td class="m">2024-Feb-03 09:32:46</td><td class="s">8.7M</td><td class="t">application/octet-stream</td></tr>
-<tr><td class="n"><a href="galette-1.0.2.tar.bz2.asc">galette-1.0.2.tar.bz2.asc</a></td><td class="m">2024-Feb-03 09:32:46</td><td class="s">0.1K</td><td class="t">text/plain</td></tr>
-<tr><td class="n"><a href="galette-1.1.0.tar.bz2">galette-1.1.0.tar.bz2</a></td><td class="m">2024-Feb-16 09:09:13</td><td class="s">10M</td><td class="t">application/octet-stream</td></tr>
-<tr><td class="n"><a href="galette-1.1.0.tar.bz2.asc">galette-1.1.0.tar.bz2.asc</a></td><td class="m">2024-Feb-16 09:09:13</td><td class="s">0.1K</td><td class="t">text/plain</td></tr>
-<tr><td class="n"><a href="galette-dev.tar.bz2">galette-dev.tar.bz2</a></td><td class="m">2024-Feb-16 00:34:58</td><td class="s">8.7M</td><td class="t">application/octet-stream</td></tr>
-<tr><td class="n"><a href="galette-dev.tar.bz2.asc">galette-dev.tar.bz2.asc</a></td><td class="m">2023-Oct-19 17:32:27</td><td class="s">0.1K</td><td class="t">text/plain</td></tr>
-</tbody>
-</table>
-</div>
-<div class="foot">lighttpd/1.4.35</div>
-</body>
-</html>' //fakse 1.1.0 release
-            ],
-            [
-                '1.1.0',
-                '1.1.0',
-                false,
-                '<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<body>
-<div class="list">
-<table summary="Directory Listing" cellpadding="0" cellspacing="0">
-<tbody>
-<tr><td class="n"><a href="galette-1.1.0.tar.bz2">galette-1.1.0.tar.bz2</a></td><td class="m">2024-Feb-16 09:09:13</td><td class="s">10M</td><td class="t">application/octet-stream</td></tr>
-</tbody>
-</table>
-</div>
-</body>
-</html>' //fake 1.1.0 release
-            ],
-            [
-                '1.2.0',
-                '1.1.0',
-                false,
-                '<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<body>
-<div class="list">
-<table summary="Directory Listing" cellpadding="0" cellspacing="0">
-<tbody>
-<tr><td class="n"><a href="galette-1.1.0.tar.bz2">galette-1.1.0.tar.bz2</a></td><td class="m">2024-Feb-16 09:09:13</td><td class="s">10M</td><td class="t">application/octet-stream</td></tr>
-</tbody>
-</table>
-</div>
-</body>
-</html>' //fake 1.1.0 release
-            ],
-        ];
+        $handler = function (RequestInterface $request) use ($responses): PromiseInterface {
+            foreach ($responses as $repository => $response) {
+                if (str_contains($request->getUri()->getPath(), '/' . $repository . '/releases/latest')) {
+                    if ($response instanceof \Throwable) {
+                        return Create::rejectionFor($response);
+                    }
+                    return Create::promiseFor($response);
+                }
+            }
+            return Create::promiseFor(new Response(404));
+        };
+
+        return new Client(['handler' => HandlerStack::create($handler)]);
     }
 
     /**
-     * Test findLatestRelease
+     * Get a release checker using a mocked client
      *
-     * @param string $current  Current release
-     * @param string $latest   Latest release
-     * @param bool   $expected Expected result
-     * @param string $page     Page content
+     * @param array<string, Response|\Throwable> $responses Responses, per repository
+     * @param ?Plugins                           $plugins   Plugins
      */
-    #[AllowMockObjectsWithoutExpectations]
-    #[DataProvider('releasesPageProvider')]
-    public function testFindLatestRelease(string $current, string $latest, bool $expected, string $page): void
+    private function getRelease(array $responses, ?Plugins $plugins = null): \Galette\Util\Release
     {
         $release = $this->getMockBuilder(\Galette\Util\Release::class)
-            ->setConstructorArgs([true])
+            ->setConstructorArgs([true, $plugins])
             ->onlyMethods(['setupClient', 'getCurrentRelease'])
             ->getMock();
 
-        // Create a mock and queue two responses.
-        $mock = new \GuzzleHttp\Handler\MockHandler([
-            new \GuzzleHttp\Psr7\Response(
+        $client = $this->getClient($responses);
+        $release->method('setupClient')->willReturnCallback(fn() => $client);
+        $release->method('getCurrentRelease')->willReturn('1.3.0');
+
+        return $release;
+    }
+
+    /**
+     * Get a GitHub latest release response
+     *
+     * @param string $tag Release tag
+     */
+    private function getReleaseResponse(string $tag): Response
+    {
+        return new Response(
+            200,
+            ['Content-Type' => 'application/json'],
+            json_encode([
+                'html_url' => 'https://github.com/owner/repo/releases/tag/' . $tag,
+                'tag_name' => $tag,
+                'name' => $tag,
+                'draft' => false,
+                'prerelease' => false
+            ])
+        );
+    }
+
+    /**
+     * Get plugins stub
+     *
+     * @param array<string, array<string, mixed>> $modules Modules
+     */
+    private function getPlugins(array $modules): Plugins
+    {
+        $plugins = $this->createStub(Plugins::class);
+        $plugins->method('getModules')->willReturn($modules);
+        return $plugins;
+    }
+
+    /**
+     * Test Galette latest release, from the real API response fixture
+     */
+    public function testGetLatestRelease(): void
+    {
+        $release = $this->getRelease([
+            \Galette\Util\Release::CORE_REPOSITORY => new Response(
                 200,
-                ['X-Foo' => 'Bar'],
-                $page
+                [],
+                file_get_contents(GALETTE_TESTS_PATH . '/releases.json')
             )
         ]);
 
-        $handlerStack = \GuzzleHttp\HandlerStack::create($mock);
-        $client = new \GuzzleHttp\Client(['handler' => $handlerStack]);
+        $this->assertSame('1.3.1', $release->getLatestRelease());
+        $this->assertTrue($release->checkNewRelease());
+        $this->assertSame(
+            [
+                \Galette\Util\Release::CORE_REPOSITORY => [
+                    'status' => \Galette\Util\Release::STATUS_FOUND,
+                    'version' => '1.3.1',
+                    'url' => 'https://github.com/galette/galette/releases/tag/1.3.1'
+                ]
+            ],
+            $release->getReleases()
+        );
+    }
 
-        $release->method('getCurrentRelease')->willReturn($current);
-        $release->method('setupClient')->willReturnCallback(fn() => $client);
+    /**
+     * Test releases lookup failures
+     */
+    public function testFindLatestReleasesErrors(): void
+    {
+        $client = $this->getClient([
+            'owner/tagged' => $this->getReleaseResponse('v2.1.0'),
+            'owner/limited' => new Response(403, [], '{"message": "API rate limit exceeded"}'),
+            'owner/invalid' => new Response(200, [], 'not json'),
+            'owner/offline' => new ConnectException(
+                'Connection refused',
+                new \GuzzleHttp\Psr7\Request('GET', 'https://api.github.com/')
+            ),
+        ]);
+        $release = $this->getMockBuilder(\Galette\Util\Release::class)
+            ->setConstructorArgs([true])
+            ->onlyMethods(['setupClient'])
+            ->getMock();
+        $release->method('setupClient')->willReturn($client);
 
-        $this->assertSame($expected, $release->checkNewRelease());
-        $this->assertSame($latest, $release->getLatestRelease());
+        $releases = $release->findLatestReleases([
+            'owner/tagged',
+            'owner/missing',
+            'owner/limited',
+            'owner/invalid',
+            'owner/offline'
+        ]);
+
+        $this->assertSame(
+            [
+                'owner/tagged' => [
+                    'status' => \Galette\Util\Release::STATUS_FOUND,
+                    'version' => '2.1.0',
+                    'url' => 'https://github.com/owner/repo/releases/tag/v2.1.0'
+                ],
+                'owner/missing' => ['status' => \Galette\Util\Release::STATUS_NOT_FOUND],
+                'owner/limited' => ['status' => \Galette\Util\Release::STATUS_ERROR],
+                'owner/invalid' => ['status' => \Galette\Util\Release::STATUS_ERROR],
+                'owner/offline' => ['status' => \Galette\Util\Release::STATUS_ERROR],
+            ],
+            $releases
+        );
+
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'No release found in owner/missing repository.');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Error while trying to get latest release of owner/limited');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to read latest release of owner/invalid');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Error while trying to get latest release of owner/offline');
+    }
+
+    /**
+     * Get a module definition
+     *
+     * @param string  $name       Module name
+     * @param string  $version    Module version
+     * @param ?string $repository Module repository
+     *
+     * @return array<string, mixed>
+     */
+    private function getModule(string $name, string $version, ?string $repository): array
+    {
+        $module = [
+            'root' => '/tmp',
+            'name' => $name,
+            'desc' => '',
+            'author' => '',
+            'version' => $version,
+            'acls' => null,
+            'date' => null,
+            'priority' => 1000,
+            'route' => null,
+            'dbversion' => null
+        ];
+        if ($repository !== null) {
+            $module['repository'] = $repository;
+        }
+        return $module;
+    }
+
+    /**
+     * Test plugins updates and releases status
+     */
+    public function testPluginsUpdates(): void
+    {
+        $plugins = $this->getPlugins([
+            'plugin-newer' => $this->getModule('Newer', '1.0.0', 'galette-plugins/plugin-newer'),
+            'plugin-same' => $this->getModule('Same', '2.0.0', 'galette-plugins/plugin-same'),
+            'plugin-older' => $this->getModule('Older', '3.1.0', 'galette-plugins/plugin-older'),
+            'plugin-dev' => $this->getModule('Dev', '1.0.0-dev', 'galette-plugins/plugin-dev'),
+            'renamed' => $this->getModule('Renamed', '1.0.0', 'galette-plugins/renamed'),
+            'third' => $this->getModule('Third party', 'v1.0.0', 'someone/galette-third'),
+            'broken' => $this->getModule('broken', '', repository: null),
+        ]);
+
+        $release = $this->getRelease(
+            [
+                \Galette\Util\Release::CORE_REPOSITORY => $this->getReleaseResponse('1.3.1'),
+                'galette-plugins/plugin-newer' => $this->getReleaseResponse('1.1.0'),
+                'galette-plugins/plugin-same' => $this->getReleaseResponse('2.0.0'),
+                'galette-plugins/plugin-older' => $this->getReleaseResponse('3.0.0'),
+                'galette-plugins/plugin-dev' => $this->getReleaseResponse('1.0.0'),
+                'someone/galette-third' => $this->getReleaseResponse('v1.2.0'),
+            ],
+            $plugins
+        );
+
+        $this->assertSame(
+            [
+                \Galette\Util\Release::CORE_REPOSITORY => '',
+                'galette-plugins/plugin-newer' => 'plugin-newer',
+                'galette-plugins/plugin-same' => 'plugin-same',
+                'galette-plugins/plugin-older' => 'plugin-older',
+                'galette-plugins/plugin-dev' => 'plugin-dev',
+                'galette-plugins/renamed' => 'renamed',
+                'someone/galette-third' => 'third',
+            ],
+            $release->getRepositories()
+        );
+
+        $this->assertSame(
+            [
+                'plugin-newer' => [
+                    'name' => 'Newer',
+                    'current' => '1.0.0',
+                    'latest' => '1.1.0',
+                    'url' => 'https://github.com/owner/repo/releases/tag/1.1.0'
+                ],
+                'third' => [
+                    'name' => 'Third party',
+                    'current' => 'v1.0.0',
+                    'latest' => '1.2.0',
+                    'url' => 'https://github.com/owner/repo/releases/tag/v1.2.0'
+                ]
+            ],
+            $release->getPluginsUpdates()
+        );
+
+        $status = $release->getPluginsReleasesStatus();
+        $this->assertCount(6, $status);
+        $this->assertArrayNotHasKey('broken', $status);
+        $this->assertSame(
+            ['repository' => 'galette-plugins/renamed', 'status' => \Galette\Util\Release::STATUS_NOT_FOUND],
+            $status['renamed']
+        );
+        $this->assertSame(
+            ['repository' => 'someone/galette-third', 'status' => \Galette\Util\Release::STATUS_FOUND],
+            $status['third']
+        );
+
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'Unable to check for new releases of plugin "renamed": no release found in galette-plugins/renamed repository.'
+        );
+    }
+
+    /**
+     * Test cache content
+     */
+    public function testCache(): void
+    {
+        $plugins = $this->getPlugins([
+            'plugin-one' => $this->getModule('One', '1.0.0', 'galette-plugins/plugin-one'),
+        ]);
+        $release = $this->getRelease(
+            [
+                \Galette\Util\Release::CORE_REPOSITORY => $this->getReleaseResponse('1.3.1'),
+                'galette-plugins/plugin-one' => new Response(500),
+            ],
+            $plugins
+        );
+
+        $get_data = new \ReflectionMethod($release, 'getDataTocache');
+        $cache_loaded = new \ReflectionMethod($release, 'cacheLoaded');
+
+        $release->getReleases();
+        $cached = $get_data->invoke($release);
+        $this->assertStringContainsString('"status":"error"', $cached);
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Error while trying to get latest release of galette-plugins/plugin-one');
+
+        //cache is loaded back by another instance
+        $other = $this->getRelease([], $plugins);
+        $this->assertTrue($cache_loaded->invoke($other, $cached));
+        $this->assertSame($release->getReleases(), $other->getReleases());
+        $this->assertSame('1.3.1', $other->getLatestRelease());
+
+        //cache is invalidated when plugins have changed
+        $more_plugins = $this->getPlugins([
+            'plugin-one' => $this->getModule('One', '1.0.0', 'galette-plugins/plugin-one'),
+            'plugin-two' => $this->getModule('Two', '1.0.0', 'galette-plugins/plugin-two'),
+        ]);
+        $changed = $this->getRelease([], $more_plugins);
+        $this->assertFalse($cache_loaded->invoke($changed, $cached));
+
+        //invalid contents
+        $this->assertFalse($cache_loaded->invoke($other, 'not json'));
+        $this->assertFalse($cache_loaded->invoke($other, '1.3.1'));
+        $this->assertFalse($cache_loaded->invoke($other, null));
+    }
+
+    /**
+     * Test a cache that cannot be written does not prevent releases check
+     */
+    public function testUnwritableCache(): void
+    {
+        $release = $this->getMockBuilder(\Galette\Util\Release::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['setupClient', 'getCacheFilename'])
+            ->getMock();
+        $client = $this->getClient([
+            \Galette\Util\Release::CORE_REPOSITORY => $this->getReleaseResponse('1.3.1')
+        ]);
+        $release->method('setupClient')->willReturn($client);
+        $release->method('getCacheFilename')->willReturn('/proc/galette/releases.cache');
+
+        $release->__construct(false);
+        $this->assertSame('1.3.1', $release->getLatestRelease());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Unable to use releases cache');
     }
 }

@@ -180,6 +180,23 @@ class PdfController extends GaletteRoutingTestCase
         $this->login->logout();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
 
+        //members cannot print their own card when preferences do not allow it
+        $this->preferences->pref_card_self = false;
+        try {
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => ['/member/me']], $test_response->getHeaders());
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(
+                [
+                    'error_detected' => [
+                        'You do not have permission for requested URL.'
+                    ]
+                ]
+            );
+        } finally {
+            $this->preferences->pref_card_self = true;
+        }
+
         $this->expectOutputRegex($this->is_pdf_regexp);
         $test_response = $this->app->handle($request);
 

@@ -20,7 +20,9 @@ use Galette\DynamicFields\Choice;
 use Galette\DynamicFields\Separator;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
+use Galette\Entity\Document;
 use Galette\Entity\Texts;
+use Galette\Repository\Documents;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
@@ -450,6 +452,56 @@ trait Replacements
     }
 
     /**
+     * Get documents repository
+     *
+     * No list filters: they read preferences, which are not loaded yet
+     * when texts are instantiated during installation.
+     */
+    private function getDocumentsRepository(): Documents
+    {
+        return new Documents($this->zdb, $this->login, filters: null);
+    }
+
+    /**
+     * Get patterns for documents
+     *
+     * @return array<string,array<string,string>>
+     */
+    protected function getDocumentsPatterns(): array
+    {
+        $documents = $this->getDocumentsRepository();
+
+        $d_patterns = [
+            'documents_uri' => [
+                'title'     => _T('Public documents page URI'),
+                'pattern'   => '/{DOCUMENTS_URI}/'
+            ]
+        ];
+
+        foreach ($documents->getSystemTypes() as $type => $type_name) {
+            $d_patterns['documents_' . $type] = [
+                //TRANS: %1$s is the documents type name
+                'title'     => sprintf(_T('Links to "%1$s" documents'), $type_name),
+                'pattern'   => sprintf('/{DOCUMENTS_%s}/', strtoupper($type))
+            ];
+        }
+
+        foreach ($documents->getReplaceableList() as $id => $document) {
+            $d_patterns['document_' . $id] = [
+                //TRANS: %1$s is the document file name, %2$s its visibility
+                'title'     => sprintf(
+                    _T('Link to document "%1$s" (%2$s)'),
+                    $document->getDocumentFilename(),
+                    $document->getPermissionName()
+                ),
+                'pattern'   => sprintf('/{DOCUMENT_%d}/', $id)
+            ];
+        }
+
+        return $d_patterns;
+    }
+
+    /**
      * Set mail instance
      *
      * @param PHPMailer $mail PHPMailer instance
@@ -474,17 +526,31 @@ trait Replacements
     }
 
     /**
+     * Escape a plain text value
+     *
+     * Replacement values are HTML: PDF render them, mails convert them to
+     * text. A plain value read as HTML would lose an entity or what looks
+     * like a tag.
+     *
+     * @param mixed $value Value
+     */
+    private static function escape(mixed $value): mixed
+    {
+        return is_string($value) ? htmlspecialchars($value) : $value;
+    }
+
+    /**
      * Set main replacements
      */
     public function setMain(): self
     {
-        $address = $this->preferences->getPostalAddress();
+        $address = self::escape($this->preferences->getPostalAddress());
         $address_multi = self::addressToHtml($address);
 
         $website = '';
         if ($this->preferences->pref_website !== '') {
-            $website = '<a href="' . $this->preferences->pref_website . '">'
-                . $this->preferences->pref_website . '</a>';
+            $website_url = self::escape($this->preferences->pref_website);
+            $website = '<a href="' . $website_url . '">' . $website_url . '</a>';
         }
 
         $logo = new Logo();
@@ -515,18 +581,19 @@ trait Replacements
 
         $this->setReplacements(
             [
-                'asso_name'          => $this->preferences->pref_nom,
-                'asso_slogan'        => $this->preferences->pref_slogan,
+                'asso_name'          => self::escape($this->preferences->pref_nom),
+                'asso_slogan'        => self::escape($this->preferences->pref_slogan),
                 'asso_address'       => $address,
                 'asso_address_multi' => $address_multi,
-                'asso_phone_number'  => $this->preferences->getPhoneNumber(),
-                'asso_email'         => $this->preferences->pref_org_email,
+                'asso_phone_number'  => self::escape($this->preferences->getPhoneNumber()),
+                'asso_email'         => self::escape($this->preferences->pref_org_email),
                 'asso_website'       => $website,
                 'asso_logo'          => $logo_elt,
                 'asso_print_logo'    => $print_logo_elt,
                 //TRANS: see https://www.php.net/manual/datetime.format.php
-                'date_now'           => date(_T('Y-m-d')),
-                'login_uri'          => $this->preferences->getURL() . $this->routeparser->urlFor('login'),
+                'date_now'           => self::escape(date(_T('Y-m-d'))),
+                'login_uri'          => self::escape($this->preferences->getURL() . $this->routeparser->urlFor('login')),
+                //already HTML
                 'asso_footer'        => $this->preferences->pref_footer
             ]
         );
@@ -617,7 +684,7 @@ trait Replacements
         //handle DEADLINE alias
         $c_replacements['deadline'] = $c_replacements['contrib_edate'];
 
-        $this->setReplacements($c_replacements);
+        $this->setReplacements(array_map(self::escape(...), $c_replacements));
 
         /** the list of all dynamic fields */
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
@@ -639,7 +706,7 @@ trait Replacements
     public function setMember(Adherent $member): self
     {
         $address = $member->getAddress();
-        $address_multi = self::addressToHtml($address);
+        $address_multi = self::addressToHtml(self::escape($address));
 
         if ($member->isMan()) {
             $gender = _T("Man");
@@ -651,18 +718,18 @@ trait Replacements
 
         $member_groups = $member->getGroups();
         $main_group = _T("None");
-        $group_list = _T("None");
+        $group_list = self::escape(_T("None"));
         if (count($member_groups) > 0) {
             $main_group = current($member_groups)->getName();
             $group_list = '<ul>';
             foreach ($member_groups as $group) {
-                $group_list .= '<li>' . $group->getName() . '</li>';
+                $group_list .= '<li>' . self::escape($group->getName()) . '</li>';
             }
             $group_list .= '</ul>';
         }
 
         $this->setReplacements(
-            [
+            array_map(self::escape(...), [
                 'adh_title'         => $member->stitle,
                 'adh_id'            => $member->id,
                 'adh_num'           => $member->number,
@@ -676,7 +743,6 @@ trait Replacements
                 'adh_profession'    => $member->job,
                 'adh_company'       => $member->company_name,
                 'adh_address'       => $address,
-                'adh_address_multi' => $address_multi,
                 'adh_zip'           => $member->getZipcode(),
                 'adh_town'          => $member->getTown(),
                 'adh_country'       => $member->getCountry(),
@@ -686,7 +752,6 @@ trait Replacements
                 'adh_email'         => $member->email,
                 'adh_login'         => $member->login,
                 'adh_main_group'    => $main_group,
-                'adh_groups'        => $group_list,
                 'adh_dues'          => $member->getDues(),
                 'days_remaining'    => $member->days_remaining,
                 'days_expired'      => (int)$member->days_remaining + 1,
@@ -697,6 +762,9 @@ trait Replacements
                 '_adh_first_name'   => $member->surname,
                 '_adh_login'        => $member->login,
                 '_adh_email'        => $member->email
+            ]) + [
+                'adh_address_multi' => $address_multi,
+                'adh_groups'        => $group_list
             ]
         );
 
@@ -710,6 +778,67 @@ trait Replacements
         );
 
         return $this;
+    }
+
+    /**
+     * Set documents related replacements
+     */
+    public function setDocuments(): self
+    {
+        $documents = $this->getDocumentsRepository();
+
+        $d_replacements = [
+            'documents_uri' => $this->preferences->getURL() . $this->routeparser->urlFor('documentsPublicList')
+        ];
+
+        $links = [];
+        $typed_links = array_fill_keys(array_keys($documents->getSystemTypes(translated: false)), []);
+        foreach ($documents->getReplaceableList() as $id => $document) {
+            $links[$id] = $this->getDocumentLink($document);
+            if (isset($typed_links[$document->getType()])) {
+                $typed_links[$document->getType()][] = $links[$id];
+            }
+        }
+
+        //documents may have changed since patterns were set: values must match patterns, not current list
+        foreach (array_keys($this->patterns) as $key) {
+            if (preg_match('/^document_([0-9]+)$/', $key, $match)) {
+                $d_replacements[$key] = $links[(int)$match[1]] ?? '';
+            }
+        }
+
+        foreach ($typed_links as $type => $links) {
+            $d_replacements['documents_' . $type] = (
+                count($links) > 0
+                ? '<ul><li>' . implode('</li><li>', $links) . '</li></ul>'
+                : ''
+            );
+        }
+
+        $this->setReplacements($d_replacements);
+
+        return $this;
+    }
+
+    /**
+     * Get download link for a document
+     *
+     * @param Document $document Document
+     */
+    private function getDocumentLink(Document $document): string
+    {
+        $url = $this->preferences->getURL() . $this->routeparser->urlFor(
+            'getDocumentFile',
+            ['id' => (string)$document->getId()]
+        );
+        //escaped for mails too: they are converted from HTML, which would decode "&amp;" in a file name
+        $filename = htmlspecialchars($document->getDocumentFilename());
+
+        if ($this instanceof Texts) {
+            return sprintf('%1$s (%2$s)', $filename, $url);
+        }
+
+        return sprintf('<a href="%1$s">%2$s</a>', $url, $filename);
     }
 
     /**
@@ -732,13 +861,13 @@ trait Replacements
             if (preg_match("/^{LABEL_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
                 /** dynamic field label */
                 $field_id = $match[1];
-                $value    = $dynamic_fields[$field_id]->getName();
+                $value    = self::escape($dynamic_fields[$field_id]->getName());
             }
             if (preg_match("/^{(INPUT_|VALUE_)?DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
                 /** dynamic field value */
                 $capacity = trim($match[1], '_');
                 $field_id    = (int)$match[2];
-                $field_name  = $dynamic_fields[$field_id]->getName();
+                $field_name  = self::escape($dynamic_fields[$field_id]->getName());
                 $field_type  = $dynamic_fields[$field_id]->getType();
                 //an ordered list, so that two occurrences sharing a value both show up
                 $field_values = [];
@@ -764,10 +893,11 @@ trait Replacements
                                 if (in_array($choice_idx, $selected)) {
                                     $value .= ' checked="checked"';
                                 }
-                                $value .= ' disabled="disabled">' . $choice_value . '&nbsp;';
+                                $value .= ' disabled="disabled">' . self::escape($choice_value) . '&nbsp;';
                             }
                         } else {
-                            $value .= implode('', array_column($field_values, 'display'));
+                            //a choice label is plain text, unlike stored values
+                            $value .= implode('', array_map(self::escape(...), array_column($field_values, 'display')));
                         }
                         break;
                     case DynamicField::BOOLEAN:
@@ -835,6 +965,11 @@ trait Replacements
         $legend['member'] = [
             'title'     => _T('Member information'),
             'patterns'  => $this->getMemberPatterns()
+        ];
+
+        $legend['documents'] = [
+            'title'     => _T('Documents'),
+            'patterns'  => $this->getDocumentsPatterns()
         ];
 
         return $legend;
@@ -928,10 +1063,13 @@ trait Replacements
             throw new RuntimeException('Patterns and replacements does not match!');
         }
 
-        //handle replacements
+        //handle replacements; values are literal text, "$1" or "\\1" in a name must not be read as backreferences
         $replaced = preg_replace(
             $this->patterns,
-            $this->replaces,
+            array_map(
+                static fn($replace) => addcslashes((string)$replace, '\\$'),
+                $this->replaces
+            ),
             (string)$replaced
         );
 

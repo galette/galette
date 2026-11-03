@@ -32,14 +32,14 @@
   "author": "Johan Cwiklinski <johan AT x-tnd DOT be>",
   "license": "GPL-3.0-or-later",
   "devDependencies": {
-    "@axe-core/playwright": "^4.13.0",
-    "@playwright/test": "^1.64.0",
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
     "@types/node": "^26.6.5",
     "browser-sync": "^3.0.4",
     "clean-css": "^5.3.3",
     "css-loader": "^7.1.5",
     "del": "^6.1.1",
-    "dotenv": "^18.0.7",
+    "dotenv": "^18.0.9",
     "file-loader": "^6.2.0",
     "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
@@ -54,7 +54,8 @@
     "uglify-js": "^3.19.3"
   },
   "dependencies": {
-    "chart.js": "^4.5.1",
+    "@twemoji/svg": "^15.0.0",
+    "chart.js": "^4.6.1",
     "chartjs-plugin-autocolors": "^0.5.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "darkreader": "^4.9.133",
@@ -62,7 +63,6 @@
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.8",
     "sortablejs": "^1.15.7",
-    "summernote": "^0.9.1",
-    "twemoji-emojis": "^14.1.0"
+    "summernote": "^0.9.1"
   }
 }

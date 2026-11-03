@@ -35,14 +35,14 @@
                             <div class="ui search fluid selection dropdown">
                                 <input type="hidden" name="parent_group" id="parent_group" value="{% if pgroup is defined %}{{ pgroup.getId() }}{% endif %}">
                                 <i class="dropdown icon" aria-hidden="true"></i>
-                                <div class="text">{% if pgroup is defined %}{{ pgroup.getName() }}{% endif %}</div>
+                                <div class="text">{% if pgroup is defined %}{{ pgroup.getFullName() }}{% endif %}</div>
                                 <div class="menu">
                                     <div class="item" data-value="">{{ _T("None") }}</div>
                                 {% if pgroup is defined and not login.isGroupManager(pgroup.getId()) %}
-                                    <div class="item" data-value="{{ pgroup.getId() }}">{{ pgroup.getIndentName()|raw }}</div>
+                                    <div class="item" data-value="{{ pgroup.getId() }}">{{ pgroup.getFullName() }}</div>
                                 {% endif %}
                                 {% for g in parent_groups %}
-                                    <div class="item" data-value="{{ g.getId() }}">{{ g.getIndentName()|raw }}</div>
+                                    <div class="item" data-value="{{ g.getId() }}">{{ g.getFullName() }}</div>
                                 {% endfor %}
                                 </div>
                             </div>

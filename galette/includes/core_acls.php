@@ -48,6 +48,7 @@ $core_acls = [
     'doMailing'                         => 'groupmanager',
     'mailingPreview'                    => 'groupmanager',
     'mailingRecipients'                 => 'groupmanager',
+    'mailingRecipientRow'               => 'groupmanager',
     'mailingQueue'                      => 'groupmanager',
     'mailingProcessQueue'               => 'groupmanager',
     '/(.+)?history(.+)?/i'              => 'staff',

@@ -25,8 +25,6 @@ use League\Event\ListenerSubscriber;
 use Slim\Flash\Messages;
 use Slim\Routing\RouteParser;
 
-use function Safe\preg_replace;
-
 /**
  * Event listener for contributions
  *
@@ -134,7 +132,7 @@ class ContribListener implements ListenerSubscriber
         }
         $mtxt = $texts->getTexts($text, $member->language);
 
-        $mail = new GaletteMail($this->preferences);
+        $mail = $this->createMail();
         $mail->setSubject($texts->getSubject());
         $mail->setRecipients(
             [
@@ -180,7 +178,7 @@ class ContribListener implements ListenerSubscriber
                 )
             );
         } else {
-            $txt = preg_replace(
+            $txt = sprintf(
                 //TRANS: first parameter is the use name, second his email address
                 _T('A problem happened while sending contribution receipt to user %1$s (%2$s)'),
                 $member->sname,
@@ -230,7 +228,7 @@ class ContribListener implements ListenerSubscriber
         }
         $texts->getTexts($text, $this->preferences->pref_lang);
 
-        $mail = new GaletteMail($this->preferences);
+        $mail = $this->createMail();
         $mail->setSubject($texts->getSubject());
 
         $recipients = [];
@@ -283,7 +281,7 @@ class ContribListener implements ListenerSubscriber
             if ($res !== true) {
                 //send admin an email with all details
                 if ($this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED) {
-                    $mail = new GaletteMail($this->preferences);
+                    $mail = $this->createMail();
                     $mail->setSubject(
                         _T("Post contribution script failed")
                     );
@@ -305,7 +303,10 @@ class ContribListener implements ListenerSubscriber
                     if ($sent !== GaletteMail::MAIL_SENT) {
                         $txt = _T('Post contribution script has failed.');
                         $this->history->add($txt, $message);
-                        $warning_detected[] = $txt;
+                        $this->flash->addMessage(
+                            'warning_detected',
+                            $txt
+                        );
                         //Mails are disabled... We log (not safe, but)...
                         Analog::log(
                             'Email to admin has not been sent. Here was the data: '
@@ -323,5 +324,15 @@ class ContribListener implements ListenerSubscriber
                 }
             }
         }
+    }
+
+    /**
+     * Create the email to send
+     * Extracted as a seam so tests can inject a mail that does not
+     * actually send anything.
+     */
+    protected function createMail(): GaletteMail
+    {
+        return new GaletteMail($this->preferences);
     }
 }

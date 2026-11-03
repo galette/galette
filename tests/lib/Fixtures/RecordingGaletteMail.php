@@ -21,6 +21,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 class RecordingGaletteMail extends GaletteMail
 {
     public RecordingPHPMailer $recorder;
+    /** @var array<int, int> Messages, 1-based, that must fail instead of leaving */
+    public array $fail_on = [];
 
     /**
      * Return the recording mailer.
@@ -28,6 +30,7 @@ class RecordingGaletteMail extends GaletteMail
     protected function createMailer(): PHPMailer
     {
         $this->recorder = new RecordingPHPMailer();
+        $this->recorder->fail_on = $this->fail_on;
         return $this->recorder;
     }
 }

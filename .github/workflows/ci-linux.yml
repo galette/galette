@@ -146,6 +146,10 @@ jobs:
         run: TESTENV=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --no-coverage tests/GaletteUpdate/
         if: matrix.coverage != 'pcov'
 
+      - name: Update database tests (with coverage)
+        run: TESTENV=UPDATE galette/vendor/bin/phpunit --test-suffix=.php --coverage-filter galette/lib --coverage-php tests/coverage/update.cov tests/GaletteUpdate/
+        if: matrix.coverage == 'pcov'
+
       - name: Init for PostgreSQL
         env:
           POSTGRES_HOST: localhost
@@ -171,7 +175,17 @@ jobs:
         env:
           LD_PRELOAD: ${{ env.FAKETIME_LIB }}
           FAKETIME_NO_CACHE: '1'
-        run: galette/vendor/bin/phpunit --test-suffix=.php --coverage-filter galette/lib --coverage-clover tests/clover.xml tests/Galette/
+        run: galette/vendor/bin/phpunit --test-suffix=.php --coverage-filter galette/lib --coverage-php tests/coverage/unit.cov tests/Galette/
+        if: matrix.coverage == 'pcov'
+
+      - name: Merge code coverage
+        run: |
+          # phpcov must read reports with the code coverage version that wrote them
+          PCC=$(composer show --locked --format=json phpunit/php-code-coverage | jq -r '.versions[0]')
+          mkdir phpcov
+          cd phpcov
+          composer require phpunit/phpcov "phpunit/php-code-coverage:$PCC" -W --ignore-platform-reqs
+          php vendor/bin/phpcov merge --clover ../tests/clover.xml ../tests/coverage
         if: matrix.coverage == 'pcov'
 
       - name: Upload code coverage (scrutinizer)
@@ -184,10 +198,9 @@ jobs:
 
       - name: Upload code coverage (codecov)
         uses: codecov/codecov-action@v7
-        env:
-          CODECOV_TOKEN: 2d9dd954-bed8-4628-a267-28cd0108771b
         with:
           files: tests/clover.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
         if: matrix.coverage == 'pcov'
 
       - name: Sanitize database image name for artifact upload

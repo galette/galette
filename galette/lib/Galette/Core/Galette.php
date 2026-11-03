@@ -52,10 +52,31 @@ class Galette
             $version .= '-git';
         }
 
-        if (is_dir(GALETTE_ROOT . '../.git')) {
-            $commitHash = trim(exec('git log --pretty="%h" -n1 HEAD'));
+        if (file_exists(GALETTE_ROOT . '../.git')) {
+            $git = 'git -C ' . escapeshellarg(GALETTE_ROOT . '..');
 
-            $commitDate = new DateTime(trim(exec('git log -n1 --pretty=%ci HEAD')));
+            //a release tag checkout is the release itself
+            $output = [];
+            $result = 1;
+            exec($git . ' describe --tags --exact-match HEAD 2>/dev/null', $output, $result);
+            if ($result === 0 && trim($output[0] ?? '') === GALETTE_VERSION) {
+                return GALETTE_VERSION;
+            }
+
+            $output = [];
+            $result = 1;
+            exec($git . ' log -n1 --pretty="%h %ci" HEAD 2>/dev/null', $output, $result);
+            if ($result !== 0 || !isset($output[0]) || !str_contains($output[0], ' ')) {
+                //git cannot be run (missing binary, repository not marked as safe.directory for the web server user, ...)
+                Analog::log(
+                    'Unable to retrieve git version information (exit code ' . $result . ')',
+                    Analog::WARNING
+                );
+                return $version;
+            }
+
+            [$commitHash, $commitDate] = explode(' ', trim($output[0]), 2);
+            $commitDate = new DateTime($commitDate);
 
             $galette_version = sprintf(
                 '%s-%s (%s)',
@@ -83,11 +104,44 @@ class Galette
             ];
         }
 
-        $release = new Release();
+        $release = self::getRelease();
         return [
             'new' => $release->checkNewRelease(),
             'version' => $release->getLatestRelease()
         ];
+    }
+
+    /**
+     * Get plugins for which a new release is available
+     *
+     * @return array<string, array{name: string, current: string, latest: string, url: string}>
+     */
+    public static function getPluginsUpdates(): array
+    {
+        if (defined('GALETTE_TESTS') || getenv('GALETTE_TESTS')) {
+            return [];
+        }
+
+        try {
+            return self::getRelease()->getPluginsUpdates();
+        } catch (\Throwable $e) {
+            Logs::exception($e, 'Error looking for new plugins releases', Analog::ERROR);
+            return [];
+        }
+    }
+
+    /**
+     * Get releases checker, shared with the rest of the request when possible
+     */
+    private static function getRelease(): Release
+    {
+        /** @var ?ContainerInterface $container */
+        global $container;
+
+        if ($container instanceof ContainerInterface) {
+            return $container->get(Release::class);
+        }
+        return new Release();
     }
 
     /**
@@ -130,6 +184,14 @@ class Galette
                 //member menu
                 $menus['myaccount']['items'] = [
                     [
+                        'label' => _T('My information'),
+                        'title' => _T('View my member card'),
+                        'route' => [
+                            'name' => 'me',
+                            'args' => []
+                        ]
+                    ],
+                    [
                         'label' => _T('My contributions'),
                         'title' => _T('View and filter all my contributions'),
                         'route' => [
@@ -151,14 +213,6 @@ class Galette
                             'name' => 'myContributions',
                             'args' => ['type' => 'transactions']
                         ]
-                    ],
-                    [
-                        'label' => _T('My information'),
-                        'title' => _T('View my member card'),
-                        'route' => [
-                            'name' => 'me',
-                            'args' => []
-                        ]
                     ]
                 ];
             } else {
@@ -167,6 +221,17 @@ class Galette
                     'title' => _T('Modify my login and password'),
                     'route' => [
                         'name' => 'adminCredentials',
+                        'args' => []
+                    ]
+                ];
+            }
+
+            if (!$login->isSuperAdmin() && $preferences->pref_bool_create_member) {
+                $menus['myaccount']['items'][] = [
+                    'label' => _T('Add a child member'),
+                    'title' => _T('Add new child member in database'),
+                    'route' => [
+                        'name' => 'addMemberChild',
                         'args' => []
                     ]
                 ];
@@ -182,17 +247,6 @@ class Galette
                     'title' => _T('Manage my two-factor authentication'),
                     'route' => [
                         'name' => 'two-factor-manage',
-                        'args' => []
-                    ]
-                ];
-            }
-
-            if (!$login->isSuperAdmin() && $preferences->pref_bool_create_member) {
-                $menus['myaccount']['items'][] = [
-                    'label' => _T('Add a child member'),
-                    'title' => _T('Add new child member in database'),
-                    'route' => [
-                        'name' => 'addMemberChild',
                         'args' => []
                     ]
                 ];
@@ -404,6 +458,13 @@ class Galette
                             ]
                         ],
                         [
+                            'label' => _T("Authentication attempts"),
+                            'title' => _T("See what is being refused after repeated failures, and lift it"),
+                            'route' => [
+                                'name' => 'authAttempts'
+                            ]
+                        ],
+                        [
                             'label' => _T("Logs"),
                             'title' => _T("View application's logs"),
                             'route' => [
@@ -414,6 +475,7 @@ class Galette
                 }//admin or staff
 
                 if ($login->isAdmin()) {
+                    $plugins_updates = count(self::getPluginsUpdates());
                     $menus['configuration'] = [
                         'title' => _T("Configuration"),
                         'icon' => 'tools',
@@ -426,18 +488,17 @@ class Galette
                                 ]
                             ],
                             [
-                                'label' => _T("Authentication attempts"),
-                                'title' => _T("See what is being refused after repeated failures, and lift it"),
-                                'route' => [
-                                    'name' => 'authAttempts'
-                                ]
-                            ],
-                            [
                                 'label' => _T("Plugins"),
-                                'title' => _T("Information about available plugins"),
+                                'title' => $plugins_updates > 0
+                                    ? sprintf(
+                                        //TRANS: %1$d is the number of plugins that have a new release
+                                        _Tn('%1$d plugin has a new release available', '%1$d plugins have a new release available', $plugins_updates),
+                                        $plugins_updates
+                                    ) : _T("Information about available plugins"),
                                 'route' => [
                                     'name' => 'plugins'
-                                ]
+                                ],
+                                'badge' => $plugins_updates > 0 ? $plugins_updates : null
                             ],
                             [
                                 'label' => _T("Core lists"),
@@ -552,6 +613,29 @@ class Galette
                     $menus,
                     $plugin->getMenus()
                 );
+
+                // Moves the "Add a child member" and the "Two-factor authentication"
+                // items to the end of the "My Account" menu.
+                $itemsToMove = ['addMemberChild', 'two-factor-manage'];
+                $accountItems = $menus['myaccount']['items'] ?? [];
+                $itemsToAppend = [];
+                $remainingItems = [];
+                foreach ($accountItems as $item) {
+                    $routeName = $item['route']['name'] ?? null;
+
+                    if (in_array($routeName, $itemsToMove, strict: true)) {
+                        $itemsToAppend[$routeName][] = $item;
+                        continue;
+                    }
+
+                    $remainingItems[] = $item;
+                }
+                foreach ($itemsToMove as $routeName) {
+                    foreach ($itemsToAppend[$routeName] ?? [] as $item) {
+                        $remainingItems[] = $item;
+                    }
+                }
+                $menus['myaccount']['items'] = $remainingItems;
             }
         }
 
@@ -893,6 +977,7 @@ class Galette
         }
 
         if ($login->isAdmin()) {
+            $plugins_updates = count(self::getPluginsUpdates());
             $dashboards = array_merge(
                 $dashboards,
                 [
@@ -906,11 +991,17 @@ class Galette
                     ],
                     [
                         'label' => _T("Plugins"),
-                        'title' => _T("Information about available plugins"),
+                        'title' => $plugins_updates > 0
+                            ? sprintf(
+                                //TRANS: %1$d is the number of plugins that have a new release
+                                _Tn('%1$d plugin has a new release available', '%1$d plugins have a new release available', $plugins_updates),
+                                $plugins_updates
+                            ) : _T("Information about available plugins"),
                         'route' => [
                             'name' => 'plugins'
                         ],
-                        'icon' => 'package'
+                        'icon' => 'package',
+                        'badge' => $plugins_updates > 0 ? $plugins_updates : null
                     ],
                 ]
             );

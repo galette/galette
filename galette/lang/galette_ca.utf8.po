@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-11-02 13:04+0100\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -181,6 +181,13 @@ msgstr ""
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr ""
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, php-format
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] ""
+msgstr[1] ""
 
 #, fuzzy
 msgid "Your password is too weak! Please consider updating it."
@@ -384,6 +391,49 @@ msgstr "S'ha produït un error emmagatzemant la contribució."
 
 msgid "Contribution has been successfully stored"
 msgstr "La contribució s'ha desat correctament"
+
+msgid "Payment type:"
+msgstr "Tipus de pagament:"
+
+msgid "Record date:"
+msgstr "Data de registre:"
+
+msgid "Comments:"
+msgstr "Comentaris:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+msgid "Mass change %1$s contributions"
+msgstr "Les meves contribucions"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "No s'han confirmat canvis massius!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %1$s members"
+msgid "Review mass change %1$s contributions"
+msgstr "Revisar el canvi massiu %1$s membres"
+
+msgid "Nothing to do!"
+msgstr "Res a fer!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "Contribucions"
+
+#, fuzzy, php-format
+#| msgid "%1$s member has been changed successfully!"
+#| msgid_plural "%1$s members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "El membre %1$s s'ha canviat amb èxit!"
+msgstr[1] "Els membres de %1$s s'han canviat amb èxit!"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
 
 #, php-format
 msgid "Remove %1$s %2$s"
@@ -605,6 +655,11 @@ msgid "Mailing preview"
 msgstr "Vista prèvia del correu"
 
 #, fuzzy
+#| msgid "Reset emails contents"
+msgid "No mailing in progress."
+msgstr "Reinicialitza els continguts dels missatges de correu"
+
+#, fuzzy
 msgid "Sending mailing"
 msgstr "MAIlings enviats"
 
@@ -674,9 +729,6 @@ msgstr "No membres"
 msgid "Mass change %1$s members"
 msgstr "Canvi massiu %1$s membres"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "No s'han confirmat canvis massius!"
-
 #, fuzzy
 msgid "Add to group"
 msgstr "Afegeix un grup nou"
@@ -690,9 +742,6 @@ msgstr "Elimina el grup %1$s"
 msgid "Review mass change %1$s members"
 msgstr "Revisar el canvi massiu %1$s membres"
 
-msgid "Nothing to do!"
-msgstr "Res a fer!"
-
 msgid "An error occurred while saving the member."
 msgstr "S'ha produït un error en emmagatzemar el membre."
 
@@ -704,9 +753,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "El membre %1$s s'ha canviat amb èxit!"
 msgstr[1] "Els membres de %1$s s'han canviat amb èxit!"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Alguna cosa va quedar malament durant l'edició massiva!"
 
 #, fuzzy
 msgid "Login required"
@@ -1418,6 +1464,10 @@ msgid "My Account"
 msgstr "Compte"
 
 #, fuzzy
+msgid "View my member card"
+msgstr "Visualitza la meva targeta de membre"
+
+#, fuzzy
 msgid "My contributions"
 msgstr "Les meves contribucions"
 
@@ -1441,15 +1491,8 @@ msgid "View and filter all my transactions"
 msgstr "Visualitza i filtra totes les meves transaccions"
 
 #, fuzzy
-msgid "View my member card"
-msgstr "Visualitza la meva targeta de membre"
-
-#, fuzzy
 msgid "Modify my login and password"
 msgstr "Omple tots els inicis de sessió i contrasenyes buits"
-
-msgid "Manage my two-factor authentication"
-msgstr ""
 
 #, fuzzy
 msgid "Add a child member"
@@ -1458,6 +1501,9 @@ msgstr "Afegeix un membre"
 #, fuzzy
 msgid "Add new child member in database"
 msgstr "Afegeix un membre nou a la base de dades"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
 
 #, fuzzy
 msgid "View, search into and filter member's list"
@@ -1555,6 +1601,9 @@ msgstr "Exporta algunes dades en diversos formats"
 msgid "Import members from CSV files"
 msgstr "Importa els membres des de fitxers CSV"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 #, fuzzy
 msgid "View application's logs"
 msgstr "Visualitza els registres de l'aplicació"
@@ -1570,9 +1619,6 @@ msgid ""
 msgstr ""
 "Estableix les preferències de les aplicacions (adreça del lloc web de "
 "configuració de targetes)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
 
 msgid "Information about available plugins"
 msgstr "Informació quant als connectors disponibles"
@@ -2333,12 +2379,6 @@ msgstr "Tipus de contribució:"
 msgid "Amount:"
 msgstr "Import:"
 
-msgid "Payment type:"
-msgstr "Tipus de pagament:"
-
-msgid "Comments:"
-msgstr "Comentaris:"
-
 msgid "Date"
 msgstr "Data"
 
@@ -2616,9 +2656,6 @@ msgstr "Afegeix un tipus de pagament"
 #, fuzzy
 msgid "Contribution ID"
 msgstr "Contribució"
-
-msgid "Record date:"
-msgstr "Data de registre:"
 
 msgid "Scheduled date:"
 msgstr "Data programada:"
@@ -3067,6 +3104,21 @@ msgstr "Data d'inici"
 
 msgid "End date"
 msgstr "Data de finalització"
+
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, fuzzy, php-format
+#| msgid "%count entry"
+#| msgid_plural "%count entries"
+msgid "Links to \"%1$s\" documents"
+msgstr "%1$s entrada"
+
+#, fuzzy, php-format
+#| msgid "Email sent to user %1$s (%2$s)"
+msgid "Link to document \"%1$s\" (%2$s)"
+msgstr "S'ha enviat un correu electrònic al usuari %1$s (%2$s)"
 
 #, fuzzy
 msgid "Member information"
@@ -3876,6 +3928,9 @@ msgstr "Pares:"
 msgid "Member number:"
 msgstr "Número de usuari:"
 
+msgid "Picture:"
+msgstr "Imatge:"
+
 #, fuzzy
 msgid "State of dues"
 msgstr "Estat dels drets"
@@ -4507,6 +4562,16 @@ msgstr ""
 "Per actualitzar Galette necessita permís d'escriptura en els fitxers "
 "llistats anteriorment."
 
+#. TRANS: %1$s is the directory path
+#, fuzzy, php-format
+msgid "%1$s does not exist"
+msgstr "El títol de títol no existeix!"
+
+#. TRANS: %1$s is the directory path
+#, php-format
+msgid "%1$s is not writable"
+msgstr ""
+
 #, fuzzy
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "A UNIX/Linux podeu donar els permisos mitjançant aquestes ordres"
@@ -4825,7 +4890,7 @@ msgstr ""
 msgid "Unable to copy, please select the text and copy it by hand."
 msgstr ""
 
-msgid "Additionnal fields:"
+msgid "Additional fields:"
 msgstr "Camps addicionals:"
 
 #, fuzzy
@@ -4990,6 +5055,10 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
+#, fuzzy, php-format
+msgid "Update %1$s"
+msgstr "Actualitza"
+
 #, fuzzy
 msgid "Groups:"
 msgstr "Grups"
@@ -5017,9 +5086,6 @@ msgstr "Cerca el nom o l'ID i selecciona el membre"
 
 msgid "Password confirmation:"
 msgstr "Confirmació de contrasenya:"
-
-msgid "Picture:"
-msgstr "Imatge:"
 
 #, fuzzy
 msgid "Delete image"
@@ -5065,33 +5131,6 @@ msgstr "Drets"
 msgid "Not supplied"
 msgstr "No subministrat"
 
-#, fuzzy
-msgid "Zip - Town"
-msgstr "Zip - Ciutat"
-
-#, fuzzy
-msgid "Company"
-msgstr "Companyia"
-
-#, fuzzy
-msgid "no member"
-msgstr "cap membre"
-
-msgid "Pages:"
-msgstr "Pàgines:"
-
-#, fuzzy
-msgid "Selected members"
-msgstr "Membres seleccionats"
-
-#, fuzzy
-msgid "No members has been selected yet."
-msgstr "Encara no s'ha seleccionat cap membre."
-
-#, fuzzy
-msgid "Validate"
-msgstr "Valida"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Obre '%s' en una finestra nova"
@@ -5106,6 +5145,11 @@ msgstr "Obligatori"
 #, fuzzy
 msgid "Width in forms"
 msgstr "Forma d'adhesius"
+
+#, fuzzy
+msgctxt "member groups"
+msgid "moved"
+msgstr "Elimina"
 
 #, php-format
 msgid "Change '%1$s' permissions"
@@ -5215,6 +5259,10 @@ msgstr "Informació"
 
 msgid "Parent group:"
 msgstr "Grup pare:"
+
+#, fuzzy
+msgid "Company"
+msgstr "Companyia"
 
 #, fuzzy, php-format
 msgid "%1$s is member of the group"
@@ -5408,6 +5456,9 @@ msgstr ""
 msgid "Later"
 msgstr "Més tard"
 
+msgid "Pages:"
+msgstr "Pàgines:"
+
 msgid "Records per page:"
 msgstr "Registres per pàgina:"
 
@@ -5445,6 +5496,31 @@ msgstr "No s'ha pogut suplantar com a percentid"
 msgid "User menu"
 msgstr "Nom d'usuari"
 
+#, fuzzy
+msgid "No email address"
+msgstr "Adreça de correu electrònic"
+
+#, fuzzy
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "Grup afegit"
+
+#, fuzzy
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "cap membre"
+
+#, fuzzy, php-format
+#| msgid "Remove '%1$s' from disk"
+msgid "Remove %1$s from recipients"
+msgstr "Elimina «%1$s» del disc"
+
+#, fuzzy, php-format
+#| msgid "%1$s managed group"
+#| msgid_plural "%1$s managed groups"
+msgid "Keep %1$s in recipients"
+msgstr "%1$s grup gestionat"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "El vostre missatge ha estat enviat als <strong>%s membres</strong>"
@@ -5478,11 +5554,32 @@ msgstr ""
 "correu de caragol."
 
 #, fuzzy
+msgid "Manage selected members"
+msgstr "Gestiona els membres seleccionats"
+
+#, fuzzy
+msgid "Add a recipient"
+msgstr "Afegeix una donació"
+
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+
+#, fuzzy
+msgid "Recipients"
+msgstr "Destinataris"
+
+#, fuzzy
+msgid "See member profile"
+msgstr "Vegeu el perfil de membre"
+
+#, fuzzy
 msgid "Modification"
 msgstr "Modificació"
 
-msgid "Display"
-msgstr ""
+#, fuzzy
+#| msgid "creation"
+msgid "More actions"
+msgstr "creació"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -5685,6 +5782,13 @@ msgstr "Només s'actualitzaran els camps marcats."
 #, fuzzy
 msgid "No changes selected"
 msgstr "No s'ha seleccionat cap fitxer"
+
+#, fuzzy
+#| msgid "You are about to proceed following changes for selected members:"
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr ""
+"Estàs a punt de procedir amb els canvis següents per als membres "
+"seleccionats:"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr ""
@@ -6140,6 +6244,10 @@ msgstr "Estat de la pertinença"
 msgid "Account activity"
 msgstr "Activitat del compte"
 
+#, fuzzy
+msgid "Not in any group"
+msgstr "Grup no gestionat"
+
 msgid "With email:"
 msgstr "Amb correu electrònic:"
 
@@ -6217,6 +6325,14 @@ msgstr "és"
 
 #, fuzzy
 msgid "is not"
+msgstr "no és"
+
+#, fuzzy
+msgid "is empty"
+msgstr "El fitxer és buit!"
+
+#, fuzzy
+msgid "is not empty"
 msgstr "no és"
 
 #, fuzzy
@@ -6352,12 +6468,22 @@ msgid "Warning"
 msgstr "Advertència"
 
 #, fuzzy
+#| msgid "Dynamic fields"
+msgid "Dynamic field"
+msgstr "Camps dinàmics"
+
+#, fuzzy
 msgid "Field name"
 msgstr "Nom del camp"
 
 #, fuzzy
 msgid "Available fields"
 msgstr "Camps disponibles"
+
+#, fuzzy, php-format
+#| msgid "Edit field %1$s"
+msgid "Keep field %1$s"
+msgstr "Edita el camp %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -6696,10 +6822,6 @@ msgstr "Mostra totes les contribucions dels membres"
 msgid "Show all members contributions"
 msgstr "Mostra totes les contribucions dels membres"
 
-#, fuzzy
-msgid "See member profile"
-msgstr "Vegeu el perfil de membre"
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -6891,7 +7013,7 @@ msgid "Galette tables exports"
 msgstr "Exportacions de taules del Galette"
 
 #, fuzzy
-msgid "Additionnaly, which table(s) do you want to export?"
+msgid "Additionally, which table(s) do you want to export?"
 msgstr "Addició de quina taula voleu exportar?"
 
 #, fuzzy
@@ -6938,6 +7060,9 @@ msgstr "Crea"
 #, fuzzy
 msgid "Export as PDF"
 msgstr "Exporta com a CSV"
+
+msgid "Display"
+msgstr ""
 
 #, fuzzy
 msgid "IP"
@@ -7090,16 +7215,8 @@ msgid "Mailing information"
 msgstr "Informació de mailing"
 
 #, fuzzy
-msgid "Recipients"
-msgstr "Destinataris"
-
-#, fuzzy
 msgid "Go back to members list"
 msgstr "Torna a la llista de membres"
-
-#, fuzzy
-msgid "Manage selected members"
-msgstr "Gestiona els membres seleccionats"
 
 #, fuzzy
 msgid "Existing attachments:"
@@ -7153,12 +7270,9 @@ msgstr "mailing modificatiu"
 msgid "An error occurred displaying preview :("
 msgstr "S'ha produït un error en mostrar la vista prèvia ("
 
-msgid "Members selection"
-msgstr "Selecció de membres"
-
 #, fuzzy
-msgid "Click on a row to select a member"
-msgstr "Heu de seleccionar un membre del personal"
+msgid "Validate"
+msgstr "Valida"
 
 #, fuzzy
 msgid "Are you sure you want to remove this attachment?"
@@ -7529,6 +7643,21 @@ msgstr "Ruta:"
 
 msgid "Main route:"
 msgstr "Ruta principal:"
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove transaction #%1$s"
+msgid "New version: %1$s"
+msgstr "Elimina la transacció #%1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
 
 msgid "ACLs"
 msgstr "ACLs"
@@ -8259,6 +8388,10 @@ msgid "Address type:"
 msgstr "Tipus d'adreça"
 
 #, fuzzy
+msgid "Zip - Town"
+msgstr "Zip - Ciutat"
+
+#, fuzzy
 msgid "(Choose address printed below name)"
 msgstr "(Tanca l'adreça impresa sota el nom)"
 
@@ -8789,6 +8922,25 @@ msgid "Public page content"
 msgstr "Contingut de la pàgina pública"
 
 #, fuzzy
+#~ msgid "no member"
+#~ msgstr "cap membre"
+
+#, fuzzy
+#~ msgid "Selected members"
+#~ msgstr "Membres seleccionats"
+
+#, fuzzy
+#~ msgid "No members has been selected yet."
+#~ msgstr "Encara no s'ha seleccionat cap membre."
+
+#~ msgid "Members selection"
+#~ msgstr "Selecció de membres"
+
+#, fuzzy
+#~ msgid "Click on a row to select a member"
+#~ msgstr "Heu de seleccionar un membre del personal"
+
+#, fuzzy
 #~ msgid "An error occurred."
 #~ msgstr "Hi ha hagut un error."
 
@@ -8912,9 +9064,6 @@ msgstr "Contingut de la pàgina pública"
 
 #~ msgid "modification"
 #~ msgstr "modificació"
-
-#~ msgid "creation"
-#~ msgstr "creació"
 
 #~ msgid "Edit payment type"
 #~ msgstr "Edita el tipus de pagament"

@@ -69,8 +69,11 @@ class SavedSearch extends GaletteTestCase
 
         //store search
         $this->assertTrue($saved->check($post));
+        //pagination is not a search criteria
+        $this->assertArrayNotHasKey('nbshow', $saved->parameters);
         $this->assertTrue($saved->store());
         $this->assertCount(1, $searches->getList(as_search: true));
+
         //store again: same search is updated
         $this->assertTrue($saved->store());
         $this->assertCount(1, $searches->getList(as_search: true));
@@ -79,6 +82,18 @@ class SavedSearch extends GaletteTestCase
         $this->assertTrue($duplicate->check($post));
         $this->assertTrue($duplicate->store());
         $this->assertCount(2, $searches->getList(as_search: true));
+    }
+
+    /**
+     * Test loading an unknown saved search
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testLoadUnknown(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Saved search #999999 does not exist or is not owned by current user');
+        $saved = new \Galette\Entity\SavedSearch($this->zdb, $this->login, 999999);
+        $this->fail('Saved search #' . $saved->id . ' should not have been loaded');
     }
 
     /**

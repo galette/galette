@@ -1,0 +1,14 @@
+Galette 1.3.2 sort du four, encore toute chaude ! 🥧
+
+📨 Destinataires des mailings choisis par recherche
+🧾 Modification en masse des contributions
+📎 Liens vers les documents dans les modèles
+📋 Champs dynamiques dans la liste, recherche des sans groupe et des champs vides
+🔔 Nouvelles versions de plugins signalées
+🐛 Et une belle série de corrections
+
+Les plugins Fullcard et PayPal ne sont plus maintenus : passez à Stripe ou HelloAsso.
+
+https://galette.eu/site/fr/post/2026/11/03/galette-1-3-2/
+
+#Galette #LogicielLibre #Associations

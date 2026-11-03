@@ -19,5 +19,6 @@ $this->register(
     date: '2016-10-19',              //Release date
     acls: [                          //Permissions needed
         'plugin1_root'  => 'groupmanager'
-    ]
+    ],
+    repository: 'galette/plugin-test-one' //Releases repository
 );

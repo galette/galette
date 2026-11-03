@@ -41,6 +41,8 @@ class SavedSearch
 {
     public const string TABLE = 'searches';
     public const string PK = 'search_id';
+    /** @var array<string> Pagination is not a search criteria */
+    private const array IGNORED_PARAMETERS = ['nbshow', 'page'];
 
     private int $id;
     private string $name;
@@ -91,14 +93,19 @@ class SavedSearch
             }
 
             $results = $this->zdb->execute($select);
-            /** @var ArrayObject<string, int|string> $res */
+            /** @var ?ArrayObject<string, int|string> $res */
             $res = $results->current();
-
-            $this->loadFromRS($res);
         } catch (Throwable $e) {
             Logs::exception($e, 'An error occurred loading saved search #' . $id);
             throw $e;
         }
+
+        if ($res === null) {
+            throw new RuntimeException(
+                'Saved search #' . $id . ' does not exist or is not owned by current user'
+            );
+        }
+        $this->loadFromRS($res);
     }
 
     /**
@@ -112,7 +119,7 @@ class SavedSearch
         $this->id = (int)$rs->$pk;
         $this->name = $rs->name ?? '';
         try {
-            $this->parameters = Galette::jsonDecode($rs->parameters);
+            $this->parameters = $this->filterParameters(Galette::jsonDecode($rs->parameters));
         } catch (RuntimeException $e) {
             Logs::exception($e, 'Unable to decode parameters for saved search #' . $this->id);
             $this->parameters = [];
@@ -122,6 +129,18 @@ class SavedSearch
         }
         $this->creation_date = $rs->creation_date;
         $this->form = $rs->form;
+    }
+
+    /**
+     * Remove parameters that are not search criteria
+     *
+     * @param array<string, mixed> $parameters Parameters
+     *
+     * @return array<string, mixed>
+     */
+    private function filterParameters(array $parameters): array
+    {
+        return array_diff_key($parameters, array_flip(self::IGNORED_PARAMETERS));
     }
 
     /**
@@ -137,8 +156,8 @@ class SavedSearch
         ];
 
         foreach ($values as $key => $value) {
-            if (in_array($key, ['nbshow', 'page'])) {
-                continue;
+            if ($key === 'parameters' && is_array($value)) {
+                $value = $this->filterParameters($value);
             }
             if (empty($value) && isset($mandatory[$key])) {
                 $this->errors[] = $mandatory[$key];

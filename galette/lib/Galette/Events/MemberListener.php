@@ -173,7 +173,7 @@ class MemberListener implements ListenerSubscriber
             $mlang
         );
 
-        $mail = new GaletteMail($this->preferences);
+        $mail = $this->createMail();
         $mail->setSubject($texts->getSubject());
         $mail->setRecipients(
             [
@@ -191,7 +191,10 @@ class MemberListener implements ListenerSubscriber
                 ? _T("New account email sent to '%s'.") : _T("Account modification email sent to '%s'.")
             );
             $this->history->add($msg);
-            $success_detected[] = $msg;
+            $this->flash->addMessage(
+                'success_detected',
+                $msg
+            );
         } else {
             $str = str_replace(
                 '%s',
@@ -199,7 +202,10 @@ class MemberListener implements ListenerSubscriber
                 _T("A problem happened while sending account email to '%s'")
             );
             $this->history->add($str);
-            $error_detected[] = $str;
+            $this->flash->addMessage(
+                'warning_detected',
+                $str
+            );
         }
     }
 
@@ -238,7 +244,7 @@ class MemberListener implements ListenerSubscriber
             $mlang
         );
 
-        $mail = new GaletteMail($this->preferences);
+        $mail = $this->createMail();
         $mail->setSubject($texts->getSubject());
         $recipients = [];
         foreach ($this->preferences->vpref_email_newadh as $pref_email) {
@@ -275,5 +281,15 @@ class MemberListener implements ListenerSubscriber
                 $msg
             );
         }
+    }
+
+    /**
+     * Create the email to send
+     * Extracted as a seam so tests can inject a mail that does not
+     * actually send anything.
+     */
+    protected function createMail(): GaletteMail
+    {
+        return new GaletteMail($this->preferences);
     }
 }

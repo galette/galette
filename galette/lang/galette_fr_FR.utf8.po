@@ -12,13 +12,15 @@
 # J. Lavoie <j.lavoie@net-c.ca>, 2020, 2021.
 # Nathan <bonnemainsnathan@gmail.com>, 2020.
 # Guillaume AGNIERAY <dev@agnieray.net>, 2025, 2026.
+# Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
-"PO-Revision-Date: 2026-10-07 08:51+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"POT-Creation-Date: 2026-11-02 13:04+0100\n"
+"PO-Revision-Date: 2026-11-02 12:07+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -26,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.10.1.dev0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
@@ -161,6 +163,13 @@ msgstr "Une nouvelle version de Galette est disponible."
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr "Vous utilisez actuellement Galette %1$s, et %2$s est disponible."
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, php-format
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] "%1$d plugin a une nouvelle version disponible"
+msgstr[1] "%1$d plugins ont une nouvelle version disponible"
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr "Votre mot de passe est trop faible ! Envisagez de le modifier."
@@ -331,6 +340,45 @@ msgstr "Une erreur est survenue lors de l'enregistrement de la contribution."
 
 msgid "Contribution has been successfully stored"
 msgstr "La contribution a été enregistrée avec succès"
+
+msgid "Payment type:"
+msgstr "Type de paiement :"
+
+msgid "Record date:"
+msgstr "Date d’enregistrement :"
+
+msgid "Comments:"
+msgstr "Commentaires :"
+
+#. TRANS: %1$s is the number of selected contributions
+#, php-format
+msgid "Mass change %1$s contributions"
+msgstr "Modification en masse de %1$s contributions"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "Les modifications n’ont pas été confirmées !"
+
+#. TRANS: %1$s is the number of selected contributions
+#, php-format
+msgid "Review mass change %1$s contributions"
+msgstr "Revue des modifications pour %1$s contributions"
+
+msgid "Nothing to do!"
+msgstr "Rien à faire !"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, php-format
+msgid "Contribution #%1$s: %2$s"
+msgstr "Contribution #%1$s : %2$s"
+
+#, php-format
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "%1$s contribution a été modifiée avec succès !"
+msgstr[1] "%1$s contributions ont été modifiées avec succès !"
+
+msgid "Something went wrong during mass edition!"
+msgstr "Quelque chose s’est mal passé lors de la modification en masse !"
 
 #, php-format
 msgid "Remove %1$s %2$s"
@@ -534,6 +582,9 @@ msgstr "Supprimer l'envoi %1$s"
 msgid "Mailing preview"
 msgstr "Prévisualisation de l'envoi"
 
+msgid "No mailing in progress."
+msgstr "Aucun envoi en cours."
+
 msgid "Sending mailing"
 msgstr "Lancer les envois"
 
@@ -589,9 +640,6 @@ msgstr "Nouvel adhérent"
 msgid "Mass change %1$s members"
 msgstr "Modification en masse de %1$s adhérents"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "Les modifications n’ont pas été confirmées !"
-
 msgid "Add to group"
 msgstr "Ajouter au groupe"
 
@@ -601,9 +649,6 @@ msgstr "Supprimer du groupe"
 #, php-format
 msgid "Review mass change %1$s members"
 msgstr "Revue des modifications pour %1$s adhérents"
-
-msgid "Nothing to do!"
-msgstr "Rien à faire !"
 
 msgid "An error occurred while saving the member."
 msgstr "Une erreur est survenue lors de l'enregistrement de l'adhérent."
@@ -616,9 +661,6 @@ msgid "%1$s member has been changed successfully!"
 msgid_plural "%1$s members has been changed successfully!"
 msgstr[0] "%1$s adhérent a été modifié avec succès !"
 msgstr[1] "%1$s adhérents ont été modifiés avec succès !"
-
-msgid "Something went wrong during mass edition!"
-msgstr "Quelque chose s’est mal passé lors de la modification en masse !"
 
 msgid "Login required"
 msgstr "Identification requise"
@@ -1277,6 +1319,9 @@ msgstr "La version minimale pour le moteur %1$s est %2$s, %1$s %3$s trouvé !"
 msgid "My Account"
 msgstr "Mon compte"
 
+msgid "View my member card"
+msgstr "Voir ma fiche membre"
+
 msgid "My contributions"
 msgstr "Mes contributions"
 
@@ -1295,20 +1340,17 @@ msgstr "Mes transactions"
 msgid "View and filter all my transactions"
 msgstr "Consulter et filtrer toutes mes transactions"
 
-msgid "View my member card"
-msgstr "Voir ma fiche membre"
-
 msgid "Modify my login and password"
 msgstr "Modifier mon identifiant et mon mot de passe"
-
-msgid "Manage my two-factor authentication"
-msgstr "Gérer mon authentification à deux facteurs"
 
 msgid "Add a child member"
 msgstr "Ajouter un enfant"
 
 msgid "Add new child member in database"
 msgstr "Ajouter un nouvel enfant à la base"
+
+msgid "Manage my two-factor authentication"
+msgstr "Gérer mon authentification à deux facteurs"
 
 msgid "View, search into and filter member's list"
 msgstr "Consulter, rechercher dans et filtrer la liste des membres"
@@ -1386,6 +1428,9 @@ msgstr "Exporte des données dans divers formats"
 msgid "Import members from CSV files"
 msgstr "Import d’adhérents depuis un fichier CSV"
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr "Voir ce qui serait refusé après les échecs répétés, et les lever"
+
 msgid "View application's logs"
 msgstr "Voir les logs de l’application"
 
@@ -1398,9 +1443,6 @@ msgid ""
 msgstr ""
 "Renseigner les préférences de l’application (adresse, cartes de membres, "
 "configuration, ...)"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr "Voir ce qui serait refusé après les échecs répétés, et les lever"
 
 msgid "Information about available plugins"
 msgstr "Informations sur les plugins disponibles"
@@ -2063,12 +2105,6 @@ msgstr "Type de contribution :"
 msgid "Amount:"
 msgstr "Montant :"
 
-msgid "Payment type:"
-msgstr "Type de paiement :"
-
-msgid "Comments:"
-msgstr "Commentaires :"
-
 msgid "Date"
 msgstr "Date"
 
@@ -2300,9 +2336,6 @@ msgstr "ID du paiement planifié"
 
 msgid "Contribution ID"
 msgstr "ID de la contribution"
-
-msgid "Record date:"
-msgstr "Date d’enregistrement :"
 
 msgid "Scheduled date:"
 msgstr "Date de planification :"
@@ -2681,6 +2714,18 @@ msgstr "Date de début"
 msgid "End date"
 msgstr "Date de fin"
 
+msgid "Public documents page URI"
+msgstr "URI de la page publique des documents"
+
+#. TRANS: %1$s is the documents type name
+#, php-format
+msgid "Links to \"%1$s\" documents"
+msgstr "Lien vers les documents \"%1$s\""
+
+#, php-format
+msgid "Link to document \"%1$s\" (%2$s)"
+msgstr "Lien vers le document \"%1$s\" (%2$s)"
+
 msgid "Member information"
 msgstr "Informations adhérent"
 
@@ -3054,7 +3099,7 @@ msgid "Rules of procedure"
 msgstr "Règlement intérieur"
 
 msgid "Adhesion form"
-msgstr "Formulaire d’adhésion"
+msgstr "Formulaire d'adhésion"
 
 msgid "Meeting minutes"
 msgstr "Comptes rendus de réunion"
@@ -3386,6 +3431,9 @@ msgstr "Parent :"
 
 msgid "Member number:"
 msgstr "Numéro adhérent :"
+
+msgid "Picture:"
+msgstr "Image :"
 
 msgid "State of dues"
 msgstr "État cotisations"
@@ -3913,6 +3961,16 @@ msgstr ""
 "Pour être mis à jour, Galette a besoin d’avoir les droits en écriture sur "
 "les fichiers listés ci-dessous."
 
+#. TRANS: %1$s is the directory path
+#, php-format
+msgid "%1$s does not exist"
+msgstr "%1$s n'existe pas"
+
+#. TRANS: %1$s is the directory path
+#, php-format
+msgid "%1$s is not writable"
+msgstr "%1$s n'est pas accessible en écriture"
+
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr "Sous UNIX/Linux, vous pouvez donner ces droits par les commandes"
 
@@ -4199,7 +4257,7 @@ msgid "Unable to copy, please select the text and copy it by hand."
 msgstr ""
 "Copie impossible, veuillez sélectionner le texte et le copier manuellement."
 
-msgid "Additionnal fields:"
+msgid "Additional fields:"
 msgstr "Champs supplémentaires :"
 
 msgid "Enter as many occurrences you want."
@@ -4336,6 +4394,10 @@ msgstr ""
 "Les éléments de cette liste ont été modifiés. N'oubliez pas d'enregistrer "
 "vos modifications."
 
+#, php-format
+msgid "Update %1$s"
+msgstr "Mise à jour %1$s"
+
 msgid "Groups:"
 msgstr "Groupes :"
 
@@ -4360,9 +4422,6 @@ msgstr "Chercher un nom ou un identifiant et sélectionner l'adhérent"
 
 msgid "Password confirmation:"
 msgstr "Confirmation du mot de passe :"
-
-msgid "Picture:"
-msgstr "Image :"
 
 msgid "Delete image"
 msgstr "Supprimer l’image"
@@ -4405,27 +4464,6 @@ msgstr "Droit"
 msgid "Not supplied"
 msgstr "Non renseigné"
 
-msgid "Zip - Town"
-msgstr "Code postal - Ville"
-
-msgid "Company"
-msgstr "Personne morale"
-
-msgid "no member"
-msgstr "aucun adhérent"
-
-msgid "Pages:"
-msgstr "Pages :"
-
-msgid "Selected members"
-msgstr "Membres sélectionnés"
-
-msgid "No members has been selected yet."
-msgstr "Aucun membre n’a encore été sélectionné."
-
-msgid "Validate"
-msgstr "Valider"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr "Ouvrir « %s » dans une nouvelle fenêtre"
@@ -4438,6 +4476,10 @@ msgstr "Obligatoire"
 
 msgid "Width in forms"
 msgstr "Largeur dans les formulaires"
+
+msgctxt "member groups"
+msgid "moved"
+msgstr "déplacé"
 
 #, php-format
 msgid "Change '%1$s' permissions"
@@ -4535,6 +4577,9 @@ msgstr "Informations"
 
 msgid "Parent group:"
 msgstr "Groupe parent :"
+
+msgid "Company"
+msgstr "Personne morale"
 
 #, php-format
 msgid "%1$s is member of the group"
@@ -4701,6 +4746,9 @@ msgstr ""
 msgid "Later"
 msgstr "Plus tard"
 
+msgid "Pages:"
+msgstr "Pages :"
+
 msgid "Records per page:"
 msgstr "Enregistrements par page :"
 
@@ -4733,6 +4781,25 @@ msgstr "Quitter l'imposture"
 msgid "User menu"
 msgstr "Menu utilisateur"
 
+msgid "No email address"
+msgstr "Pas d’adresse courriel"
+
+msgctxt "mailing recipients"
+msgid "added"
+msgstr "ajouté"
+
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "sera retiré"
+
+#, php-format
+msgid "Remove %1$s from recipients"
+msgstr "Retirer %1$s des destinataires"
+
+#, php-format
+msgid "Keep %1$s in recipients"
+msgstr "Conserver %1$s dans les destinataires"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr "Votre courriel a été envoyé à <strong>%s membres</strong>"
@@ -4762,11 +4829,27 @@ msgstr ""
 "courriel. Cependant vous pouvez produire des étiquettes d’enveloppes pour "
 "les contacter par courrier postal."
 
+msgid "Manage selected members"
+msgstr "Gestion des adhérents sélectionnés"
+
+msgid "Add a recipient"
+msgstr "Ajouter un destinataire"
+
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+"Les destinataires ont été modifiés. Validez pour appliquer vos modifications."
+
+msgid "Recipients"
+msgstr "Destinataires"
+
+msgid "See member profile"
+msgstr "Voir la fiche adhérent"
+
 msgid "Modification"
 msgstr "Modification"
 
-msgid "Display"
-msgstr "Afficher"
+msgid "More actions"
+msgstr "Plus d’actions"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -4941,6 +5024,11 @@ msgstr "Seuls les champs cochés seront mis à jour."
 
 msgid "No changes selected"
 msgstr "Aucun changement sélectionné"
+
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr ""
+"Vous êtes sur le point d’effectuer les modifications suivantes pour les "
+"contributions sélectionnées :"
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr ""
@@ -5354,6 +5442,9 @@ msgstr "Statut de l’adhésion"
 msgid "Account activity"
 msgstr "Activité du compte"
 
+msgid "Not in any group"
+msgstr "Dans aucun groupe"
+
 msgid "With email:"
 msgstr "Avec courriel :"
 
@@ -5413,6 +5504,12 @@ msgstr "est"
 
 msgid "is not"
 msgstr "n’est pas"
+
+msgid "is empty"
+msgstr "est vide"
+
+msgid "is not empty"
+msgstr "n’est pas vide"
 
 msgid "before"
 msgstr "avant"
@@ -5529,11 +5626,18 @@ msgstr "Veuillez corriger les erreurs ci-dessous pour continuer."
 msgid "Warning"
 msgstr "Attention"
 
+msgid "Dynamic field"
+msgstr "Champ dynamique"
+
 msgid "Field name"
 msgstr "Nom du champ"
 
 msgid "Available fields"
 msgstr "Champs disponibles"
+
+#, php-format
+msgid "Keep field %1$s"
+msgstr "Conserver le champ %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5826,9 +5930,6 @@ msgstr "Voir toutes vos contributions"
 msgid "Show all members contributions"
 msgstr "Voir les contributions de tous les membres"
 
-msgid "See member profile"
-msgstr "Voir la fiche adhérent"
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -5985,7 +6086,7 @@ msgstr "Aucun export paramétré disponible."
 msgid "Galette tables exports"
 msgstr "Export des tables Galette"
 
-msgid "Additionnaly, which table(s) do you want to export?"
+msgid "Additionally, which table(s) do you want to export?"
 msgstr "Additionnellement, quelle(s) table(s) souhaitez vous exporter ?"
 
 msgid "Table name"
@@ -6029,6 +6130,9 @@ msgstr "Créer"
 
 msgid "Export as PDF"
 msgstr "Exporter en PDF"
+
+msgid "Display"
+msgstr "Afficher"
 
 msgid "IP"
 msgstr "IP"
@@ -6149,14 +6253,8 @@ msgstr "Mot de passe perdu ?"
 msgid "Mailing information"
 msgstr "Informations sur l'envoi"
 
-msgid "Recipients"
-msgstr "Destinataires"
-
 msgid "Go back to members list"
 msgstr "Retour à la liste des membres"
-
-msgid "Manage selected members"
-msgstr "Gestion des adhérents sélectionnés"
 
 msgid "Existing attachments:"
 msgstr "Pièces jointes existantes :"
@@ -6199,11 +6297,8 @@ msgstr "Modifier l'envoi"
 msgid "An error occurred displaying preview :("
 msgstr "Une erreur est survenue lors de l'affichage de l'aperçu :("
 
-msgid "Members selection"
-msgstr "Sélection d’adhérents"
-
-msgid "Click on a row to select a member"
-msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
+msgid "Validate"
+msgstr "Valider"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr "Voulez-vous vraiment effacer cette pièce jointe ?"
@@ -6514,6 +6609,24 @@ msgstr "Chemin :"
 
 msgid "Main route:"
 msgstr "Route principale :"
+
+msgid "Releases repository:"
+msgstr "Dépôt des versions :"
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+"Vérifiez sa compatibilité avec votre version de Galette avant de mettre à "
+"jour."
+
+#, php-format
+msgid "New version: %1$s"
+msgstr "Nouvelle version : %1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
+msgstr ""
+"Impossible de vérifier les nouvelles versions : aucune version trouvée dans "
+"le dépôt %1$s."
 
 msgid "ACLs"
 msgstr "ACL"
@@ -7129,6 +7242,9 @@ msgstr "(Afficher le titre devant le nom)"
 msgid "Address type:"
 msgstr "Type d’adresse :"
 
+msgid "Zip - Town"
+msgstr "Code postal - Ville"
+
 msgid "(Choose address printed below name)"
 msgstr "(Choix de l’adresse imprimée sous le nom)"
 
@@ -7609,6 +7725,21 @@ msgstr ""
 msgid "Public page content"
 msgstr "Contenu page publique"
 
+#~ msgid "no member"
+#~ msgstr "aucun adhérent"
+
+#~ msgid "Selected members"
+#~ msgstr "Membres sélectionnés"
+
+#~ msgid "No members has been selected yet."
+#~ msgstr "Aucun membre n’a encore été sélectionné."
+
+#~ msgid "Members selection"
+#~ msgstr "Sélection d’adhérents"
+
+#~ msgid "Click on a row to select a member"
+#~ msgstr "Cliquez sur une ligne pour sélectionner un adhérent"
+
 #~ msgid ""
 #~ "Development features to activate, among those declared in the feature "
 #~ "flags registry. They only apply in debug mode."
@@ -7729,9 +7860,6 @@ msgstr "Contenu page publique"
 
 #~ msgid "modification"
 #~ msgstr "modification"
-
-#~ msgid "creation"
-#~ msgstr "création"
 
 #~ msgid "Edit payment type"
 #~ msgstr "Modifier le type de paiement"
@@ -8656,9 +8784,6 @@ msgstr "Contenu page publique"
 
 #~ msgid "That title is still in use, you cannot delete it!"
 #~ msgstr "Ce titre est encore utilisé, vous ne pouvez pas le supprimer&nbsp;!"
-
-#~ msgid "Dynamic field"
-#~ msgstr "Champ dynamique"
 
 #~ msgid "Dynamic field ID cannot ben null calling edit route!"
 #~ msgstr ""

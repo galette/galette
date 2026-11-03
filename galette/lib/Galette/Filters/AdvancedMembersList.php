@@ -86,6 +86,8 @@ class AdvancedMembersList extends MembersList
     public const int OP_ENDS_WITH = 5;
     public const int OP_BEFORE = 6;
     public const int OP_AFTER = 7;
+    public const int OP_IS_EMPTY = 8;
+    public const int OP_IS_NOT_EMPTY = 9;
 
     private ?string $creation_date_begin = null;
     private ?string $creation_date_end = null;

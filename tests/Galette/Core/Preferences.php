@@ -1084,8 +1084,9 @@ class Preferences extends GaletteTestCase
     public function testGetLegend(): void
     {
         $legend = $this->preferences->getLegend();
-        $this->assertCount(2, $legend);
+        $this->assertCount(3, $legend);
         $this->assertCount(12, $legend['main']['patterns']);
+        $this->assertCount(6, $legend['documents']['patterns']);
         $this->assertCount(10, $legend['socials']['patterns']);
         $this->assertSame(
             [
@@ -1105,7 +1106,7 @@ class Preferences extends GaletteTestCase
         );
 
         $legend = $this->preferences->getLegend();
-        $this->assertCount(2, $legend);
+        $this->assertCount(3, $legend);
         $this->assertCount(11, $legend['socials']['patterns']);
         $this->assertTrue(isset($legend['socials']['patterns']['asso_social_mynewtype']));
         $this->assertSame(

@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-10-17 09:49+0200\n"
+"POT-Creation-Date: 2026-11-02 13:04+0100\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -178,6 +178,17 @@ msgstr ""
 #, php-format
 msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr ""
+
+#. TRANS: %1$d is the number of plugins that have a new release
+#, php-format
+msgid "%1$d plugin has a new release available"
+msgid_plural "%1$d plugins have a new release available"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr ""
@@ -351,6 +362,53 @@ msgstr "حدث خطأ أثناء تخزين المساهمة."
 
 msgid "Contribution has been successfully stored"
 msgstr "تم تخزين المساهمة بنجاح"
+
+msgid "Payment type:"
+msgstr "نوع السداد:"
+
+msgid "Record date:"
+msgstr ""
+
+msgid "Comments:"
+msgstr "تعليقات:"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "My contributions"
+msgid "Mass change %1$s contributions"
+msgstr "اشتراكاتي"
+
+msgid "Mass changes has not been confirmed!"
+msgstr "لم يتم تأكيد التغييرات الجماعية!"
+
+#. TRANS: %1$s is the number of selected contributions
+#, fuzzy, php-format
+#| msgid "Review mass change %count members"
+msgid "Review mass change %1$s contributions"
+msgstr "مراجعة التغيرات %count الاعضاء"
+
+msgid "Nothing to do!"
+msgstr "لاشي لتفعلة!"
+
+#. TRANS: %1$s is the contribution id, %2$s the error message
+#, fuzzy, php-format
+#| msgid "Contributions"
+msgid "Contribution #%1$s: %2$s"
+msgstr "الإشتراكات"
+
+#, fuzzy, php-format
+#| msgid "%count members has been changed successfully!"
+msgid "%1$s contribution has been changed successfully!"
+msgid_plural "%1$s contributions have been changed successfully!"
+msgstr[0] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+msgstr[1] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+msgstr[2] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+msgstr[3] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+msgstr[4] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+msgstr[5] "%count من الاعضاء قد تم تغييرهم بنجاح!"
+
+msgid "Something went wrong during mass edition!"
+msgstr ""
 
 #, php-format
 msgid "Remove %1$s %2$s"
@@ -579,6 +637,11 @@ msgid "Mailing preview"
 msgstr "معاينة البريد"
 
 #, fuzzy
+#| msgid "Test email settings"
+msgid "No mailing in progress."
+msgstr "اختبار إعدادات البريد الإلكتروني"
+
+#, fuzzy
 #| msgid "Manage mailings"
 msgid "Sending mailing"
 msgstr "إدارة البريد الإلكتروني"
@@ -652,9 +715,6 @@ msgstr "غير عضو"
 msgid "Mass change %1$s members"
 msgstr "تغيير جماعي لـ %count من الأعضاء"
 
-msgid "Mass changes has not been confirmed!"
-msgstr "لم يتم تأكيد التغييرات الجماعية!"
-
 #, fuzzy
 #| msgid "Add a new group"
 msgid "Add to group"
@@ -669,9 +729,6 @@ msgstr "حذف الفريق %1$s"
 #| msgid "Review mass change %count members"
 msgid "Review mass change %1$s members"
 msgstr "مراجعة التغيرات %count الاعضاء"
-
-msgid "Nothing to do!"
-msgstr "لاشي لتفعلة!"
 
 msgid "An error occurred while saving the member."
 msgstr "حدث خطأ أثناء تسجيل العضو."
@@ -689,9 +746,6 @@ msgstr[2] "%count من الاعضاء قد تم تغييرهم بنجاح!"
 msgstr[3] "%count من الاعضاء قد تم تغييرهم بنجاح!"
 msgstr[4] "%count من الاعضاء قد تم تغييرهم بنجاح!"
 msgstr[5] "%count من الاعضاء قد تم تغييرهم بنجاح!"
-
-msgid "Something went wrong during mass edition!"
-msgstr ""
 
 msgid "Login required"
 msgstr ""
@@ -1367,6 +1421,9 @@ msgstr ""
 msgid "My Account"
 msgstr "الحساب:"
 
+msgid "View my member card"
+msgstr ""
+
 msgid "My contributions"
 msgstr "اشتراكاتي"
 
@@ -1387,13 +1444,7 @@ msgstr "معاملاتي"
 msgid "View and filter all my transactions"
 msgstr ""
 
-msgid "View my member card"
-msgstr ""
-
 msgid "Modify my login and password"
-msgstr ""
-
-msgid "Manage my two-factor authentication"
 msgstr ""
 
 #, fuzzy
@@ -1402,6 +1453,9 @@ msgid "Add a child member"
 msgstr "إضافة عضو"
 
 msgid "Add new child member in database"
+msgstr ""
+
+msgid "Manage my two-factor authentication"
 msgstr ""
 
 msgid "View, search into and filter member's list"
@@ -1480,6 +1534,9 @@ msgstr ""
 msgid "Import members from CSV files"
 msgstr ""
 
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
 msgid "View application's logs"
 msgstr ""
 
@@ -1489,9 +1546,6 @@ msgstr "ضبط الإعدادات"
 msgid ""
 "Set applications preferences (address, website, member's cards "
 "configuration, ...)"
-msgstr ""
-
-msgid "See what is being refused after repeated failures, and lift it"
 msgstr ""
 
 msgid "Information about available plugins"
@@ -2150,12 +2204,6 @@ msgstr "نوع المساهمة:"
 msgid "Amount:"
 msgstr "المبلغ:"
 
-msgid "Payment type:"
-msgstr "نوع السداد:"
-
-msgid "Comments:"
-msgstr "تعليقات:"
-
 msgid "Date"
 msgstr "التاريخ"
 
@@ -2398,9 +2446,6 @@ msgstr "إضافة نوع سداد"
 #| msgid "Contributions"
 msgid "Contribution ID"
 msgstr "الإشتراكات"
-
-msgid "Record date:"
-msgstr ""
 
 #, fuzzy
 #| msgid "Release date"
@@ -2771,6 +2816,18 @@ msgid "Begin date"
 msgstr ""
 
 msgid "End date"
+msgstr ""
+
+msgid "Public documents page URI"
+msgstr ""
+
+#. TRANS: %1$s is the documents type name
+#, php-format
+msgid "Links to \"%1$s\" documents"
+msgstr ""
+
+#, php-format
+msgid "Link to document \"%1$s\" (%2$s)"
 msgstr ""
 
 msgid "Member information"
@@ -3507,6 +3564,9 @@ msgstr ""
 msgid "Member number:"
 msgstr "رقم العضو:"
 
+msgid "Picture:"
+msgstr "صورة:"
+
 msgid "State of dues"
 msgstr "حالة المُستحقات"
 
@@ -3965,6 +4025,17 @@ msgid ""
 "In order to be updated, Galette needs write permission on files listed above."
 msgstr ""
 
+#. TRANS: %1$s is the directory path
+#, fuzzy, php-format
+#| msgid "Saved searches"
+msgid "%1$s does not exist"
+msgstr "عمليات البحث المحفوظة"
+
+#. TRANS: %1$s is the directory path
+#, php-format
+msgid "%1$s is not writable"
+msgstr ""
+
 msgid "Under UNIX/Linux, you can give the permissions using those commands"
 msgstr ""
 
@@ -4222,7 +4293,7 @@ msgstr ""
 msgid "Unable to copy, please select the text and copy it by hand."
 msgstr ""
 
-msgid "Additionnal fields:"
+msgid "Additional fields:"
 msgstr "حقول إضافية:"
 
 msgid "Enter as many occurrences you want."
@@ -4352,6 +4423,11 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
+#, fuzzy, php-format
+#| msgid "Pages:"
+msgid "Update %1$s"
+msgstr "الصفحات:"
+
 msgid "Groups:"
 msgstr "الفِرَق:"
 
@@ -4378,9 +4454,6 @@ msgstr ""
 
 msgid "Password confirmation:"
 msgstr "تأكيد كلمة المرور:"
-
-msgid "Picture:"
-msgstr "صورة:"
 
 msgid "Delete image"
 msgstr "حذف الصورة"
@@ -4423,29 +4496,6 @@ msgstr ""
 msgid "Not supplied"
 msgstr ""
 
-msgid "Zip - Town"
-msgstr ""
-
-#, fuzzy
-#| msgid "Company:"
-msgid "Company"
-msgstr "الشخص المعنوي:"
-
-msgid "no member"
-msgstr ""
-
-msgid "Pages:"
-msgstr "الصفحات:"
-
-msgid "Selected members"
-msgstr ""
-
-msgid "No members has been selected yet."
-msgstr ""
-
-msgid "Validate"
-msgstr "تأكيد"
-
 #, php-format
 msgid "Open '%s' in a new window"
 msgstr ""
@@ -4460,6 +4510,10 @@ msgstr "مطلوب"
 #| msgid "Adhesion form"
 msgid "Width in forms"
 msgstr "استمارة الإنخراط"
+
+msgctxt "member groups"
+msgid "moved"
+msgstr ""
 
 #, php-format
 msgid "Change '%1$s' permissions"
@@ -4562,6 +4616,11 @@ msgstr "معلومات عن النظام"
 
 msgid "Parent group:"
 msgstr ""
+
+#, fuzzy
+#| msgid "Company:"
+msgid "Company"
+msgstr "الشخص المعنوي:"
 
 #, fuzzy, php-format
 #| msgid "Member of group"
@@ -4752,6 +4811,9 @@ msgstr ""
 msgid "Later"
 msgstr ""
 
+msgid "Pages:"
+msgstr "الصفحات:"
+
 msgid "Records per page:"
 msgstr "التسجيلات لكل صفحة:"
 
@@ -4786,6 +4848,31 @@ msgstr ""
 msgid "User menu"
 msgstr "اسم المستخدِم"
 
+#, fuzzy
+#| msgid "Email address"
+msgid "No email address"
+msgstr "عنوان البريد الإلكتروني"
+
+msgctxt "mailing recipients"
+msgid "added"
+msgstr ""
+
+#, fuzzy
+#| msgid "Benefactor member"
+msgctxt "mailing recipients"
+msgid "will be removed"
+msgstr "عضو مُحسِن"
+
+#, fuzzy, php-format
+#| msgid "Remove group %1$s"
+msgid "Remove %1$s from recipients"
+msgstr "حذف الفريق %1$s"
+
+#, fuzzy, php-format
+#| msgid "Manage groups"
+msgid "Keep %1$s in recipients"
+msgstr "إدارة الفِرَق"
+
 #, php-format
 msgid "Your message has been sent to <strong>%s members</strong>"
 msgstr ""
@@ -4811,11 +4898,30 @@ msgid ""
 "generate envelope labels to contact them by snail mail."
 msgstr ""
 
+msgid "Manage selected members"
+msgstr "إدارة الأعضاء الذين تم اختيارهم"
+
+#, fuzzy
+#| msgid "Add a donation"
+msgid "Add a recipient"
+msgstr "إضافة تبرع"
+
+msgid "Recipients have been modified. Validate to apply your changes."
+msgstr ""
+
+msgid "Recipients"
+msgstr ""
+
+msgid "See member profile"
+msgstr ""
+
 msgid "Modification"
 msgstr "تعديل"
 
-msgid "Display"
-msgstr ""
+#, fuzzy
+#| msgid "transactions"
+msgid "More actions"
+msgstr "معاملات"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -4994,6 +5100,9 @@ msgstr ""
 #| msgid "No field selected"
 msgid "No changes selected"
 msgstr "لم يتم تحديد أي حقل"
+
+msgid "You are about to proceed following changes for selected contributions:"
+msgstr ""
 
 msgid "You are about to proceed following changes for selected members:"
 msgstr ""
@@ -5388,6 +5497,11 @@ msgstr ""
 msgid "Account activity"
 msgstr "نشاط الحساب"
 
+#, fuzzy
+#| msgid "Select a group"
+msgid "Not in any group"
+msgstr "اختر فريقا"
+
 msgid "With email:"
 msgstr ""
 
@@ -5450,6 +5564,14 @@ msgid "is"
 msgstr ""
 
 msgid "is not"
+msgstr "ليس"
+
+msgid "is empty"
+msgstr ""
+
+#, fuzzy
+#| msgid "is not"
+msgid "is not empty"
 msgstr "ليس"
 
 msgid "before"
@@ -5570,11 +5692,21 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
+#, fuzzy
+#| msgid "Dynamic fields"
+msgid "Dynamic field"
+msgstr "حقول ديناميكية"
+
 msgid "Field name"
 msgstr "اسم الحقل"
 
 msgid "Available fields"
 msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove group %1$s"
+msgid "Keep field %1$s"
+msgstr "حذف الفريق %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5862,9 +5994,6 @@ msgstr "اظهار كافة تبرعات الأعضاء"
 msgid "Show all members contributions"
 msgstr "اظهار كافة تبرعات الأعضاء"
 
-msgid "See member profile"
-msgstr ""
-
 #, php-format
 msgid "%1$s contribution"
 msgid_plural "%1$s contributions"
@@ -6037,7 +6166,7 @@ msgstr ""
 msgid "Galette tables exports"
 msgstr ""
 
-msgid "Additionnaly, which table(s) do you want to export?"
+msgid "Additionally, which table(s) do you want to export?"
 msgstr ""
 
 msgid "Table name"
@@ -6089,6 +6218,9 @@ msgstr "إنشاء"
 #| msgid "Exports"
 msgid "Export as PDF"
 msgstr "التصديرات"
+
+msgid "Display"
+msgstr ""
 
 msgid "IP"
 msgstr ""
@@ -6204,14 +6336,8 @@ msgstr "هل فقدت كلمتك السرية؟"
 msgid "Mailing information"
 msgstr ""
 
-msgid "Recipients"
-msgstr ""
-
 msgid "Go back to members list"
 msgstr "العودة إلى قائمة الأعضاء"
-
-msgid "Manage selected members"
-msgstr "إدارة الأعضاء الذين تم اختيارهم"
 
 msgid "Existing attachments:"
 msgstr ""
@@ -6251,11 +6377,8 @@ msgstr ""
 msgid "An error occurred displaying preview :("
 msgstr ""
 
-msgid "Members selection"
-msgstr ""
-
-msgid "Click on a row to select a member"
-msgstr ""
+msgid "Validate"
+msgstr "تأكيد"
 
 msgid "Are you sure you want to remove this attachment?"
 msgstr ""
@@ -6570,6 +6693,21 @@ msgid "Path:"
 msgstr ""
 
 msgid "Main route:"
+msgstr ""
+
+msgid "Releases repository:"
+msgstr ""
+
+msgid "Check its compatibility with your Galette version before upgrading."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Remove payment type %1$s"
+msgid "New version: %1$s"
+msgstr "إزالة نوع الدفع %1$s"
+
+#, php-format
+msgid "Unable to check for new releases: no release found in %1$s repository."
 msgstr ""
 
 msgid "ACLs"
@@ -7153,6 +7291,9 @@ msgid "(Show or not title in front of name)"
 msgstr ""
 
 msgid "Address type:"
+msgstr ""
+
+msgid "Zip - Town"
 msgstr ""
 
 msgid "(Choose address printed below name)"

@@ -58,7 +58,7 @@
             _controls.find('input[type=hidden]').attr('name', _name);
 
             var _toggle = $(
-                '<button type="button" class="ui basic icon button relative-toggle">'
+                '<button type="button" class="ui basic icon button relative-toggle tooltip">'
                 + '<i class="history icon" aria-hidden="true"></i>'
                 + '<span class="visually-hidden"></span>'
                 + '</button>'
@@ -91,5 +91,16 @@
 
             _block.append(_controls).append(_toggle);
             _setMode(_value.match(_relativePattern) !== null);
+
+            /* Because the relative date buttons are created after FUI popups have already
+             * been initialized, the popups must be reinitialized for these buttons.
+             */
+            $('.relative-toggle.tooltip')
+                .popup({
+                    variation: 'inverted',
+                    inline: false,
+                    addTouchEvents: true,
+                })
+            ;
         });
     };

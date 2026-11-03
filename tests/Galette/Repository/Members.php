@@ -26,6 +26,8 @@ use function Safe\json_decode;
  */
 class Members extends GaletteTestCase
 {
+    use \Galette\Tests\DynamicFieldsHelper;
+
     protected int $seed = 335689;
     /** @var int[] */
     private array $mids = [];
@@ -757,6 +759,118 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test free search on empty and not empty fields
+     */
+    public function testFreeSearchEmptiness(): void
+    {
+        $this->logSuperAdmin();
+
+        //two members only are companies
+        $this->assertSame(8, $this->countEmptiness('societe_adh', empty: true));
+        $this->assertSame(2, $this->countEmptiness('societe_adh', empty: false));
+        //no member has a mobile phone
+        $this->assertSame(10, $this->countEmptiness('gsm_adh', empty: true));
+        $this->assertSame(0, $this->countEmptiness('gsm_adh', empty: false));
+        //a value is ignored
+        $this->assertSame(10, $this->countEmptiness('gsm_adh', empty: true, search: 'anything'));
+
+        //dates
+        $date = \Galette\DynamicFields\DynamicField::DATE;
+        $this->assertSame(0, $this->countEmptiness(field: 'ddn_adh', empty: true, search: '', type: $date));
+        $this->assertSame(10, $this->countEmptiness(field: 'ddn_adh', empty: false, search: '', type: $date));
+        //only one member has a contribution
+        $this->assertSame(1, $this->countEmptiness(field: 'date_echeance', empty: false, search: '', type: $date));
+
+        //dynamic fields: no value at all, or an empty one
+        $rank = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Rank');
+        $this->storeDynamicValues([
+            [$this->mids[0], $rank, 1, 'a'],
+            [$this->mids[1], $rank, 1, 'b'],
+            [$this->mids[2], $rank, 1, ''],
+        ]);
+        $this->assertSame(8, $this->countEmptiness('dyn_' . $rank, empty: true));
+        $this->assertSame(2, $this->countEmptiness('dyn_' . $rank, empty: false));
+
+        //social networks: members without any of them are empty as well
+        $socials = [
+            $this->mids[0] => \Galette\Entity\Social::MASTODON,
+            $this->mids[1] => \Galette\Entity\Social::BLOG
+        ];
+        foreach ($socials as $mid => $type) {
+            $social = new \Galette\Entity\Social($this->zdb);
+            $this->assertTrue(
+                $social
+                    ->setType($type)
+                    ->setUrl('https://galette.eu/' . $mid)
+                    ->setLinkedMember(id: $mid)
+                    ->store()
+            );
+        }
+        $mastodon = 'socials_' . \Galette\Entity\Social::MASTODON;
+        $this->assertSame(9, $this->countEmptiness($mastodon, empty: true));
+        $this->assertSame(1, $this->countEmptiness($mastodon, empty: false));
+
+        //along with other criteria
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'societe_adh',
+            'type' => \Galette\DynamicFields\DynamicField::LINE,
+            'search' => '',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_IS_NOT_EMPTY
+        ];
+        $filters->free_search = [
+            'idx' => 2,
+            'field' => $mastodon,
+            'type' => \Galette\DynamicFields\DynamicField::LINE,
+            'search' => '',
+            'log_op' => $filters::OP_OR,
+            'qry_op' => $filters::OP_IS_NOT_EMPTY
+        ];
+        $members = new \Galette\Repository\Members($filters);
+        $found = [];
+        foreach ($members->getList() as $member) {
+            $found[] = (int)$member->id_adh;
+        }
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK]);
+        $select->where->isNotNull('societe_adh')->notEqualTo('societe_adh', '');
+        $expected = [$this->mids[0]];
+        foreach ($this->zdb->execute($select) as $row) {
+            $expected[] = (int)$row->{\Galette\Entity\Adherent::PK};
+        }
+        $this->assertEqualsCanonicalizing(array_unique($expected), $found);
+    }
+
+    /**
+     * Count members whose field is empty, or not
+     *
+     * @param string $field  Field name
+     * @param bool   $empty  Search empty fields, or not empty ones
+     * @param string $search Search value
+     * @param int    $type   Field type
+     */
+    private function countEmptiness(
+        string $field,
+        bool $empty,
+        string $search = '',
+        int $type = \Galette\DynamicFields\DynamicField::LINE
+    ): int {
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => $field,
+            'type' => $type,
+            'search' => $search,
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $empty ? $filters::OP_IS_EMPTY : $filters::OP_IS_NOT_EMPTY
+        ];
+        return (new \Galette\Repository\Members($filters))->getList()->count();
+    }
+
+    /**
      * Test getList with contribution dynamic fields
      */
     public function testGetListContributionDynamics(): void
@@ -1049,6 +1163,127 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test ordering members list by a dynamic field
+     */
+    public function testOrderByDynamicField(): void
+    {
+        $rank = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Rank');
+        $staff = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::LINE,
+            'Staff rank',
+            ['field_perm' => \Galette\Entity\FieldsConfig::STAFF]
+        );
+        $repeatable = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::LINE,
+            'Repeatable',
+            ['field_repeat' => 0]
+        );
+        $text = $this->createDynamicField(\Galette\DynamicFields\DynamicField::TEXT, 'Text');
+        $contrib = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::LINE,
+            'Contribution rank',
+            ['form_name' => 'contrib']
+        );
+
+        $this->storeDynamicValues([
+            [$this->mids[0], $rank, 1, 'b'],
+            [$this->mids[1], $rank, 1, 'a'],
+            [$this->mids[2], $rank, 1, 'c'],
+            [$this->mids[3], $rank, 1, ''],
+            [$this->mids[0], $staff, 1, 'b'],
+            [$this->mids[1], $staff, 1, 'a'],
+            [$this->mids[2], $staff, 1, 'c'],
+        ]);
+
+        $this->logSuperAdmin();
+        $default = $this->getOrderedIds(new \Galette\Filters\MembersList());
+        $this->assertCount(count($this->mids), $default);
+
+        //empty values come last, in default order, whatever the direction
+        $others = array_values(array_diff($default, array_slice($this->mids, 0, 3)));
+        $filters = new \Galette\Filters\MembersList();
+        $filters->orderby = 'dyn_' . $rank;
+        $this->assertSame(
+            array_merge([$this->mids[1], $this->mids[0], $this->mids[2]], $others),
+            $this->getOrderedIds($filters)
+        );
+        //same field again inverts direction
+        $filters->orderby = 'dyn_' . $rank;
+        $this->assertSame('DESC', $filters->getDirection());
+        $members = new \Galette\Repository\Members($filters);
+        $ids = $this->getOrderedIds($filters);
+        $this->assertSame([$this->mids[2], $this->mids[0], $this->mids[1]], array_slice($ids, 0, 3));
+        $this->assertEqualsCanonicalizing($others, array_slice($ids, 3));
+        $members->getMembersList(count: true);
+        $this->assertSame(count($this->mids), $members->getCount());
+
+        //along with an advanced search on the same field
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->free_search = [
+            'idx' => 1,
+            'field' => 'dyn_' . $rank,
+            'type' => \Galette\DynamicFields\DynamicField::LINE,
+            'search' => '',
+            'log_op' => $filters::OP_AND,
+            'qry_op' => $filters::OP_NOT_EQUALS
+        ];
+        $filters->orderby = 'dyn_' . $rank;
+        $this->assertSame([$this->mids[1], $this->mids[0], $this->mids[2]], $this->getOrderedIds($filters));
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->orderby = 'dyn_' . $staff;
+        $this->assertSame(
+            [$this->mids[1], $this->mids[0], $this->mids[2]],
+            array_slice($this->getOrderedIds($filters), 0, 3)
+        );
+
+        //fields that cannot be sorted fall back to default order
+        foreach ([$repeatable, $text, $contrib, 999999] as $field) {
+            $filters = new \Galette\Filters\MembersList();
+            $filters->orderby = 'dyn_' . $field;
+            $this->assertSame($default, $this->getOrderedIds($filters), 'dyn_' . $field);
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'Cannot order members by dynamic field #' . $field);
+        }
+        $this->login->logOut();
+
+        //staff field cannot be used by others
+        $group = $this->logGroupManager();
+        $this->assertTrue($group->setMembers(array_map(
+            fn(int $id) => new \Galette\Entity\Adherent($this->zdb, $id),
+            array_slice($this->mids, 0, 3)
+        )));
+        $managed_default = $this->getOrderedIds(new \Galette\Filters\MembersList(), managed: true);
+        $filters = new \Galette\Filters\MembersList();
+        $filters->orderby = 'dyn_' . $staff;
+        $this->assertCount(3, $managed_default);
+        $this->assertSame($managed_default, $this->getOrderedIds($filters, managed: true));
+        //while fields they can see are fine
+        $filters->orderby = 'dyn_' . $rank;
+        $this->assertSame([$this->mids[1], $this->mids[0], $this->mids[2]], $this->getOrderedIds($filters, managed: true));
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Cannot order members by dynamic field #' . $staff);
+        $this->login->logOut();
+    }
+
+    /**
+     * Get ordered members ids
+     *
+     * @param \Galette\Filters\MembersList $filters Filters
+     * @param bool                         $managed Get managed members only
+     *
+     * @return array<int>
+     */
+    private function getOrderedIds(\Galette\Filters\MembersList $filters, bool $managed = false): array
+    {
+        $members = new \Galette\Repository\Members($filters);
+        $list = $members->getMembersList(managed: $managed, limit: false);
+        $ids = [];
+        foreach ($list as $member) {
+            $ids[] = (int)$member->id_adh;
+        }
+        return $ids;
+    }
+
+    /**
      * Test getPublicList
      */
     public function testGetPublicList(): void
@@ -1225,6 +1460,62 @@ class Members extends GaletteTestCase
 
         $world_group = new \Galette\Entity\Group($world);
         $this->assertCount(3, $world_group->getMembers());
+    }
+
+    /**
+     * Test members that do not belong to any group
+     */
+    public function testGroupFilterNone(): void
+    {
+        $members = new \Galette\Repository\Members();
+        $list = $members->getList(as_members: true);
+        $this->assertSame(10, count($list));
+
+        $filters = new \Galette\Filters\MembersList();
+        $filters->group_filter = \Galette\Repository\Members::GROUP_NONE;
+        $this->assertSame(\Galette\Repository\Members::GROUP_NONE, $filters->group_filter);
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(10, $members->getList()->count());
+
+        $parent = new \Galette\Entity\Group();
+        $parent->setName('Activities');
+        $this->assertTrue($parent->store());
+
+        $group = new \Galette\Entity\Group();
+        $group->setName('Pony')->setParentGroup($parent->getId());
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setMembers([$list[0], $list[1], $list[2]]));
+        //managing a group is not belonging to it
+        $this->assertTrue($group->setManagers([$list[3]]));
+
+        $members = new \Galette\Repository\Members($filters);
+        $found = $members->getList();
+        $this->assertSame(7, $found->count());
+        $found_ids = [];
+        foreach ($found as $member) {
+            $found_ids[] = (int)$member->id_adh;
+        }
+        $this->assertNotContains($list[0]->id, $found_ids);
+        $this->assertContains($list[3]->id, $found_ids);
+
+        //works on advanced search as well
+        $filters = new \Galette\Filters\AdvancedMembersList();
+        $filters->group_filter = \Galette\Repository\Members::GROUP_NONE;
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(7, $members->getList()->count());
+
+        //regular group filter still includes children groups members
+        $filters->group_filter = $parent->getId();
+        $members = new \Galette\Repository\Members($filters);
+        $this->assertSame(3, $members->getList()->count());
+
+        //other negative values are rejected
+        $filters->group_filter = -2;
+        $this->assertSame($parent->getId(), $filters->group_filter);
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            '[MembersList] Value for group filter should be an integer (integer given)'
+        );
     }
 
     /**

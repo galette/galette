@@ -2,6 +2,6 @@
 
 ## Reporting a Vulnerability
 
-Please report security issues to security@galette.eu
+Please report security issues privately, using the "Report a vulnerability" button of the [Security tab](https://github.com/galette/galette/security) of the repository.
 
-If you have a github account, please tell us so we can give you access to the created advisory.
+Do not open a public issue or pull request for a vulnerability.

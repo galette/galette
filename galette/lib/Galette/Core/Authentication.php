@@ -107,12 +107,16 @@ abstract class Authentication
         $this->logged = false;
         $this->tfa_pending = false;
         unset($this->name);
+        $this->surname = null;
         unset($this->login);
         $this->admin = false;
         $this->active = false;
         $this->superadmin = false;
         $this->staff = false;
         $this->uptodate = false;
+        //staff members and admins do not load managed groups at login,
+        //they must not get the ones of a previous login
+        $this->managed_groups = [];
         unset($this->lang);
         return true;
     }

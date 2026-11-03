@@ -6,7 +6,7 @@
 
 {% extends 'page.html.twig' %}
 
-{% macro showPluginEntry(name, plugin) %}
+{% macro showPluginEntry(name, plugin, update, release_status) %}
     {% set is_enabled = not plugins.isDisabled(name) %}
     {% set show_db_button = false %}
     {% set show_activate = false %}
@@ -49,7 +49,20 @@
         </td>
         <td data-col-label="{{ _T('Description') }}">{{ plugin.desc }}</td>
         <td data-col-label="{{ _T('Author') }}">{{ plugin.author }}</td>
-        <td class="collapsing" data-col-label="{{ _T('Version') }}">{{ plugin.version }}</td>
+        <td class="collapsing" data-col-label="{{ _T('Version') }}">
+            {{ plugin.version }}
+    {% if update %}
+            <a href="{{ update.url }}" class="icon-only" target="_blank" rel="noopener">
+                <i class="ui arrow alternate circle up orange icon" aria-hidden="true"></i>
+                <span class="visually-hidden">{{ _T("New version: %1$s")|format(update.latest) }}. {{ _T("Check its compatibility with your Galette version before upgrading.") }}</span>
+            </a>
+    {% elseif release_status and release_status.status == constant('Galette\\Util\\Release::STATUS_NOT_FOUND') %}
+            <span class="icon-only">
+                <i class="ui question circle grey icon" aria-hidden="true"></i>
+                <span class="visually-hidden">{{ _T("Unable to check for new releases: no release found in %1$s repository.")|format(release_status.repository) }}</span>
+            </span>
+    {% endif %}
+        </td>
         <td class="collapsing" data-col-label="{{ _T('Release date') }}">{{ plugin.date }}</td>
         <td class="actions_row collapsing">
             {% if is_enabled %}
@@ -113,7 +126,7 @@
                 <th scope="rowgroup" colspan="6" class="center aligned"><strong>{{ _T('Active plugins') }}</strong></th>
             </tr>
 {% for name, plugin in plugins_list %}
-            {{ _self.showPluginEntry(name, plugin) }}
+            {{ _self.showPluginEntry(name, plugin, plugins_updates[name] ?? null, plugins_releases_status[name] ?? null) }}
 {% else %}
             <tr>
                 <td colspan="6">{{ _T('No active plugin.') }}</td>
@@ -123,7 +136,7 @@
                 <th scope="rowgroup" colspan="6" class="center aligned"><strong>{{ _T('Inactive plugins') }}</strong></th>
             </tr>
 {% for name, plugin in plugins_disabled_list %}
-            {{ _self.showPluginEntry(name, plugin) }}
+            {{ _self.showPluginEntry(name, plugin, plugins_updates[name] ?? null, plugins_releases_status[name] ?? null) }}
 {% else %}
             <tr>
                 <td colspan="6">{{ _T('No inactive plugin.') }}</td>

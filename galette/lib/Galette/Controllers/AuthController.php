@@ -211,6 +211,27 @@ class AuthController extends AbstractController
                 } catch (\Throwable $e) {
                     Logs::exception($e, 'Error looking for new release', Analog::ERROR);
                 }
+
+                //check for new plugins releases
+                try {
+                    $plugins_updates = count($release->getPluginsUpdates());
+                    if ($plugins_updates > 0) {
+                        $this->flash->addMessage(
+                            'info',
+                            sprintf(
+                                '<a href="%1$s">%2$s</a>',
+                                $this->routeparser->urlFor('plugins'),
+                                sprintf(
+                                    //TRANS: %1$d is the number of plugins that have a new release
+                                    _Tn('%1$d plugin has a new release available', '%1$d plugins have a new release available', $plugins_updates),
+                                    $plugins_updates
+                                )
+                            )
+                        );
+                    }
+                } catch (\Throwable $e) {
+                    Logs::exception($e, 'Error looking for new plugins releases', Analog::ERROR);
+                }
             }
 
             $this->suggestSecondFactor($tfa);

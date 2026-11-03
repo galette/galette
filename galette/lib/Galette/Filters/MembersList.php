@@ -201,7 +201,9 @@ class MembersList extends Pagination
                     }
                     break;
                 case 'group_filter':
-                    if (is_numeric($value) && $value > 0) {
+                    if (is_numeric($value) && (int)$value === Members::GROUP_NONE) {
+                        $this->group_filter = Members::GROUP_NONE;
+                    } elseif (is_numeric($value) && $value > 0) {
                         $value = (int)$value;
                         //check group existence
                         $g = new Group();

@@ -210,6 +210,98 @@ tr.with-headers th {
     border-top: none;
 }
 
+/*---------------------------------------------
+     Member's groups and roles on its form
+----------------------------------------------*/
+#member_groups,
+#member_roles {
+    & > tbody > tr,
+    & > tr {
+        & > th,
+        & th {
+            border-top: @rowBorder;
+            font-weight: normal;
+        }
+        &:hover {
+            th,
+            td {
+                background-color: lighten(@activeLineBackgroundColor, 2);
+
+                .group-remove:hover,
+                .role-remove:hover {
+                    background-color: @white;
+                }
+            }
+        }
+    }
+    & > tbody > tr:first-child > th,
+    & > tr:first-child > th {
+        border-top: none;
+    }
+    span.small.text {
+        display: block;
+        margin-top: .25em;
+    }
+    @media only screen and (max-width: @largestMobileScreen) {
+        & > thead {
+            display: none !important;
+        }
+        & > tbody > tr,
+        & > tr {
+            & > th,
+            & th {
+              border-top: none;
+              padding-left: @responsiveCellHorizontalPadding;
+              padding-bottom: .5em;
+            }
+        }
+        & th,
+        & td {
+            &.center.aligned,
+            &.right.aligned {
+                text-align: left !important;
+            }
+            &[data-col-label]::before {
+                float: left;
+                content: attr(data-col-label);
+                margin-right: 1em;
+                font-weight: bold;
+            }
+        }
+        tr[hidden] {
+            display:none !important;
+        }
+    }
+}
+#groups_field,
+#roles_field {
+    .fields.group-add,
+    .fields.role-add {
+        .field.role,
+        .field.group {
+            flex-grow: 2;
+        }
+        .field.action {
+            align-self: center;
+        }
+    }
+}
+@media only screen and (max-width: @largestMobileScreen) {
+    #member_groups > tbody > tr:nth-last-child(2),
+    #member_groups > tr:nth-last-child(2),
+    #member_roles > tbody > tr:last-child,
+    #member_roles > tr:last-child {
+        border-bottom: none;
+        box-shadow: none;
+    }
+    #groups_field,
+    #roles_field {
+        .field.action label {
+            display:none;
+        }
+    }
+}
+
 /*------------------
      Plugins list
 -------------------*/

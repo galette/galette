@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# CodeRabbit review configuration.
+# https://docs.coderabbit.ai/reference/configuration
+#
+# AGENTS.md, CLAUDE.md and .github/copilot-instructions.md are picked up as
+# code guidelines without any setting. Review guidelines are in REVIEW.md,
+# shared with Qodo.
+
+language: en-US
+tone_instructions: "Be concise and factual. Report only issues worth fixing; skip praise and style preferences."
+
+reviews:
+  profile: chill
+  # Leave the pull request description as its author wrote it
+  high_level_summary: false
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  suggested_labels: false
+  suggested_reviewers: false
+  in_progress_fortune: false
+  poem: false
+  changed_files_summary: false
+  # No status comment when a review is skipped: the CodeRabbit check shows it
+  review_status: false
+
+  # Reviews are requested with the ai-review label, or @coderabbitai review,
+  # to preserve the hourly review allowance
+  auto_review:
+    enabled: false
+    labels:
+      - "ai-review"
+    drafts: false
+    base_branches:
+      - "^develop$"
+      - "^master$"
+      - "^feature/"
+      - "^hotfix/"
+      - "^release/"
+    ignore_usernames:
+      - "dependabot[bot]"
+      - "hosted-weblate[bot]"
+
+  path_filters:
+    - "!galette/vendor/**"
+    - "!galette/lang/**"
+    - "!galette/docs/apidocs/**"
+    - "!**/*.min.js"
+    - "!**/*.min.css"
+    - "!package-lock.json"
+    - "!composer.lock"
+    - "!tests/fixtures/**"
+
+  pre_merge_checks:
+    # PHPCS already enforces doc blocks
+    docstrings:
+      mode: "off"
+
+  # Changes are pushed by their authors only
+  finishing_touches:
+    autofix:
+      enabled: false
+    unit_tests:
+      enabled: false
+
+  tools:
+    # Run by the CI with the repository configuration and vendor autoload
+    phpstan:
+      enabled: false
+    phpcs:
+      enabled: false
+    phpmd:
+      enabled: false
+    languagetool:
+      enabled: false
+
+knowledge_base:
+  code_guidelines:
+    filePatterns:
+      - "REVIEW.md"
+
+chat:
+  art: false

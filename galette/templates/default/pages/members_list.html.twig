@@ -63,6 +63,21 @@
                     collapse: true
                 }
             ]) %}
+        {% elseif column.is_dynamic is defined %}
+            {% if column.sortable %}
+                {% set columns = columns|merge([
+                    {
+                        label: column.label,
+                        order: column.field_id
+                    }
+                ]) %}
+            {% else %}
+                {% set columns = columns|merge([
+                    {
+                        label: column.label
+                    }
+                ]) %}
+            {% endif %}
         {% elseif column.field_id starts with 'date_' %}
             {% set columns = columns|merge([
                 {
@@ -121,8 +136,11 @@
                     <label for="group_filter" class="visually-hidden">{{ _T('among:') }}</label>
                     <select name="group_filter" class="ui search dropdown">
                         <option value="0">{{ _T('All groups') }}</option>
+    {% if login.isAdmin() or login.isStaff() %}
+                        <option value="{{ constant("Galette\\Repository\\Members::GROUP_NONE") }}"{% if filters.group_filter == constant("Galette\\Repository\\Members::GROUP_NONE") %} selected="selected"{% endif %}>{{ _T('Not in any group') }}</option>
+    {% endif %}
     {% for group in filter_groups_options %}
-                        <option value="{{ group.getId() }}"{% if filters.group_filter == group.getId() %} selected="selected"{% endif %}>{{ group.getIndentName()|raw }}</option>
+                        <option value="{{ group.getId() }}"{% if filters.group_filter == group.getId() %} selected="selected"{% endif %}>{{ group.getFullName() }}</option>
     {% endfor %}
                     </select>
                 </div>
@@ -161,7 +179,7 @@
                         {{ _T('Save') }}
                     </button>
                     <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
-                        <i class="trash alt red icon" aria-hidden="true"></i>
+                        <i class="trash red icon" aria-hidden="true"></i>
                         {{ _T('Clear filter') }}
                     </button>
                 </div>
@@ -179,7 +197,7 @@
                 </button>
                 <input type="hidden" name="advanced_search" value="1" class="ui button"/>
                 <button type="submit" name="clear_filter" class="tooltip ui labeled icon button" title="{{ _T('Reset all filters to defaults') }}">
-                    <i class="trash alt red icon" aria-hidden="true"></i>
+                    <i class="trash red icon" aria-hidden="true"></i>
                     {{ _T('Clear filter') }}
                 </button>
                 <div class="ui basic fluid accordion">
@@ -364,6 +382,17 @@
             {% endif %}
                         {% set mid = member.id %}
                             <a href="{{ url_for("member", {"id": member.id}) }}">{{ member.sname }}{% if member.company_name %} ({{ member.company_name }}){% endif %}</a>
+                        </td>
+        {% elseif column.is_dynamic is defined %}
+            {% set dynamic_value = dynamic_values[member.id][column.field_id] ?? null %}
+                        <td data-col-label="{{ column.label }}">
+            {% if dynamic_value is not null %}
+                {% if dynamic_value.short != dynamic_value.full %}
+                            <span title="{{ dynamic_value.full }}">{{ dynamic_value.short }}</span>
+                {% else %}
+                            {{ dynamic_value.full }}
+                {% endif %}
+            {% endif %}
                         </td>
         {% else %}
             {% set propname = column.propname %}
@@ -730,126 +759,7 @@
                 }
             });
         }
-        var _masschange = function(){
-            $.ajax({
-                url: '{{ url_for('batch-memberslist') }}',
-                type: "POST",
-                data: {
-                    ajax: true,
-                    masschange: true,
-                    entries_sel: $('#listform input[type=\"checkbox\"]:checked').map(function(){
-                        return $(this).val();
-                    }).get()
-                },
-                datatype: 'json',
-                {% include "elements/js/loader.js.twig" with {
-                    loader: "action",
-                    selector: ".loader_selector"
-                } %},
-                success: function(res){
-                    var _res = $(res);
-
-                    $('body').append(_res);
-
-                    _res.find('form').on('submit', function(e) {
-                        e.preventDefault();
-                        var _form = $(this);
-                        var _data = _form.serialize();
-                        $.ajax({
-                            url: _form.attr('action'),
-                            type: "POST",
-                            data: _data,
-                            datatype: 'json',
-                            {% include "elements/js/loader.js.twig" with {
-                                loader: "action",
-                                selector: ".loader_selector"
-                            } %},
-                            success: function(data, status, xhr) {
-                                var _res = $(data);
-
-                                $('#mass_change').remove();
-                                $('body').append(_res);
-
-                                _res.find('form').on('submit', function(e) {
-                                    e.preventDefault();
-                                    var _form = $(this);
-                                    var _data = _form.serialize();
-                                    $.ajax({
-                                        url: _form.attr('action'),
-                                        type: "POST",
-                                        data: _data,
-                                        datatype: 'json',
-                                        {% include "elements/js/loader.js.twig" with {
-                                            loader: "action",
-                                            selector: ".loader_selector"
-                                        } %},
-                                        success: function(res) {
-                                            window.location.href = _form.find('input[name=redirect_uri]').val();
-                                        },
-                                        error: function() {
-                                            {% include "elements/js/modal.js.twig" with {
-                                                modal_title_twig: _T("An error occurred :(")|e("js"),
-                                                modal_without_content: true,
-                                                modal_class: "mini",
-                                                modal_deny_only: true,
-                                                modal_cancel_text: _T("Close")|e("js"),
-                                                modal_classname: "redalert",
-                                            } %}
-                                        }
-                                    });
-                                });
-
-                                {% include "elements/js/modal.js.twig" with {
-                                    modal_selector: "#mass_change",
-                                    modal_without_title: true,
-                                    modal_onapprove: "$('#mass_change form').submit();"
-                                } %}
-                            },
-                            error: function() {
-                                {% include "elements/js/modal.js.twig" with {
-                                    modal_title_twig: _T("An error occurred :(")|e("js"),
-                                    modal_without_content: true,
-                                    modal_class: "mini",
-                                    modal_deny_only: true,
-                                    modal_cancel_text: _T("Close")|e("js"),
-                                    modal_classname: "redalert",
-                                } %}
-                            }
-                        });
-                    });
-
-                    {% include "elements/js/modal.js.twig" with {
-                        modal_selector: "#mass_change",
-                        modal_without_title: true,
-                        modal_content_class: "scrolling",
-                        modal_onshow: "_massCheckboxes('#mass_change');_batchAjaxMapper();",
-                        modal_onapprove: "$('#mass_change form').submit();"
-                    } %}
-                },
-                error: function() {
-                    {% include "elements/js/modal.js.twig" with {
-                        modal_title_twig: _T("An error occurred :(")|e("js"),
-                        modal_without_content: true,
-                        modal_class: "mini",
-                        modal_deny_only: true,
-                        modal_cancel_text: _T("Close")|e("js"),
-                        modal_classname: "redalert",
-                    } %}
-                }
-            });
-        }
-        var _batchAjaxMapper = function(){
-            $('.modal-form .ui.dropdown, .modal-form select:not(.nochosen)').dropdown();
-            $('.modal-form .ui.checkbox, .modal-form .ui.radio.checkbox').checkbox();
-            $('.modal-form a[title], .modal-form .tooltip').popup({
-                variation: 'inverted',
-                inline: false,
-                addTouchEvents: false,
-            });
-            {% include 'elements/js/calendar.js.twig' with {
-                selector: ".modal-form [id$='rangestart'], .modal-form [id$='rangeend']"
-            } %}
-        }
+        {% include 'elements/js/mass_change.js.twig' with {batch_url: url_for('batch-memberslist')} %}
         var _formValidationInModal = function(modal){
             $(modal +' form').form({
                 inline: true,

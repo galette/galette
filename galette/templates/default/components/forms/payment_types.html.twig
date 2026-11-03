@@ -9,6 +9,10 @@
 {% endif %}
 
 <div class="{% if show_inline is defined %}inline {% endif %}field{% if required is defined and required == true %} required{% endif %}">
+    {% if masschange ?? false %}
+        {# Add a checkbox for fields to change on mass edition #}
+        {% include "components/forms/mass_checkbox.html.twig" with {name: varname, label: label ?? _T("Payment type:")} only %}
+    {% endif %}
     {% include "components/forms/tip.html.twig" with {
         label: label ?? _T("Payment type:"),
         for: varname,

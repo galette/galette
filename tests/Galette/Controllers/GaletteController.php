@@ -27,6 +27,8 @@ use function Safe\unlink;
 */
 class GaletteController extends GaletteRoutingTestCase
 {
+    use \Galette\Tests\DynamicFieldsHelper;
+
     protected int $seed = 20250802103040;
 
     /**
@@ -140,6 +142,26 @@ class GaletteController extends GaletteRoutingTestCase
         $this->assertStringContainsString('id="dashboard-news"', $body);
         $this->assertStringContainsString($this->routeparser->urlFor('ajaxNews'), $body);
         $this->assertStringNotContainsString('Galette 1.0.0rc1', $body);
+    }
+
+    /**
+     * Test dashboard route when the browser does not send the display cookie
+     */
+    public function testDashboardWithoutCookie(): void
+    {
+        $this->logSuperAdmin();
+        $checkbox = '/<input type="checkbox" name="show_dashboard" id="show_dashboard" value="1" checked="checked"\/>/';
+
+        //no cookie: dashboard is displayed, checkbox defaults to checked
+        $test_response = $this->app->handle($this->createRequest('dashboard'));
+        $this->expectOK($test_response);
+        $this->assertMatchesRegularExpression($checkbox, (string)$test_response->getBody());
+
+        //cookie disabling the dashboard on login: checkbox is unchecked
+        $request = $this->createRequest('dashboard')->withCookieParams(['show_galette_dashboard' => '0']);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $this->assertDoesNotMatchRegularExpression($checkbox, (string)$test_response->getBody());
     }
 
     /**
@@ -666,6 +688,46 @@ class GaletteController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('Core lists', $body);
+        $this->assertStringNotContainsString('data-dynamic="1"', $body);
+
+        //dynamic fields, listed or not
+        $listed = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Listed & dynamic');
+        $remaining = $this->createDynamicField(
+            \Galette\DynamicFields\DynamicField::BOOLEAN,
+            'Remaining "dynamic"',
+            ['field_perm' => \Galette\Entity\FieldsConfig::STAFF]
+        );
+        $lists_config = $this->container->get(\Galette\Entity\ListsConfig::class);
+        $lists_config->installInit();
+        $lists_config->load();
+        $new_list = [];
+        foreach (['id_adh', 'list_adh_name', 'dyn_' . $listed] as $key) {
+            $new_list[] = $lists_config->getField($key);
+        }
+        $this->assertTrue($lists_config->setListFields($new_list));
+
+        //strict_variables follows GALETTE_DEBUG: an undefined template key only breaks debugging instances
+        $twig = $this->container->get(\Slim\Views\Twig::class)->getEnvironment();
+        $twig->enableStrictVariables();
+        try {
+            $test_response = $this->app->handle($request);
+        } finally {
+            $twig->disableStrictVariables();
+        }
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString(
+            '<tr data-fid="dyn_' . $listed . '" data-label="Listed &amp; dynamic" data-permission="'
+                . _T('User, read/write') . '" data-dynamic="1">',
+            $body
+        );
+        $this->assertStringContainsString(
+            '<div class="item" data-fid="dyn_' . $remaining . '" data-label="Remaining &quot;dynamic&quot;" data-permission="'
+                . _T('Staff member') . '" data-dynamic="1">',
+            $body
+        );
+        $this->assertMatchesRegularExpression('/data-fid="pseudo_adh"[^>]+data-dynamic="0"/', $body);
+        $this->assertSame(2, substr_count($body, '<span class="ui mini basic label">' . _T('Dynamic field') . '</span>'));
     }
 
     /**
@@ -700,10 +762,13 @@ class GaletteController extends GaletteRoutingTestCase
         }
 
         //prepare data with some changes
+        $dynamic = $this->createDynamicField(\Galette\DynamicFields\DynamicField::LINE, 'Dynamic');
+        $lists_config->load();
         $expecteds = [
             'id_adh',
             'list_adh_name',
             'email_adh',
+            'dyn_' . $dynamic,
             'tel_adh',
             'id_statut',
             'list_adh_contribstatus',
@@ -728,7 +793,8 @@ class GaletteController extends GaletteRoutingTestCase
 
         //check if changes have been stored in database
         $list = $lists_config->getListedFields();
-        $this->assertCount(7, $list);
+        $this->assertCount(8, $list);
+        $this->assertTrue($list[3]['is_dynamic']);
 
         foreach ($expecteds as $k => $expected) {
             $this->assertSame($expected, $list[$k]['field_id']);
@@ -778,6 +844,19 @@ class GaletteController extends GaletteRoutingTestCase
             '<a href="/members/reminder-filter/late/withoutmail">0 members without email address</a>',
             $body
         );
+
+        //previews are in the interface language, not in the default instance one
+        $pref_lang = $this->preferences->pref_lang;
+        $this->preferences->pref_lang = 'fr_FR';
+        try {
+            $test_response = $this->app->handle($request);
+        } finally {
+            $this->preferences->pref_lang = $pref_lang;
+        }
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('Your membership is about to expire', $body);
+        $this->assertStringNotContainsString('Votre adhésion arrive à terme', $body);
     }
 
     /**

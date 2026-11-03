@@ -11,9 +11,7 @@
         {% block label %}
             {% if masschange %}
                 {# Add a checkbox for fields to change on mass edition #}
-                <span class="ui checkbox masschange">
-                    <input type="checkbox" name="mass_{{ entry.field_id }}" class="mass_checkbox"/>
-                </span>
+                {% include "components/forms/mass_checkbox.html.twig" with {name: entry.field_id, label: label} only %}
             {% endif %}
             <label>
                 {{ label }}

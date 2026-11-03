@@ -701,26 +701,23 @@ class CsvController extends AbstractController
 
     /**
      * Contributions CSV exports
-     *
-     * @param string $type One of 'contributions' or 'transactions'
      */
     #[Route(
         name: 'csv-contributionslist',
-        pattern: '/{type:contributions|transactions}/export/csv',
+        pattern: '/contributions/export/csv',
         methods: ['GET', 'POST']
     )]
-    public function contributionsExport(Request $request, Response $response, string $type): Response
+    public function contributionsExport(Request $request, Response $response): Response
     {
         $filters = $this->getRequestedSessionFilter(
             $request,
-            $this->getFilterName($type, ['suffix' => 'csvexport']),
+            $this->getFilterName('contributions', ['suffix' => 'csvexport']),
             ContributionsList::class
         );
 
         $csv = new ContributionsCsv(
             $this->zdb,
-            $this->login,
-            $type
+            $this->login
         );
         $csv->exportContributions($filters);
 

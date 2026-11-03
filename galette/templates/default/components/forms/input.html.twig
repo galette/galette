@@ -23,9 +23,7 @@
 {% endif %}
     {% if masschange ?? false %}
         {# Add a checkbox for fields to change on mass edition #}
-        <span class="ui checkbox masschange">
-            <input type="checkbox" name="mass_{{ id }}" class="mass_checkbox"/>
-        </span>
+        {% include "components/forms/mass_checkbox.html.twig" with {name: id, label: label ?? id} only %}
     {% endif %}
     {% if type is defined and type == 'checkbox' %}
         <div class="ui toggle{% if checked is defined and checked == true %} checked{% endif %} right aligned checkbox">
