@@ -4,6 +4,7 @@ Changes
 1.3.2 -> 1.3.3
 
 - Mass change checkboxes stayed checked when a field was set back to its initial value
+- Dynamic fields could be created without a name; new fields are now single lines by default instead of separators
 
 1.3.1 -> 1.3.2
 
