@@ -1,0 +1,2 @@
+# Codecov reports through its GitHub check only; no PR comment
+comment: false
