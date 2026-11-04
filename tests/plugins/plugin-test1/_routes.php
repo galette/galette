@@ -14,11 +14,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 /** @var \Slim\Routing\RouteCollectorProxy<\Psr\Container\ContainerInterface|null> $app */
 
-//a public page, whose visibility is declared by the plugin
-$app->get(
-    '/public/page',
-    fn(Request $request, Response $response): Response => $response,
-)->setName('plugin1_public_page')->add(PublicPages::class);
+//routes are declared with attributes on controllers; this file remains for
+//those that cannot be, and to check it is still included
 
 //a public page left undeclared, which follows the default visibility
 $app->get(

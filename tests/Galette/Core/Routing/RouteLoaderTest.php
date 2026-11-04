@@ -24,6 +24,8 @@ use Galette\Tests\GaletteTestCase;
  */
 class RouteLoaderTest extends GaletteTestCase
 {
+    protected bool $load_plugins = true;
+
     /**
      * Every route requiring authentication must have an ACL, a known level or
      * permission, or Authenticate throws when the route is called.
@@ -97,6 +99,22 @@ class RouteLoaderTest extends GaletteTestCase
 
         $results = $resolver->computeRoutingResults('/plugins/plugin2', 'GET');
         $this->assertSame('pluginInfo', $collector->lookupRoute($results->getRouteIdentifier())->getName());
+    }
+
+    /**
+     * Plugins routes come from their controllers attributes, and from their
+     * routes file when they have one
+     */
+    public function testPluginRoutes(): void
+    {
+        $collector = $this->app->getRouteCollector();
+
+        $route = $collector->getNamedRoute('plugin1_public_page');
+        $this->assertSame('/plugins/plugin1/public/page', $route->getPattern());
+        $this->assertSame([\GaletteTest1Plugin\Controllers\PublicController::class, 'page'], $route->getCallable());
+
+        $route = $collector->getNamedRoute('plugin1_public_other');
+        $this->assertSame('/plugins/plugin1/public/other', $route->getPattern());
     }
 
     /**
