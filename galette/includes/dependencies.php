@@ -27,6 +27,7 @@ use Galette\Core\History;
 use Galette\Core\I18n;
 use Galette\Core\Login;
 use Galette\Core\Logo;
+use Galette\Core\Navigation;
 use Galette\Core\Plugins;
 use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
@@ -83,6 +84,10 @@ return [
     PermissionResolverInterface::class => get(RoleResolver::class),
     AccessControl::class => autowire(),
     FeatureFlagManager::class => autowire(),
+    Navigation::class => autowire()->constructorParameter(
+        'release',
+        factory(fn(ContainerInterface $c): Closure => fn(): Release => $c->get(Release::class))
+    ),
     //optional constructor parameters are not autowired
     Release::class => autowire()->constructorParameter('plugins', get(Plugins::class)),
 

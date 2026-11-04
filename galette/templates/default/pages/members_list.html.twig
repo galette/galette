@@ -23,7 +23,7 @@
 
 {% macro draw_actions(member, login) %}
                     <td class="center actions_row collapsing">
-    {% set actions = callstatic('\\Galette\\Core\\Galette', 'getListActions', member) %}
+    {% set actions = navigation.getListActions(member) %}
     {% for action in actions %}
         {{ macros.drawListAction(action.label, action.route, action.icon, action.extra_class ?? null) }}
     {% endfor %}
@@ -487,7 +487,7 @@
             'content': _T("Please make sure to select at least one member from the list to perform this action.")
         }
     } %}
-    {% set batch_actions = callstatic('\\Galette\\Core\\Galette', 'getBatchActions') %}
+    {% set batch_actions = navigation.getBatchActions() %}
 {% endif %}
 
 {% block batch_selection %}
