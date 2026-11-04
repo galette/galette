@@ -89,8 +89,7 @@ abstract class BaseGaletteTestCase extends TestCase
         global $app;
         $app = $this->app;
 
-        /** @var \DI\Container $container */
-        $container = $this->app->getContainer();
+        $container = $gapp->getContainer();
         $_SERVER['HTTP_HOST'] = '';
 
         $container->set(\Slim\Flash\Messages::class, $this->flash);
@@ -100,17 +99,9 @@ abstract class BaseGaletteTestCase extends TestCase
 
         $this->app->addRoutingMiddleware();
 
-        //error middleware, as in galette/includes/main.inc.php, so HTTP exceptions
-        //are rendered as error pages instead of bubbling up
-        $errorMiddleware = $this->app->addErrorMiddleware(
-            displayErrorDetails: \Galette\Core\Galette::isDebugEnabled(),
-            logErrors: false,
-            logErrorDetails: false
-        );
-        /** @var \Slim\Handlers\ErrorHandler $errorHandler */
-        $errorHandler = $errorMiddleware->getDefaultErrorHandler();
-        $errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class);
-        $errorHandler->setDefaultErrorRenderer('text/html', \Galette\Renderers\Html::class);
+        //error middleware, as in the web application, so HTTP exceptions are
+        //rendered as error pages instead of bubbling up; but not logged
+        $gapp->addErrorHandling(logger: null);
 
         if ($this->app_mode === GALETTE_MODE) {
             $this->app->add(\Slim\Views\TwigMiddleware::createFromContainer($this->app, \Slim\Views\Twig::class));
