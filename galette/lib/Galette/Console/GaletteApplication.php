@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Console;
 
+use DI\Container;
 use Galette\Core\Galette;
 use Psr\Container\ContainerInterface;
 use Slim\App;
@@ -38,7 +39,7 @@ class GaletteApplication extends Application
      *
      * @param App<ContainerInterface> $app
      */
-    public function init(ContainerInterface $container, App $app, RouteCollectorInterface $routeCollector): void
+    public function init(Container $container, App $app, RouteCollectorInterface $routeCollector): void
     {
         Galette::loadRoutes($app);
 
@@ -48,29 +49,49 @@ class GaletteApplication extends Application
         );
 
         $this->addCommands([
-            new Command\Checks($this->basepath),
-            new Command\Install($this->basepath),
-            new Command\FeatureStatus($this->basepath),
-            new Command\HeadersCheck($this->basepath),
-            new Command\CheckRoutes($routeCollector, $this->basepath, $pluginRoutes)
+            $this->make($container, Command\Checks::class),
+            $this->make($container, Command\Install::class),
+            $this->make($container, Command\FeatureStatus::class),
+            $this->make($container, Command\HeadersCheck::class),
+            $this->make(
+                $container,
+                Command\CheckRoutes::class,
+                ['routeCollector' => $routeCollector, 'pluginRoutes' => $pluginRoutes]
+            )
         ]);
         if (!defined('GALETTE_INSTALLER')) {
             //cannot be added until Galette has been properly installed
             $this->addCommands([
-                new Command\Plugins\PluginsList($this->basepath),
-                new Command\Plugins\PluginEnable($this->basepath),
-                new Command\Plugins\PluginDisable($this->basepath),
-                new Command\Plugins\PluginInstallDb($this->basepath),
-                new Command\SeedFixtures($this->basepath),
-                new Command\SuperAdminPassword($this->basepath),
-                new Command\TwoFactorReset($this->basepath),
-                new Command\FeatureEnable($this->basepath),
-                new Command\FeatureDisable($this->basepath),
-                new Command\ProcessMailingQueue($this->basepath)
+                $this->make($container, Command\Plugins\PluginsList::class),
+                $this->make($container, Command\Plugins\PluginEnable::class),
+                $this->make($container, Command\Plugins\PluginDisable::class),
+                $this->make($container, Command\Plugins\PluginInstallDb::class),
+                $this->make($container, Command\SeedFixtures::class),
+                $this->make($container, Command\SuperAdminPassword::class),
+                $this->make($container, Command\TwoFactorReset::class),
+                $this->make($container, Command\FeatureEnable::class),
+                $this->make($container, Command\FeatureDisable::class),
+                $this->make($container, Command\ProcessMailingQueue::class)
             ]);
         }
-        $this->addCommand(new Command\MakeTwigCache($this->basepath));
-        $this->addCommand(new Command\TwigPotReferences($this->basepath));
-        $this->addCommand(new Command\CompileLocales($this->basepath));
+        $this->addCommand($this->make($container, Command\MakeTwigCache::class));
+        $this->addCommand($this->make($container, Command\TwigPotReferences::class));
+        $this->addCommand($this->make($container, Command\CompileLocales::class));
+    }
+
+    /**
+     * Build a command from the container, so its dependencies are injected
+     *
+     * @template T of Command\AbstractCommand
+     *
+     * @param Container            $container  Container instance
+     * @param class-string<T>      $class      Command class
+     * @param array<string, mixed> $parameters Extra constructor parameters
+     *
+     * @return T
+     */
+    private function make(Container $container, string $class, array $parameters = []): Command\AbstractCommand
+    {
+        return $container->make($class, ['basepath' => $this->basepath] + $parameters);
     }
 }

@@ -27,7 +27,7 @@ class PluginsList extends GaletteTestCase
      */
     public function testListAll(): void
     {
-        $command = new \Galette\Console\Command\Plugins\PluginsList(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginsList::class, ['basepath' => GALETTE_ROOT]);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
@@ -55,7 +55,7 @@ class PluginsList extends GaletteTestCase
      */
     public function testListEnabled(): void
     {
-        $command = new \Galette\Console\Command\Plugins\PluginsList(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginsList::class, ['basepath' => GALETTE_ROOT]);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(['--enabled' => true]);
@@ -83,7 +83,7 @@ class PluginsList extends GaletteTestCase
      */
     public function testListDisabled(): void
     {
-        $command = new \Galette\Console\Command\Plugins\PluginsList(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginsList::class, ['basepath' => GALETTE_ROOT]);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(['--disabled' => true]);
@@ -111,7 +111,7 @@ class PluginsList extends GaletteTestCase
      */
     public function testExecuteCompleteInformation(): void
     {
-        $command = new \Galette\Console\Command\Plugins\PluginsList(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginsList::class, ['basepath' => GALETTE_ROOT]);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute(['--complete' => true]);
@@ -150,7 +150,7 @@ class PluginsList extends GaletteTestCase
      */
     public function testExecuteCompleteEnabledOnly(): void
     {
-        $command = new \Galette\Console\Command\Plugins\PluginsList(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginsList::class, ['basepath' => GALETTE_ROOT]);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([
@@ -183,7 +183,7 @@ class PluginsList extends GaletteTestCase
      */
     public function testExecuteCompleteDisabledOnly(): void
     {
-        $command = new \Galette\Console\Command\Plugins\PluginsList(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginsList::class, ['basepath' => GALETTE_ROOT]);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([
@@ -225,7 +225,7 @@ class PluginsList extends GaletteTestCase
      */
     public function testSimpleListingFormat(): void
     {
-        $command = new \Galette\Console\Command\Plugins\PluginsList(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginsList::class, ['basepath' => GALETTE_ROOT]);
         $commandTester = new CommandTester($command);
 
         $commandTester->execute([]);
