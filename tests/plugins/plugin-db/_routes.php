@@ -7,3 +7,14 @@
  */
 
 declare(strict_types=1);
+
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+
+/** @var \Slim\Routing\RouteCollectorProxy<\Psr\Container\ContainerInterface|null> $app */
+
+//the plugin root page, served instead of the generic plugin information page
+$app->get(
+    '',
+    fn(Request $request, Response $response): Response => $response,
+)->setName('plugdb_root');
