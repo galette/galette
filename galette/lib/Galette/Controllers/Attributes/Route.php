@@ -13,13 +13,15 @@ namespace Galette\Controllers\Attributes;
 use Attribute;
 
 /**
- * Documents a route that calls this controller method.
+ * Declares a route that calls this controller method.
  *
- * This attribute is for developer reference and documentation only.
- * Actual routes MUST still be declared in galette/includes/routes/*.routes.php files.
+ * Routes are registered from those attributes by Galette\Core\Routing\RouteLoader.
  * Multiple Route attributes can be added to a method if it's called by multiple routes.
  * A route calling an inherited method is declared on the class, naming the method
  * with $handler.
+ *
+ * Routes requiring authentication must have a matching ACL, see includes/core_acls.php.
+ * For plugins, the pattern is relative to the plugin route (/plugins/{route}).
  *
  * Example usage:
  * ```php
