@@ -323,7 +323,8 @@ class PluginsController extends AbstractController
     #[Route(
         name: 'pluginInfo',
         pattern: '/plugins/{route}',
-        methods: ['GET']
+        methods: ['GET'],
+        fallback: true
     )]
     public function pluginInfo(Request $request, Response $response, Release $release, string $route): Response
     {
