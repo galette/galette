@@ -96,7 +96,7 @@ $_SESSION = [];
 /** @var \Galette\Core\Plugins $plugins */
 $gapp = new \Galette\Core\SlimApp($plugins);
 $app = $gapp->getApp();
-$container = $app->getContainer();
+$container = $gapp->getContainer();
 
 $console = new \Galette\Console\GaletteApplication($basepath);
 $console->init(

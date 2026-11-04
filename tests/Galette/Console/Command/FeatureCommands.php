@@ -65,7 +65,7 @@ class FeatureCommands extends GaletteTestCase
      */
     public function testEnableThenDisable(): void
     {
-        $tester = $this->runCommand(new FeatureEnable(GALETTE_ROOT), ['flag' => self::FLAG, '--force' => true]);
+        $tester = $this->runCommand($this->container->make(FeatureEnable::class, ['basepath' => GALETTE_ROOT]), ['flag' => self::FLAG, '--force' => true]);
         $tester->assertCommandIsSuccessful();
         $output = $tester->getDisplay();
         $this->assertStringContainsString('Features to turn on: ' . self::FLAG, $output);
@@ -73,16 +73,16 @@ class FeatureCommands extends GaletteTestCase
         $this->assertSame([self::FLAG], $this->getStored());
         $this->assertTrue((new FeatureFlagManager(new Preferences($this->zdb)))->isEnabled(self::FLAG));
 
-        $tester = $this->runCommand(new FeatureEnable(GALETTE_ROOT), ['flag' => self::FLAG, '--force' => true]);
+        $tester = $this->runCommand($this->container->make(FeatureEnable::class, ['basepath' => GALETTE_ROOT]), ['flag' => self::FLAG, '--force' => true]);
         $tester->assertCommandIsSuccessful();
         $this->assertStringContainsString('This feature is already turned on.', $tester->getDisplay());
 
-        $tester = $this->runCommand(new FeatureDisable(GALETTE_ROOT), ['flag' => self::FLAG, '--force' => true]);
+        $tester = $this->runCommand($this->container->make(FeatureDisable::class, ['basepath' => GALETTE_ROOT]), ['flag' => self::FLAG, '--force' => true]);
         $tester->assertCommandIsSuccessful();
         $this->assertStringContainsString('Experimental features have been turned off.', $tester->getDisplay());
         $this->assertSame([], $this->getStored());
 
-        $tester = $this->runCommand(new FeatureDisable(GALETTE_ROOT), ['flag' => self::FLAG, '--force' => true]);
+        $tester = $this->runCommand($this->container->make(FeatureDisable::class, ['basepath' => GALETTE_ROOT]), ['flag' => self::FLAG, '--force' => true]);
         $tester->assertCommandIsSuccessful();
         $this->assertStringContainsString('No such feature is turned on.', $tester->getDisplay());
     }
@@ -92,17 +92,17 @@ class FeatureCommands extends GaletteTestCase
      */
     public function testConfirmation(): void
     {
-        $tester = $this->runCommand(new FeatureEnable(GALETTE_ROOT), ['flag' => self::FLAG], ['no']);
+        $tester = $this->runCommand($this->container->make(FeatureEnable::class, ['basepath' => GALETTE_ROOT]), ['flag' => self::FLAG], ['no']);
         $this->assertSame(Command::FAILURE, $tester->getStatusCode());
         $this->assertStringContainsString('Nothing has been changed.', $tester->getDisplay());
         $this->assertSame([], $this->getStored());
 
-        $tester = $this->runCommand(new FeatureEnable(GALETTE_ROOT), ['flag' => self::FLAG], ['yes']);
+        $tester = $this->runCommand($this->container->make(FeatureEnable::class, ['basepath' => GALETTE_ROOT]), ['flag' => self::FLAG], ['yes']);
         $tester->assertCommandIsSuccessful();
         $this->assertSame([self::FLAG], $this->getStored());
 
         //unattended, --force is required
-        $tester = $this->runCommand(new FeatureDisable(GALETTE_ROOT), ['--all' => true], options: ['interactive' => false]);
+        $tester = $this->runCommand($this->container->make(FeatureDisable::class, ['basepath' => GALETTE_ROOT]), ['--all' => true], options: ['interactive' => false]);
         $this->assertSame(Command::FAILURE, $tester->getStatusCode());
         //messages wrap at the terminal width
         $this->assertStringContainsString(
@@ -111,7 +111,7 @@ class FeatureCommands extends GaletteTestCase
         );
         $this->assertSame([self::FLAG], $this->getStored());
 
-        $tester = $this->runCommand(new FeatureDisable(GALETTE_ROOT), ['--all' => true, '--force' => true]);
+        $tester = $this->runCommand($this->container->make(FeatureDisable::class, ['basepath' => GALETTE_ROOT]), ['--all' => true, '--force' => true]);
         $tester->assertCommandIsSuccessful();
         $this->assertSame([], $this->getStored());
     }
@@ -121,7 +121,7 @@ class FeatureCommands extends GaletteTestCase
      */
     public function testEnableRefusesUnknown(): void
     {
-        $tester = $this->runCommand(new FeatureEnable(GALETTE_ROOT), ['flag' => 'unknown', '--force' => true]);
+        $tester = $this->runCommand($this->container->make(FeatureEnable::class, ['basepath' => GALETTE_ROOT]), ['flag' => 'unknown', '--force' => true]);
         $this->assertSame(Command::FAILURE, $tester->getStatusCode());
         $output = $tester->getDisplay();
         $this->assertStringContainsString('Feature flag "unknown" is not registered.', $output);
@@ -136,7 +136,7 @@ class FeatureCommands extends GaletteTestCase
     public function testDisableArguments(): void
     {
         foreach ([[], ['flag' => self::FLAG, '--all' => true]] as $arguments) {
-            $tester = $this->runCommand(new FeatureDisable(GALETTE_ROOT), $arguments + ['--force' => true]);
+            $tester = $this->runCommand($this->container->make(FeatureDisable::class, ['basepath' => GALETTE_ROOT]), $arguments + ['--force' => true]);
             $this->assertSame(Command::FAILURE, $tester->getStatusCode());
             $this->assertStringContainsString('Give either a feature flag or --all.', $tester->getDisplay());
         }
@@ -155,7 +155,7 @@ class FeatureCommands extends GaletteTestCase
         $this->assertStringContainsString('Enabled flags: 0', $output);
         $this->assertStringContainsString('No flags are currently enabled.', $output);
 
-        $tester = $this->runCommand(new FeatureEnable(GALETTE_ROOT), ['flag' => self::FLAG, '--force' => true]);
+        $tester = $this->runCommand($this->container->make(FeatureEnable::class, ['basepath' => GALETTE_ROOT]), ['flag' => self::FLAG, '--force' => true]);
         $tester->assertCommandIsSuccessful();
 
         $tester = $this->runCommand(new FeatureStatus(GALETTE_ROOT));

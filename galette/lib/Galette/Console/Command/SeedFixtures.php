@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command;
 
+use DI\Attribute\Inject;
 use Galette\Core\Db;
 use Galette\Core\Galette;
 use Galette\Core\History;
@@ -62,13 +63,19 @@ class SeedFixtures extends AbstractCommand
     /** Default password for all fixture members */
     public const string FIXTURE_PASSWORD = 'G@l3tte-E2E!';
 
-    private Db $zdb;
-    private Login $login;
-    private Preferences $preferences;
-    private History $history;
-    private Plugins $plugins;
+    #[Inject]
+    protected Db $zdb;
+    #[Inject]
+    protected Login $login;
+    #[Inject]
+    protected Preferences $preferences;
+    #[Inject]
+    protected History $history;
+    #[Inject]
+    protected Plugins $plugins;
     /** @var array<string,mixed> */
-    private array $members_fields;
+    #[Inject('members_fields')]
+    protected array $members_fields;
 
     /** @var array<string, int> Dynamic field IDs indexed by name */
     private array $dynamic_field_ids = [];
@@ -99,19 +106,8 @@ class SeedFixtures extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        global $zdb, $login, $preferences, $hist;
-
         $io = new SymfonyStyle($input, $output);
         $io->title('Galette E2E Fixtures Seeder');
-
-        $this->zdb = $zdb;
-        $this->login = $login;
-        $this->preferences = $preferences;
-        $this->history = $hist;
-
-        $container = $GLOBALS['container'];
-        $this->members_fields = $container->get('members_fields');
-        $this->plugins = $container->get(Plugins::class);
 
         // Ensure HTTP_HOST is set for CLI context (used by Preferences::getURL())
         $_SERVER['HTTP_HOST'] ??= 'localhost';

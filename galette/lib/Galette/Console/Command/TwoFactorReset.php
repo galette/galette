@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Console\Command;
 
 use Analog\Analog;
+use DI\Attribute\Inject;
 use Galette\Core\AuthThrottle;
 use Galette\Core\Db;
 use Galette\Core\Galette;
@@ -44,6 +45,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class TwoFactorReset extends AbstractCommand
 {
+    #[Inject]
+    protected Preferences $preferences;
+    #[Inject]
+    protected Login $login;
+    #[Inject]
+    protected Db $zdb;
+    #[Inject]
+    protected History $history;
+
     /**
      * Configure command
      */
@@ -83,11 +93,9 @@ class TwoFactorReset extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        global $container;
-
-        $preferences = $container->get(Preferences::class);
-        $login = $container->get(Login::class);
-        $zdb = $container->get(Db::class);
+        $preferences = $this->preferences;
+        $login = $this->login;
+        $zdb = $this->zdb;
 
         $this->io->title('Reset two-factor authentication');
 
@@ -149,7 +157,7 @@ class TwoFactorReset extends AbstractCommand
         if ($clock) {
             $this->forget($store, $owner);
         } else {
-            $this->remove($store, $owner, $container->get(History::class));
+            $this->remove($store, $owner, $this->history);
         }
 
         //whatever locked the account out at the second factor no longer stands

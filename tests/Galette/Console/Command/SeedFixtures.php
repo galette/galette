@@ -39,7 +39,7 @@ class SeedFixtures extends GaletteTestCase
      */
     private function runSeed(array $options = []): CommandTester
     {
-        $command = new SeedFixturesCommand('');
+        $command = $this->container->make(SeedFixturesCommand::class, ['basepath' => '']);
         $commandTester = new CommandTester($command);
         $commandTester->execute($options);
         return $commandTester;
