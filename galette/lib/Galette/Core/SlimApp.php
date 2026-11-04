@@ -11,9 +11,14 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use DI\Bridge\Slim\Bridge;
+use DI\Container;
 use DI\ContainerBuilder;
+use League\Event\EventDispatcher;
 use Psr\Container\ContainerInterface;
 use Slim\App;
+use Slim\Routing\RouteParser;
+
+use function DI\factory;
 
 /**
  * Slim application
@@ -24,11 +29,22 @@ use Slim\App;
  */
 class SlimApp
 {
+    /** Database must be updated, only core routes are available */
+    public const string MODE_NEED_UPDATE = 'NEED_UPDATE';
+    /** Installation is running */
+    public const string MODE_INSTALL = 'INSTALL';
+    /** Running from a cron task */
+    public const string MODE_CRON = 'CRON';
+
     /** @var App<TContainerInterface> */
     private readonly App $app;
+    private readonly Container $container;
 
     /**
      * Create a new Slim application
+     *
+     * @param Plugins $plugins Plugins instance
+     * @param string  $mode    Application mode: one of Galette::MODE_* or self::MODE_*
      */
     public function __construct(
         protected Plugins $plugins,
@@ -36,37 +52,74 @@ class SlimApp
     ) {
         $builder = new ContainerBuilder();
         $builder->useAttributes(bool: true);
+        $builder->addDefinitions(require GALETTE_ROOT . 'includes/dependencies.php');
         $builder->addDefinitions($this->getContainerDefinitions());
-        $container = $builder->build();
+        $this->container = $builder->build();
 
-        $this->app = Bridge::create($container);
-        $this->loadDependencies();
+        $this->app = Bridge::create($this->container);
+        $this->exposeLegacyGlobals();
     }
 
     /**
-     * Get container definitions
+     * Container definitions depending on runtime values
      *
-     * @return array{"galette": array{"mode": string}, "mode": string, "galette.mode": string}
+     * @return array<string, mixed>
      */
     protected function getContainerDefinitions(): array
     {
         return [
-            'galette' => [
-                'mode' => $this->mode
-            ],
-            'mode' => $this->mode,
-            'galette.mode' => $this->mode
+            'galette.mode' => $this->mode,
+            Plugins::class => factory(function (ContainerInterface $c): Plugins {
+                if ($this->isFullyBooted()) {
+                    $this->plugins
+                        ->setContainer($c)
+                        ->loadModules(
+                            $c->get(Preferences::class),
+                            GALETTE_PLUGINS_PATH,
+                            $c->get(I18n::class)->getLongID()
+                        );
+                }
+                return $this->plugins;
+            })
         ];
     }
 
     /**
-     * Load application dependencies
+     * Is application fully booted?
+     *
+     * Not while installing, nor when database needs an update: preferences,
+     * login and plugins cannot be relied on then.
      */
-    public function loadDependencies(): void
+    public function isFullyBooted(): bool
     {
-        $app = $this->app; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from include
-        $plugins = $this->plugins; //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used from include
-        require GALETTE_ROOT . '/includes/dependencies.php';
+        return $this->mode !== self::MODE_INSTALL
+            && $this->mode !== self::MODE_NEED_UPDATE
+            && !defined('GALETTE_INSTALLER');
+    }
+
+    /**
+     * Set legacy globals
+     *
+     * Code that is not built from the container still reads those.
+     */
+    protected function exposeLegacyGlobals(): void
+    {
+        //phpcs:disable SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- globals \o/
+        global $translator, $i18n;
+        if ($this->isFullyBooted()) {
+            global $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser;
+            $zdb = $this->container->get(Db::class);
+            $preferences = $this->container->get(Preferences::class);
+            $login = $this->container->get(Login::class);
+            $hist = $this->container->get(History::class);
+            $l10n = $this->container->get(L10n::class);
+            $emitter = $this->container->get(EventDispatcher::class);
+            $routeparser = $this->container->get(RouteParser::class);
+        }
+        $i18n = $this->container->get(I18n::class);
+        $translator = $this->container->get(Translator::class);
+        //phpcs:enable
+        require_once GALETTE_ROOT . 'includes/i18n.inc.php';
     }
 
     /**
@@ -77,5 +130,13 @@ class SlimApp
     public function getApp(): App
     {
         return $this->app;
+    }
+
+    /**
+     * Get container
+     */
+    public function getContainer(): Container
+    {
+        return $this->container;
     }
 }
