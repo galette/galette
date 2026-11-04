@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Analog\Analog;
+use Galette\Core\Navigation;
 use Galette\Core\Logs;
 use Galette\Controllers\Attributes\Route;
-use Galette\Core\Galette;
 use Galette\Entity\Adherent;
 use Galette\Entity\Contribution;
 use Galette\Enums\PasswordStrength;
@@ -108,13 +108,13 @@ class AjaxController extends AbstractController
         pattern: '/ajax/news',
         methods: ['GET']
     )]
-    public function news(Response $response): Response
+    public function news(Response $response, Navigation $navigation): Response
     {
         $this->view->render(
             $response,
             'elements/news.html.twig',
             [
-                'news' => Galette::getNews()
+                'news' => $navigation->getNews()
             ]
         );
         return $response;

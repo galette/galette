@@ -1177,6 +1177,20 @@ class Plugins
     }
 
     /**
+     * Get the plugin descriptor of an active module
+     *
+     * @param string $id Module ID
+     */
+    public function getPlugin(string $id): GalettePlugin
+    {
+        $plugin = $this->container->get($this->getClassName($id, full: true));
+        if (!$plugin instanceof GalettePlugin) {
+            throw new RuntimeException(sprintf('Module "%1$s" has no plugin descriptor.', $id));
+        }
+        return $plugin;
+    }
+
+    /**
      * Get module class name
      *
      * @param string $id   Module ID

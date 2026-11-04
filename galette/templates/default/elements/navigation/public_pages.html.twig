@@ -8,7 +8,7 @@
     {% import "macros.twig" as menus_macros %}
 
     {% if ext_auth is not defined %}
-        {% set public_menus = callstatic('\\Galette\\Core\\Galette', 'getPublicMenus') %}
+        {% set public_menus = navigation.getPublicMenus() %}
         {% for public_menu in public_menus %}
             {% for public_item in public_menu.items %}
                 {{ menus_macros.renderMenuItem(public_item.label, public_item.title ?? null, public_item.route ?? null, public_item.icon ?? null, null, tips_position, mode, public_item.children ?? null) }}
