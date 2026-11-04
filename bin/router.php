@@ -37,7 +37,7 @@ if (!defined('GALETTE_BASE_PATH')) {
 //checkout also served by Apache has a galette/data/cache/ subtree owned by the web
 //server user, which the built-in server - running as the developer - cannot write
 //to; paths.inc.php honours an already defined GALETTE_CACHE_DIR, and
-//dependencies.php:50 derives the Twig cache from it.
+//Galette\Twig\ViewFactory derives the Twig cache from it.
 $state_path = __DIR__ . '/../.serve';
 
 if (!defined('GALETTE_CACHE_DIR')) {

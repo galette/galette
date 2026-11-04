@@ -9,7 +9,6 @@
 declare(strict_types=1);
 
 use Galette\Core\I18n;
-use Galette\Core\LightSlimApp;
 use Galette\Core\Login;
 use Galette\Core\Plugins;
 use Galette\Core\SlimApp;
@@ -88,7 +87,7 @@ if (session_status() === PHP_SESSION_NONE) {
 //Galette needs database update!
 if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
     define('GALETTE_THEME', 'themes/default/');
-    $gapp = new LightSlimApp(plugins: $plugins);
+    $gapp = new SlimApp(plugins: $plugins, mode: SlimApp::MODE_NEED_UPDATE);
 } else {
     $gapp = new SlimApp(plugins: $plugins);
 }
@@ -96,7 +95,7 @@ if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galet
 $container = $gapp->getApp()->getContainer();
 $app = $gapp->getApp();
 
-// Globals... :( - see also galette/includes/dependencies.php
+// Globals... :( - see also Galette\Core\SlimApp::exposeLegacyGlobals()
 global $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser, $i18n, $translator;
 
 $app->setBasePath((function () {
