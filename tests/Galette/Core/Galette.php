@@ -123,6 +123,23 @@ class Galette extends GaletteTestCase
     }
 
     /**
+     * Navigation built from the globals tests replace with mocks
+     *
+     * @phpstan-impure
+     */
+    private function navigation(): \Galette\Core\Navigation
+    {
+        global $zdb, $login, $preferences, $plugins;
+        return new \Galette\Core\Navigation(
+            zdb: $zdb,
+            login: $login,
+            preferences: $preferences,
+            plugins: $plugins,
+            release: fn(): \Galette\Util\Release => $this->container->get(\Galette\Util\Release::class)
+        );
+    }
+
+    /**
      * Test getMenus
      */
     #[AllowMockObjectsWithoutExpectations]
@@ -139,10 +156,10 @@ class Galette extends GaletteTestCase
         $preferences->method('arePublicPagesEnabled')->willReturn(true);
         $preferences->method('showPublicPage')->willReturn(true);
 
-        $menus = \Galette\Core\Galette::getMenus();
+        $menus = $this->navigation()->getMenus();
         $this->assertCount(0, $menus);
 
-        $menus = \Galette\Core\Galette::getMenus(public: true);
+        $menus = $this->navigation()->getMenus(public: true);
         $this->assertCount(1, $menus);
         $this->assertArrayHasKey('public', $menus);
 
@@ -156,7 +173,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(true);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $menus = \Galette\Core\Galette::getMenus(public: true);
+        $menus = $this->navigation()->getMenus(public: true);
         $this->assertCount(6, $menus);
 
         $this->assertArrayHasKey('myaccount', $menus);
@@ -176,7 +193,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(false);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $menus = \Galette\Core\Galette::getMenus(public: true);
+        $menus = $this->navigation()->getMenus(public: true);
         $this->assertCount(5, $menus);
 
         $this->assertArrayHasKey('myaccount', $menus);
@@ -196,7 +213,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(true);
         $login->method('isSuperAdmin')->willReturn(true);
 
-        $menus = \Galette\Core\Galette::getMenus(public: true);
+        $menus = $this->navigation()->getMenus(public: true);
         $this->assertCount(6, $menus);
 
         $this->assertArrayHasKey('myaccount', $menus);
@@ -210,7 +227,7 @@ class Galette extends GaletteTestCase
         //preferences no form may write: without this entry, that account has
         //no way to enrol from the interface
         $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
-        $menus = \Galette\Core\Galette::getMenus(public: true);
+        $menus = $this->navigation()->getMenus(public: true);
         $this->assertCount(2, $menus['myaccount']['items']);
         $this->assertSame(
             'adminCredentials',
@@ -241,7 +258,7 @@ class Galette extends GaletteTestCase
         $preferences->method('arePublicPagesEnabled')->willReturn(false);
         $preferences->method('showPublicPage')->willReturn(true); //should not matter.
 
-        $menus = \Galette\Core\Galette::getPublicMenus();
+        $menus = $this->navigation()->getPublicMenus();
         $this->assertCount(0, $menus, print_r($menus, return: true));
 
         //public pages are enabled but not shown
@@ -253,7 +270,7 @@ class Galette extends GaletteTestCase
         $preferences->method('showPublicPage')->willReturn(false);
 
         //public pages are enabled and shown
-        $menus = \Galette\Core\Galette::getPublicMenus();
+        $menus = $this->navigation()->getPublicMenus();
         $this->assertCount(0, $menus, print_r($menus, return: true));
 
         $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
@@ -263,7 +280,7 @@ class Galette extends GaletteTestCase
         $preferences->method('arePublicPagesEnabled')->willReturn(true);
         $preferences->method('showPublicPage')->willReturn(true);
 
-        $menus = \Galette\Core\Galette::getPublicMenus();
+        $menus = $this->navigation()->getPublicMenus();
         $this->assertCount(1, $menus);
     }
 
@@ -363,8 +380,8 @@ class Galette extends GaletteTestCase
 
         $db = new \Galette\Core\Db();
 
-        $dashboards = \Galette\Core\Galette::getDashboards();
-        $mydashboards = \Galette\Core\Galette::getMyDashboards();
+        $dashboards = $this->navigation()->getDashboards();
+        $mydashboards = $this->navigation()->getMyDashboards();
         $this->assertCount(0, $dashboards);
         $this->assertCount(0, $mydashboards);
 
@@ -378,8 +395,8 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(true);
         $login->method('isSuperAdmin')->willReturn(true);
 
-        $dashboards = \Galette\Core\Galette::getDashboards();
-        $mydashboards = \Galette\Core\Galette::getMyDashboards();
+        $dashboards = $this->navigation()->getDashboards();
+        $mydashboards = $this->navigation()->getMyDashboards();
         $this->assertCount(9, $dashboards);
         $this->assertCount(0, $mydashboards);
 
@@ -393,8 +410,8 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(true);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $dashboards = \Galette\Core\Galette::getDashboards();
-        $mydashboards = \Galette\Core\Galette::getMyDashboards();
+        $dashboards = $this->navigation()->getDashboards();
+        $mydashboards = $this->navigation()->getMyDashboards();
         $this->assertCount(8, $dashboards);
         $this->assertCount(3, $mydashboards);
 
@@ -408,8 +425,8 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(false);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $dashboards = \Galette\Core\Galette::getDashboards();
-        $mydashboards = \Galette\Core\Galette::getMyDashboards();
+        $dashboards = $this->navigation()->getDashboards();
+        $mydashboards = $this->navigation()->getMyDashboards();
         $this->assertCount(6, $dashboards);
         $this->assertCount(3, $mydashboards);
 
@@ -423,8 +440,8 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(false);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $dashboards = \Galette\Core\Galette::getDashboards();
-        $mydashboards = \Galette\Core\Galette::getMyDashboards();
+        $dashboards = $this->navigation()->getDashboards();
+        $mydashboards = $this->navigation()->getMyDashboards();
         $this->assertCount(0, $dashboards);
         $this->assertCount(3, $mydashboards);
     }
@@ -456,18 +473,18 @@ class Galette extends GaletteTestCase
         $preferences->pref_bool_groupsmanagers_see_contributions = false;
         $preferences->pref_bool_groupsmanagers_see_transactions = false;
 
-        $dashboards = \Galette\Core\Galette::getDashboards();
+        $dashboards = $this->navigation()->getDashboards();
         $this->assertSame(
             ['Members', 'Groups'],
             array_column($dashboards, 'label')
         );
-        $this->assertCount(3, \Galette\Core\Galette::getMyDashboards());
+        $this->assertCount(3, $this->navigation()->getMyDashboards());
 
         //groups managers can see contributions
         $preferences->pref_bool_groupsmanagers_see_contributions = true;
         $preferences->pref_bool_groupsmanagers_see_transactions = false;
 
-        $dashboards = \Galette\Core\Galette::getDashboards();
+        $dashboards = $this->navigation()->getDashboards();
         $this->assertSame(
             ['Members', 'Groups', 'Contributions'],
             array_column($dashboards, 'label')
@@ -477,7 +494,7 @@ class Galette extends GaletteTestCase
         $preferences->pref_bool_groupsmanagers_see_contributions = false;
         $preferences->pref_bool_groupsmanagers_see_transactions = true;
 
-        $dashboards = \Galette\Core\Galette::getDashboards();
+        $dashboards = $this->navigation()->getDashboards();
         $this->assertSame(
             ['Members', 'Groups', 'Transactions'],
             array_column($dashboards, 'label')
@@ -487,7 +504,7 @@ class Galette extends GaletteTestCase
         $preferences->pref_bool_groupsmanagers_see_contributions = true;
         $preferences->pref_bool_groupsmanagers_see_transactions = true;
 
-        $dashboards = \Galette\Core\Galette::getDashboards();
+        $dashboards = $this->navigation()->getDashboards();
         $this->assertSame(
             ['Members', 'Groups', 'Contributions', 'Transactions'],
             array_column($dashboards, 'label')
@@ -512,7 +529,7 @@ class Galette extends GaletteTestCase
         $preferences->pref_bool_groupsmanagers_see_contributions = false;
         $preferences->pref_bool_groupsmanagers_see_transactions = false;
 
-        $dashboards = \Galette\Core\Galette::getDashboards();
+        $dashboards = $this->navigation()->getDashboards();
         $this->assertSame(
             ['Members', 'Groups', 'Mailings', 'Contributions', 'Transactions', 'Reminders'],
             array_column($dashboards, 'label')
@@ -530,7 +547,7 @@ class Galette extends GaletteTestCase
         $db = new \Galette\Core\Db();
         $member = $this->getMemberOne();
 
-        $actions = \Galette\Core\Galette::getListActions($member);
+        $actions = $this->navigation()->getListActions($member);
         $this->assertCount(0, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -543,7 +560,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(true);
         $login->method('isSuperAdmin')->willReturn(true);
 
-        $actions = \Galette\Core\Galette::getListActions($member);
+        $actions = $this->navigation()->getListActions($member);
         $this->assertCount(4, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -556,7 +573,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(true);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $actions = \Galette\Core\Galette::getListActions($member);
+        $actions = $this->navigation()->getListActions($member);
         $this->assertCount(3, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -569,7 +586,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(false);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $actions = \Galette\Core\Galette::getListActions($member);
+        $actions = $this->navigation()->getListActions($member);
         $this->assertCount(3, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -582,7 +599,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(false);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $actions = \Galette\Core\Galette::getListActions($member);
+        $actions = $this->navigation()->getListActions($member);
         $this->assertCount(0, $actions);
     }
 
@@ -594,7 +611,7 @@ class Galette extends GaletteTestCase
         $member = $this->getMemberOne();
 
         //no core actions yet
-        $actions = \Galette\Core\Galette::getDetailedActions($member);
+        $actions = $this->navigation()->getDetailedActions($member);
         $this->assertCount(0, $actions);
     }
 
@@ -609,7 +626,7 @@ class Galette extends GaletteTestCase
         $db = new \Galette\Core\Db();
         $this->getMemberOne();
 
-        $actions = \Galette\Core\Galette::getBatchActions();
+        $actions = $this->navigation()->getBatchActions();
         $this->assertCount(0, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -622,7 +639,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(true);
         $login->method('isSuperAdmin')->willReturn(true);
 
-        $actions = \Galette\Core\Galette::getBatchActions();
+        $actions = $this->navigation()->getBatchActions();
         $this->assertCount(7, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -635,7 +652,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(true);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $actions = \Galette\Core\Galette::getBatchActions();
+        $actions = $this->navigation()->getBatchActions();
         $this->assertCount(7, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -648,7 +665,7 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(false);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $actions = \Galette\Core\Galette::getBatchActions();
+        $actions = $this->navigation()->getBatchActions();
         $this->assertCount(7, $actions);
 
         $login = $this->getMockBuilder(\Galette\Core\Login::class)
@@ -661,17 +678,17 @@ class Galette extends GaletteTestCase
         $login->method('isAdmin')->willReturn(false);
         $login->method('isSuperAdmin')->willReturn(false);
 
-        $actions = \Galette\Core\Galette::getBatchActions();
+        $actions = $this->navigation()->getBatchActions();
         $this->assertCount(0, $actions);
     }
 
     /**
-     * Test Galette::getNews() method
+     * Test $this->navigation()->getNews() method
      */
     #[AllowMockObjectsWithoutExpectations]
     public function testGetNews(): void
     {
-        $entries = \Galette\Core\Galette::getNews();
+        $entries = $this->navigation()->getNews();
         $this->assertCount(0, $entries);
 
         $this->login->logAdmin('superadmin', $this->preferences);
@@ -679,7 +696,7 @@ class Galette extends GaletteTestCase
         $this->assertTrue($this->login->isSuperAdmin());
 
         //we got only Galette News
-        $entries = \Galette\Core\Galette::getNews();
+        $entries = $this->navigation()->getNews();
         $this->assertCount(1, $entries);
         $entry = array_pop($entries);
         $this->assertInstanceOf(\Galette\IO\News\Entry::class, $entry);
@@ -697,7 +714,7 @@ class Galette extends GaletteTestCase
         $this->assertTrue($this->preferences->store());
 
         //we got both Galette and asso news
-        $entries = \Galette\Core\Galette::getNews();
+        $entries = $this->navigation()->getNews();
 
         //reset
         $this->preferences->pref_rss_url = \Galette\Core\Galette::RSS_URL;
@@ -714,14 +731,14 @@ class Galette extends GaletteTestCase
         $this->assertFalse($this->login->isStaff());
 
         //no news to display
-        $entries = \Galette\Core\Galette::getNews();
+        $entries = $this->navigation()->getNews();
         $this->assertCount(0, $entries);
 
         $this->preferences->pref_rss_url = 'file:///' . realpath(GALETTE_ROOT . '../tests/feed.xml');
         $this->assertTrue($this->preferences->store());
 
         //we got asso news
-        $entries = \Galette\Core\Galette::getNews();
+        $entries = $this->navigation()->getNews();
 
         //reset
         $this->preferences->pref_rss_url = \Galette\Core\Galette::RSS_URL;
@@ -754,7 +771,7 @@ class Galette extends GaletteTestCase
         $container->set($plugin_class, $mock);
 
         //we got asso and plugin news
-        $entries = \Galette\Core\Galette::getNews();
+        $entries = $this->navigation()->getNews();
 
         //by default, plugin-news is marked as not installed, so we don't get it news
         $this->assertCount(0, $entries);
@@ -768,7 +785,7 @@ class Galette extends GaletteTestCase
         $mock->method('isInstalled')->willReturn(true);
         $container->set($plugin_class, $mock);
 
-        $entries = \Galette\Core\Galette::getNews();
+        $entries = $this->navigation()->getNews();
 
         //reset
         $this->plugins->deactivateModule('plugin-news');
@@ -789,34 +806,34 @@ class Galette extends GaletteTestCase
     }
 
     /**
-     * Test Galette::hasNews() method
+     * Test $this->navigation()->hasNews() method
      */
     #[AllowMockObjectsWithoutExpectations]
     public function testHasNews(): void
     {
         //not logged in, no custom feed, no plugin: nothing to expect
-        $this->assertFalse(\Galette\Core\Galette::hasNews());
+        $this->assertFalse($this->navigation()->hasNews());
 
         //staff and admins get Galette news
         $this->login->logAdmin('superadmin', $this->preferences);
-        $this->assertTrue(\Galette\Core\Galette::hasNews());
+        $this->assertTrue($this->navigation()->hasNews());
         $this->login->logOut();
 
         //a simple member gets nothing...
         $this->getMemberOne();
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->logIn($mdata['login_adh'], $mdata['mdp_adh']));
-        $this->assertFalse(\Galette\Core\Galette::hasNews());
+        $this->assertFalse($this->navigation()->hasNews());
 
         //...unless the association has its own feed
         $this->preferences->pref_rss_url = 'file:///' . realpath(GALETTE_ROOT . '../tests/feed.xml');
         $this->assertTrue($this->preferences->store());
-        $this->assertTrue(\Galette\Core\Galette::hasNews());
+        $this->assertTrue($this->navigation()->hasNews());
 
         //reset
         $this->preferences->pref_rss_url = \Galette\Core\Galette::RSS_URL;
         $this->assertTrue($this->preferences->store());
-        $this->assertFalse(\Galette\Core\Galette::hasNews());
+        $this->assertFalse($this->navigation()->hasNews());
 
         $this->plugins
             ->setContainer($this->container)
@@ -840,7 +857,7 @@ class Galette extends GaletteTestCase
             ->getMock();
         $mock->method('isInstalled')->willReturn(false);
         $container->set($plugin_class, $mock);
-        $this->assertFalse(\Galette\Core\Galette::hasNews());
+        $this->assertFalse($this->navigation()->hasNews());
 
         //an installed one does
         $mock = $this->getMockBuilder($plugin_class)
@@ -848,7 +865,8 @@ class Galette extends GaletteTestCase
             ->getMock();
         $mock->method('isInstalled')->willReturn(true);
         $container->set($plugin_class, $mock);
-        $has_news = \Galette\Core\Galette::hasNews();
+        $navigation = $this->navigation();
+        $has_news = $navigation->hasNews();
 
         //reset
         $this->plugins->deactivateModule('plugin-news');

@@ -15,6 +15,7 @@ use Galette\Core\Galette;
 use Galette\Core\I18n;
 use Galette\Core\Login;
 use Galette\Core\Logo;
+use Galette\Core\Navigation;
 use Galette\Core\Plugins;
 use Galette\Core\Preferences;
 use Galette\Util\Telemetry;
@@ -92,6 +93,7 @@ class ViewFactory
         $env->addGlobal('languages', $i18n->getList());
         $env->addGlobal('i18n', $i18n);
         $env->addGlobal('plugins', $plugins);
+        $env->addGlobal('navigation', $c->get(Navigation::class));
         $env->addGlobal('preferences', $preferences);
         $env->addGlobal('existing_mailing', $c->get(Session::class)->mailing !== null);
         $env->addGlobal('html_editor', value: false);

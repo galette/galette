@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers;
 
+use Galette\Core\Navigation;
 use Galette\Core\AuthThrottle;
 use DI\Attribute\Inject;
 use Galette\Controllers\Attributes\Route;
@@ -107,13 +108,13 @@ class GaletteController extends AbstractController
         pattern: '/dashboard',
         methods: ['GET']
     )]
-    public function dashboard(Request $request, Response $response, Telemetry $telemetry): Response
+    public function dashboard(Request $request, Response $response, Telemetry $telemetry, Navigation $navigation): Response
     {
         $params = [
             'page_title'        => _T("Dashboard"),
             'contentcls'        => 'desktop',
             //news are loaded asynchronously, they reach the network
-            'has_news'          => Galette::hasNews(),
+            'has_news'          => $navigation->hasNews(),
             'show_dashboard'    => $request->getCookieParams()['show_galette_dashboard'] ?? '1',
             'documentation'     => 'usermanual'
         ];

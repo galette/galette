@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Analog\Analog;
-use Galette\Entity\Adherent;
 
 /**
  * Galette plugins
@@ -26,26 +25,9 @@ use Galette\Entity\Adherent;
  * - PreferencesProviderInterface: if the plugin stores settings in Galette preferences
  *
  * Note: a plugin can implement one or more of these interfaces, but it is not mandatory to implement all of them.
- * Methods are kept in the base class for backward compatibility, they will throw a deprecation warning if used
  */
 abstract class GalettePlugin implements Plugins\InstallableInterface
 {
-    /**
-     * Get plugins menus
-     *
-     * @return array<string, string|array<string,mixed>>
-     * @deprecated 1.2.2
-     */
-    public function getMenus(): array
-    {
-        Analog::log(
-            static::class . '::getMenusContents() is deprecated, please implement MenuProviderInterface',
-            Analog::WARNING
-        );
-        /** @phpstan-ignore staticMethod.notFound */
-        return static::getMenusContents();
-    }
-
     /**
      * Get plugins public menus
      *
@@ -65,13 +47,6 @@ abstract class GalettePlugin implements Plugins\InstallableInterface
         $menus = [];
         if ($this instanceof Plugins\MenuProviderInterface) {
             $menus = $this->getPublicMenus();
-        } elseif (method_exists($this, 'getPublicMenusItemsList')) {
-            Analog::log(
-                static::class . '::getPublicMenusItemsList() is deprecated, please implement MenuProviderInterface',
-                Analog::WARNING
-            );
-            /** @phpstan-ignore staticMethod.notFound */
-            $menus = static::getPublicMenusItemsList();
         }
 
         return $declares ? $this->filterPublicMenuItems($menus, $preferences, $login) : $menus;
@@ -112,90 +87,6 @@ abstract class GalettePlugin implements Plugins\InstallableInterface
         }
 
         return array_is_list($items) ? array_values($visible) : $visible;
-    }
-
-    /**
-     * Get plugins dashboards
-     *
-     * @return array<int, string|array<string,mixed>>
-     * @deprecated 1.2.2
-     */
-    public function getDashboards(): array
-    {
-        Analog::log(
-            static::class . '::getDashboardsContents() is deprecated, please implement DashboardProviderInterface',
-            Analog::WARNING
-        );
-        /** @phpstan-ignore staticMethod.notFound */
-        return static::getDashboardsContents();
-    }
-
-    /**
-     * Get current logged-in user plugins dashboards
-     *
-     * @return array<int, string|array<string,mixed>>
-     * @deprecated 1.2.2
-     */
-    public function getMyDashboards(): array
-    {
-        Analog::log(
-            static::class . '::getMyDashboardsContents() is deprecated, please implement DashboardProviderInterface',
-            Analog::WARNING
-        );
-        /** @phpstan-ignore staticMethod.notFound */
-        return static::getMyDashboardsContents();
-    }
-
-    /**
-     * Get member actions
-     *
-     * @param Adherent $member Current member
-     *
-     * @return array<int, string|array<string,mixed>>
-     * @deprecated 1.2.2
-     */
-    public function getListActions(Adherent $member): array
-    {
-        Analog::log(
-            static::class . '::getListActionsContents() is deprecated, please implement MemberActionProviderInterface',
-            Analog::WARNING
-        );
-        /** @phpstan-ignore staticMethod.notFound */
-        return static::getListActionsContents($member);
-    }
-
-    /**
-     * Get detailed member actions
-     *
-     * @param Adherent $member Current member
-     *
-     * @return array<int, string|array<string,mixed>>
-     * @deprecated 1.2.2
-     */
-    public function getDetailedActions(Adherent $member): array
-    {
-        Analog::log(
-            static::class . '::getDetailedActionsContents() is deprecated, please implement MemberActionProviderInterface',
-            Analog::WARNING
-        );
-        /** @phpstan-ignore staticMethod.notFound */
-        return static::getDetailedActionsContents($member);
-    }
-
-    /**
-     * Get member batch actions
-     *
-     * @return array<int, string|array<string,mixed>>
-     * @deprecated 1.2.2
-     */
-    public function getBatchActions(): array
-    {
-        Analog::log(
-            static::class . '::getBatchActionsContents() is deprecated, please implement MemberActionProviderInterface',
-            Analog::WARNING
-        );
-        /** @phpstan-ignore staticMethod.notFound */
-        return static::getBatchActionsContents();
     }
 
     /**

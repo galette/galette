@@ -132,7 +132,7 @@
                 <i class="clone icon" aria-hidden="true"></i>
                 {{ _T("Duplicate") }}
             </a>
-            {% set actions = callstatic('\\Galette\\Core\\Galette', 'getDetailedActions', member) %}
+            {% set actions = navigation.getDetailedActions(member) %}
             {% for action in actions %}
                 {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon) }}
             {% endfor %}
