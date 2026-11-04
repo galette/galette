@@ -14,12 +14,25 @@ use DI\Bridge\Slim\Bridge;
 use DI\Container;
 use DI\ContainerBuilder;
 use Galette\Debug\DebugBar;
+use Galette\Handlers\ErrorHandler;
+use Galette\Middleware\Csrf;
+use Galette\Middleware\Language;
+use Galette\Middleware\RouteGlobals;
+use Galette\Middleware\Telemetry;
+use Galette\Middleware\UpdateAndMaintenance;
+use Galette\Renderers\Html;
 use League\Event\EventDispatcher;
 use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+use RKA\SessionMiddleware;
 use Slim\App;
+use Slim\Middleware\ErrorMiddleware;
 use Slim\Routing\RouteParser;
+use Slim\Views\Twig;
+use Slim\Views\TwigMiddleware;
 
 use function DI\factory;
+use function Safe\parse_url;
 
 /**
  * Slim application
@@ -122,6 +135,108 @@ class SlimApp
         $translator = $this->container->get(Translator::class);
         //phpcs:enable
         require_once GALETTE_ROOT . 'includes/i18n.inc.php';
+    }
+
+    /**
+     * Configure web application: base path, middlewares, routes, error handling
+     *
+     * Slim runs middlewares last in, first out: the first added ones are the
+     * closest to the routes.
+     *
+     * @param SessionMiddleware $session Session middleware
+     * @param LoggerInterface   $logger  Logger for uncaught errors
+     */
+    public function configure(SessionMiddleware $session, LoggerInterface $logger): void
+    {
+        $this->app->setBasePath(self::detectBasePath());
+
+        $this->app->add($session);
+        $this->app->add(Csrf::class);
+
+        if ($this->mode === self::MODE_NEED_UPDATE) {
+            //only core main routes; the update page is all that can be shown
+            require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
+            $this->app->add($this->container->make(
+                UpdateAndMaintenance::class,
+                ['callback' => UpdateAndMaintenance::NEED_UPDATE]
+            ));
+            return;
+        }
+
+        if (Galette::isUnderMaintenance() && !$this->container->get(Login::class)->isSuperAdmin()) {
+            $this->app->add($this->container->make(
+                UpdateAndMaintenance::class,
+                ['callback' => UpdateAndMaintenance::MAINTENANCE]
+            ));
+        }
+
+        $this->app->add(Language::class);
+        $this->app->add(Telemetry::class);
+
+        Galette::loadRoutes($this->app);
+
+        $this->app->add(RouteGlobals::class);
+        $this->app->addRoutingMiddleware();
+        //last, so it handles errors from all middlewares added before
+        $this->addErrorHandling($logger);
+        //after error handling, so it can be used to render errors
+        $this->app->add(TwigMiddleware::createFromContainer($this->app, Twig::class));
+
+        //Debug bar, outermost to see final responses
+        if (DebugBar::isEnabled()) {
+            $this->app->add(\Galette\Middleware\DebugBar::class);
+        }
+    }
+
+    /**
+     * Add error middleware, rendering Galette error pages
+     *
+     * @param ?LoggerInterface $logger Logger; when null, errors are not logged
+     */
+    public function addErrorHandling(?LoggerInterface $logger): ErrorMiddleware
+    {
+        $log = $logger !== null;
+        $errorMiddleware = $this->app->addErrorMiddleware(
+            displayErrorDetails: Galette::isDebugEnabled(),
+            logErrors: $log,
+            logErrorDetails: $log,
+            logger: $logger
+        );
+
+        if ($log) {
+            $errorHandler = new ErrorHandler(
+                $this->app->getCallableResolver(),
+                $this->app->getResponseFactory(),
+                $logger
+            );
+            $errorMiddleware->setDefaultErrorHandler($errorHandler);
+        } else {
+            /** @var \Slim\Handlers\ErrorHandler $errorHandler */
+            $errorHandler = $errorMiddleware->getDefaultErrorHandler();
+        }
+        $errorHandler->registerErrorRenderer('text/html', Html::class);
+        //also use Galette error pages for clients that do not negotiate content type (Accept: */*)
+        $errorHandler->setDefaultErrorRenderer('text/html', Html::class);
+
+        return $errorMiddleware;
+    }
+
+    /**
+     * Detect application base path from current request
+     */
+    public static function detectBasePath(): string
+    {
+        $uri = (string)parse_url('http://a' . ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
+        if (stripos($uri, (string)$_SERVER['SCRIPT_NAME']) === 0) {
+            return dirname((string)$_SERVER['SCRIPT_NAME']);
+        }
+
+        $scriptDir = str_replace('\\', '/', dirname((string)$_SERVER['SCRIPT_NAME']));
+        if ($scriptDir !== '/' && stripos($uri, $scriptDir) === 0) {
+            return $scriptDir;
+        }
+
+        return '';
     }
 
     /**
