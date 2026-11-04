@@ -242,14 +242,10 @@ class Plugins
                     $this->id = $entry;
                     $this->mroot = $full_entry;
                     if ($this->autoload === true) {
-                        if (
-                            !file_exists($full_entry . '/_define.php')
-                            || !file_exists($full_entry . '/_routes.php')
-                        ) {
+                        if (!file_exists($full_entry . '/_define.php')) {
                             //plugin is not compatible with that version of galette.
                             Analog::log(
-                                sprintf('Plugin "%s" is missing a _define.php and/or _routes.php '
-                                    . 'files that are required.', $entry),
+                                sprintf('Plugin "%s" is missing a _define.php file that is required.', $entry),
                                 Analog::WARNING
                             );
                             // Ensure plugin appears in modules list even if required files are missing.
