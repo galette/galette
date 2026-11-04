@@ -57,11 +57,13 @@ Html::clean() is meant for rich HTML; a plain text field needs strip().
 Translatable strings use _T(), _Tn(), _Tx() or _Tnx() with numbered placeholders
 (%1$s, never named ones), preceded by a //TRANS: comment explaining them.
 
-## Routes (`galette/includes/routes/`)
+## Routes (#[Route] attributes on controllers)
 
-Routes are declared both with #[Route] attributes and in these files. Access
-control is set here (->add(Authenticate::class) and similar middlewares): flag any
-new or changed route whose access level differs from the controller intent.
+Routes are declared with #[Route] attributes on controller methods, or on the
+class for an inherited method (handler: names it). Access control is set there:
+requiresAuth (true by default) adds Authenticate, which then requires a matching
+entry in includes/core_acls.php; middleware: adds others (PublicPages...). Flag
+any new or changed route whose access level differs from the controller intent.
 
 ## Templates (`galette/templates/**/*.twig`)
 

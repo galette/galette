@@ -29,6 +29,18 @@ use Galette\Core\Logs;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removeGroup',
+    pattern: '/group/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveGroup',
+    pattern: '/group/remove/{id:\d+}',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class GroupsController extends CrudController
 {
     // CRUD - Create

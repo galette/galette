@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Galette\Middleware\PublicPages;
 use Galette\Controllers\Attributes\Route;
 use Galette\Core\Galette;
 use Galette\Entity\Document;
@@ -34,6 +35,18 @@ use function Safe\rewind;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removeDocument',
+    pattern: '/document/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveDocument',
+    pattern: '/document/remove/{id:\d+}',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class DocumentsController extends CrudController
 {
     // CRUD - Create
@@ -187,7 +200,8 @@ class DocumentsController extends CrudController
         name: 'documentsPublicList',
         pattern: '/public/documents[/{option:page|order}/{value:\d+|\w+}]',
         methods: ['GET'],
-        requiresAuth: false
+        requiresAuth: false,
+        middleware: [PublicPages::class]
     )]
     public function publicList(Response $response): Response
     {

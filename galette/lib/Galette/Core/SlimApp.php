@@ -152,8 +152,8 @@ class SlimApp
         $this->app->add(Csrf::class);
 
         if ($this->mode === self::MODE_NEED_UPDATE) {
-            //only core main routes; the update page is all that can be shown
-            require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
+            //plugins are not loaded; the update page is all that can be shown
+            Galette::loadRoutes($this->app);
             $this->app->add($this->container->make(
                 UpdateAndMaintenance::class,
                 ['callback' => UpdateAndMaintenance::NEED_UPDATE]

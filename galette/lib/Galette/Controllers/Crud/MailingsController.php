@@ -33,6 +33,18 @@ use function Safe\file_get_contents;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removeMailing',
+    pattern: '/mailings/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveMailing',
+    pattern: '/mailings/remove/{id:\d+}',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class MailingsController extends CrudController
 {
     // CRUD - Create

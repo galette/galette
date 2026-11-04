@@ -35,6 +35,18 @@ use function Safe\rewind;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removeDynamicField',
+    pattern: '/fields/dynamic/remove/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveDynamicField',
+    pattern: '/fields/dynamic/remove/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class DynamicFieldsController extends CrudController
 {
     // CRUD - Create

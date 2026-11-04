@@ -29,6 +29,18 @@ use Analog\Analog;
  * @property string $priority
  */
 
+#[Route(
+    name: 'removeStatus',
+    pattern: '/status/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveStatus',
+    pattern: '/status/remove/{id:\d+}',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class StatusController extends CrudController
 {
     // CRUD - Create

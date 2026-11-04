@@ -71,7 +71,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
         $translator = $this->container->get(\Galette\Core\Translator::class);
         //phpcs:enable
 
-        \Galette\Core\Galette::loadRoutes($app, force: true);
+        \Galette\Core\Galette::loadRoutes($app);
     }
 
     /**

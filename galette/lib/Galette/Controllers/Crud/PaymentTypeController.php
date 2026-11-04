@@ -23,6 +23,18 @@ use Galette\Entity\PaymentType;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removePaymentType',
+    pattern: '/payment-type/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemovePaymentType',
+    pattern: '/payment-type/remove/{id:\d+}',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class PaymentTypeController extends CrudController
 {
     // CRUD - Create
