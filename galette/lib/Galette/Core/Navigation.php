@@ -1244,18 +1244,20 @@ class Navigation
             //get plugins menus entries
             /** @var GalettePlugin $plugin */
             $plugin = $this->plugins->getPlugin($module_id);
-            if (
-                $plugin instanceof Plugins\NewsProviderInterface
-                && $plugin->isInstalled()
-            ) {
-                if ($entry = $plugin->getNews()) {
-                    $position = $entry->getPosition();
-                    while (isset($news[$position])) {
-                        ++$position;
-                    }
-                    $news[$position] = $entry;
-                }
+            if (!$plugin instanceof Plugins\NewsProviderInterface || !$plugin->isInstalled()) {
+                continue;
             }
+
+            $entry = $plugin->getNews();
+            if ($entry === null) {
+                continue;
+            }
+
+            $position = $entry->getPosition();
+            while (isset($news[$position])) {
+                ++$position;
+            }
+            $news[$position] = $entry;
         }
 
         ksort($news);
