@@ -1719,8 +1719,11 @@ class MembersController extends CrudController
             }
         }
 
-        // send email to member
-        if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
+        // send email to member; on self subscription, only when emailing is enabled
+        if (
+            $this->isSelfMembership() && $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+            || isset($post['mail_confirm']) && $post['mail_confirm'] == '1'
+        ) {
             $member->setSendmail(); //flag to send creation email
         }
 
