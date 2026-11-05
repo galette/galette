@@ -100,9 +100,9 @@ class RouteLoader
 
                     $app->group(
                         '/' . $module['route'],
-                        function (RouteCollectorProxy $app) use ($module): void {
+                        function (RouteCollectorProxy $app) use ($module, $module_id): void {
                             $this->register($app, $this->collectPlugin($module['root']));
-                            $this->includePluginRoutesFile($app, $module);
+                            $this->includePluginRoutesFile($app, $module, $module_id);
                         }
                     );
                 }
@@ -133,18 +133,26 @@ class RouteLoader
      * Include plugin routes file, if any
      *
      * For routes that cannot be declared with attributes. The file has access
-     * to $app (the plugin routes group) and $module (plugin information).
+     * to $app (the plugin routes group), $module (plugin information),
+     * $module_id and $container; the two latter are kept for compatibility
+     * with existing plugins.
      *
-     * @param RouteCollectorProxy<\Psr\Container\ContainerInterface|null> $app    Plugin routes group
-     * @param array<string, mixed>                                        $module Plugin information
+     * @param RouteCollectorProxy<\Psr\Container\ContainerInterface|null> $app       Plugin routes group
+     * @param array<string, mixed>                                        $module    Plugin information
+     * @param string                                                      $module_id Plugin identifier
      */
-    protected function includePluginRoutesFile(RouteCollectorProxy $app, array $module): void
+    protected function includePluginRoutesFile(RouteCollectorProxy $app, array $module, string $module_id): void
     {
         $file = $module['root'] . '/_routes.php';
         if (file_exists($file)) {
-            (static function (RouteCollectorProxy $app, array $module) use ($file): void {
+            (static function (
+                RouteCollectorProxy $app,
+                array $module,
+                string $module_id,
+                ?\Psr\Container\ContainerInterface $container
+            ) use ($file): void {
                 require $file;
-            })($app, $module);
+            })($app, $module, $module_id, $app->getContainer());
         }
     }
 
