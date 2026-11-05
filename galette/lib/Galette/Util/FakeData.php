@@ -72,16 +72,6 @@ class FakeData
     }
 
     /**
-     * Add success message
-     *
-     * @param string $msg Message
-     */
-    protected function addSuccess(string $msg): void
-    {
-        $this->report['success'][] = $msg;
-    }
-
-    /**
      * Add error message
      *
      * @param string $msg Message
@@ -89,16 +79,6 @@ class FakeData
     protected function addError(string $msg): void
     {
         $this->report['errors'][] = $msg;
-    }
-
-    /**
-     * Add warning message
-     *
-     * @param string $msg Message
-     */
-    protected function addWarning(string $msg): void
-    {
-        $this->report['warnings'][] = $msg;
     }
 
     /**

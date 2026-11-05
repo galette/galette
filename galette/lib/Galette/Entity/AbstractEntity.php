@@ -72,22 +72,6 @@ abstract class AbstractEntity
     }
 
     /**
-     * Get Primary Key field name.
-     * Must be defined in child class as PK constant.
-     *
-     * @return non-empty-string
-     */
-    public function getPkField(): string
-    {
-        if (static::PK === '') {
-            throw new EntityException(
-                sprintf('Constant PK must be defined in %s', static::class)
-            );
-        }
-        return static::PK;
-    }
-
-    /**
      * Save entity (insert or update)
      */
     public function save(): bool

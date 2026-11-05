@@ -10,11 +10,9 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use ArrayObject;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Laminas\Db\Sql\Select;
 use Psr\Http\Message\UploadedFileInterface;
-use Safe\Exceptions\DirException;
 use Safe\Exceptions\FilesystemException;
 use Safe\Exceptions\ImageException;
 use Slim\Psr7\Response;
@@ -22,7 +20,6 @@ use Throwable;
 use Analog\Analog;
 use Galette\Entity\Adherent;
 use Galette\Exception\MissingAssetException;
-use Galette\Repository\Members;
 use Galette\IO\FileTrait;
 use Galette\IO\UploadSize;
 use UnhandledMatchError;
@@ -39,8 +36,6 @@ use function Safe\imagecreatetruecolor;
 use function Safe\imagesavealpha;
 use function Safe\imagecopyresampled;
 use function Safe\mkdir;
-use function Safe\opendir;
-use function Safe\preg_match;
 use function Safe\readfile;
 use function Safe\realpath;
 use function Safe\rewind;
@@ -706,87 +701,6 @@ class Picture
         }
 
         return true;
-    }
-
-    /**
-     * Check for missing images in database
-     *
-     * @param Db $zdb Database instance
-     */
-    public function missingInDb(Db $zdb): void
-    {
-        $existing_disk = [];
-
-        //retrieve files on disk
-        try {
-            $handle = opendir($this->store_path);
-        } catch (DirException $e) {
-            Logs::exception($e, 'Something went wrong opening images directory ' . $this->store_path, Analog::ERROR);
-            return;
-        }
-
-        while (false !== ($entry = readdir($handle))) {
-            $reg = "/^(\d+)\.("
-                . implode('|', $this->allowed_extensions) . ")$/i";
-            if (preg_match($reg, $entry, $matches)) {
-                $id = $matches[1];
-                $extension = strtolower($matches[2]);
-                if ($extension == 'jpeg') {
-                    //jpeg is an allowed extension,
-                    //but we change it to jpg to reduce further tests :)
-                    $extension = 'jpg';
-                }
-                $existing_disk[$id] = [
-                    'name'  => $entry,
-                    'id'    => $id,
-                    'ext'   => $extension
-                ];
-            }
-        }
-        closedir($handle);
-
-        if (count($existing_disk) === 0) {
-            //no image on disk, nothing to do :)
-            return;
-        }
-
-        //retrieve files in database
-        $class = static::class;
-        $select = $zdb->select($this->tbl_prefix . $class::TABLE);
-        $select
-            ->columns([$class::PK])
-            ->where->in($class::PK, array_keys($existing_disk));
-
-        $results = $zdb->execute($select);
-
-        $existing_db = [];
-        foreach ($results as $result) {
-            $existing_db[] = (int)$result[self::PK];
-        }
-
-        $existing_diff = array_diff(array_keys($existing_disk), $existing_db);
-
-        //retrieve valid members ids
-        $members = new Members();
-        $valids = $members->getArrayList(
-            ids: array_map(intval(...), $existing_diff),
-            orderby: null,
-            with_photos: false,
-            as_members: false,
-            fields: [self::PK],
-            unscoped: true
-        );
-
-        foreach ($valids as $valid) {
-            /** @var ArrayObject<string,mixed> $valid */
-            $file = $existing_disk[$valid->id_adh];
-            $this->storeInDb(
-                zdb: $zdb,
-                id: (int)$file['id'],
-                file: $this->store_path . $file['id'] . '.' . $file['ext'],
-                ext: $file['ext']
-            );
-        }
     }
 
     /**

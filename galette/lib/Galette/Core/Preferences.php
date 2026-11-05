@@ -1336,18 +1336,6 @@ class Preferences
     }
 
     /**
-     * Purify HTML value
-     *
-     * @param string $value Value to clean
-     *
-     * @deprecated 1.3.0 Use Galette\Util\Html::clean()
-     */
-    public function cleanHtmlValue(string $value): string
-    {
-        return Html::clean($value);
-    }
-
-    /**
      * Update one preference field in database
      *
      * @param string $field Field name

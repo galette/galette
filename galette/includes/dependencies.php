@@ -177,13 +177,6 @@ $container->set('acls', function (ContainerInterface $c) {
     //use + to be sure core ACLs are not overridden by plugins ones.
     $acls += $c->get(\Galette\Core\Plugins::class)->getAcls();
 
-    //load user defined ACLs
-    if (file_exists(GALETTE_CONFIG_PATH . 'local_acls.inc.php')) {
-        //use array_merge here, we want $local_acls to override core ones.
-        /** @var array<string, string> $local_acls */
-        $acls = array_merge($acls, $local_acls);
-    }
-
     return $acls;
 });
 

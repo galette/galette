@@ -146,8 +146,7 @@ class PdfController extends AbstractController
             );
         }
 
-        $class = PdfMembersCards::class;
-        $pdf = new $class($this->preferences);
+        $pdf = new PdfMembersCards($this->preferences);
         $pdf->drawCards($members);
 
         return $this->sendResponse($response, $pdf);

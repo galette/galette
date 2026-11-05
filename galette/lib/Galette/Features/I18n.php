@@ -46,30 +46,6 @@ trait I18n
     }
 
     /**
-     * Update a translation stored in the database
-     *
-     * @param string $text_orig   Text to translate
-     * @param string $text_locale The locale
-     * @param string $text_trans  Translated text
-     */
-    protected function updateTranslation(string $text_orig, string $text_locale, string $text_trans): bool
-    {
-        /** @var L10n $l10n */
-        global $l10n;
-
-        $result = $l10n->updateDynamicTranslation($text_orig, $text_locale, $text_trans);
-        if ($result === false) {
-            $this->warnings[] = sprintf(
-                //TRANS: paramter is a field name
-                _T('Unable to update dynamic translation for %1$s :('),
-                $text_orig
-            );
-        };
-
-        return $result;
-    }
-
-    /**
      * Change text of a translation stored in the database
      *
      * @param string $text_orig         Old text

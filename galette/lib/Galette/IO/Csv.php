@@ -125,26 +125,6 @@ abstract class Csv
     }
 
     /**
-     * Accepted separators
-     *
-     * @return array<string> list of accepted separators
-     */
-    public function getAcceptedSeparators(): array
-    {
-        return $this->accepted_separators;
-    }
-
-    /**
-     * Accepted quotes
-     *
-     * @return array<string> list of accepted quotes
-     */
-    public function getAcceptedQuotes(): array
-    {
-        return $this->accepted_quotes;
-    }
-
-    /**
      * Add an error
      *
      * @param string $msg Error message
