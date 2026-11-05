@@ -430,16 +430,6 @@ class FeatureFlagManager
     }
 
     /**
-     * Get flags that were accessed at runtime
-     *
-     * @return array<string> List of accessed feature flag names
-     */
-    public function getAccessedFlags(): array
-    {
-        return $this->accessedFlags;
-    }
-
-    /**
      * Get description of a feature flag
      *
      * @param string $flag Feature flag name

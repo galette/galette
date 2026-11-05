@@ -37,14 +37,6 @@ trait PluginControllerTrait
     }
 
     /**
-     * Get plugin module route namespace
-     */
-    protected function getModuleRoute(): string
-    {
-        return $this->module_info['module']['route'];
-    }
-
-    /**
      * Get plugin template name for Twig
      *
      * @param string $name Template name

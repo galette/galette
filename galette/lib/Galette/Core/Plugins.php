@@ -783,24 +783,6 @@ class Plugins
     }
 
     /**
-     * Returns one disabled module
-     *
-     * @return Module
-     */
-    public function getDisabledModule(string $id): array
-    {
-        if (!$this->moduleExists($id)) {
-            throw new MissingPluginException($id);
-        }
-        if (!isset($this->disabled[$id])) {
-            throw new \LogicException(
-                sprintf('Module "%s" is not disabled!', $id)
-            );
-        }
-        return $this->modules[$id];
-    }
-
-    /**
      * Get installed database version for a plugin
      *
      * Returns the version stored in the database for the given plugin ID,

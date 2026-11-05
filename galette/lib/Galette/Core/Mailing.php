@@ -456,19 +456,6 @@ class Mailing extends GaletteMail
     }
 
     /**
-     * Return textual error message
-     *
-     * @param int $code The error code
-     *
-     * @return string Localized message
-     */
-    public function getAttachmentErrorMessage(int $code): string
-    {
-        $f = new File($this->tmp_path);
-        return $f->getErrorMessage($code);
-    }
-
-    /**
      * Does mailing already exists in history?
      */
     public function existsInHistory(): bool

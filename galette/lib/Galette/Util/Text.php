@@ -81,16 +81,4 @@ class Text
         }
         return $text;
     }
-
-    /**
-     * Convert HTML to text
-     *
-     * @param string $html HTML to convert
-     *
-     * @deprecated 1.3.0 Use Galette\Util\Html::convertToText()
-     */
-    public static function convertHtmlToText(string $html): string
-    {
-        return Html::convertToText($html);
-    }
 }

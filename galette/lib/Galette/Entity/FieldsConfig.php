@@ -15,7 +15,6 @@ use Galette\Features\Permissions;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Logs;
-use Laminas\Db\Adapter\Adapter;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
@@ -854,78 +853,6 @@ class FieldsConfig
                 '[' . $class . '] An error occurred while saving fields '
                 . 'configuration for table `' . $this->table . '`.'
             );
-            throw $e;
-        }
-    }
-
-    /**
-     * Migrate old required fields configuration
-     * Only needed for 0.7.4 upgrade
-     * (should have been 0.7.3 - but I missed that.)
-     */
-    public function migrateRequired(): bool
-    {
-        try {
-            $select = $this->zdb->select('required');
-            $select->from(PREFIX_DB . 'required');
-
-            $old_required = $this->zdb->execute($select);
-        } catch (\Exception) {
-            Analog::log(
-                'Unable to retrieve required fields_config. Maybe '
-                . 'the table does not exists?',
-                Analog::WARNING
-            );
-            //not a blocker
-            return true;
-        }
-
-        $this->zdb->beginTransaction();
-        try {
-            $update = $this->zdb->update(self::TABLE);
-            $update->set(
-                [
-                    'required'  => ':required'
-                ]
-            )->where(
-                [
-                    'field_id'      => ':field_id',
-                    'table_name'    => $this->table
-                ]
-            );
-
-            $stmt = $this->zdb->sql->prepareStatementForSqlObject($update);
-
-            foreach ($old_required as $or) {
-                $stmt->execute(
-                    [
-                        'required'  => $or->required !== false,
-                        'field_id'  => $or->field_id
-                    ]
-                );
-            }
-
-            $class = static::class;
-            Analog::log(
-                str_replace(
-                    '%s',
-                    $this->table,
-                    '[' . $class . '] Required fields for table %s upgraded '
-                    . 'successfully.'
-                ),
-                Analog::INFO
-            );
-
-            $this->zdb->db->query(
-                'DROP TABLE ' . PREFIX_DB . 'required',
-                Adapter::QUERY_MODE_EXECUTE
-            );
-
-            $this->zdb->commit();
-            return true;
-        } catch (Throwable $e) {
-            $this->zdb->rollback();
-            Logs::exception($e, 'An error occurred migrating old required fields.');
             throw $e;
         }
     }

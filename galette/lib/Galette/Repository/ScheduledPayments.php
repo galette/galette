@@ -58,19 +58,6 @@ class ScheduledPayments
     /**
      * Get scheduled payments list for a specific contribution
      *
-     * @param int $contrib_id Contribution identifier
-     *
-     * @return ScheduledPayment[]
-     */
-    public function getListFromContribution(int $contrib_id): array
-    {
-        $this->filters->from_contribution = $contrib_id;
-        return $this->getList(as_object: true);
-    }
-
-    /**
-     * Get scheduled payments list for a specific contribution
-     *
      * @param array<int>     $ids       an array of members id that has been selected
      * @param bool           $as_object return the results as an array of
      * @param ?array<string> $fields    field(s) name(s) to get. Should be a string or

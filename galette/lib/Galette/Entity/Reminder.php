@@ -143,14 +143,6 @@ class Reminder
     }
 
     /**
-     * Was reminder sent successfully?
-     */
-    public function isSuccess(): bool
-    {
-        return $this->success;
-    }
-
-    /**
      * Did member had an email when reminder was sent?
      */
     public function hasMail(): bool
