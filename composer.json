@@ -79,7 +79,8 @@
         "psr/http-server-handler": "^1.0",
         "thecodingmachine/safe": "^3.3",
         "spomky-labs/otphp": "^11.5",
-        "psr/clock": "^1.0"
+        "psr/clock": "^1.0",
+        "psr/log": "^3.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^4.0",
