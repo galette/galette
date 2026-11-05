@@ -36,10 +36,13 @@ use Galette\Core\Translator;
 use Galette\Entity\Adherent;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\ListsConfig;
+use Galette\Events\ContribListener;
+use Galette\Events\MemberListener;
 use Galette\Interfaces\PermissionResolverInterface;
 use Galette\Middleware\Csrf;
 use Galette\Twig\ViewFactory;
 use Galette\Util\Release;
+use League\Event\EventDispatcher;
 use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerInterface;
 use RKA\Session;
@@ -130,6 +133,13 @@ return [
         $translator->setLocale($i18n->getLongID());
         return $translator;
     }),
+
+    // -------------------------------------------------------------------------
+    // Events; plugins subscribe their own listeners when loaded
+    // -------------------------------------------------------------------------
+    EventDispatcher::class => create()
+        ->method('subscribeListenersFrom', get(MemberListener::class))
+        ->method('subscribeListenersFrom', get(ContribListener::class)),
 
     // -------------------------------------------------------------------------
     // ACLs and CSRF
