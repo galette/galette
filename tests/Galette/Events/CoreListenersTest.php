@@ -53,9 +53,9 @@ class CoreListenersTest extends TestCase
              */
             public function subscribeListeners(ListenerRegistry $acceptor): void
             {
-                foreach ($this->events as $event) {
+                foreach ($this->events as $name) {
                     $acceptor->subscribeTo(
-                        $event,
+                        $name,
                         function (GaletteEvent $event): void {
                             $this->received->append($event->eventName());
                         }
