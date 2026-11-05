@@ -279,4 +279,24 @@ class MemberListenerTest extends GaletteTestCase
             $this->getFlashMessages()
         );
     }
+
+    /**
+     * Storing a member reaches the listener from the container dispatcher
+     */
+    public function testStoreReachesListener(): void
+    {
+        $member = $this->getMemberOne();
+        $this->preferences->pref_mail_method = GaletteMail::METHOD_DISABLED;
+        $this->preferences->pref_bool_mailadh = false;
+
+        $this->logSuperAdmin();
+        $member->setSendmail();
+        $this->assertTrue($member->store());
+        $this->login->logOut();
+
+        $this->assertContains(
+            'You asked Galette to send a confirmation email to the member, but email has been disabled in the preferences.',
+            $this->getFlashMessages()['warning_detected'] ?? []
+        );
+    }
 }

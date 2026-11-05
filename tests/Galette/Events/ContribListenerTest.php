@@ -370,4 +370,25 @@ class ContribListenerTest extends GaletteTestCase
 
         $this->assertCount(0, $listener->mails);
     }
+
+    /**
+     * Storing a contribution reaches the listener from the container dispatcher
+     */
+    public function testStoreReachesListener(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->preferences->pref_mail_method = GaletteMail::METHOD_DISABLED;
+        $this->preferences->pref_bool_mailadh = false;
+
+        $contrib = new Contribution($this->zdb, $this->login, ['type' => 1]);
+        $contrib->setSendmail();
+        $this->createContrib($this->getContribData(), $contrib);
+        $this->login->logout();
+
+        $this->assertContains(
+            'You asked Galette to send a confirmation email to the member, but email has been disabled in the preferences.',
+            $this->getFlashMessages()['warning_detected'] ?? []
+        );
+    }
 }
