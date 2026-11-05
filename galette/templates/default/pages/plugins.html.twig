@@ -73,16 +73,6 @@
                     <i class="ui toggle on red icon" aria-hidden="true"></i>
                     <span class="visually-hidden">{{ _T("Click here to deactivate plugin '%1$s'")|format(plugin.name) }}</span>
                 </a>
-                {% if plugins.needsDatabase(name) %}
-                    <a
-                        href="{{ url_for("pluginInitDb", {"id": name}) }}"
-                        id="initdb_{{ name }}"
-                        class="initdb action icon-only"
-                    >
-                        <i class="ui database blue icon" aria-hidden="true"></i>
-                        <span class="visually-hidden">{{ _T("Initialize '%1$s' database")|format(plugin.name) }}</span>
-                    </a>
-                {% endif %}
             {% else %}
                 {% if show_db_button %}
                     <a
@@ -91,7 +81,13 @@
                         class="initdb action"
                     >
                         <i class="ui database blue icon tooltip" aria-hidden="true"></i>
-                        <span class="ui special popup">{{ _T("Initialize '%1$s' database")|format(plugin.name) }}</span>
+                        <span class="ui special popup">
+                        {% if cause == constant('Galette\\Core\\Plugins::DISABLED_NOT_UP2DATE') %}
+                            {{ _T("Update '%1$s' database")|format(plugin.name) }}
+                        {% else %}
+                            {{ _T("Initialize '%1$s' database")|format(plugin.name) }}
+                        {% endif %}
+                        </span>
                     </a>
                 {% endif %}
 
@@ -203,14 +199,23 @@
                     },
                     modal_onapprove: "$('#plugins_initdb_form').submit();return false;",
                     modal_onhidden: "window.location.reload();",
-                    modal_approve_text: _T("Next step")|e("js"),
+                    modal_approve_text: _T("Install")|e("js"),
+                    modal_approve_icon: "database",
                     modal_cancel_text: _T("Close")|e("js")
                 } %}
                 _initdb_bindings(res, plugin);
             };
 
             var _initdb_bindings = function(res, plugin){
-                //$('.initdb-modal input:submit, .initdb-modal .button, .initdb-modal input:reset' );
+                var _approve = $('#plugins_initdb_form').data('approve');
+                if (_approve) {
+                    //replace label only, keeping button icon
+                    $('.initdb-modal .approve')
+                        .attr('aria-label', _approve)
+                        .contents()
+                        .filter(function() { return this.nodeType === Node.TEXT_NODE; })
+                        .replaceWith(document.createTextNode(_approve));
+                }
                 $('#plugins_initdb_form').on('submit', function(event) {
                     event.preventDefault();
                     var _form = $(this);
@@ -242,7 +247,8 @@
                         }
                     });
                 });
-                $('.ui.radio.checkbox').checkbox();
+                $('#plugins_initdb_form .ui.checkbox').checkbox();
+                $('#plugins_initdb_form .ui.accordion').accordion();
             };
 
             $('.info-plugin').click(function(event){
