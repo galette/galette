@@ -15,9 +15,8 @@ use DI\ContainerBuilder;
 use Galette\Events\ContribListener;
 use Galette\Events\GaletteEvent;
 use Galette\Events\MemberListener;
+use Galette\Tests\Fixtures\RecordingSubscriber;
 use League\Event\EventDispatcher;
-use League\Event\ListenerRegistry;
-use League\Event\ListenerSubscriber;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,44 +27,6 @@ use PHPUnit\Framework\TestCase;
 class CoreListenersTest extends TestCase
 {
     /**
-     * Build a subscriber recording the events it receives
-     *
-     * @param list<string>             $events   Events to subscribe to
-     * @param ArrayObject<int, string> $received Received events names
-     */
-    private function getRecorder(array $events, ArrayObject $received): ListenerSubscriber
-    {
-        return new readonly class ($events, $received) implements ListenerSubscriber {
-            /**
-             * @param list<string>             $events   Events to subscribe to
-             * @param ArrayObject<int, string> $received Received events names
-             */
-            public function __construct(
-                private array $events,
-                private ArrayObject $received
-            ) {
-            }
-
-            /**
-             * Record subscribed events
-             *
-             * @param ListenerRegistry $acceptor Listener registry
-             */
-            public function subscribeListeners(ListenerRegistry $acceptor): void
-            {
-                foreach ($this->events as $name) {
-                    $acceptor->subscribeTo(
-                        $name,
-                        function (GaletteEvent $event): void {
-                            $this->received->append($event->eventName());
-                        }
-                    );
-                }
-            }
-        };
-    }
-
-    /**
      * Member and contribution listeners receive dispatched events
      */
     public function testCoreListenersSubscribed(): void
@@ -75,8 +36,8 @@ class CoreListenersTest extends TestCase
         $builder = new ContainerBuilder();
         $builder->addDefinitions(require GALETTE_ROOT . 'includes/dependencies.php');
         $builder->addDefinitions([
-            MemberListener::class => $this->getRecorder(['member.add', 'member.edit'], $received),
-            ContribListener::class => $this->getRecorder(['contribution.add'], $received),
+            MemberListener::class => new RecordingSubscriber(['member.add', 'member.edit'], $received),
+            ContribListener::class => new RecordingSubscriber(['contribution.add'], $received),
         ]);
         $container = $builder->build();
 
