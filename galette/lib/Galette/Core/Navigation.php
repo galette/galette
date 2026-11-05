@@ -1095,10 +1095,8 @@ class Navigation
      */
     public function getDetailedActions(Adherent $member): array
     {
-
+        //core detailed actions are in elements/member_actions.html.twig
         $actions = [];
-
-        //TODO: add core detailed actions
 
         foreach (array_keys($this->plugins->getActiveModules()) as $module_id) {
             //get plugins menus entries
