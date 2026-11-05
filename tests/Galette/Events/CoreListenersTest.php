@@ -35,14 +35,14 @@ class CoreListenersTest extends TestCase
      */
     private function getRecorder(array $events, ArrayObject $received): ListenerSubscriber
     {
-        return new class ($events, $received) implements ListenerSubscriber {
+        return new readonly class ($events, $received) implements ListenerSubscriber {
             /**
              * @param list<string>             $events   Events to subscribe to
              * @param ArrayObject<int, string> $received Received events names
              */
             public function __construct(
-                private readonly array $events,
-                private readonly ArrayObject $received
+                private array $events,
+                private ArrayObject $received
             ) {
             }
 
