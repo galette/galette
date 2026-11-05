@@ -100,6 +100,10 @@ class RouteLoaderTest extends GaletteTestCase
 
         $route = $collector->getNamedRoute('plugin1_public_other');
         $this->assertSame('/plugins/plugin1/public/other', $route->getPattern());
+
+        //routes files still get $module_id and $container
+        $route = $collector->getNamedRoute('plugin1_legacy_plugin-test1');
+        $this->assertSame('/plugins/plugin1/legacy', $route->getPattern());
     }
 
     /**
