@@ -13,3 +13,5 @@ HTML files will be generated into `apidocs` directory.
 
 API documentation is built by Read the Docs through a webhook;
 you can see it at: https://apidoc.galette.eu
+
+Plugin authors: see [Upgrading plugins to Galette 1.4](@ref upgrade14).
