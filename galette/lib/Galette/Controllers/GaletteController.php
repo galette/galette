@@ -119,7 +119,7 @@ class GaletteController extends AbstractController
         ];
 
         $hide_telemetry = true;
-        if ($this->login->isAdmin()) {
+        if ($this->accessControl->can('config:preferences')) {
             $params['reguuid'] = $telemetry->getRegistrationUuid();
             $params['telemetry_sent'] = $telemetry->isSent();
             $params['registered'] = $telemetry->isRegistered();

@@ -398,8 +398,7 @@ class Transaction extends GaletteTestCase
         $this->assertFalse($transaction->canDelete($this->login));
 
         //change preferences so managers can see group members contributions
-        $this->preferences->pref_bool_groupsmanagers_see_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:read');
 
         //transaction member is not part of a managed group
         $this->assertFalse($transaction->canShow($this->login));
@@ -409,11 +408,9 @@ class Transaction extends GaletteTestCase
             \Analog\Analog::ERROR,
             'No transaction #' . $transaction->id
         );
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:create', 'transaction:attach']);
         $this->assertFalse($transaction->canAttachAndDetach($this->login));
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['contribution:create', 'transaction:attach']);
 
         //add transaction member to managed group
         $this->assertTrue($g1->setMembers([$member_one]));
@@ -426,8 +423,7 @@ class Transaction extends GaletteTestCase
         $this->assertFalse($transaction->canDelete($this->login));
 
         //can create && can see
-        $this->preferences->pref_bool_groupsmanagers_create_transactions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:create');
 
         $this->assertTrue($transaction->canCreate($this->login));
         $this->assertTrue($transaction->canShow($this->login));
@@ -436,8 +432,7 @@ class Transaction extends GaletteTestCase
         $this->assertFalse($transaction->canDelete($this->login));
 
         //can attach and detach
-        $this->preferences->pref_bool_groupsmanagers_create_contributions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:create', 'transaction:attach']);
 
         $this->assertTrue($transaction->canAttachAndDetach($this->login));
     }
@@ -592,6 +587,53 @@ class Transaction extends GaletteTestCase
                 \Analog\Analog::ERROR,
                 'No contribution #' . $contrib_id
             );
+        }
+    }
+
+    /**
+     * Test transactions are loaded and changed with edit permission alone
+     */
+    public function testEditScope(): void
+    {
+        $this->revokeFromRole(
+            \Galette\Access\Roles::MANAGER,
+            ['transaction:read', 'transaction:attach', 'transaction:create']
+        );
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'transaction:edit');
+        try {
+            $this->logSuperAdmin();
+            $member_two = $this->getMemberTwo();
+            $transaction_id = $this->createTransaction()->id;
+            $this->login->logOut();
+
+            $group = $this->logGroupManager();
+            $this->assertTrue($group->setMembers([$member_two]));
+
+            $data = [
+                'id_adh' => $member_two->id,
+                'trans_date' => (new DateTime())->format('Y-m-d'),
+                'trans_amount' => 93,
+                'trans_desc' => 'FAKER' . $this->seed,
+                'type_paiement_trans' => 6,
+            ];
+            $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+            $this->assertTrue($transaction->load($transaction_id));
+            $this->assertTrue($transaction->canEdit($this->login));
+            $this->assertTrue($transaction->check($data, [], []));
+
+            //a new transaction still requires create permission
+            $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+            $check = $transaction->check($data, [], []);
+            $this->assertIsArray($check);
+            $this->assertContains('- Please select a member from a group you manage.', $check);
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a transaction');
+        } finally {
+            $this->login->logOut();
+            $this->grantToRole(
+                \Galette\Access\Roles::MANAGER,
+                ['transaction:read', 'transaction:attach', 'transaction:create']
+            );
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'transaction:edit');
         }
     }
 }

@@ -3,15 +3,22 @@
 All fixture members share the same password. The superadmin account is created
 during installation, not by the fixtures seeder.
 
-| Role            | Login                | Password       |
-|-----------------|----------------------|----------------|
-| Superadmin      | admin                | admin          |
-| Admin           | leia.organa          | G@l3tte-E2E!   |
-| Treasurer       | morpheus             | G@l3tte-E2E!   |
-| Secretary       | turanga.leela        | G@l3tte-E2E!   |
-| Standard member | luke.skywalker       | G@l3tte-E2E!   |
-| Group manager   | anakin.skywalker     | G@l3tte-E2E!   |
-| All others      | *(see login column)* | G@l3tte-E2E!   |
+Profiles of `loggedInAs()`, in `fixtures/auth.fixture.ts`:
+
+| Profile             | Login                | Password       | Access                                        |
+|---------------------|----------------------|----------------|-----------------------------------------------|
+| `superadmin`        | admin                | admin          | everything, no member card                    |
+| `admin`             | leia.organa          | G@l3tte-E2E!   | Administrator role                            |
+| `staff`             | morpheus             | G@l3tte-E2E!   | Staff member role (treasurer status)          |
+| `member`            | luke.skywalker       | G@l3tte-E2E!   | Member role; parent of Ben Skywalker          |
+| `groupManager`      | anakin.skywalker     | G@l3tte-E2E!   | Group manager of "Skywalker Family"           |
+| `otherGroupManager` | esteban.dore         | G@l3tte-E2E!   | Group manager of "Les Explorateurs Solaires"  |
+| `treasury`          | hermione.granger     | G@l3tte-E2E!   | "Trésorerie" role, for all groups             |
+| `groupSecretary`    | sally.ragdoll        | G@l3tte-E2E!   | "Secrétariat de groupe" role, for "Les Âmes Errantes" |
+| All others          | *(see login column)* | G@l3tte-E2E!   |                                               |
+
+Specs changing permissions of the roles, `specs/roles-changes.spec.ts`, run in
+the `roles` project, on their own: `npx playwright test --project roles`.
 
 ## Seeding / Cleaning
 

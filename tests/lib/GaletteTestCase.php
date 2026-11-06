@@ -649,6 +649,56 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
     }
 
     /**
+     * Grant permissions to a system role
+     *
+     * Changes are rolled back with the test transaction.
+     *
+     * @param string               $role        System role key, one of \Galette\Access\Roles constants
+     * @param string|array<string> $permissions Permissions names
+     */
+    protected function grantToRole(string $role, string|array $permissions): void
+    {
+        $role_id = $this->getSystemRoleId($role);
+        $this->revokeFromRole($role, $permissions);
+        foreach ((array)$permissions as $permission) {
+            $insert = $this->zdb->insert(\Galette\Access\Roles::PERMISSIONS_TABLE);
+            $insert->values([\Galette\Access\Roles::PK => $role_id, 'permission' => $permission]);
+            $this->zdb->execute($insert);
+        }
+    }
+
+    /**
+     * Revoke permissions from a system role
+     *
+     * Changes are rolled back with the test transaction.
+     *
+     * @param string               $role        System role key, one of \Galette\Access\Roles constants
+     * @param string|array<string> $permissions Permissions names
+     */
+    protected function revokeFromRole(string $role, string|array $permissions): void
+    {
+        $delete = $this->zdb->delete(\Galette\Access\Roles::PERMISSIONS_TABLE);
+        $delete->where([
+            \Galette\Access\Roles::PK => $this->getSystemRoleId($role),
+            'permission' => (array)$permissions
+        ]);
+        $this->zdb->execute($delete);
+        $this->container->get(\Galette\Access\RoleResolver::class)->reset();
+    }
+
+    /**
+     * Get identifier of a system role
+     *
+     * @param string $role System role key
+     */
+    private function getSystemRoleId(string $role): int
+    {
+        $select = $this->zdb->select(\Galette\Access\Roles::TABLE);
+        $select->where(['role_key' => $role]);
+        return (int)$this->zdb->execute($select)->current()->{\Galette\Access\Roles::PK};
+    }
+
+    /**
      * Log-in as super administrator
      */
     protected function logSuperAdmin(): void

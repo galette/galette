@@ -889,15 +889,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectAuthMiddlewareRefused($test_response);
 
         //change preferences so members can create child members - route is still not accessible
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $this->expectAuthMiddlewareRefused($test_response);
 
@@ -944,21 +942,16 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->isGroupManager($g1->getId()));
 
         //with default preferences, groups manager cannot access add page
-        $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('me')]], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+        $this->expectAuthMiddlewareRefused($this->app->handle($request));
 
         //change preferences so managers can create members
-        $this->preferences->pref_bool_groupsmanagers_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $this->expectOK($test_response);
         $this->login->logout();
@@ -1074,15 +1067,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so members can create child members - route is still not accessible
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
@@ -1106,15 +1097,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so members can create child members - route is now accessible
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $request = $this->createRequest($route_name);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $this->expectOK($test_response);
         $body  = (string)$test_response->getBody();
@@ -1122,7 +1111,7 @@ class MembersController extends GaletteRoutingTestCase
             sprintf('<input type="hidden" name="parent_id" value="%1$s"/>', $member_one->id),
             $body
         );
-        //child form is stored from the child route, other ones are for groups managers
+        //child form is stored from the child route, other ones require member:create
         $this->assertStringContainsString(
             sprintf('<form action="%1$s"', $this->routeparser->urlFor('doAddMemberChild')),
             $body
@@ -1150,14 +1139,12 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so managers can create child members
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
@@ -1304,15 +1291,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($g1->setMembers([]));
 
         //change preferences so managers can edit group members
-        $this->preferences->pref_bool_groupsmanagers_edit_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_edit_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         //NOK since member_one is not part of group 1
         $this->assertSame(['Location' => [$this->routeparser->urlFor('me')]], $test_response->getHeaders());
@@ -1323,15 +1308,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($g1->setMembers([$member_one, $member_two]));
 
         //change preferences so managers can edit group members
-        $this->preferences->pref_bool_groupsmanagers_edit_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         $request = $this->createRequest($route_name, $route_arguments);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_edit_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
@@ -1474,6 +1457,336 @@ class MembersController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString($member_one->sfullname, $body);
         $this->assertStringContainsString($member_one->getEmail(), $body);
+    }
+
+    /**
+     * Test roles on member card, displayed to those who manage roles only
+     */
+    public function testShowPageRoles(): void
+    {
+        $member_one = $this->getMemberOne();
+        $role = new \Galette\Access\Role();
+        $role->setName('Treasurer');
+        $this->assertTrue($role->store($this->zdb));
+        $roles = $this->container->get(\Galette\Access\Roles::class);
+        $this->assertTrue($roles->give($member_one->id, $role->getId()));
+
+        $route_name = 'member';
+        $route_arguments = ['id' => (string)$member_one->id];
+
+        $this->logSuperAdmin();
+        $request = $this->createRequest($route_name, $route_arguments);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('Roles:', $body);
+        $this->assertStringContainsString(
+            $this->routeparser->urlFor('editRole', ['id' => (string)$role->getId()]),
+            $body
+        );
+        $this->assertStringContainsString('Treasurer', $body);
+        $this->login->logout();
+
+        //member does not see roles on their own card
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $request = $this->createRequest($route_name, $route_arguments);
+        $test_response = $this->app->handle($request);
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringNotContainsString('Roles:', $body);
+        $this->assertStringNotContainsString(
+            $this->routeparser->urlFor('editRole', ['id' => (string)$role->getId()]),
+            $body
+        );
+    }
+
+    /**
+     * Test giving and taking back roles from the member edition form
+     */
+    public function testEditRoles(): void
+    {
+        $member_one = $this->getMemberOne();
+        $roles = $this->container->get(\Galette\Access\Roles::class);
+        $role = new \Galette\Access\Role();
+        $role->setName('Treasurer');
+        $this->assertTrue($role->store($this->zdb));
+        $group = new \Galette\Entity\Group();
+        $group->setName('Treasury');
+        $this->assertTrue($group->store());
+
+        $mdata = $this->dataAdherentOne();
+        $mdata['id_adh'] = $member_one->id;
+        $edit_args = ['id' => (string)$member_one->id];
+        $given = (fn(): array => array_values(array_map(
+            fn(array $assignment): ?int => $assignment['id_group'],
+            $roles->getMembersOf($role->getId())
+        )));
+
+        //member cannot see nor change their roles
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $test_response = $this->app->handle($this->createRequest('editMember', $edit_args));
+        $this->assertStringNotContainsString('id="roles_field"', (string)$test_response->getBody());
+        $request = $this->createRequest('doEditMember', $edit_args, 'POST');
+        $request = $request->withParsedBody($mdata + ['roles_sent' => '1', 'roles_adh' => [$role->getId() . '|']]);
+        $this->app->handle($request);
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertSame([], $given());
+        $this->login->logout();
+
+        $this->logSuperAdmin();
+        $test_response = $this->app->handle($this->createRequest('editMember', $edit_args));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('id="roles_field"', $body);
+        $this->assertStringContainsString('<option value="' . $role->getId() . '">Treasurer</option>', $body);
+        //system roles are listed, but cannot be given
+        $this->assertStringNotContainsString('>Group manager</option>', $body);
+        //computed roles tell where they come from
+        $this->assertStringContainsString('Every logged in member', $body);
+
+        //give for all groups and for a group; system, unknown roles and groups are ignored
+        $request = $this->createRequest('doEditMember', $edit_args, 'POST');
+        $request = $request->withParsedBody($mdata + [
+            'roles_sent' => '1',
+            'roles_adh' => [
+                $role->getId() . '|',
+                $role->getId() . '|' . $group->getId(),
+                '3|',
+                '999|',
+                $role->getId() . '|999'
+            ]
+        ]);
+        $test_response = $this->app->handle($request);
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('member', $edit_args)]],
+            $test_response->getHeaders()
+        );
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $given_roles = $given();
+        sort($given_roles);
+        $this->assertSame([null, $group->getId()], $given_roles);
+        $this->assertCount(0, $roles->getMembersOf(3));
+
+        //roles not posted are kept
+        $request = $this->createRequest('doEditMember', $edit_args, 'POST');
+        $request = $request->withParsedBody($mdata);
+        $this->app->handle($request);
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertCount(2, $given());
+
+        //take back
+        $request = $this->createRequest('doEditMember', $edit_args, 'POST');
+        $request = $request->withParsedBody($mdata + [
+            'roles_sent' => '1',
+            'roles_adh' => [$role->getId() . '|' . $group->getId()]
+        ]);
+        $this->app->handle($request);
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertSame([$group->getId()], $given());
+
+        $request = $this->createRequest('doEditMember', $edit_args, 'POST');
+        $request = $request->withParsedBody($mdata + ['roles_sent' => '1']);
+        $this->app->handle($request);
+        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $this->assertSame([], $given());
+
+        $this->assertTrue($role->delete());
+    }
+
+    /**
+     * Test managed groups changed from the member edition form follow the groups
+     * member:manage is granted on
+     */
+    public function testEditManagedGroupsScope(): void
+    {
+        $member_two = $this->getMemberTwo();
+        $group = $this->logGroupManager();
+        $member_one_id = (int)$this->login->id;
+        $this->login->logOut();
+
+        $this->logSuperAdmin();
+        $other = new \Galette\Entity\Group();
+        $other->setName('Also managed by member one');
+        $this->assertTrue($other->store());
+        $this->assertTrue($other->setManagers([new \Galette\Entity\Adherent($this->zdb, $member_one_id)]));
+        $this->assertTrue($group->setMembers([$member_two]));
+        $not_managed = new \Galette\Entity\Group();
+        $not_managed->setName('Not managed by member one');
+        $this->assertTrue($not_managed->store());
+        $this->assertTrue($not_managed->setMembers([$member_two]));
+        //member two is not part of this one
+        $unlinked = new \Galette\Entity\Group();
+        $unlinked->setName('Unlinked, not managed by member one');
+        $this->assertTrue($unlinked->store());
+        $this->login->logOut();
+
+        //member:manage is given on the first group, and on groups member one does not manage
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:edit');
+        $insert = $this->zdb->insert(\Galette\Access\Roles::TABLE);
+        $insert->values(['name' => 'Group keeper']);
+        $this->zdb->execute($insert);
+        $role_id = (int)$this->zdb->getLastGeneratedValue(new \Galette\Access\Role());
+        $insert = $this->zdb->insert(\Galette\Access\Roles::PERMISSIONS_TABLE);
+        $insert->values([\Galette\Access\Roles::PK => $role_id, 'permission' => 'member:manage']);
+        $this->zdb->execute($insert);
+        $roles = $this->container->get(\Galette\Access\Roles::class);
+        $this->assertTrue($roles->give($member_one_id, $role_id, (int)$group->getId()));
+        $this->assertTrue($roles->give($member_one_id, $role_id, (int)$not_managed->getId()));
+        $this->assertTrue($roles->give($member_one_id, $role_id, (int)$unlinked->getId()));
+        $this->container->get(\Galette\Access\RoleResolver::class)->reset();
+
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        $edit_args = ['id' => (string)$member_two->id];
+        $managed = function () use ($member_two): array {
+            $member = new \Galette\Entity\Adherent($this->zdb, (int)$member_two->id);
+            $ids = array_map(
+                fn(\Galette\Entity\Group $managed): int => (int)$managed->getId(),
+                array_values($member->getManagedGroups())
+            );
+            sort($ids);
+            return $ids;
+        };
+        $post = $this->dataAdherentTwo() + [
+            'id_adh' => $member_two->id,
+            'groups_adh' => [$group->getId() . '|' . $group->getName()]
+        ];
+        $edit = function (array $groups) use ($edit_args, $post): void {
+            $request = $this->createRequest('doEditMember', $edit_args, 'POST')
+                ->withParsedBody($post + ['groups_managed_adh' => $groups]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(
+                ['Location' => [$this->routeparser->urlFor('member', $edit_args)]],
+                $test_response->getHeaders()
+            );
+            $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        };
+
+        //a group member two is not linked to can be added as manager only
+        $test_response = $this->app->handle($this->createRequest('editMember', $edit_args));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('id="group_row_' . $unlinked->getId() . '"', $body);
+        $this->assertStringContainsString('<option value="' . $unlinked->getId() . '">', $body);
+        $this->assertMatchesRegularExpression(
+            '/id="group_manager_' . $unlinked->getId() . '"(?:(?!\/>).)*data-editable="1"/s',
+            $body
+        );
+        $this->assertDoesNotMatchRegularExpression(
+            '/id="group_member_' . $unlinked->getId() . '"(?:(?!\/>).)*data-editable="1"/s',
+            $body
+        );
+
+        //member two cannot be made manager of the other group, but can of the not managed one
+        $edit([
+            $group->getId() . '|' . $group->getName(),
+            $other->getId() . '|' . $other->getName(),
+            $not_managed->getId() . '|' . $not_managed->getName(),
+            $unlinked->getId() . '|' . $unlinked->getName()
+        ]);
+        $this->assertSame(
+            [(int)$group->getId(), (int)$not_managed->getId(), (int)$unlinked->getId()],
+            $managed()
+        );
+
+        //and stays manager of the other group when it already is
+        $this->login->logOut();
+        $this->logSuperAdmin();
+        $this->assertTrue($other->setManagers([
+            new \Galette\Entity\Adherent($this->zdb, $member_one_id),
+            $member_two
+        ]));
+        $this->login->logOut();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+        //manager checkbox is only enabled on groups member:manage is granted on,
+        //including a group member two already manages
+        $test_response = $this->app->handle($this->createRequest('editMember', $edit_args));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertMatchesRegularExpression(
+            '/id="group_manager_' . $group->getId() . '"(?:(?!\/>).)*data-editable="1"/s',
+            $body
+        );
+        $this->assertMatchesRegularExpression(
+            '/id="group_manager_' . $other->getId() . '"(?:(?!\/>).)*disabled="disabled"/s',
+            $body
+        );
+        $this->assertMatchesRegularExpression(
+            '/id="group_manager_' . $not_managed->getId() . '"(?:(?!\/>).)*data-editable="1"/s',
+            $body
+        );
+
+        $edit([]);
+        $this->assertSame([(int)$other->getId()], $managed());
+
+        $this->login->logOut();
+    }
+
+    /**
+     * Test batch actions are offered from any permission that provides one
+     */
+    public function testListBatchActionsFromPermissions(): void
+    {
+        $member_two = $this->getMemberTwo();
+        $group = $this->logGroupManager();
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'mailing:send']);
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:mass-edit');
+
+        $test_response = $this->app->handle($this->createRequest('members'));
+        $this->expectOK($test_response);
+        $body = (string)$test_response->getBody();
+        $this->assertStringContainsString('data-value="masschange"', $body);
+        $this->assertStringNotContainsString('data-value="csv__directdownload"', $body);
+
+        //no action, no selection
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:mass-edit');
+        $test_response = $this->app->handle($this->createRequest('members'));
+        $this->expectOK($test_response);
+        $this->assertStringNotContainsString('batch-select-action', (string)$test_response->getBody());
+
+        $this->login->logOut();
+    }
+
+    /**
+     * Test members lists and mass changes follow permissions, not access levels
+     */
+    public function testListRoutesFromPermissions(): void
+    {
+        $this->getMemberTwo();
+        $this->getMemberOne();
+        $mdata = $this->dataAdherentOne();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isStaff());
+        $this->assertFalse($this->login->isGroupManager());
+
+        $routes = [
+            'member:read' => ['members', 'advanced-search'],
+            'member:create' => ['addMember'],
+            'member:mass-edit' => ['masschangeMembers']
+        ];
+        try {
+            //a simple member has none of them
+            foreach ($routes as $names) {
+                foreach ($names as $name) {
+                    $this->expectAuthMiddlewareRefused($this->app->handle($this->createRequest($name)));
+                }
+            }
+
+            //given from a role
+            $this->grantToRole(\Galette\Access\Roles::MEMBER, array_keys($routes));
+            foreach ($routes as $names) {
+                foreach ($names as $name) {
+                    $this->expectOK($this->app->handle($this->createRequest($name)));
+                }
+            }
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, array_keys($routes));
+            $this->login->logOut();
+        }
     }
 
     /**
@@ -1707,14 +2020,12 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertCount(0, $result); //no member added
 
         //change preferences so managers can create members - but only attached to a group he owns
-        $this->preferences->pref_bool_groupsmanagers_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $this->assertSame(['Location' => [$this->routeparser->urlFor('addMember')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
@@ -1722,15 +2033,13 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData(['error_detected' => ['You have to select a group you own!']]);
 
         //test with group set
-        $this->preferences->pref_bool_groupsmanagers_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $request = $request->withParsedBody($m3data + ['groups_adh' => [$g1->getId() . '|' . $g1->getName()]]);
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:create');
 
         $headers = $test_response->getHeaders();
         $this->assertCount(1, $headers);
@@ -1781,14 +2090,12 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so members can create child members - route is still not accessible
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
@@ -1811,8 +2118,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so members can create child members - route is now accessible
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $child_data = [
             'nom_adh'       => 'Doe',
@@ -1827,8 +2133,7 @@ class MembersController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $headers = $test_response->getHeaders();
         $this->assertCount(1, $headers);
@@ -1866,8 +2171,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so managers can create child members
-        $this->preferences->pref_bool_create_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $child_data = [
             'nom_adh'       => 'Doe',
@@ -1880,8 +2184,7 @@ class MembersController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_create_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
 
         $headers = $test_response->getHeaders();
         $this->assertCount(1, $headers);
@@ -1897,6 +2200,27 @@ class MembersController extends GaletteRoutingTestCase
 
         $member = new \Galette\Entity\Adherent($this->zdb, $new_adh_id);
         $this->assertSame($member_two->id, $member->parent_id);
+
+        //creating another member goes back to the child form, the only one managers can reach
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
+
+        $child_data = [
+            'nom_adh'       => 'Doe',
+            'prenom_adh'    => 'Jenny',
+            'login_adh'     => 'another.child.jenny.doe',
+            'redirect_on_create' => \Galette\Entity\Adherent::AFTER_ADD_NEW,
+            'fingerprint' => 'FAKER' . $this->seed
+        ];
+        $request = $this->createRequest($route_name, [], 'POST');
+        $request = $request->withParsedBody($child_data);
+        $test_response = $this->app->handle($request);
+
+        //Reset
+        $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:create-child');
+
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('addMemberChild')]], $test_response->getHeaders());
+        $this->expectNoLogEntry();
+        $this->expectFlashData(['success_detected' => ['New member has been successfully added.']]);
     }
 
     /**
@@ -2110,6 +2434,84 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test groups links on a member profile follow group read permission, not groups managers status
+     */
+    public function testShowGroupsLinksFromRole(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+        $this->logSuperAdmin();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Read from a role');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->login->logOut();
+
+        //a role giving group and members read permissions, on that group only
+        $insert = $this->zdb->insert(\Galette\Access\Roles::TABLE);
+        $insert->values(['name' => 'Group readers', 'id_parent' => null]);
+        $this->zdb->execute($insert);
+        $role_id = (int)$this->zdb->getLastGeneratedValue($this->container->get(\Galette\Access\Roles::class));
+        foreach (['group:read', 'member:read'] as $permission) {
+            $insert = $this->zdb->insert(\Galette\Access\Roles::PERMISSIONS_TABLE);
+            $insert->values([\Galette\Access\Roles::PK => $role_id, 'permission' => $permission]);
+            $this->zdb->execute($insert);
+        }
+        $insert = $this->zdb->insert(\Galette\Access\Roles::MEMBERS_TABLE);
+        $insert->values(['id_adh' => $member_one->id, \Galette\Access\Roles::PK => $role_id, 'id_group' => $group->getId()]);
+        $this->zdb->execute($insert);
+        $this->container->get(\Galette\Access\RoleResolver::class)->reset();
+
+        try {
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertFalse($this->login->isGroupManager());
+
+            $test_response = $this->app->handle($this->createRequest('member', ['id' => (string)$member_two->id]));
+            $this->expectOK($test_response);
+            $this->assertStringContainsString(
+                'href="' . $this->routeparser->urlFor('groups', ['id' => (string)$group->getId()]) . '" class="ui label"',
+                (string)$test_response->getBody()
+            );
+        } finally {
+            $this->login->logOut();
+        }
+    }
+
+    /**
+     * Test member duplication is checked against the duplicated member
+     */
+    public function testMemberDuplicateGroupScope(): void
+    {
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['member:create', 'member:manage']);
+        try {
+            $member_two = $this->getMemberTwo();
+            $group = $this->logGroupManager();
+            $duplicate_url = $this->routeparser->urlFor('duplicateMember', ['id_adh' => (string)$member_two->id]);
+
+            //member two is not part of a managed group
+            $request = $this->createRequest('duplicateMember', ['id_adh' => (string)$member_two->id]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+
+            $this->assertTrue($group->setMembers([$member_two]));
+            $test_response = $this->app->handle(
+                $this->createRequest('member', ['id' => (string)$member_two->id])
+            );
+            $this->assertSame(200, $test_response->getStatusCode());
+            $this->assertStringContainsString($duplicate_url, (string)$test_response->getBody());
+
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('addMember')]], $test_response->getHeaders());
+            $this->expectNoLogEntry();
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['member:create', 'member:manage']);
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Test edit members
      */
     #[AllowMockObjectsWithoutExpectations]
@@ -2284,14 +2686,12 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectFlashData([]);
 
         //change preferences so managers can see and create group members contributions
-        $this->preferences->pref_bool_groupsmanagers_edit_member = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         $test_response = $this->app->handle($request);
 
         //Reset
-        $this->preferences->pref_bool_groupsmanagers_edit_member = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:edit');
 
         $this->assertSame(
             ['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]],
@@ -2572,11 +2972,16 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->isGroupManager($g1->getId()));
         $this->assertTrue($g1->setMembers([$member_one, $member_two]));
 
-        //with default preferences, groups manager cannot access edit page
+        //mass changes require member:mass-edit, groups managers do not have it per default
+        $this->expectAuthMiddlewareRefused($this->app->handle($request));
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:mass-edit');
+
+        //given member:mass-edit, groups manager can access mass change page
         $test_response = $this->app->handle($request);
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString($expected_title, $body);
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:mass-edit');
         $this->login->logOut();
 
         //sub groups are displayed with their full name, without HTML entities
@@ -2730,6 +3135,10 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->isGroupManager($g1->getId()));
         $this->assertTrue($g1->setMembers([$member_one, $member_two]));
 
+        //mass changes require member:mass-edit, groups managers do not have it per default
+        $this->expectAuthMiddlewareRefused($this->app->handle($request));
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:mass-edit');
+
         //tets with group manager
         $filters->selected = [$member_one->id, $member_two->id, $member_three->id];
         $expected_title = 'Review mass change ' . count($filters->selected) . ' members';
@@ -2784,6 +3193,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->expectOK($test_response);
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString('No changes selected', $body);
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:mass-edit');
     }
 
     /**
@@ -2923,7 +3333,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame('Admin city', $member_three->town);
         $this->assertTrue($member_two->load($member_two->id));
         $this->assertSame('Admin city', $member_two->town);
-
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:mass-edit');
         $this->login->logOut();
         //reset admin status
         $this->resetAdminStatus($adm_member);
@@ -2937,6 +3347,10 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
         $this->assertTrue($this->login->isGroupManager($g1->getId()));
         $this->assertTrue($g1->setMembers([$member_one, $member_two]));
+
+        //mass changes require member:mass-edit, groups managers do not have it per default
+        $this->expectAuthMiddlewareRefused($this->app->handle($request));
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:mass-edit');
 
         //test with group manager
         $filters->selected = [$member_two->id, $member_three->id];
@@ -2961,6 +3375,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame('Group Manager City', $member_two->town);
 
         //try to mass change on an emty group
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:mass-edit');
         $this->logSuperAdmin();
         $g2 = new \Galette\Entity\Group();
         $g2->setName('Group 2');
@@ -3695,5 +4110,78 @@ class MembersController extends GaletteRoutingTestCase
         $this->preferences->pref_publicpages_visibility_membersgallery = $gallery_visibility;
         $this->assertTrue($this->preferences->store());
         $this->assertTrue((new \Galette\Core\Picture($member_one->id))->delete());
+    }
+
+    /**
+     * Test members removal is checked against each member, for a role given on a group
+     */
+    public function testDeleteMemberWithGroupRole(): void
+    {
+        $member_one = $this->getMemberOne();
+        $member_two = $this->getMemberTwo();
+
+        $this->logSuperAdmin();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Removal group');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setMembers([$member_two]));
+        $this->login->logOut();
+
+        //member one can remove members of the group only
+        $insert = $this->zdb->insert(\Galette\Access\Roles::TABLE);
+        $insert->values(['name' => 'Remover']);
+        $this->zdb->execute($insert);
+        $role = (int)$this->zdb->getLastGeneratedValue(new \Galette\Access\Roles($this->zdb, new \Galette\Access\Permissions()));
+        $insert = $this->zdb->insert(\Galette\Access\Roles::PERMISSIONS_TABLE);
+        $insert->values([\Galette\Access\Roles::PK => $role, 'permission' => 'member:delete']);
+        $this->zdb->execute($insert);
+        $insert = $this->zdb->insert(\Galette\Access\Roles::MEMBERS_TABLE);
+        $insert->values(['id_adh' => $member_one->id, \Galette\Access\Roles::PK => $role, 'id_group' => $group->getId()]);
+        $this->zdb->execute($insert);
+
+        $previous = $this->container->get(\Galette\Access\AccessControl::class);
+        $this->container->set(
+            \Galette\Access\AccessControl::class,
+            new \Galette\Access\AccessControl(
+                new \Galette\Access\Permissions(),
+                new \Galette\Access\RoleResolver($this->zdb),
+                $this->login
+            )
+        );
+        try {
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertFalse($this->login->isStaff());
+
+            //confirmation page does not disclose name of a member out of reach
+            $test_response = $this->app->handle(
+                $this->createRequest('removeMember', ['id' => (string)$member_one->id])
+            );
+            $this->expectOK($test_response);
+            $this->assertStringNotContainsString($member_one->sfullname, (string)$test_response->getBody());
+
+            //own card is not part of the group
+            $request = $this->createRequest('doRemoveMember', [], 'POST')
+                ->withParsedBody(['id' => [$member_two->id, $member_one->id], 'confirm' => true]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Trying to remove member #' . $member_one->id . ' without appropriate ACLs'
+            );
+            $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE)
+                ->where([\Galette\Entity\Adherent::PK => [$member_one->id, $member_two->id]]);
+            $this->assertCount(2, $this->zdb->execute($select));
+
+            $request = $request->withParsedBody(['id' => [$member_two->id], 'confirm' => true]);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['success_detected' => ['Successfully deleted!']]);
+            $this->assertCount(1, $this->zdb->execute($select));
+        } finally {
+            $this->container->set(\Galette\Access\AccessControl::class, $previous);
+            $this->login->logOut();
+        }
     }
 }

@@ -34,6 +34,7 @@ jobs:
             - { project: "chromium", browser: "chromium" }
             - { project: "mail-queue", browser: "chromium" }
             - { project: "two-factor", browser: "chromium" }
+            - { project: "roles", browser: "chromium" }
 
     services:
       # Label used to access the service container

@@ -16,6 +16,7 @@ use Galette\Core\Galette;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\Core\Mailing;
+use Galette\Entity\Adherent;
 use Galette\Core\MailingHistory;
 use Galette\Core\MailingQueue;
 use Galette\Filters\MailingsList;
@@ -47,7 +48,7 @@ class MailingsController extends CrudController
     )]
     public function add(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -114,12 +115,8 @@ class MailingsController extends CrudController
                 $filters->membership_filter = Members::MEMBERSHIP_LATE;
                 $filters->filter_account = Members::ACTIVE_ACCOUNT;
                 $m = new Members($filters);
-                if ($this->login->isAdmin() || $this->login->isStaff()) {
-                    $members = $m->getList(as_members: true);
-                } else {
-                    //groups managers can only remind members of groups they manage
-                    $members = $m->getManagedMembersList(as_members: true, count: false);
-                }
+                //remind only members current user can display and send mailings to
+                $members = $m->getVisibleMembersList(as_members: true, count: false, permission: 'mailing:send');
                 $mailing = new Mailing($this->preferences, $members);
             } else {
                 if (
@@ -140,7 +137,7 @@ class MailingsController extends CrudController
                     );
                 }
                 $m = new Members();
-                $members = $m->getArrayList($filters->selected);
+                $members = $m->getArrayList($filters->selected, permission: 'mailing:send');
                 $mailing = new Mailing($this->preferences, ($members !== false) ? $members : []);
             }
 
@@ -201,7 +198,7 @@ class MailingsController extends CrudController
     )]
     public function doAdd(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -213,8 +210,12 @@ class MailingsController extends CrudController
         $error_detected = [];
         $success_detected = [];
 
-        $goto = $this->routeparser->urlFor('mailings');
         $redirect_url = $this->session->redirect_mailing ?? $this->routeparser->urlFor('members');
+        //senders who cannot browse history go back where they came from
+        $history_url = $this->accessControl->can('mailing:history')
+            ? $this->routeparser->urlFor('mailings')
+            : $redirect_url;
+        $goto = $history_url;
 
         //We're done :-)
         if (
@@ -268,7 +269,7 @@ class MailingsController extends CrudController
                     );
                 }
                 $m = new Members();
-                $members = $m->getArrayList($filters->selected);
+                $members = $m->getArrayList($filters->selected, permission: 'mailing:send');
                 $mailing = new Mailing($this->preferences, ($members !== false) ? $members : []);
             }
 
@@ -312,6 +313,7 @@ class MailingsController extends CrudController
             }
 
             if (isset($post['mailing_confirm']) && count($error_detected) == 0) {
+                $this->restrictRecipients($mailing);
                 $mailing->current_step = Mailing::STEP_SEND;
 
                 //when hourly/daily limits are set, sending must be spread over
@@ -405,7 +407,7 @@ class MailingsController extends CrudController
                         $this->session->mailing,
                         $this->session->redirect_mailing
                     );
-                    $goto = $this->routeparser->urlFor('mailings');
+                    $goto = $history_url;
                 } elseif ($sent == Mailing::MAIL_ERROR) {
                     $mailing->current_step = Mailing::STEP_START;
                     Analog::log(
@@ -468,7 +470,7 @@ class MailingsController extends CrudController
                     $success_detected[] = _T("Mailing has been successfully saved.");
                     $this->session->mailing = null;
                     $this->session->redirect_mailing = null;
-                    $goto = $this->routeparser->urlFor('mailings');
+                    $goto = $history_url;
                 }
             }
         }
@@ -701,7 +703,7 @@ class MailingsController extends CrudController
     )]
     public function preview(Request $request, Response $response, ?int $id = null): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if ($id === null && !$this->accessControl->can('mailing:send')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -769,14 +771,6 @@ class MailingsController extends CrudController
     )]
     public function previewAttachment(Request $request, Response $response, int $id, int $pos): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
-            return $this->redirectWithErrors(
-                response: $response,
-                errors: [_T("You do not have permission for requested URL.")],
-                redirect_url: $this->routeparser->urlFor('slash')
-            );
-        }
-
         if (!MailingHistory::canAccess($this->zdb, $id, $this->login)) {
             return $this->redirectWithErrors(
                 response: $response,
@@ -798,6 +792,36 @@ class MailingsController extends CrudController
     }
 
     /**
+     * Keep only recipients current user can send mailings to
+     *
+     * Recipients come from the session, possibly restored from a stored
+     * mailing: check them again, as mailing:send may be granted on some
+     * groups only.
+     *
+     * @param Mailing $mailing Mailing to send
+     */
+    private function restrictRecipients(Mailing $mailing): void
+    {
+        if ($this->accessControl->getGroupScope(['member:read', 'mailing:send']) === null) {
+            return;
+        }
+
+        $recipients = $mailing->recipients;
+        if (count($recipients) === 0) {
+            return;
+        }
+
+        $m = new Members();
+        $members = $m->getArrayList(
+            ids: array_map(fn(Adherent $member): int => (int)$member->id, $recipients),
+            dues: false,
+            parent: true,
+            permission: 'mailing:send'
+        );
+        $mailing->setRecipients($members !== false ? $members : []);
+    }
+
+    /**
      * Set recipients action
      */
     #[Route(
@@ -807,7 +831,7 @@ class MailingsController extends CrudController
     )]
     public function setRecipients(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->withJson(
                 $response,
                 ['error' => _T("You do not have permission for requested URL.")],
@@ -838,7 +862,8 @@ class MailingsController extends CrudController
                 fields: null,
                 export: false,
                 dues: false,
-                parent: true
+                parent: true,
+                permission: 'mailing:send'
             );
         }
         $mailing->setRecipients($members !== false ? $members : []);
@@ -868,7 +893,7 @@ class MailingsController extends CrudController
     )]
     public function recipientRow(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->withJson(
                 $response,
                 ['error' => _T("You do not have permission for requested URL.")],
@@ -878,8 +903,11 @@ class MailingsController extends CrudController
 
         $post = $request->getParsedBody();
         $m = new Members();
-        //members list is restricted to the managed ones for groups managers
-        $members = $m->getArrayList([(int)($post['id_adh'] ?? 0)]);
+        //members list is restricted to the ones the sender can reach
+        $members = $m->getArrayList(
+            ids: [(int)($post['id_adh'] ?? 0)],
+            permission: 'mailing:send'
+        );
         if (!is_array($members) || count($members) === 0) {
             Analog::log(
                 'Missing or unknown member for mailingRecipientRow',
@@ -916,7 +944,7 @@ class MailingsController extends CrudController
     )]
     public function queue(Request $request, Response $response, int $id): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->redirectWithErrors(
                 response: $response,
                 errors: [_T("You do not have permission for requested URL.")],
@@ -945,16 +973,20 @@ class MailingsController extends CrudController
                 'stats'         => $queue->getStats($id),
                 'mail_usage'    => $queue->getUsage(),
                 'batch_delay'   => (int)$this->preferences->pref_mail_batch_delay,
-                'end_links'     => [
+                'end_links'     => array_merge(
                     [
-                        'url'   => $this->routeparser->urlFor('members'),
-                        'label' => _T("Back to members list")
+                        [
+                            'url'   => $this->routeparser->urlFor('members'),
+                            'label' => _T("Back to members list")
+                        ]
                     ],
-                    [
-                        'url'   => $this->routeparser->urlFor('mailings'),
-                        'label' => _T("Mailings history")
-                    ]
-                ],
+                    $this->accessControl->can('mailing:history') ? [
+                        [
+                            'url'   => $this->routeparser->urlFor('mailings'),
+                            'label' => _T("Mailings history")
+                        ]
+                    ] : []
+                ),
                 'documentation' => 'usermanual/adherents.html#e-mailing'
             ]
         );
@@ -971,7 +1003,7 @@ class MailingsController extends CrudController
     )]
     public function processQueue(Request $request, Response $response): Response
     {
-        if (!$this->isAllowedForGroupManagers('pref_bool_groupsmanagers_mailings')) {
+        if (!$this->accessControl->can('mailing:send')) {
             return $this->withJson(
                 $response,
                 ['error' => _T("You do not have permission for requested URL.")],
@@ -985,8 +1017,7 @@ class MailingsController extends CrudController
             : null;
 
         if (
-            !$this->login->isAdmin()
-            && !$this->login->isStaff()
+            !$this->accessControl->can('mailing:history')
             && ($mailing_id === null || !MailingHistory::canAccess($this->zdb, $mailing_id, $this->login))
         ) {
             return $this->withJson(

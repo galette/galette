@@ -9,7 +9,15 @@ import { test as base, Page } from '@playwright/test';
 /**
  * User roles available in Galette fixtures
  */
-export type UserRole = 'superadmin' | 'admin' | 'treasurer' | 'secretary' | 'member' | 'groupManager';
+export type UserRole =
+  | 'superadmin'
+  | 'admin'
+  | 'staff'
+  | 'member'
+  | 'groupManager'
+  | 'otherGroupManager'
+  | 'treasury'
+  | 'groupSecretary';
 
 /**
  * Role credentials mapping
@@ -23,12 +31,8 @@ export const ROLE_CREDENTIALS: Record<UserRole, { login: string; password: strin
     login: 'leia.organa',
     password: 'G@l3tte-E2E!',
   },
-  treasurer: {
-    login: 'morpheus',
-    password: 'G@l3tte-E2E!',
-  },
-  secretary: {
-    login: 'turanga.leela',
+  staff: {
+    login: 'morpheus', // treasurer status, staff without being an administrator
     password: 'G@l3tte-E2E!',
   },
   member: {
@@ -39,7 +43,35 @@ export const ROLE_CREDENTIALS: Record<UserRole, { login: string; password: strin
     login: 'anakin.skywalker', // Group manager of Skywalker Family
     password: 'G@l3tte-E2E!',
   },
+  otherGroupManager: {
+    login: 'esteban.dore', // Group manager of Les Explorateurs Solaires
+    password: 'G@l3tte-E2E!',
+  },
+  treasury: {
+    login: 'hermione.granger', // "Trésorerie" role, for all groups
+    password: 'G@l3tte-E2E!',
+  },
+  groupSecretary: {
+    login: 'sally.ragdoll', // "Secrétariat de groupe" role, for Les Âmes Errantes only
+    password: 'G@l3tte-E2E!',
+  },
 };
+
+/**
+ * Log a page in with the account of a role, and wait for the dashboard.
+ * Also usable outside of a test, from a hook that gets the browser only.
+ */
+export async function logIn(page: Page, role: UserRole): Promise<void> {
+  const credentials = ROLE_CREDENTIALS[role];
+
+  await page.goto('/login');
+  await page.locator('input#login').fill(credentials.login);
+  await page.locator('input#password').fill(credentials.password);
+  await page.locator('input[type="submit"]').click();
+
+  // Wait for dashboard redirection
+  await page.waitForURL('/dashboard', { timeout: 10000 });
+}
 
 /**
  * Login fixture for E2E tests.
@@ -82,16 +114,7 @@ export const test = base.extend<AuthFixtures>({
     const loginAs = async (role: UserRole): Promise<Page> => {
       const context = await browser.newContext();
       const page = await context.newPage();
-
-      const credentials = ROLE_CREDENTIALS[role];
-
-      await page.goto('/login');
-      await page.locator('input#login').fill(credentials.login);
-      await page.locator('input#password').fill(credentials.password);
-      await page.locator('input[type="submit"]').click();
-
-      // Wait for dashboard redirection
-      await page.waitForURL('/dashboard', { timeout: 10000 });
+      await logIn(page, role);
 
       return page;
     };

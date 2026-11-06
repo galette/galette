@@ -388,6 +388,63 @@ class CsvController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test imports and exports files require the permission of their type
+     */
+    public function testFilesTypePermission(): void
+    {
+        $this->getMemberOne();
+        $mdata = $this->dataAdherentOne();
+        $import = 'import-' . $this->seed . '.csv';
+        $export = 'export-' . $this->seed . '.csv';
+        $this->assertNotFalse(file_put_contents(GALETTE_IMPORTS_PATH . $import, '"col1"'));
+        $this->assertNotFalse(file_put_contents(GALETTE_EXPORTS_PATH . $export, '"col1"'));
+
+        $get = fn(string $type, string $file) => $this->app->handle(
+            $this->createRequest('getCsv', ['type' => $type, 'file' => $file])
+        );
+        $remove = fn(string $type, string $file) => $this->app->handle(
+            $this->createRequest('doRemoveCsv', ['type' => $type, 'file' => $file], 'POST')
+                ->withParsedBody(['confirm' => 'on'])
+        );
+        $refused = function ($test_response): void {
+            $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+        };
+
+        try {
+            //exports only
+            $this->grantToRole(\Galette\Access\Roles::MEMBER, 'data:export');
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertFalse($this->login->isStaff());
+            $refused($get('import', $import));
+            $refused($remove('import', $import));
+            $this->assertFileExists(GALETTE_IMPORTS_PATH . $import);
+            $this->assertSame(200, $get('export', $export)->getStatusCode());
+            $this->login->logOut();
+
+            //imports only
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'data:export');
+            $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:import');
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $refused($get('export', $export));
+            $refused($remove('export', $export));
+            $this->assertFileExists(GALETTE_EXPORTS_PATH . $export);
+            $this->assertSame(200, $get('import', $import)->getStatusCode());
+            $remove('import', $import);
+            $this->expectFlashData(['success_detected' => ['\'' . $import . '\' file has been removed from disk.']]);
+            $this->assertFileDoesNotExist(GALETTE_IMPORTS_PATH . $import);
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, ['data:export', 'member:import']);
+            foreach ([GALETTE_IMPORTS_PATH . $import, GALETTE_EXPORTS_PATH . $export] as $path) {
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
+            $this->login->logOut();
+        }
+    }
+
+    /**
      * Test import model page
      */
     public function testImportModelPage(): void
@@ -575,10 +632,23 @@ class CsvController extends GaletteRoutingTestCase
         $this->assertStringNotContainsString($member_two->email, $body);
         $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 1 are accessible or exist.');
 
+        //reading every member does not widen the export
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:read');
+        try {
+            $test_response = $this->app->handle($request);
+            $this->assertSame(200, $test_response->getStatusCode());
+            $body = (string)$test_response->getBody();
+            $this->assertStringContainsString('"' . $member_one->id . '";', $body);
+            $this->assertStringNotContainsString('"' . $member_two->id . '";', $body);
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'requested 2 member(s), only 1 are accessible or exist.');
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:read');
+        }
+
         //exports disabled for group managers
-        $this->preferences->pref_bool_groupsmanagers_exports = false;
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
         $test_response = $this->app->handle($request);
-        $this->preferences->pref_bool_groupsmanagers_exports = true;
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['member:export', 'member:print', 'group:export']);
         $this->assertSame(['Location' => ['/']], $test_response->getHeaders());
         $this->expectFlashData(
             [
@@ -943,5 +1013,67 @@ class CsvController extends GaletteRoutingTestCase
         //remove file
         unlink(GALETTE_IMPORTS_PATH . '/uploaded_file.csv');
         $this->login->logOut();
+    }
+
+    /**
+     * Test importing groups managers requires to manage members
+     */
+    public function testImportManagersRequiresMemberManage(): void
+    {
+        $model = new \Galette\Entity\ImportModel();
+        $model->setFields(['nom_adh', 'prenom_adh', \Galette\IO\CsvIn::MANAGED_GROUPS_FIELD]);
+        $this->assertTrue($model->store($this->zdb));
+
+        $this->getMemberOne();
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:import');
+        try {
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+
+            $request = $this->createRequest('doImport', [], 'POST');
+            $request = $request->withParsedBody(['import_file' => 'uploaded_file.csv']);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('import')]], $test_response->getHeaders());
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to import groups managers without appropriate permissions');
+            $this->expectFlashData([
+                'error_detected' => ['You are not allowed to import groups managers; remove that column from the import model.']
+            ]);
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:import');
+            $this->assertTrue($model->remove($this->zdb));
+            $this->login->logOut();
+        }
+    }
+
+    /**
+     * Test importing groups managers requires to manage members of every group
+     */
+    public function testImportManagersRequiresGlobalMemberManage(): void
+    {
+        $model = new \Galette\Entity\ImportModel();
+        $model->setFields(['nom_adh', 'prenom_adh', \Galette\IO\CsvIn::MANAGED_GROUPS_FIELD]);
+        $this->assertTrue($model->store($this->zdb));
+
+        $this->grantToRole(\Galette\Access\Roles::MEMBER, 'member:import');
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:manage');
+        try {
+            //member:manage is granted on the managed group only
+            $this->logGroupManager();
+            $this->assertTrue($this->container->get(\Galette\Access\AccessControl::class)->can('member:manage'));
+
+            $request = $this->createRequest('doImport', [], 'POST');
+            $request = $request->withParsedBody(['import_file' => 'uploaded_file.csv']);
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('import')]], $test_response->getHeaders());
+            $this->expectLogEntry(\Analog\Analog::WARNING, 'Trying to import groups managers without appropriate permissions');
+            $this->expectFlashData([
+                'error_detected' => ['You are not allowed to import groups managers; remove that column from the import model.']
+            ]);
+        } finally {
+            $this->revokeFromRole(\Galette\Access\Roles::MEMBER, 'member:import');
+            $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'member:manage');
+            $this->assertTrue($model->remove($this->zdb));
+            $this->login->logOut();
+        }
     }
 }

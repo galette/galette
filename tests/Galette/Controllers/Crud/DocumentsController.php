@@ -109,7 +109,7 @@ class DocumentsController extends GaletteRoutingTestCase
         $request = $this->createRequest($route_name);
 
         //Refused from authenticate middleware
-        //all document routes have the same ACLs, no need to test each one.
+        //all document routes require document:manage, no need to test each one.
         $test_response = $this->app->handle($request);
         $this->expectLogin($test_response);
 
@@ -160,6 +160,7 @@ class DocumentsController extends GaletteRoutingTestCase
             '1 document',
             $body
         );
+        $this->assertStringContainsString('Add a document', $body);
 
         $this->resetStaffStatus($staff_member, $member_one);
 

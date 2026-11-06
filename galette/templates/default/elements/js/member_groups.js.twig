@@ -110,10 +110,15 @@
                         var $row = $('#group_row_' + _gid);
                         $row.prop('hidden', false);
                         _setRowEditable($row, true);
-                        _setToggle($row.find('.group-member'), true, true);
+                        //add as member when allowed, as manager otherwise
+                        var $added = $row.find('.group-member[data-editable]');
+                        if (!$added.length) {
+                            $added = $row.find('.group-manager[data-editable]');
+                        }
+                        _setToggle($added, true, true);
                         _groupAddDropdown().dropdown('clear');
                         _groupAddDropdown().find('.menu .item[data-value="' + _gid + '"]').addClass('disabled');
                         _refreshGroups();
-                        $row.find('.group-member').trigger('focus');
+                        $added.trigger('focus');
                     });
                 }

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Repository;
 
 use Galette\Core\Login;
+use Galette\Features\AccessControlled;
 use Galette\Core\Preferences;
 use Galette\Entity\Social;
 use Galette\Events\GaletteEvent;
@@ -52,6 +53,8 @@ use ArrayObject;
  */
 class Members
 {
+    use AccessControlled;
+
     public const string TABLE = Adherent::TABLE;
     public const string PK = Adherent::PK;
 
@@ -109,6 +112,10 @@ class Members
     /** @var string[] */
     private array $extra_order = [];
     private ?DynamicField $order_dynamic = null;
+    /** @var ?array<int> Groups to restrict managed members list to */
+    private ?array $groups_scope = null;
+    /** Login groups scope applies to */
+    private ?Login $scope_login = null;
 
     /**
      * Default constructor
@@ -175,6 +182,64 @@ class Members
             managed: true,
             limit: $limit
         );
+    }
+
+    /**
+     * Get members current user is allowed to see in lists
+     *
+     * Everyone, or themselves, their children and members of the groups
+     * member:read is granted on.
+     *
+     * @param bool           $as_members return the results as an array of
+     *                                   Member object.
+     * @param ?array<string> $fields     field(s) name(s) to get. Should be a string or
+     *                                   an array. If null, all fields will be
+     *                                   returned
+     * @param bool           $count      true if we want to count members
+     * @param bool           $limit      true to LIMIT query
+     * @param ?Login         $login      Login to check, current one if null
+     * @param ?string        $permission Another permission members must be granted on,
+     *                                   like member:export to export them
+     *
+     * @return Adherent[]|ResultSet
+     */
+    public function getVisibleMembersList(
+        bool $as_members = false,
+        ?array $fields = null,
+        bool $count = true,
+        bool $limit = true,
+        ?Login $login = null,
+        ?string $permission = null
+    ): array|ResultSet {
+        if ($login === null) {
+            /** @var Login $login */
+            global $login;
+        }
+
+        $scope = $this->getGroupScope($this->getScopePermissions($permission), $login);
+        if ($scope === null) {
+            return $this->getMembersList(
+                as_members: $as_members,
+                fields: $fields,
+                count: $count,
+                limit: $limit
+            );
+        }
+
+        $this->groups_scope = $scope;
+        $this->scope_login = $login;
+        try {
+            return $this->getMembersList(
+                as_members: $as_members,
+                fields: $fields,
+                count: $count,
+                managed: true,
+                limit: $limit
+            );
+        } finally {
+            $this->groups_scope = null;
+            $this->scope_login = null;
+        }
     }
 
     /**
@@ -565,6 +630,8 @@ class Members
      * @param bool                  $parent      True if load parent as Adherent dependency
      * @param bool                  $unscoped    Do not restrict to members current user is allowed to see.
      *                                           For internal use only, never with ids coming from a request.
+     * @param ?string               $permission  Another permission members must be granted on,
+     *                                           like member:export to export them
      *
      * @return array <int,Adherent|ArrayObject<string, int|string>>|false
      */
@@ -577,7 +644,8 @@ class Members
         bool $export = false,
         bool $dues = false,
         bool $parent = false,
-        bool $unscoped = false
+        bool $unscoped = false,
+        ?string $permission = null
     ): array|false {
         /**
          * @var Db $zdb
@@ -599,15 +667,15 @@ class Members
             return false;
         }
 
-        $scoped = $unscoped === false
-            && !(
-                $login instanceof Login
-                && ($login->isAdmin() || $login->isStaff() || $login->isCron())
-            );
-        if ($scoped && (!$login instanceof Login || !$login->isLogged())) {
-            Analog::log('Trying to list members without being logged in.', Analog::WARNING);
-            return false;
+        $scope = null;
+        if ($unscoped === false && !($login instanceof Login && $login->isCron())) {
+            if (!$login instanceof Login || !$login->isLogged()) {
+                Analog::log('Trying to list members without being logged in.', Analog::WARNING);
+                return false;
+            }
+            $scope = $this->getGroupScope($this->getScopePermissions($permission), $login);
         }
+        $scoped = $scope !== null;
 
         try {
             $damode = self::SHOW_ARRAY_LIST;
@@ -622,7 +690,7 @@ class Members
             );
             $select->where->in('a.' . self::PK, $ids);
             if ($scoped) {
-                $select->where($this->getAccessibleMembersPredicate($login));
+                $select->where($this->getAccessibleMembersPredicate($login, $scope));
             }
             if (is_array($orderby) && count($orderby) > 0) {
                 foreach ($orderby as $o) {
@@ -663,13 +731,26 @@ class Members
     }
 
     /**
-     * Restrict members to the ones current user is allowed to see:
-     * themselves, their children, and members of the groups they manage.
-     * This is the list equivalent of Adherent::canShow().
+     * Permissions members lists are restricted on
      *
-     * @param Login $login Login instance
+     * @param ?string $permission Another permission members must be granted on
+     *
+     * @return non-empty-array<string>
      */
-    private function getAccessibleMembersPredicate(Login $login): PredicateSet
+    private function getScopePermissions(?string $permission): array
+    {
+        return $permission === null ? ['member:read'] : ['member:read', $permission];
+    }
+
+    /**
+     * Restrict members to the ones current user is allowed to see:
+     * themselves, their children, and members of the groups member:read is
+     * granted on. This is the list equivalent of Adherent::canShow().
+     *
+     * @param Login      $login  Login instance
+     * @param array<int> $groups Groups permissions are granted on
+     */
+    private function getAccessibleMembersPredicate(Login $login, array $groups): PredicateSet
     {
         /** @var Db $zdb */
         global $zdb;
@@ -679,15 +760,10 @@ class Members
             new Operator('a.parent_id', '=', $login->id)
         ];
 
-        if ($login->isGroupManager()) {
+        if (count($groups) > 0) {
             $managed = $zdb->select(Group::GROUPSUSERS_TABLE, 'gr');
             $managed->columns([Adherent::PK]);
-            $managed->join(
-                ['m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
-                'gr.' . Group::PK . '=m.' . Group::PK,
-                []
-            );
-            $managed->where(['m.' . Adherent::PK => $login->id]);
+            $managed->where->in('gr.' . Group::PK, $groups);
             $predicates[] = new In('a.' . self::PK, $managed);
         }
 
@@ -775,15 +851,23 @@ class Members
                     $select->join(
                         ['status' => PREFIX_DB . Status::TABLE],
                         'a.' . Status::PK . '=status.' . Status::PK
-                    )->join(
-                        ['gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                        'a.' . Adherent::PK . '=gr.' . Adherent::PK,
-                        []
-                    )->join(
-                        ['m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
-                        'gr.' . Group::PK . '=m.' . Group::PK,
-                        []
-                    )->where(['m.' . Adherent::PK => $login->id]);
+                    );
+                    if ($this->groups_scope !== null) {
+                        //same members as on their cards: themselves, their children, and members of the groups
+                        $select->where(
+                            $this->getAccessibleMembersPredicate($this->scope_login ?? $login, $this->groups_scope)
+                        );
+                    } else {
+                        $select->join(
+                            ['gr' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
+                            'a.' . Adherent::PK . '=gr.' . Adherent::PK,
+                            []
+                        )->join(
+                            ['m' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
+                            'gr.' . Group::PK . '=m.' . Group::PK,
+                            []
+                        )->where(['m.' . Adherent::PK => $login->id]);
+                    }
                     break;
             }
 
@@ -2045,10 +2129,13 @@ class Members
         ];
 
         $list_members = [];
-        if ($login->isAdmin() || $login->isStaff()) {
-            $list_members = $this->getList(as_members: false, fields: $required_fields);
-        } elseif ($login->isGroupManager()) {
-            $list_members = $this->getManagedMembersList(as_members: false, fields: $required_fields);
+        if ($this->getGroupScope('member:read', $login) !== []) {
+            $list_members = $this->getVisibleMembersList(
+                as_members: false,
+                fields: $required_fields,
+                count: false,
+                login: $login
+            );
         }
 
         if (count($list_members) > 0) {

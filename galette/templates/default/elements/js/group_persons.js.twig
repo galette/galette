@@ -15,7 +15,8 @@
             var _setToggle = function($input, checked, enabled) {
                 var $toggle = $input.closest('.ui.checkbox');
                 $toggle.checkbox(checked ? 'set checked' : 'set unchecked');
-                $toggle.checkbox(enabled ? 'set enabled' : 'set disabled');
+                //managers toggles stay disabled for who cannot change them
+                $toggle.checkbox(enabled && $input.data('locked') != 1 ? 'set enabled' : 'set disabled');
             };
 
             var _rowState = function($row) {
@@ -107,7 +108,8 @@
                     url: '{{ url_for('ajaxGroupMembers') }}',
                     type: 'POST',
                     data: {
-                        id_adh: _pid
+                        id_adh: _pid,
+                        id_group: {{ group.getId() ?? 0 }}
                     },
                     {% include "elements/js/loader.js.twig" with {
                         selector: "#person_add_btn",

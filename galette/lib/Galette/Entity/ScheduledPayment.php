@@ -128,7 +128,11 @@ class ScheduledPayment
 
         if (!isset($data[Contribution::PK]) || !is_numeric($data[Contribution::PK])) {
             $this->errors[] = _T('Contribution is required');
-        } elseif (!$this->contribution->load((int)$data[Contribution::PK])) {
+        } elseif (
+            !$this->contribution->load((int)$data[Contribution::PK])
+            //permission may be granted on some groups only
+            || !$this->contribution->canSchedule($login)
+        ) {
             $this->errors[] = _T('Unable to load contribution');
         } else {
             if (isset($data['amount'])) {

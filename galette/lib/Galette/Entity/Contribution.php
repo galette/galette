@@ -15,6 +15,8 @@ use DateInterval;
 use Galette\Entity\Attributes\Column;
 use Safe\DateTime;
 use Galette\Events\GaletteEvent;
+use Galette\Access\MembersScope;
+use Galette\Features\AccessControlled;
 use Galette\Features\HasEvent;
 use Galette\Interfaces\AccessManagementInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -59,6 +61,7 @@ use function Safe\mkdir;
  */
 class Contribution implements AccessManagementInterface
 {
+    use AccessControlled;
     use Dynamics;
     use HasEvent;
     use EntityHelper {
@@ -97,6 +100,8 @@ class Contribution implements AccessManagementInterface
     private ?string $begin_date = null;
     private ?string $end_date = null;
     private ?Transaction $transaction = null;
+    /** Identifier of the transaction contribution is part of, even when current user cannot load it */
+    private ?int $transaction_id = null;
     private bool $is_cotis;
     private ?int $extension = null;
     /** @var array<int, PaymentType> */
@@ -286,8 +291,6 @@ class Contribution implements AccessManagementInterface
      */
     public function load(int $id): bool
     {
-        global $preferences;
-
         if (!$this->login->isLogged() && $this->login->id == '') {
             Analog::log('Load contribution #' . $id . ': refused, no logged in user', Analog::INFO);
             return false;
@@ -300,40 +303,29 @@ class Contribution implements AccessManagementInterface
                 'c.' . Adherent::PK . '=a.' . Adherent::PK,
                 []
             );
-            //restrict query on current member id if he's not admin nor staff member
-            if (!$this->login->isAdmin() && !$this->login->isStaff()) {
-                if ($this->login->isGroupManager() && ($preferences->pref_bool_groupsmanagers_create_contributions || $preferences->pref_bool_groupsmanagers_see_contributions)) {
-                    //limit to managed members from managed groups
-                    $mgroups = $this->login->getManagedGroups();
-                    $select->join(
-                        name: ['users_groups' => PREFIX_DB . Group::GROUPSUSERS_TABLE],
-                        on: 'c.' . Adherent::PK . '=users_groups.' . Adherent::PK,
-                        columns: [],
-                        type: $select::JOIN_LEFT
-                    );
-                    $select->where
-                        ->nest()
-                            ->in('users_groups.' . Group::PK, array_values($mgroups))
-                            ->or
-                            ->equalTo('a.' . Adherent::PK, $this->login->id)
-                            ->or
-                            ->equalTo('a.parent_id', $this->login->id)
-                        ->unnest()
-                        ->and
-                        ->equalTo('c.' . self::PK, $id);
-                } else {
-                    $select->where
-                        ->nest()
-                            ->equalTo('a.' . Adherent::PK, $this->login->id)
-                            ->or
-                            ->equalTo('a.parent_id', $this->login->id)
-                        ->unnest()
-                        ->and
-                        ->equalTo('c.' . self::PK, $id)
-                    ;
-                }
-            } else {
+            $groups = $this->getLoadableGroups();
+            if ($groups === null) {
                 $select->where->equalTo(self::PK, $id);
+            } else {
+                //restrict query on current member, their children, and members
+                //of the groups contributions can be displayed, created or edited on
+                $members = $select->where
+                    ->nest()
+                        ->equalTo('a.' . Adherent::PK, $this->login->id)
+                        ->or
+                        ->equalTo('a.parent_id', $this->login->id);
+                if (count($groups) > 0) {
+                    $members
+                        ->or
+                        ->in(
+                            'c.' . Adherent::PK,
+                            (new MembersScope($this->zdb, $this->login, $groups))->getGroupsMembersSelect()
+                        );
+                }
+                $members
+                    ->unnest()
+                    ->and
+                    ->equalTo('c.' . self::PK, $id);
             }
 
             $results = $this->zdb->execute($select);
@@ -354,6 +346,24 @@ class Contribution implements AccessManagementInterface
         }
     }
 
+
+    /**
+     * Groups current user can load contributions from
+     *
+     * @return ?array<int> Null when all contributions can be loaded
+     */
+    private function getLoadableGroups(): ?array
+    {
+        $groups = [];
+        foreach (['contribution:read', 'contribution:create', 'contribution:edit', 'contribution:schedule'] as $permission) {
+            $scope = $this->getGroupScope($permission, $this->login);
+            if ($scope === null) {
+                return null;
+            }
+            $groups = array_merge($groups, $scope);
+        }
+        return array_values(array_unique($groups));
+    }
     /**
      * Populate object from a resultset row
      *
@@ -386,8 +396,12 @@ class Contribution implements AccessManagementInterface
 
         $transpk = Transaction::PK;
         if ($r->$transpk != '') {
-            $this->transaction = new Transaction($this->zdb, $this->login, (int)$r->$transpk);
+            $this->transaction_id = (int)$r->$transpk;
+            $transaction = new Transaction($this->zdb, $this->login, $this->transaction_id);
+            //a transaction current user cannot load is not shown, and is kept as is on store
+            $this->transaction = $transaction->id !== null ? $transaction : null;
         } else {
+            $this->transaction_id = null;
             $this->transaction = null;
         }
 
@@ -540,9 +554,11 @@ class Contribution implements AccessManagementInterface
                             $member = new Adherent($this->zdb, (int)$value, deps: false);
                             if (
                                 $this->checklogin
-                                && !$this->login->isStaff()
-                                && !$this->login->isAdmin()
-                                && !$this->login->isGroupManager(array_keys($member->getGroups()))
+                                && !$this->isGrantedOnMemberGroups(
+                                    !isset($this->id) ? 'contribution:create' : 'contribution:edit',
+                                    $this->login,
+                                    $member
+                                )
                             ) {
                                 $this->errors[] = _T("- Please select a member from a group you manage.");
                                 unset($this->member);
@@ -576,7 +592,39 @@ class Contribution implements AccessManagementInterface
                         break;
                     case Transaction::PK:
                         if ($value != '') {
-                            $this->transaction = new Transaction($this->zdb, $this->login, (int)$value);
+                            $transaction = new Transaction($this->zdb, $this->login, (int)$value);
+                            if ($transaction->id === null && (int)$value === $this->transaction_id) {
+                                //current transaction is hidden from current user: keep it as is
+                                break;
+                            }
+                            if ($this->transaction === null && $this->transaction_id !== null) {
+                                //current transaction is hidden from current user: it cannot be detached
+                                Analog::log(
+                                    'Trying to detach a contribution from hidden transaction #' . $this->transaction_id,
+                                    Analog::WARNING
+                                );
+                                $this->errors[] = _T("- You are not allowed to attach a contribution to this transaction!");
+                                break;
+                            }
+                            //attaching to another transaction is granted on that transaction;
+                            //a transaction that cannot be loaded is never attached
+                            if (
+                                $transaction->id === null
+                                || (
+                                    $transaction->id !== $this->transaction?->id
+                                    && !$transaction->canAttachAndDetach($this->login)
+                                )
+                            ) {
+                                Analog::log(
+                                    'Trying to attach a contribution to transaction #' . $value
+                                        . ' without appropriate permissions',
+                                    Analog::WARNING
+                                );
+                                $this->errors[] = _T("- You are not allowed to attach a contribution to this transaction!");
+                                break;
+                            }
+                            $this->transaction = $transaction;
+                            $this->transaction_id = $transaction->id;
                             if (!isset($values['type_paiement_cotis']) && isset($this->transaction->payment_type)) {
                                 $this->payment_type = $this->transaction->payment_type;
                             }
@@ -622,7 +670,12 @@ class Contribution implements AccessManagementInterface
             }
         }
 
-        if ($this->transaction != null && $this->amount != null) {
+        if ($this->transaction == null && $this->transaction_id !== null) {
+            //transaction cannot be loaded: its balance must not be disclosed, amount cannot change
+            if ($this->amount !== null && $this->amount != $this->orig_amount) {
+                $this->errors[] = _T("- You are not allowed to change the amount of a contribution attached to a transaction you cannot access!");
+            }
+        } elseif ($this->transaction != null && $this->amount != null) {
             $missing = $this->transaction->getMissingAmount();
             //calculate new missing amount
             $missing = $missing + $this->orig_amount - $this->amount;
@@ -1391,16 +1444,7 @@ class Contribution implements AccessManagementInterface
      */
     public function canCreate(Login $login): bool
     {
-        global $preferences;
-
-        if (!$login->isLogged()) {
-            return false;
-        }
-
-        if ($login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-        return $preferences->pref_bool_groupsmanagers_create_contributions && $login->isGroupManager();
+        return $this->isGranted('contribution:create', $login);
     }
 
     /**
@@ -1410,40 +1454,7 @@ class Contribution implements AccessManagementInterface
      */
     public function canShow(Login $login): bool
     {
-        global $preferences;
-
-        //non-logged-in members cannot show contributions
-        if (!$login->isLogged()) {
-            return false;
-        }
-
-        //admin and staff users can edit, as well as member itself
-        if (!isset($this->id) || $login->id == $this->member || $login->isAdmin() || $login->isStaff()) {
-            return true;
-        }
-
-        //groups managers can see contributions of their group members - if preferences is enabled
-        if ($preferences->pref_bool_groupsmanagers_see_contributions && $login->isGroupManager()) {
-            $member = new Adherent($this->zdb, (int)$this->member, deps: false);
-            return $login->isGroupManager(array_keys($member->getGroups()));
-        }
-
-        //parent can see their children contributions
-        $parent = new Adherent($this->zdb);
-        $parent
-            ->disableAllDeps()
-            ->enableDep('children')
-            ->load($login->id);
-        if ($parent->hasChildren()) {
-            foreach ($parent->children as $child) {
-                if ($child->id === $this->member) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        return false;
+        return $this->isGranted('contribution:read', $login);
     }
 
     /**
@@ -1453,10 +1464,7 @@ class Contribution implements AccessManagementInterface
      */
     public function canEdit(Login $login): bool
     {
-        if (!$login->isLogged()) {
-            return false;
-        }
-        return $login->isAdmin() || $login->isStaff();
+        return $this->isGranted('contribution:edit', $login);
     }
 
     /**
@@ -1466,7 +1474,17 @@ class Contribution implements AccessManagementInterface
      */
     public function canDelete(Login $login): bool
     {
-        return $this->canEdit($login);
+        return $this->isGranted('contribution:delete', $login);
+    }
+
+    /**
+     * Can current logged-in user manage contribution scheduled payments?
+     *
+     * @param Login $login Login instance
+     */
+    public function canSchedule(Login $login): bool
+    {
+        return $this->isGranted('contribution:schedule', $login);
     }
 
     /**

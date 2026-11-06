@@ -15,6 +15,7 @@ use Safe\DateTime;
 use Laminas\Db\Sql\Select;
 use Throwable;
 use Analog\Analog;
+use Galette\Access\AccessControl;
 use Galette\Entity\Adherent;
 use Galette\Filters\MailingsList;
 use Laminas\Db\Sql\Expression;
@@ -299,7 +300,7 @@ class MailingHistory extends History
 
     /**
      * Can current user access a mailing from history?
-     * Admin and staff can access all mailings, others only the ones they sent.
+     * Users browsing history can access all mailings, senders only the ones they sent.
      *
      * @param Db    $zdb   Database instance
      * @param int   $id    Mailing identifier
@@ -307,11 +308,14 @@ class MailingHistory extends History
      */
     public static function canAccess(Db $zdb, int $id, Login $login): bool
     {
-        if ($login->isAdmin() || $login->isStaff()) {
+        global $container;
+        /** @var AccessControl $access */
+        $access = $container->get(AccessControl::class);
+        if ($access->can('mailing:history', login: $login)) {
             return true;
         }
 
-        if (!$login->isLogged()) {
+        if (!$login->isLogged() || !$access->can('mailing:send', login: $login)) {
             return false;
         }
 

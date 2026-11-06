@@ -200,6 +200,18 @@ class Group extends GaletteTestCase
 
         $group = new \Galette\Entity\Group($child_id_3);
         $this->assertSame(['A parent group', 'Another child group'], $group->getParents());
+
+        //an unknown parent is refused, current one is kept
+        $exception_thrown = false;
+        try {
+            $group->setParentGroup(999999);
+        } catch (\Exception $e) {
+            $exception_thrown = true;
+            $this->assertSame('Group `999999` cannot be set as parent!', $e->getMessage());
+        }
+        $this->assertTrue($exception_thrown, 'No exception has been thrown');
+        $this->assertSame($child_id_2, $group->getParentGroup()->getId());
+
         $this->assertTrue($group->detach());
     }
 
@@ -414,5 +426,44 @@ class Group extends GaletteTestCase
         } finally {
             $switch['on'] = false;
         }
+    }
+
+    /**
+     * Test canEdit
+     */
+    #[\PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations]
+    public function testCanEdit(): void
+    {
+        $this->logSuperAdmin();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Editable group');
+        $this->assertTrue($group->store());
+        $this->login->logOut();
+
+        $getLogin = function (array $methods): \Galette\Core\Login {
+            $login = $this->getMockBuilder(\Galette\Core\Login::class)
+                ->setConstructorArgs([$this->zdb, $this->i18n])
+                ->onlyMethods(array_merge(['isLogged'], array_keys($methods)))
+                ->getMock();
+            $login->method('isLogged')->willReturn(true);
+            foreach ($methods as $method => $value) {
+                $login->method($method)->willReturn($value);
+            }
+            return $login;
+        };
+
+        //not a manager
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+        $this->assertFalse($group->canEdit($getLogin([])));
+
+        //admin and staff
+        $this->assertTrue($group->canEdit($getLogin(['isAdmin' => true])));
+        $this->assertTrue($group->canEdit($getLogin(['isStaff' => true])));
+
+        //group manager, only when their role allows it
+        $manager = $getLogin(['getManagedGroups' => [(int)$group->getId()]]);
+        $this->assertTrue($group->canEdit($manager));
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'group:edit');
+        $this->assertFalse($group->canEdit($manager));
     }
 }

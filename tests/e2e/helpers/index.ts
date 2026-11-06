@@ -21,4 +21,5 @@ export { DateHelper } from './date';
 export { FormHelper } from './form';
 export { PreferencesHelper, PUBLIC_PAGES_VISIBILITY, PUBLIC_PAGE_PREFS } from './preferences';
 export { InstallerHelper } from './installer';
+export { AclHelper, SYSTEM_ROLES } from './acl';
 

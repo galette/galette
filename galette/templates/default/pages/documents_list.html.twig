@@ -47,7 +47,7 @@
 {% endblock %}
 
 {% block infoline_actions %}
-    {% if not is_public and (login.isAdmin() or login.isStaff()) %}
+    {% if not is_public and can('document:manage') %}
         <a
             class="ui tiny labeled icon button"
             href="{{ url_for("addDocument") }}"

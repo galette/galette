@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Controllers\Crud;
 
+use Analog\Analog;
 use Galette\Controllers\Attributes\Route;
 use Galette\Controllers\CrudController;
 use Galette\Entity\Adherent;
@@ -51,7 +52,11 @@ class ScheduledPaymentController extends CrudController
         } else {
             $scheduled = new ScheduledPayment($this->zdb);
         }
-        $scheduled->setContribution($id_cotis);
+        $contribution = new Contribution($this->zdb, $this->login);
+        if (!$contribution->load($id_cotis) || !$contribution->canSchedule($this->login)) {
+            return $this->refuseSchedule($response, 'contribution #' . $id_cotis);
+        }
+        $scheduled->setContribution($contribution);
         $mode = $this->isAjax($request) ? 'ajax' : '';
 
         if ($scheduled->getMissingAmount() == 0) {
@@ -371,6 +376,9 @@ class ScheduledPaymentController extends CrudController
         } else {
             $scheduled = new ScheduledPayment($this->zdb, $id);
         }
+        if (!$this->canSchedule($scheduled)) {
+            return $this->refuseSchedule($response, 'scheduled payment #' . $id);
+        }
         $mode = $this->isAjax($request) ? 'ajax' : '';
 
         // display page
@@ -422,6 +430,9 @@ class ScheduledPaymentController extends CrudController
 
         $redirect_uri = $this->redirectUri($this->getArgs($request));
         $scheduled = new ScheduledPayment($this->zdb, $id);
+        if ($id !== null && !$this->canSchedule($scheduled)) {
+            return $this->refuseSchedule($response, 'scheduled payment #' . $id);
+        }
 
         if (!$scheduled->check($post)) {
             $this->session->scheduled_payment = $scheduled;
@@ -515,11 +526,55 @@ class ScheduledPaymentController extends CrudController
      */
     protected function doDelete(array $args, array $post): bool
     {
+        $ids = (array)($args['ids'] ?? (int)$args['id']);
+        foreach ($ids as $id) {
+            //permission may be granted on some groups only: check every target
+            if (!$this->canSchedule(new ScheduledPayment($this->zdb, (int)$id))) {
+                Analog::log(
+                    'Trying to remove scheduled payment #' . $id . ' without appropriate permissions',
+                    Analog::WARNING
+                );
+                throw new \RuntimeException('Removal requires contribution:schedule permission');
+            }
+        }
+
         $scheduleds = new ScheduledPayments($this->zdb, $this->login);
-        return $scheduleds->remove($args['ids'] ?? (int)$args['id'], $this->history);
+        return $scheduleds->remove($ids, $this->history);
     }
 
     // CRUD - Delete
+
+    /**
+     * Can current user manage given scheduled payment?
+     *
+     * @param ScheduledPayment $scheduled Scheduled payment
+     */
+    private function canSchedule(ScheduledPayment $scheduled): bool
+    {
+        //contribution is loaded only when it is visible
+        return $scheduled->getId() !== null
+            && $scheduled->getContribution()->id !== null
+            && $scheduled->getContribution()->canSchedule($this->login);
+    }
+
+    /**
+     * Refuse access to a scheduled payment
+     *
+     * @param Response $response PSR Response
+     * @param string   $target   Target description, for logs
+     */
+    private function refuseSchedule(Response $response, string $target): Response
+    {
+        Analog::log(
+            'Trying to manage scheduled payments of ' . $target . ' without appropriate permissions',
+            Analog::WARNING
+        );
+        return $this->redirectWithErrors(
+            response: $response,
+            errors: [_T("You do not have permission for requested URL.")],
+            redirect_url: $this->routeparser->urlFor('slash')
+        );
+    }
 
     /**
      * Get default filter name

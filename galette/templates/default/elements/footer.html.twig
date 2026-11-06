@@ -28,7 +28,7 @@
                         <i class="icon mastodon" aria-hidden="true"></i>
                         @galette
                     </a>
-{% if login.isLogged() and (login.isAdmin() or login.isStaff()) and ext_auth is not defined %}
+{% if login.isLogged() and can('system:info') and ext_auth is not defined %}
                     <a id="sysinfos" href="{{ url_for('sysinfos') }}" class="item">
                         <i class="icon cogs" aria-hidden="true"></i>
                         {{ _T("System information") }}

@@ -20,6 +20,7 @@ use Galette\Entity\Group;
 use Galette\Entity\Adherent;
 use Galette\Core\Login;
 use Galette\Core\Db;
+use Galette\Features\AccessControlled;
 
 /**
  * Groups entity
@@ -28,6 +29,8 @@ use Galette\Core\Db;
  */
 class Groups
 {
+    use AccessControlled;
+
     /**
      * Constructor
      *
@@ -74,22 +77,20 @@ class Groups
     /**
      * Get groups list
      *
-     * @param bool     $full Return full list or root only
-     * @param int|null $id   Group ID to retrieve
+     * @param bool     $full       Return full list or root only
+     * @param int|null $id         Group ID to retrieve
+     * @param string   $permission Permission groups must be granted on
      *
      * @return Group[]
      */
-    public function getList(bool $full = true, ?int $id = null): array
+    public function getList(bool $full = true, ?int $id = null, string $permission = 'group:read'): array
     {
         try {
             $select = $this->zdb->select(Group::TABLE, 'ggroup');
 
-            if (!$this->login->isAdmin() && !$this->login->isStaff() && $full === true) {
-                $select->join(
-                    ['gmanagers' => PREFIX_DB . Group::GROUPSMANAGERS_TABLE],
-                    'ggroup.' . Group::PK . '=gmanagers.' . Group::PK,
-                    []
-                )->where(['gmanagers.' . Adherent::PK => $this->login->id]);
+            $scope = $this->getGroupScope($permission, $this->login);
+            if ($scope !== null && $full === true) {
+                $select->where->in('ggroup.' . Group::PK, $scope ?: [0]);
             }
 
             $select->join(
@@ -221,23 +222,41 @@ class Groups
     /**
      * Add a member to specified groups
      *
-     * Out of admin and staff, only groups managed by current user are changed.
+     * Out of admin and staff, only groups managed by current user are changed,
+     * unless a scope is given.
      *
-     * @param Adherent      $adh         Member
-     * @param array<string> $groups      Groups Groups list. Each entry must contain
-     *                                   the group id, name each value separated
-     *                                   by a pipe.
-     * @param bool          $manager     Add member as manager, defaults to false
-     * @param bool          $transaction Does a SQL transaction already exists? Defaults
-     *                                   to false.
+     * @param Adherent              $adh         Member
+     * @param array<string>         $groups      Groups Groups list. Each entry must contain
+     *                                           the group id, name each value separated
+     *                                           by a pipe.
+     * @param bool                  $manager     Add member as manager, defaults to false
+     * @param bool                  $transaction Does a SQL transaction already exists? Defaults
+     *                                           to false.
+     * @param array<int>|false|null $scope       Groups that can be changed, as a permission
+     *                                           group scope: null for every group. Defaults
+     *                                           to groups current user manages.
      */
-    public static function addMemberToGroups(Adherent $adh, array $groups, bool $manager = false, bool $transaction = false): bool
-    {
+    public static function addMemberToGroups(
+        Adherent $adh,
+        array $groups,
+        bool $manager = false,
+        bool $transaction = false,
+        array|false|null $scope = false
+    ): bool {
         global $zdb, $login;
 
         //null means no restriction; an empty list means nothing to change
         $managed_groups = null;
-        if (!$login->isSuperAdmin() && !$login->isAdmin() && !$login->isStaff()) {
+        if ($scope !== false) {
+            $managed_groups = $scope === null ? null : array_map(intval(...), $scope);
+            if ($managed_groups === []) {
+                Analog::log(
+                    'Trying to change groups of member #' . $adh->id . ' out of allowed groups',
+                    Analog::WARNING
+                );
+                return true;
+            }
+        } elseif (!$login->isSuperAdmin() && !$login->isAdmin() && !$login->isStaff()) {
             $managed_groups = $login->getManagedGroups();
             if (count($managed_groups) === 0) {
                 Analog::log(

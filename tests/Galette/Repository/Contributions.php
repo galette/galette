@@ -247,9 +247,7 @@ class Contributions extends GaletteTestCase
         $this->assertTrue($this->login->login($m2data['login_adh'], $m2data['mdp_adh']));
         $this->assertTrue($this->login->isGroupManager());
 
-        $orig_pref = $this->preferences->pref_bool_groupsmanagers_see_contributions;
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = false;
-        $this->assertTrue($this->preferences->store());
+        $this->revokeFromRole(\Galette\Access\Roles::MANAGER, 'contribution:read');
 
         //group manager only sees its own contributions
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
@@ -259,8 +257,7 @@ class Contributions extends GaletteTestCase
         $this->assertSame(92.0, $contributions->getSum());
 
         //let groups managers see their groups members contributions
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = true;
-        $this->assertTrue($this->preferences->store());
+        $this->grantToRole(\Galette\Access\Roles::MANAGER, ['contribution:read', 'transaction:attach']);
 
         //first member is part of two managed groups, its contributions are listed only once
         $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
@@ -285,7 +282,6 @@ class Contributions extends GaletteTestCase
         $this->assertSame(3, $contributions->getCount());
 
         //reset
-        $this->preferences->pref_bool_groupsmanagers_see_contributions = $orig_pref;
         $this->assertTrue($this->preferences->store());
     }
 

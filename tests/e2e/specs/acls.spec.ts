@@ -5,270 +5,259 @@
  */
 
 /**
- * ACL Tests - Access Control with Different User Roles
+ * Access control, as given by the roles of a fresh installation and the fixtures
  *
- * Tests permissions and visibility based on user roles:
- * - Superadmin: full access
- * - Admin: administration rights
- * - Treasurer: financial management
- * - Secretary: administrative tasks
- * - Member: limited access
- * - Group Manager: manages own group only
+ * Nothing here changes a role: those tests are in roles-changes.spec.ts, which runs
+ * in a project of its own. Accounts, see fixtures/auth.fixture.ts:
+ * - staff: morpheus, treasurer status, not administrator;
+ * - groupManager: anakin.skywalker, manager of Skywalker Family (luke, leia, ben);
+ * - member: luke.skywalker, parent of ben.skywalker;
+ * - treasury: hermione.granger, "Trésorerie" role for all groups;
+ * - groupSecretary: sally.ragdoll, "Secrétariat de groupe" role for Les Âmes Errantes.
+ *
+ * Interface of the fixtures members is in French: assertions rely on links and
+ * styles, not on texts.
  */
 
-import { expect } from '@playwright/test';
-import { test } from '../fixtures/auth.fixture';
+import { type Page } from '@playwright/test';
+import { test, expect } from '../fixtures/auth.fixture';
+import { AclHelper } from '../helpers/acl';
 
-test.describe('ACL - Navigation Visibility', () => {
+/** Fixture members, as displayed */
+const NAMES = {
+  anakin: 'SKYWALKER Anakin',
+  luke: 'SKYWALKER Luke',
+  leia: 'ORGANA Leia',
+  ben: 'SKYWALKER Ben',
+  han: 'SOLO Han',
+  victor: 'VAN DORT Victor',
+  emily: 'LA MARIÉE Emily',
+  sally: 'RAGDOLL Sally',
+};
+let ids: Record<keyof typeof NAMES, number>;
 
-  test('ACL - Superadmin sees all navigation links', async ({ loggedInAs }) => {
-    const page = await loggedInAs('superadmin');
+test.beforeAll(async ({ browser }) => {
+  ids = await AclHelper.memberIds(browser, NAMES);
+});
 
-    // Superadmin should see configuration links
-    const configLink = page.locator('#main-activities a[href*="/preferences"]');
-    await expect(configLink).toBeVisible({ timeout: 5000 });
+/** Configuration entries a staff member manages, with references and models */
+const STAFF_CONFIGURATION = ['/contributions-types', '/payment-types', '/status', '/titles', '/models/pdf', '/texts'];
+/** Configuration entries kept to administrators */
+const ADMIN_CONFIGURATION = ['/preferences', '/fields/core/configure', '/fields/dynamic/configure', '/plugins', '/roles'];
 
-    await page.close();
-  });
+/**
+ * Batch actions offered on the members list
+ */
+function batchAction(page: Page, name: string) {
+  return page.locator(`.batch-action[data-value="${name}"]`);
+}
 
-  test('ACL - Admin sees configuration links', async ({ loggedInAs }) => {
+test.describe('ACL - Preferences', () => {
+
+  test('ACL - Rights tab only links to roles', async ({ loggedInAs }) => {
     const page = await loggedInAs('admin');
+    await page.goto('/preferences?tab=rights');
 
-    // Admin should see configuration
-    const configLink = page.locator('#main-activities a[href*="/preferences"]');
-    const hasConfig = await configLink.isVisible({ timeout: 5000 }).catch(() => false);
-
-    expect(hasConfig).toBeTruthy();
-
-    await page.close();
-  });
-
-  test('ACL - Treasurer sees financial links', async ({ loggedInAs }) => {
-    const page = await loggedInAs('treasurer');
-
-    // Treasurer should see contributions
-    await page.goto('/dashboard');
-    const contribLink = page.locator('#main-activities a[href$="/contributions"]');
-    await expect(contribLink).toBeVisible({ timeout: 5000 });
-
-    await page.close();
-  });
-
-  test('ACL - Member does NOT see configuration', async ({ loggedInAs }) => {
-    const page = await loggedInAs('member');
-
-    await page.goto('/dashboard');
-
-    // Member should NOT see configuration link
-    const configLink = page.locator('#main-activities a[href*="/preferences"]');
-    const hasConfig = await configLink.isVisible({ timeout: 2000 }).catch(() => false);
-
-    expect(hasConfig).toBeFalsy();
-
-    await page.close();
-  });
-
-  test('ACL - Group Manager sees group management', async ({ loggedInAs }) => {
-    const page = await loggedInAs('groupManager');
-
-    await page.goto('/dashboard');
-
-    // Group manager should see groups link
-    const groupsLink = page.locator('a[href*="/groups"]').first();
-    const hasGroups = await groupsLink.isVisible({ timeout: 5000 }).catch(() => false);
-
-    expect(hasGroups || true).toBeTruthy(); // May vary based on ACL config
-
-    await page.close();
+    const tab = page.locator('.tab[data-tab="rights"]');
+    await expect(tab.locator('a[href="/roles"]')).toBeVisible();
+    await expect(tab.locator('input')).toHaveCount(0);
   });
 });
 
-test.describe('ACL - Page Access', () => {
+test.describe('ACL - Staff', () => {
 
-  test('ACL - Member cannot access preferences page', async ({ loggedInAs }) => {
-    const page = await loggedInAs('member');
-
-    await page.goto('/preferences');
-
-    // Should redirect to dashboard or show error
-    const currentUrl = page.url();
-    const isRedirected = currentUrl.includes('/dashboard') || currentUrl.includes('/login');
-    const hasError = await page.locator('.error, .negative').isVisible({ timeout: 2000 }).catch(() => false);
-
-    expect(isRedirected || hasError).toBeTruthy();
-
-    await page.close();
+  test('ACL - Staff configuration menu', async ({ loggedInAs }) => {
+    const page = await loggedInAs('staff');
+    await AclHelper.expectMenu(page, STAFF_CONFIGURATION, ADMIN_CONFIGURATION);
   });
 
-  test('ACL - Admin can access preferences page', async ({ loggedInAs }) => {
-    const page = await loggedInAs('admin');
-
-    await page.goto('/preferences');
-
-    // Should stay on preferences or configuration page
-    await expect(page).toHaveURL(/\/preferences|\/configuration/);
-
-    await page.close();
+  test('ACL - Staff cannot open preferences nor roles', async ({ loggedInAs }) => {
+    const page = await loggedInAs('staff');
+    await AclHelper.expectRefused(page, '/preferences');
+    await AclHelper.expectRefused(page, '/roles');
   });
 
-  test('ACL - Member cannot access contribution types config', async ({ loggedInAs }) => {
-    const page = await loggedInAs('member');
+  test('ACL - Staff manages every member', async ({ loggedInAs }) => {
+    const page = await loggedInAs('staff');
+    await AclHelper.expectMenu(page, ['/members', '/member/add']);
 
-    await page.goto('/contributions-types');
-
-    // Should redirect or error
-    const currentUrl = page.url();
-    const isRestricted = currentUrl.includes('/dashboard') || currentUrl.includes('/login');
-
-    if (!isRestricted) {
-      const hasError = await page.locator('.error, .negative').isVisible({ timeout: 2000 }).catch(() => false);
-      expect(hasError).toBeTruthy();
-    } else {
-      expect(isRestricted).toBeTruthy();
+    await page.goto('/members');
+    await expect(page.locator('main a[href="/member/add"]').first()).toBeVisible();
+    for (const action of ['masschange', 'delete', 'csv__directdownload']) {
+      await expect(batchAction(page, action), `batch action ${action}`).not.toHaveCount(0);
     }
 
-    await page.close();
+    await AclHelper.expectAllowed(page, `/member/${ids.han}`);
+    await expect(page.locator(`a[href="/member/edit/${ids.han}"]`).first()).toBeVisible();
+    await AclHelper.expectAllowed(page, `/member/edit/${ids.han}`);
+    await AclHelper.expectAllowed(page, '/member/add');
   });
 
-  test('ACL - Superadmin can access all admin pages', async ({ loggedInAs }) => {
-    const page = await loggedInAs('superadmin');
+  test('ACL - Staff manages contributions and transactions of every member', async ({ loggedInAs }) => {
+    const page = await loggedInAs('staff');
+    await AclHelper.expectMenu(page, ['/contributions', '/transactions', '/contribution/fee/add', '/transaction/add', '/mailings']);
 
-    const adminPages = [
-      '/preferences',
-      '/contributions-types',
-      '/titles',
-      '/status',
-    ];
+    await AclHelper.expectContributionsOf(page, ids.han);
+    await AclHelper.expectAllowed(page, '/contribution/fee/add');
+    await AclHelper.expectAllowed(page, '/transaction/add');
+    await AclHelper.expectAllowed(page, '/mailings');
+  });
+});
 
-    for (const pagePath of adminPages) {
-      await page.goto(pagePath);
+test.describe('ACL - Group manager, default permissions', () => {
 
-      // Should not redirect to dashboard/login
-      const currentUrl = page.url();
-      expect(currentUrl).toContain(pagePath);
+  test('ACL - Group manager menu', async ({ loggedInAs }) => {
+    const page = await loggedInAs('groupManager');
+    await AclHelper.expectMenu(
+      page,
+      ['/members', '/groups'],
+      [...STAFF_CONFIGURATION, ...ADMIN_CONFIGURATION, '/member/add', '/contributions', '/transactions', '/mailings']
+    );
+  });
+
+  test('ACL - Group manager lists members of his group only', async ({ loggedInAs }) => {
+    const page = await loggedInAs('groupManager');
+    await page.goto('/members');
+    await expect(page.locator('main a[href="/member/add"]')).toHaveCount(0);
+
+    //members of the group, and himself
+    const listed = await AclHelper.listedMembers(page);
+    expect(listed.sort()).toEqual([ids.anakin, ids.luke, ids.leia, ids.ben].sort());
+  });
+
+  test('ACL - Group manager reads, but does not edit, his members', async ({ loggedInAs }) => {
+    const page = await loggedInAs('groupManager');
+    await AclHelper.expectAllowed(page, `/member/${ids.luke}`);
+    await expect(page.locator(`a[href="/member/edit/${ids.luke}"]`)).toHaveCount(0);
+
+    await AclHelper.expectRefused(page, `/member/edit/${ids.luke}`);
+    await AclHelper.expectRefused(page, `/member/${ids.han}`);
+  });
+
+  test('ACL - Group manager exports his members', async ({ loggedInAs }) => {
+    const page = await loggedInAs('groupManager');
+    await page.goto('/members');
+    for (const action of ['csv__directdownload', 'cards__directdownload', 'labels__directdownload', 'attendance_sheet']) {
+      await expect(batchAction(page, action), `batch action ${action}`).not.toHaveCount(0);
     }
-
-    await page.close();
-  });
-});
-
-test.describe('ACL - CRUD Permissions', () => {
-
-  test('ACL - Admin can create member', async ({ loggedInAs }) => {
-    const page = await loggedInAs('admin');
-
-    await page.goto('/members');
-
-    const addButton = page.locator('.infoline a[href*="/member/add"]').first();
-    await expect(addButton).toBeVisible();
-
-    await page.close();
+    for (const action of ['masschange', 'masscontributions', 'delete', 'sendmail']) {
+      await expect(batchAction(page, action), `batch action ${action}`).toHaveCount(0);
+    }
   });
 
-  test('ACL - Member cannot see add member button', async ({ loggedInAs }) => {
-    const page = await loggedInAs('member');
-
-    await page.goto('/members');
-
-    const addButton = page.locator('.infoline a[href*="/member/add"]').first();
-    const isVisible = await addButton.isVisible({ timeout: 2000 }).catch(() => false);
-
-    expect(isVisible).toBeFalsy();
-
-    await page.close();
-  });
-
-  test('ACL - Treasurer can add contributions', async ({ loggedInAs }) => {
-    const page = await loggedInAs('treasurer');
-
-    await page.goto('/contributions');
-
-    const addCotisationButton = page.locator('.infoline a[href*="/contribution/fee/add"]');
-    const isCotisationVisible = await addCotisationButton.isVisible({ timeout: 5000 }).catch(() => false);
-    expect(isCotisationVisible).toBeTruthy();
-
-    const addDonationButton = page.locator('.infoline a[href*="/contribution/donation/add"]');
-    const isDonationVisible = await addDonationButton.isVisible({ timeout: 5000 }).catch(() => false);
-    expect(isDonationVisible).toBeTruthy();
-
-    await page.close();
-  });
-
-  test('ACL - Member can view own profile', async ({ loggedInAs }) => {
-    const page = await loggedInAs('member');
-
-    // Navigate to own profile (should work)
-    await page.goto('/dashboard');
-
-    const profileLink = page.locator('a[href*="/member/me"], a:has-text("My profile")').first();
-    const hasProfile = await profileLink.isVisible({ timeout: 5000 }).catch(() => false);
-
-    expect(hasProfile || true).toBeTruthy();
-
-    await page.close();
-  });
-});
-
-test.describe('ACL - Group Manager Isolation', () => {
-
-  test('ACL - Group Manager sees own group members', async ({ loggedInAs }) => {
+  test('ACL - Group manager has no access to contributions nor transactions', async ({ loggedInAs }) => {
     const page = await loggedInAs('groupManager');
+    await AclHelper.expectRefused(page, '/contribution/fee/add');
+    await AclHelper.expectRefused(page, '/transaction/add');
 
+    await AclHelper.expectNoContributionsOf(page, ids.luke, NAMES.luke);
+  });
+
+  test('ACL - Group manager only sees his group', async ({ loggedInAs }) => {
+    const page = await loggedInAs('groupManager');
     await page.goto('/groups');
 
-    // Should see at least one group (own group)
-    const groupRows = page.locator('table.listing tbody tr:not(.emptylist)');
-    const count = await groupRows.count();
-
-    expect(count).toBeGreaterThanOrEqual(1);
-
-    await page.close();
-  });
-
-  test('ACL - Group Manager can manage own group', async ({ loggedInAs }) => {
-    const page = await loggedInAs('groupManager');
-
-    await page.goto('/groups');
-
-    await page.locator('a[href*="/group/edit/"]').click();
-    const newLocal = page.locator('table.listing tbody tr').first();
-    // Click on first group (should be own group)
-    const firstGroup = newLocal;
-
-    // Should see group details
-    await expect(page).toHaveURL(/\/group\/edit\/\d+/);
-
-    await page.close();
+    //group pages link the edition of each group shown
+    const groups = await page.locator('a[href*="/group/edit/"]').evaluateAll(
+      links => [...new Set(links.map(link => link.getAttribute('href')))]
+    );
+    expect(groups).toHaveLength(1);
+    await expect(page.locator('a[href*="/group/add"], .ui.button[href*="/group/remove/"]')).toHaveCount(0);
   });
 });
 
-test.describe('ACL - Secretary Permissions', () => {
+test.describe('ACL - Member', () => {
 
-  test('ACL - Secretary can access members', async ({ loggedInAs }) => {
-    const page = await loggedInAs('secretary');
+  test('ACL - Member reads and edits his card and his child one', async ({ loggedInAs }) => {
+    const page = await loggedInAs('member');
+    for (const id of [ids.luke, ids.ben]) {
+      await AclHelper.expectAllowed(page, `/member/${id}`);
+      await AclHelper.expectAllowed(page, `/member/edit/${id}`);
+    }
+  });
+
+  test('ACL - Member cannot see other members', async ({ loggedInAs }) => {
+    const page = await loggedInAs('member');
+    await AclHelper.expectRefused(page, `/member/${ids.han}`);
+    await AclHelper.expectRefused(page, `/member/edit/${ids.han}`);
+    await AclHelper.expectRefused(page, '/members');
+  });
+
+  test('ACL - Member only sees his own contributions', async ({ loggedInAs }) => {
+    const page = await loggedInAs('member');
+    await AclHelper.expectContributionsOf(page, ids.luke);
+    await AclHelper.expectNoContributionsOf(page, ids.han, NAMES.han);
+  });
+
+  test('ACL - Member cannot add members, nor children', async ({ loggedInAs }) => {
+    const page = await loggedInAs('member');
+    await AclHelper.expectMenu(page, ['/member/me'], ['/member/add', '/member/add/child', ...STAFF_CONFIGURATION]);
+    await AclHelper.expectRefused(page, '/member/add');
+    await AclHelper.expectRefused(page, '/member/add/child');
+  });
+});
+
+test.describe('ACL - Treasury role, for all groups', () => {
+
+  test('ACL - Treasury menu', async ({ loggedInAs }) => {
+    const page = await loggedInAs('treasury');
+    await AclHelper.expectMenu(
+      page,
+      ['/members', '/contributions', '/transactions', '/contribution/fee/add', '/transaction/add', '/reminders'],
+      [...STAFF_CONFIGURATION, ...ADMIN_CONFIGURATION, '/member/add']
+    );
+  });
+
+  test('ACL - Treasury manages contributions of every member', async ({ loggedInAs }) => {
+    const page = await loggedInAs('treasury');
+    await AclHelper.expectContributionsOf(page, ids.han);
+    await AclHelper.expectAllowed(page, `/contribution/fee/add?id_adh=${ids.han}`);
+    await AclHelper.expectAllowed(page, '/transaction/add');
+    await AclHelper.expectAllowed(page, '/reminders');
+  });
+
+  test('ACL - Treasury reads, but does not edit, members', async ({ loggedInAs }) => {
+    const page = await loggedInAs('treasury');
+    await AclHelper.expectAllowed(page, `/member/${ids.han}`);
+    await expect(page.locator(`a[href="/member/edit/${ids.han}"]`)).toHaveCount(0);
+    await AclHelper.expectRefused(page, `/member/edit/${ids.han}`);
 
     await page.goto('/members');
-
-    await expect(page).toHaveURL(/\/members/);
-
-    const memberTable = page.locator('table.listing');
-    await expect(memberTable).toBeVisible();
-
-    await page.close();
-  });
-
-  test('ACL - Secretary can access mailings', async ({ loggedInAs }) => {
-    const page = await loggedInAs('secretary');
-
-    await page.goto('/mailings');
-
-    // Should access mailings (if feature enabled)
-    const currentUrl = page.url();
-    const hasAccess = currentUrl.includes('/mailings') || currentUrl.includes('/mailing');
-
-    expect(hasAccess || true).toBeTruthy();
-
-    await page.close();
+    await expect(batchAction(page, 'delete')).toHaveCount(0);
   });
 });
 
+test.describe('ACL - Group secretariat role, for one group', () => {
+
+  test('ACL - Group secretariat lists members of the group only', async ({ loggedInAs }) => {
+    const page = await loggedInAs('groupSecretary');
+    await page.goto('/members');
+
+    const listed = await AclHelper.listedMembers(page);
+    expect(listed.sort()).toEqual([ids.victor, ids.emily, ids.sally].sort());
+  });
+
+  test('ACL - Group secretariat edits members of the group only', async ({ loggedInAs }) => {
+    const page = await loggedInAs('groupSecretary');
+    for (const id of [ids.victor, ids.emily]) {
+      await AclHelper.expectAllowed(page, `/member/edit/${id}`);
+    }
+    await AclHelper.expectRefused(page, `/member/${ids.luke}`);
+    await AclHelper.expectRefused(page, `/member/edit/${ids.luke}`);
+  });
+
+  test('ACL - Group secretariat sees the group, not the others', async ({ loggedInAs }) => {
+    const page = await loggedInAs('groupSecretary');
+    await page.goto('/groups');
+    const groups = await page.locator('a[href*="/group/edit/"]').evaluateAll(
+      links => [...new Set(links.map(link => link.getAttribute('href')))]
+    );
+    expect(groups).toHaveLength(1);
+  });
+
+  test('ACL - Group secretariat has no access to contributions', async ({ loggedInAs }) => {
+    const page = await loggedInAs('groupSecretary');
+    await AclHelper.expectMenu(page, ['/members', '/groups'], ['/contributions', '/transactions', ...ADMIN_CONFIGURATION]);
+    await AclHelper.expectNoContributionsOf(page, ids.victor, NAMES.victor);
+  });
+});

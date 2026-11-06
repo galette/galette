@@ -246,7 +246,7 @@
                                 'current': ptype,
                                 'varname': 'type_paiement_cotis',
                                 'disabled': contribution.hasSchedule(),
-                                'tip_html': not contribution.hasSchedule() and (login.isAdmin() or login.isStaff()) ? _T('When selecting the type <strong>scheduled payment</strong>, a contribution will be added and you will be asked to create the corresponding scheduled payments afterwards. In that case the amount of the contribution on the present form must equal the total of all the scheduled payments you will define next.') : false
+                                'tip_html': not contribution.hasSchedule() and can('contribution:schedule') ? _T('When selecting the type <strong>scheduled payment</strong>, a contribution will be added and you will be asked to create the corresponding scheduled payments afterwards. In that case the amount of the contribution on the present form must equal the total of all the scheduled payments you will define next.') : false
                             } %}
                         </div>
                         <div class="{% if type == constant('Galette\\Entity\\Contribution::TYPE_FEE') %}three{% else %}two{% endif %} fields">

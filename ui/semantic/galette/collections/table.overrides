@@ -18,7 +18,7 @@
 
 .ui.basic.striped.table > tbody > tr:nth-child(2n),
 .ui.basic.striped.table > tr:nth-child(2n) {
-    a {
+    a:not(.label):not(.button) {
         color: darken(@linkColor, 5);
     }
 }
@@ -284,6 +284,13 @@ tr.with-headers th {
         .field.action {
             align-self: center;
         }
+        /* stands for a label, so the button is centered on the dropdowns */
+        .field.action::before {
+            content: '\00a0';
+            display: block;
+            font-size: @relativeSmall;
+            margin: 0 0 @4px 0;
+        }
     }
 }
 @media only screen and (max-width: @largestMobileScreen) {
@@ -296,8 +303,11 @@ tr.with-headers th {
     }
     #groups_field,
     #roles_field {
-        .field.action label {
-            display:none;
+        .fields.group-add,
+        .fields.role-add {
+            .field.action::before {
+                display:none;
+            }
         }
     }
 }

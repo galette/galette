@@ -1,0 +1,88 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # Member's roles table, see components/forms/roles.html.twig.
+ #
+ # Nothing is stored here: rows are added, marked as removed and restored,
+ # and the form posts the roles_adh[] inputs that are left enabled.
+ #}
+                var $memberRoles = $('#member_roles');
+                if ($memberRoles.length) {
+                    var $roleAdd = $('#role_add'),
+                        $roleScope = $('#role_scope_add');
+
+                    var _refreshRoles = function() {
+                        var _pending = $memberRoles.find('tr[data-linked="0"]').length > 0;
+                        $memberRoles.find('tr[data-linked="1"]').each(function() {
+                            var $row = $(this),
+                                _removed = $row.data('removed') == 1;
+                            $row.toggleClass('warning', _removed);
+                            $row.find('.role-state').toggleClass('displaynone', !_removed);
+                            _pending = _pending || _removed;
+                        });
+                        $memberRoles.find('tr[data-linked="0"]').addClass('warning');
+                        $('#member_roles_status .message').toggleClass('displaynone', !_pending);
+                    };
+
+                    $memberRoles.on('click', '.role-remove', function() {
+                        var $row = $(this).closest('tr');
+                        if ($row.data('linked') == 1) {
+                            $row.data('removed', 1);
+                            $row.find('input[name="roles_adh[]"]').prop('disabled', true);
+                            $(this).addClass('displaynone');
+                            $row.find('.role-undo').removeClass('displaynone').trigger('focus');
+                        } else {
+                            //a role added during this edition is simply dropped
+                            $row.remove();
+                            $roleAdd.closest('.ui.dropdown').trigger('focus');
+                        }
+                        _refreshRoles();
+                    });
+
+                    $memberRoles.on('click', '.role-undo', function() {
+                        var $row = $(this).closest('tr');
+                        $row.data('removed', 0);
+                        $row.find('input[name="roles_adh[]"]').prop('disabled', false);
+                        $(this).addClass('displaynone');
+                        $row.find('.role-remove').removeClass('displaynone').trigger('focus');
+                        _refreshRoles();
+                    });
+
+                    $('#role_add_btn').on('click', function() {
+                        var _role = $roleAdd.val(),
+                            _scope = $roleScope.val();
+                        if (!_role) {
+                            $roleAdd.closest('.ui.dropdown').trigger('focus');
+                            return;
+                        }
+                        var _value = _role + '|' + _scope,
+                            $existing = $memberRoles.find('tr').filter(function() {
+                                return $(this).find('input[name="roles_adh[]"]').val() === _value;
+                            });
+                        if ($existing.length) {
+                            //already given: restore it if it was removed, and show it
+                            $existing.find('.role-undo:not(.displaynone)').trigger('click');
+                            $existing.find('button:visible').first().trigger('focus');
+                            return;
+                        }
+
+                        var _label = $roleAdd.find('option:selected').text(),
+                            $row = $($('#role_row_template').html());
+                        $row.find('.role-label').text(_label);
+                        $row.find('.role-scope').text($roleScope.find('option:selected').text());
+                        $row.find('input[name="roles_adh[]"]').val(_value);
+                        $row.find('.role-remove').attr(
+                            'aria-label',
+                            '{{ _T("Take role %1$s back")|e('js') }}'.replace('%1$s', _label)
+                        );
+                        $memberRoles.children('tbody').append($row);
+                        $roleAdd.closest('.ui.dropdown').dropdown('clear');
+                        $roleScope.closest('.ui.dropdown').dropdown('set selected', '');
+                        _refreshRoles();
+                        $row.find('.role-remove').trigger('focus');
+                    });
+                }

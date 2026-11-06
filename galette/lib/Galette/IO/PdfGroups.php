@@ -12,7 +12,7 @@ namespace Galette\IO;
 
 use Galette\Core\Preferences;
 use Analog\Analog;
-use Galette\Core\Login;
+use Galette\Access\AccessControl;
 use Galette\Entity\Group;
 
 /**
@@ -30,9 +30,10 @@ class PdfGroups extends Pdf
     /**
      * Main constructor, set creator and author
      *
-     * @param Preferences $prefs Preferences
+     * @param Preferences   $prefs         Preferences
+     * @param AccessControl $accessControl Access control
      */
-    public function __construct(Preferences $prefs, private readonly Login $login)
+    public function __construct(Preferences $prefs, private readonly AccessControl $accessControl)
     {
         $this->filename = __('groups_list') . '.pdf';
         parent::__construct($prefs);
@@ -99,7 +100,7 @@ class PdfGroups extends Pdf
         $first = true;
         foreach ($groups as $group) {
             $id = $group->getId();
-            if (!$this->login->isGroupManager($id)) {
+            if (!$this->accessControl->can('group:export', $group)) {
                 Analog::log(
                     'Trying to export group ' . $id . ' as PDF without appropriate permissions',
                     Analog::INFO

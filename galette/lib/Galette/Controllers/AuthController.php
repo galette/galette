@@ -448,9 +448,14 @@ class AuthController extends AbstractController
     ): Response {
         $from_admin = false;
         $redirect_url = $this->routeparser->urlFor('slash');
-        if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
-            $from_admin = true;
-            $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$id_adh]);
+        $adh = null;
+        if ($id_adh !== null) {
+            $adh = new Adherent($this->zdb, $id_adh);
+            //permission may be granted on some groups only: check it on the member
+            if ($adh->id !== null && $this->accessControl->can('member:credentials', $adh)) {
+                $from_admin = true;
+                $redirect_url = $this->routeparser->urlFor('member', ['id' => (string)$id_adh]);
+            }
         }
 
         if (
@@ -469,8 +474,7 @@ class AuthController extends AbstractController
                 ->withHeader('Location', $redirect_url);
         }
 
-        if (($this->login->isAdmin() || $this->login->isStaff()) && $id_adh !== null) {
-            $adh = new Adherent($this->zdb, $id_adh);
+        if ($from_admin) {
             $login_adh = $adh->login;
         } else {
             $post = $request->getParsedBody();

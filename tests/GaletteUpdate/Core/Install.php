@@ -209,6 +209,7 @@ class Install extends BaseGaletteTestCase
                     'FOREIGN KEY-galette_groups_managers-id_adh--' => 'FOREIGN KEY-galette_groups_managers-id_adh-galette_adherents-id_adh',
                     'FOREIGN KEY-galette_groups_members-id_adh--' => 'FOREIGN KEY-galette_groups_members-id_adh-galette_adherents-id_adh',
                     'FOREIGN KEY-galette_mailing_history-mailing_sender--' => 'FOREIGN KEY-galette_mailing_history-mailing_sender-galette_adherents-id_adh',
+                    'FOREIGN KEY-galette_members_roles-id_adh--' => 'FOREIGN KEY-galette_members_roles-id_adh-galette_adherents-id_adh',
                     'FOREIGN KEY-galette_payments_schedules-id_cotis--' => 'FOREIGN KEY-galette_payments_schedules-id_cotis-galette_cotisations-id_cotis',
                     'FOREIGN KEY-galette_reminders-reminder_dest--' => 'FOREIGN KEY-galette_reminders-reminder_dest-galette_adherents-id_adh',
                     'FOREIGN KEY-galette_searches-id_adh--' => 'FOREIGN KEY-galette_searches-id_adh-galette_adherents-id_adh',

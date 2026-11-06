@@ -13,11 +13,11 @@
  # exactly the memberships to store.
  #}
 {% set can_edit_members = login.isGroupManager() %}
-{% set can_edit_managers = login.isAdmin() or login.isStaff() %}
+{% set can_edit_managers = can('member:manage') %}
 {% set member_gids = member.id ? member.getGroups()|map(g => g.getId()) : [] %}
 {% set manager_gids = member.id ? member.getManagedGroups()|map(g => g.getId()) : [] %}
 {% set sorted_groups = groups|sort((a, b) => a.getFullName() <=> b.getFullName()) %}
-{% set addable_groups = can_edit_members ? sorted_groups|filter(g => login.isGroupManager(g.getId()) and g.getId() not in member_gids and g.getId() not in manager_gids) : [] %}
+{% set addable_groups = sorted_groups|filter(g => ((can_edit_members and login.isGroupManager(g.getId())) or (can_edit_managers and can('member:manage', g))) and g.getId() not in member_gids and g.getId() not in manager_gids) %}
 <div id="groups_field" class="ui styled fluid accordion field">
     <div class="active title">
         <i class="dropdown icon" aria-hidden="true"></i>
@@ -41,7 +41,8 @@
     {% set is_manager = gid in manager_gids %}
     {% set linked = is_member or is_manager %}
     {% set row_editable = can_edit_members and login.isGroupManager(gid) %}
-    {% if linked or row_editable %}
+    {% set manager_editable = can_edit_managers and can('member:manage', group) %}
+    {% if linked or row_editable or manager_editable %}
         {% set full_name = group.getFullName() %}
                 <tr id="group_row_{{ gid }}" data-group="{{ gid }}" data-member="{{ is_member ? 1 : 0 }}" data-manager="{{ is_manager ? 1 : 0 }}" data-linked="{{ linked ? 1 : 0 }}"{% if not linked %} hidden{% endif %}>
                     <th scope="row" data-col-label="{{ _T("Group") }} :">
@@ -75,7 +76,7 @@
                         </div>
                     </td>
                     <td class="center aligned" data-col-label="{{ _T("Group manager") }} :">
-                        <div class="ui fitted toggle checkbox{% if not (can_edit_managers and linked) %} disabled{% endif %}">
+                        <div class="ui fitted toggle checkbox{% if not (manager_editable and linked) %} disabled{% endif %}">
                             <input
                                 type="checkbox"
                                 name="groups_managed_adh[]"
@@ -83,18 +84,19 @@
                                 class="group-manager"
                                 value="{{ gid }}|{{ group.getName() }}"
                                 {% if is_manager %}checked="checked"{% endif %}
-                                {% if not (can_edit_managers and linked) %}disabled="disabled"{% endif %}
-                                {% if can_edit_managers %}data-editable="1"{% endif %}
+                                {% if not (manager_editable and linked) %}disabled="disabled"{% endif %}
+                                {% if manager_editable %}data-editable="1"{% endif %}
                             />
                             <label for="group_manager_{{ gid }}"><span class="visually-hidden">{{ _T("Manager of group %1$s")|format(full_name) }}</span></label>
                         </div>
                     </td>
                     <td class="right aligned">
-        {% if row_editable %}
+        {# a group added only as manager can be taken back before saving #}
+        {% if row_editable or (manager_editable and not linked) %}
                         <button type="button" class="ui mini basic red icon button group-remove" aria-label="{{ _T("Remove from group %1$s")|format(full_name) }}">
                             <i class="times icon" aria-hidden="true"></i>
                         </button>
-                        <button type="button" class="ui mini basic labeled icon button group-undo displaynone" aria-label="{{ _T("Keep group %1$s")|format(full_name) }}">
+                        <button type="button" class="ui mini basic labeled icon button group-undo displaynone" aria-label="{{ _T("Cancel removal from group %1$s")|format(full_name) }}">
                             <i class="undo icon" aria-hidden="true"></i>
                             {{ _T("Cancel") }}
                         </button>
@@ -121,7 +123,6 @@
                 </select>
             </div>
             <div class="field action">
-                <label aria-hidden="true">&nbsp;</label>
                 <button type="button" id="group_add_btn" class="ui tiny green labeled icon button">
                     <i class="plus icon" aria-hidden="true"></i>
                     {{ _T("Add") }}

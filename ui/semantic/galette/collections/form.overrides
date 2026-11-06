@@ -179,3 +179,78 @@ fieldset {
 .main-content .ui.dropdown:not(.tertiary):focus {
   outline: 3px solid @blueFocus;
 }
+
+/*--------------------------------------------------
+     Role name, parent and counts on one line;
+     name and parent are edited in place
+---------------------------------------------------*/
+.ui.form .role-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5em .75em;
+
+    .role-name {
+        font-size: 1.4em;
+        font-weight: bold;
+    }
+    .ui.label {
+        margin: 0;
+        white-space: nowrap;
+    }
+    .role-inline {
+        display: none;
+        align-items: center;
+        gap: .25em;
+    }
+    .role-inline.active {
+        display: inline-flex;
+    }
+    /* edit buttons are part of what they edit: no border, no background */
+    .role-edit {
+        border: 0;
+        background: none;
+        padding: .2em;
+        margin: 0;
+        color: inherit;
+        opacity: .7;
+        cursor: pointer;
+        line-height: 1;
+
+        &:hover,
+        &:focus-visible {
+            opacity: 1;
+        }
+        &:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 1px;
+            border-radius: 2px;
+        }
+        .icon {
+            margin: 0;
+        }
+    }
+    /* inside a label, the button must not make it taller than its siblings */
+    .ui.label .role-edit {
+        padding: 0 0 0 .25em;
+        font-size: inherit;
+
+        .icon {
+            height: 1em;
+            line-height: 1;
+        }
+    }
+    .role-edited.field {
+        display: inline-flex;
+        align-items: center;
+        gap: .5em;
+        margin: 0;
+
+        > label {
+            margin: 0;
+        }
+    }
+    input#name {
+        width: 14em;
+    }
+}
