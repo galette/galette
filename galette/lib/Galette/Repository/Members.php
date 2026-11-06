@@ -1129,7 +1129,7 @@ class Members
             }
 
             if ($this->filters->filter_str != '') {
-                $token = '%' . strtolower($this->filters->filter_str) . '%';
+                $token = '%' . mb_strtolower($this->filters->filter_str) . '%';
                 switch ($this->filters->field_filter) {
                     case self::FILTER_NAME:
                         if ($zdb->isPostgres()) {
@@ -1576,7 +1576,7 @@ class Members
                         $select->where(
                             new Expression(
                                 'LOWER(' . $prefix . $field . ')' . $qop . '?',
-                                ['%' . strtolower((string)$cd) . '%']
+                                ['%' . mb_strtolower((string)$cd) . '%']
                             )
                         );
                     }

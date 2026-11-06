@@ -8,6 +8,7 @@ Changes
 - Self subscription warned the new member that email was disabled in the preferences, instead of just not sending them an email
 - Members allowed to create child members were refused access when storing them
 - Members not allowed to create child members were sent back to the dashboard without any message
+- On PostgreSQL, searching members, contributions dynamic fields or mailings subjects with uppercase accented letters found nothing
 
 1.3.1 -> 1.3.2
 
