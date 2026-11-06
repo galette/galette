@@ -4,6 +4,8 @@ This page lists what a plugin must change to run on Galette 1.4. It is
 updated with the code: every change that breaks plugins documents itself
 here, in the same pull request.
 
+For plugins development in general, see [Plugin development](@ref plugins).
+
 [TOC]
 
 ## Requirements

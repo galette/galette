@@ -1,0 +1,580 @@
+# Plugin development {#plugins}
+
+A plugin extends Galette with additional features without modifying the
+core code. For changes required by a new Galette version, see
+[Upgrading plugins to Galette 1.4](@ref upgrade14).
+
+[TOC]
+
+## Plugin structure
+
+A plugin is a directory placed in `galette/plugins/`; the directory name is
+the plugin ID (`plugin-events` has ID `plugin-events`).
+
+A plugin **must** contain:
+
+- `_define.php`: plugin metadata and registration;
+- `_routes.php`: Slim routes;
+- `lib/{Namespace}/PluginGalette{Route}.php`: the main plugin class.
+
+A plugin without `_define.php` or `_routes.php` is not loaded.
+
+Typical layout:
+
+```
+plugin-myplugin/
+├── _define.php              # Plugin metadata (required)
+├── _routes.php              # Routes (required)
+├── _config.inc.php          # Constants, loaded with _define.php
+├── lib/
+│   └── GaletteMyPlugin/     # Plugin namespace
+│       ├── PluginGaletteMyPlugin.php  # Main plugin class (required)
+│       ├── PluginEventProvider.php    # Events listeners (optional)
+│       ├── Fixtures.php               # Sample data (optional)
+│       ├── Controllers/
+│       ├── Entity/
+│       ├── Repository/
+│       └── Filters/
+├── templates/
+│   └── default/             # Twig templates
+│       ├── headers.html.twig  # Auto-included in <head>
+│       └── scripts.html.twig  # Auto-included before </body>
+├── scripts/                 # Database scripts
+│   ├── mysql.sql
+│   ├── pgsql.sql
+│   ├── upgrade-to-1.1-mysql.sql
+│   └── upgrade-to-1.1-pgsql.sql
+├── lang/                    # Translations
+├── webroot/                 # Public assets (CSS, JS, images)
+└── tests/
+```
+
+## Registration: _define.php {#plugins_define}
+
+`_define.php` calls `$this->register()`:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+/** @var \Galette\Core\Plugins $this */
+$this->register(
+    name: 'Galette My Plugin',     // Display name; also gives the namespace
+    desc: 'My plugin description',
+    author: 'Your Name',
+    version: '1.0.0',              // Plugin version
+    compver: '1.3.0',              // Galette compatibility version
+    route: 'myplugin',             // Routes prefix and translation domain
+    date: '2026-01-15',            // Release date
+    acls: [                        // Routes access, see below
+        'myplugin_list'   => 'member',
+        'myplugin_edit'   => 'staff',
+        'myplugin_remove' => 'admin',
+    ],
+    dbver: 1.0                     // Database version, if the plugin has a scripts/ directory
+);
+```
+
+- `compver` is mandatory: a plugin without it is disabled. It is not a
+  minimum version but the Galette compatibility generation the plugin was
+  written for. A plugin whose `compver` is older than the current
+  `GALETTE_COMPAT_VERSION` is disabled. A newer one is accepted.
+- `dbver` is mandatory as soon as the plugin has a `scripts/` directory;
+  the plugin is disabled otherwise. When it differs from the installed
+  version, the plugin is marked for update.
+- `priority` (default `1000`) sorts plugins, lowest first.
+- `repository` (`owner/name`) is where new releases are looked for; it
+  defaults to `galette-plugins/<plugin ID>`.
+
+## Main plugin class
+
+The main class extends `Galette\Core\GalettePlugin`. Its name is
+`PluginGalette` followed by the capitalized `route`. Its namespace is the
+plugin name without spaces: `Galette My Plugin` gives `GaletteMyPlugin`.
+Classes of every namespace directory under `lib/` are autoloaded (PSR-4).
+
+The class is built from the DI container: use `#[Inject]` to get services.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace GaletteMyPlugin;
+
+use DI\Attribute\Inject;
+use Galette\Core\Db;
+use Galette\Core\GalettePlugin;
+use Galette\Core\Plugins\InstallableInterface;
+
+class PluginGaletteMyPlugin extends GalettePlugin implements InstallableInterface
+{
+    #[Inject]
+    protected Db $zdb;
+
+    /**
+     * Is the plugin fully installed (database, configuration, ...)?
+     */
+    public function isInstalled(): bool
+    {
+        return $this->zdb->tableExists('myplugin_items')  // Without prefix;
+    }
+}
+```
+
+Methods inherited from `GalettePlugin` without the matching interface
+(`getMenus()`, `getDashboards()`, `getListActions()`, `isInstalled()`, …)
+are deprecated since 1.2.2: implement the interfaces below.
+
+## Plugin interfaces
+
+All of them live in `Galette\Core\Plugins` and are implemented by the main
+class, unless stated otherwise.
+
+### InstallableInterface
+
+`isInstalled(): bool` tells if the plugin is fully installed.
+
+`GalettePlugin::getLegacyDbVersion(): ?float` can also be overridden: for an
+installation that predates plugins versions tracking (Galette 1.2), return
+the version existing tables are at, so pending upgrade scripts are run.
+
+### MenuProviderInterface
+
+```php
+public function getMenus(): array
+{
+    $menus = [];
+    if ($this->login->isLogged()) {
+        $menus['plugin_myplugin'] = [
+            'title' => _T('My Plugin', 'myplugin'),
+            'icon'  => 'star',  // Fomantic UI icon name
+            'items' => [
+                [
+                    'label' => _T('List', 'myplugin'),
+                    'route' => [
+                        'name'    => 'myplugin_list',
+                        'aliases' => ['myplugin_add', 'myplugin_edit'],
+                    ],
+                ],
+            ],
+        ];
+    }
+    return $menus;
+}
+
+public function getPublicMenus(): array
+{
+    return [
+        [
+            'label' => _T('My Plugin', 'myplugin'),
+            'route' => ['name' => 'myplugin_public'],
+            'icon'  => 'star',
+        ],
+    ];
+}
+```
+
+`$this->login` is a `Galette\Core\Login` injected with `#[Inject]`.
+
+### DashboardProviderInterface
+
+```php
+public function getDashboards(): array
+{
+    return [
+        [
+            'label' => _T('My Feature', 'myplugin'),
+            'title' => _T('Access my feature', 'myplugin'),
+            'route' => ['name' => 'myplugin_list'],
+            'icon'  => 'star',
+        ],
+    ];
+}
+
+public function getMyDashboards(): array
+{
+    return [];  // Entries of the "My information" section
+}
+```
+
+### MemberActionProviderInterface
+
+Actions on members lists, member details, and batch actions:
+
+```php
+public function getListActions(Adherent $member): array
+{
+    return [
+        [
+            'label' => _T('Do something', 'myplugin'),
+            'route' => [
+                'name' => 'myplugin_member_action',
+                'args' => ['id_adh' => $member->id],
+            ],
+            'icon'  => 'star grey',
+        ],
+    ];
+}
+
+public function getDetailedActions(Adherent $member): array
+{
+    return $this->getListActions($member);
+}
+
+public function getBatchActions(): array
+{
+    return [];
+}
+```
+
+### NewsProviderInterface
+
+```php
+use Galette\IO\News\Entry;
+use Galette\IO\News\Post;
+
+public function getNews(): ?Entry
+{
+    return new Entry(
+        _T('My Plugin News', 'myplugin'),
+        [new Post(title: 'Something happened', url: 'https://example.org', date: '2026-01-15')]
+    );
+}
+```
+
+### PreferencesProviderInterface
+
+Stores the plugin settings in Galette preferences rather than in a table of
+its own: they get a type, validation, the usual `$preferences->name` access,
+and a row on the advanced configuration page.
+
+`getPreferences()` returns entries keyed `pref_<route>_<name>`; values are
+`PreferencesSchema` entries: a known `type`, a scalar `default`, and
+optionally `min`, `max`, `error`, `sensitive`, `acl`. Anything else is
+dropped and reported.
+
+### PublicPagesProviderInterface
+
+Gives each public page of the plugin its own visibility, set on the
+settings page next to the core public pages.
+
+- `getPublicPages()` returns pages keyed by an identifier (lowercase
+  letters, digits, underscores; never change it once released), each with
+  the `routes` making the page and an optional `default`, a
+  `Galette\Enums\PublicPageVisibility` value.
+- `getPublicPageLabel(string $id)` returns the label shown in settings;
+  `getPublicPages()` is read before translations are loaded.
+
+Declaring a page does not protect it: its routes still need the
+`Galette\Middleware\PublicPages` middleware.
+
+### FixturesProviderInterface
+
+Lets `galette:seed-fixtures` create sample data tied to core fixture members
+and groups. It is implemented by a `Fixtures` class in the plugin namespace,
+not by the main class.
+
+- `seedFixtures(FixturesContext $context): string` creates data and returns
+  a one line summary; use dates relative to the current day.
+  `$context->getMemberId($position)` and `getGroupId($position)` give core
+  fixtures identifiers.
+- `cleanFixtures(FixturesContext $context): void` removes only what
+  `seedFixtures()` creates, and works when nothing has been seeded.
+
+## Routes: _routes.php
+
+Routes are declared with Slim 4, inside a group prefixed with
+`/plugins/<route>`: declare paths relative to it.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Galette\Middleware\Authenticate;
+use GaletteMyPlugin\Controllers\MyController;
+
+require_once $module['root'] . '/_config.inc.php';
+
+$app->get(
+    '/list[/{option:page|order}/{value:\d+}]',
+    [MyController::class, 'list']
+)->setName('myplugin_list')->add(Authenticate::class);
+
+$app->get(
+    '/edit/{id:\d+}',
+    [MyController::class, 'edit']
+)->setName('myplugin_edit')->add(Authenticate::class);
+
+$app->post(
+    '/edit/{id:\d+}',
+    [MyController::class, 'doEdit']
+)->setName('myplugin_do_edit')->add(Authenticate::class);
+```
+
+Routes without the `Authenticate` middleware are public.
+
+Variables available in `_routes.php`:
+
+- `$app`: the route collector of the plugin group;
+- `$module`: plugin information (`root`, `name`, `route`, …);
+- `$module_id`: plugin ID;
+- `$container`: the DI container.
+
+### Access control (ACLs)
+
+Each authenticated route name must be listed in the `acls` of
+`_define.php`, with the access level it requires:
+
+- `member`: any logged-in member;
+- `groupmanager`: group managers and above;
+- `staff`: staff members and above;
+- `admin`: administrators;
+- `superadmin`: super administrator only.
+
+A key can also be a regular expression matching route names. A route that
+is not listed raises an error when it is accessed. Core ACLs take
+precedence over plugins ones.
+
+### CSRF exclusions
+
+A route receiving external callbacks (payment notifications, for example)
+can be excluded from CSRF protection, in `_routes.php`:
+
+```php
+$container->get(\Galette\Core\Plugins::class)->setCsrfExclusions([
+    '/myplugin_(success|notify|cancelled)/',  // Route names patterns
+]);
+```
+
+## Controllers
+
+Controllers extend `Galette\Controllers\Crud\AbstractPluginController`
+(CRUD) or `Galette\Controllers\AbstractPluginController`. Plugin
+information is injected under the `Plugin <plugin name>` key:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace GaletteMyPlugin\Controllers;
+
+use DI\Attribute\Inject;
+use Galette\Controllers\Crud\AbstractPluginController;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
+
+class MyController extends AbstractPluginController
+{
+    /** @var array<string, mixed> */
+    #[Inject("Plugin Galette My Plugin")]
+    protected array $module_info;
+
+    public function list(Request $request, Response $response): Response
+    {
+        $this->view->render(
+            $response,
+            $this->getTemplate('list'),  // @PluginGaletteMyPlugin/list.html.twig
+            [
+                'page_title' => _T('My Plugin List', 'myplugin'),
+                'module_id'  => $this->getModuleId(),
+            ]
+        );
+        return $response;
+    }
+}
+```
+
+`$this->module_info['module']['route']` gives the plugin route.
+Other services are injected the same way, with `#[Inject]` on typed
+properties.
+
+## Templates
+
+Templates are in `templates/default/`, in the `@PluginGalette{Route}`
+Twig namespace, and usually extend the core layout:
+
+```twig
+{% extends "page.html.twig" %}
+
+{% block content %}
+    <div class="ui segment">
+        {# Your content here #}
+    </div>
+{% endblock %}
+```
+
+When they exist, `headers.html.twig` is included in `<head>` and
+`scripts.html.twig` before `</body>` of every page.
+
+Static files of `webroot/` are served by the `plugin_res` route:
+
+```twig
+<link rel="stylesheet" href="{{ url_for('plugin_res', {'plugin': module_id, 'path': 'myplugin.css'}) }}">
+<script src="{{ url_for('plugin_res', {'plugin': module_id, 'path': 'myplugin.js'}) }}"></script>
+```
+
+## Database
+
+### Scripts
+
+A plugin needing tables ships `scripts/mysql.sql` and `scripts/pgsql.sql`,
+run from the plugins management interface. Tables use the `galette_`
+prefix (replaced by the instance prefix).
+
+Upgrades are `scripts/upgrade-to-<version>-mysql.sql` and
+`scripts/upgrade-to-<version>-pgsql.sql` (or `upgrade-to-<version>.php`);
+scripts with a version greater than the installed one are run, in order.
+Bump `dbver` in `_define.php` accordingly.
+
+### Laminas-Db
+
+`Galette\Core\Db` builds and runs queries; table names are given without
+prefix:
+
+```php
+$select = $this->zdb->select('myplugin_items');
+$select->where(['id_adh' => $this->login->id]);
+$results = $this->zdb->execute($select);
+
+$insert = $this->zdb->insert('myplugin_items');
+$insert->values(['name' => $name, 'id_adh' => $id_adh]);
+$this->zdb->execute($insert);
+$id = $this->zdb->getLastGeneratedValue($this);  // From the entity
+```
+
+### AbstractEntity
+
+`Galette\Entity\AbstractEntity` (since 1.3.0) provides CRUD operations from
+PHP attributes:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace GaletteMyPlugin\Entity;
+
+use Galette\Entity\AbstractEntity;
+use Galette\Entity\Attributes\Column;
+
+class Item extends AbstractEntity
+{
+    public const TABLE = 'myplugin_items';  // Without prefix
+    public const PK = 'id_item';
+
+    #[Column(name: 'id_item')]
+    protected int $id;
+
+    #[Column]
+    protected string $name;
+
+    #[Column(name: 'creation_date', insertable: true, updatable: false)]
+    protected string $creationDate;
+
+    protected function preInsert(): bool
+    {
+        $this->creationDate = date('Y-m-d');
+        return true;  // false cancels the operation
+    }
+}
+```
+
+`#[Column]` accepts `name` (defaults to the property name), `type` (one of
+`Column::TYPE_STRING`, `TYPE_INT`, `TYPE_BOOL`, `TYPE_DATE`,
+`TYPE_DATETIME`, `TYPE_TIMESTAMP`, `TYPE_FLOAT`, `TYPE_JSON`; inferred from
+the PHP type otherwise), `insertable` and `updatable` (both `true` by
+default).
+
+Entities are handled with `save()` (insert or update), `load(int $id)`,
+`loadFromRS()` and `delete()`; `preInsert()`, `postInsert()`,
+`preUpdate()`, `postUpdate()`, `preDelete()` and `postDelete()` hooks can
+be overridden.
+
+## Events
+
+Galette dispatches events with
+[league/event](https://event.thephpleague.com/). Each is a
+`Galette\Events\GaletteEvent`, whose `getObject()` returns the object
+concerned:
+
+| Object | Events |
+|--------|--------|
+| Member | `member.add`, `member.edit`, `member.before_remove`, `member.remove` |
+| Contribution | `contribution.add`, `contribution.edit`, `contribution.remove` |
+| Transaction | `transaction.add`, `transaction.edit`, `transaction.remove` |
+| Group | `group.add`, `group.edit`, `group.before_remove`, `group.remove` |
+
+To listen to them, add a `PluginEventProvider` class to the plugin
+namespace, implementing `League\Event\ListenerSubscriber`. It is built
+from the container, so `#[Inject]` works:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace GaletteMyPlugin;
+
+use DI\Attribute\Inject;
+use Galette\Core\Db;
+use Galette\Entity\Adherent;
+use Galette\Events\GaletteEvent;
+use League\Event\ListenerRegistry;
+use League\Event\ListenerSubscriber;
+
+class PluginEventProvider implements ListenerSubscriber
+{
+    #[Inject]
+    protected Db $zdb;
+
+    public function subscribeListeners(ListenerRegistry $acceptor): void
+    {
+        $acceptor->subscribeTo(
+            'member.add',
+            function (GaletteEvent $event): void {
+                /** @var Adherent $member */
+                $member = $event->getObject();
+                // ...
+            }
+        );
+    }
+}
+```
+
+`Galette\Events\MemberListener` and `ContribListener` are core examples.
+
+## Translations
+
+Plugins use gettext; the domain is the plugin `route`:
+
+```php
+_T('My string', 'myplugin');
+```
+
+```twig
+{{ _T('My string', 'myplugin') }}
+```
+
+Sources are `lang/<domain>.pot` and `lang/<domain>_<locale>.utf8.po`; MO files
+are compiled by `bin/console galette:compile-locales` and are not
+versioned.
+
+## Disabling a plugin
+
+Plugins are enabled and disabled from the plugins management interface,
+which writes a `plugin_<id>_disabled` file in the plugins data directory.
+An `_disabled` file in the plugin directory still works, but is deprecated
+and migrated automatically.
+
+## Examples
+
+Existing plugins, on [galette-plugins](https://github.com/galette-plugins),
+are the best examples:
+
+- `plugin-events`: CRUD, public pages, events, fixtures;
+- `plugin-paypal`: payment callbacks and CSRF exclusions;
+- `plugin-maps`: JavaScript integration.
