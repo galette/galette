@@ -51,30 +51,37 @@ plugin-myplugin/
 
 ## Registration: _define.php {#plugins_define}
 
-`_define.php` calls `$this->register()`:
+Since Galette 1.4.0, `_define.php` returns a
+`Galette\Core\Plugins\PluginDefinition`:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-/** @var \Galette\Core\Plugins $this */
-$this->register(
+use Galette\Core\Plugins\PluginDefinition;
+
+return new PluginDefinition(
     name: 'Galette My Plugin',     // Display name; also gives the namespace
     desc: 'My plugin description',
     author: 'Your Name',
     version: '1.0.0',              // Plugin version
-    compver: '1.3.0',              // Galette compatibility version
+    compver: '1.4.0',              // Galette compatibility version
     route: 'myplugin',             // Routes prefix and translation domain
     date: '2026-01-15',            // Release date
     acls: [                        // Routes access, see below
         'myplugin_list'   => 'member',
-        'myplugin_edit'   => 'staff',
+        'myplugin_edit'   => 'myplugin:edit',
         'myplugin_remove' => 'admin',
     ],
     dbver: 1.0                     // Database version, if the plugin has a scripts/ directory
 );
 ```
+
+The main plugin class is not loaded to read the definition, so an outdated
+plugin is disabled before it breaks anything. A definition file that throws
+an error, or that neither returns a definition nor calls the deprecated
+`$this->register()`, disables the plugin as invalid.
 
 - `compver` is mandatory: a plugin without it is disabled. It is not a
   minimum version but the Galette compatibility generation the plugin was
@@ -86,6 +93,37 @@ $this->register(
 - `priority` (default `1000`) sorts plugins, lowest first.
 - `repository` (`owner/name`) is where new releases are looked for; it
   defaults to `galette-plugins/<plugin ID>`.
+- `csrf_exclusions` lists routes excluded from CSRF checks, see
+  [CSRF exclusions](@ref plugins_csrf).
+
+### Deprecated: $this->register()
+
+Before Galette 1.4.0, `_define.php` called `$this->register()` with the
+same named arguments, except `csrf_exclusions`. It still works, but is
+deprecated since 1.4.0: a notice is logged in debug mode. A plugin that
+must still run on Galette 1.3 keeps it, `PluginDefinition` does not exist
+there.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+/** @var \Galette\Core\Plugins $this */
+$this->register(
+    name: 'Galette My Plugin',
+    desc: 'My plugin description',
+    author: 'Your Name',
+    version: '1.0.0',
+    compver: '1.3.0',
+    route: 'myplugin',
+    date: '2026-01-15',
+    acls: [
+        'myplugin_list' => 'member',
+    ],
+    dbver: 1.0
+);
+```
 
 ## Main plugin class
 
@@ -131,6 +169,11 @@ are deprecated since 1.2.2: implement the interfaces below.
 
 All of them live in `Galette\Core\Plugins` and are implemented by the main
 class, unless stated otherwise.
+
+### PermissionsProviderInterface
+
+Since Galette 1.4.0, declares the plugin permissions; see
+[Permissions](@ref plugins_permissions).
 
 ### InstallableInterface
 
@@ -323,31 +366,142 @@ Variables available in `_routes.php`:
 - `$module_id`: plugin ID;
 - `$container`: the DI container.
 
-### Access control (ACLs)
+### Access control (ACLs) {#plugins_acls}
 
-Each authenticated route name must be listed in the `acls` of
-`_define.php`, with the access level it requires:
+Each authenticated route name must be listed in the `acls` of the plugin
+definition, with what it requires:
 
 - `member`: any logged-in member;
 - `groupmanager`: group managers and above;
 - `staff`: staff members and above;
 - `admin`: administrators;
-- `superadmin`: super administrator only.
+- `superadmin`: super administrator only;
+- since Galette 1.4.0, a permission name, `domain:action`; several
+  permissions separated with a pipe mean any of them. See
+  [Permissions](@ref plugins_permissions).
 
 A key can also be a regular expression matching route names. A route that
 is not listed raises an error when it is accessed. Core ACLs take
 precedence over plugins ones.
 
-### CSRF exclusions
+```php
+acls: [
+    'myplugin_list'   => 'member',
+    'myplugin_edit'   => 'myplugin:edit',
+    'myplugin_remove' => 'myplugin:remove',
+    'myplugin_export' => 'member:export|member:print',  // core permissions work too
+]
+```
 
-A route receiving external callbacks (payment notifications, for example)
-can be excluded from CSRF protection, in `_routes.php`:
+### Permissions {#plugins_permissions}
+
+Since Galette 1.4.0, roles made of permissions replace access levels and
+group managers preferences. A plugin can declare its own permissions,
+named `domain:action`, from its main class implementing
+`Galette\Core\Plugins\PermissionsProviderInterface`:
 
 ```php
-$container->get(\Galette\Core\Plugins::class)->setCsrfExclusions([
-    '/myplugin_(success|notify|cancelled)/',  // Route names patterns
-]);
+use Galette\Access\Permission;
+use Galette\Core\Authentication;
+use Galette\Core\Plugins\PermissionsProviderInterface;
+
+class PluginGaletteMyPlugin extends GalettePlugin implements PermissionsProviderInterface
+{
+    public function getPermissions(): array
+    {
+        return [
+            new Permission(
+                name: 'myplugin:edit',
+                label: _T('Edit things', 'myplugin'),
+                level: Authentication::ACCESS_STAFF,
+                managers: true,
+                owner: true
+            ),
+            new Permission('myplugin:remove', _T('Remove things', 'myplugin'), Authentication::ACCESS_ADMIN),
+        ];
+    }
+}
 ```
+
+- The domain is the plugin route, `myplugin` here. Permissions of another
+  domain are ignored, and a plugin cannot use a core domain.
+- Names are stored in roles: never change them once released.
+- `level` is the lowest access level whose system role gets the
+  permission: `ACCESS_STAFF` gives it to the staff member role, which
+  administrators inherit; `ACCESS_ADMIN` (the default) to the administrator
+  role only.
+- `managers: true` grants the group manager role, on managed groups;
+  `members: true` grants the member role.
+- `owner: true` grants members on what they own, or what their children own.
+- `group: false` marks a permission that does not apply to members data
+  (settings, logs, …): it cannot be granted for a group.
+- These rules are what system roles get when the permission is first
+  known; administrators then change roles as they see fit.
+- `getPermissions()` is called once translations are loaded: labels are
+  translated in the plugin domain.
+
+Permissions are checked with `Galette\Access\AccessControl`, available in
+controllers as `$this->accessControl`, and with the `can()` Twig function.
+The second parameter is the object the permission applies to:
+
+```php
+if (!$this->accessControl->can('myplugin:edit', $thing)) {
+    // redirect with an error
+}
+```
+
+```twig
+{% if can('myplugin:edit', thing) %}
+    <a href="{{ url_for('myplugin_edit', {'id': thing.getId()}) }}">{{ _T('Edit', 'myplugin') }}</a>
+{% endif %}
+```
+
+Owners and group managers rules need to know who owns an object and which
+groups it belongs to: plugin objects implement
+`Galette\Interfaces\AccessSubjectInterface`:
+
+```php
+use Galette\Interfaces\AccessSubjectInterface;
+
+class Thing implements AccessSubjectInterface
+{
+    public function getOwnerId(): ?int
+    {
+        return $this->member_id;  // Member the object belongs to, if any
+    }
+
+    public function getGroupsIds(): ?array
+    {
+        return null;  // Groups the object belongs to; null for those of its owner
+    }
+}
+```
+
+To restrict a list, `AccessControl::getGroupScope()` gives the groups a
+permission is granted on: `null` for all of them, an empty array when it
+is not granted at all. The `permission_scope()` Twig function does the
+same. Objects can use the `Galette\Features\AccessControlled` trait, which
+provides `isGranted()` and `getGroupScope()`.
+
+Core permissions are listed on the roles administration page; among them
+`member:read`, `member:edit`, `member:export`, `member:print`,
+`contribution:read`, `contribution:create`, `group:read`, `mailing:send`.
+
+### CSRF exclusions {#plugins_csrf}
+
+A route receiving external callbacks (payment notifications, for example)
+can be excluded from CSRF protection with the `csrf_exclusions` of the
+plugin definition, a list of route names patterns:
+
+```php
+return new PluginDefinition(
+    // ...
+    csrf_exclusions: ['/myplugin_(success|notify|cancelled)/']
+);
+```
+
+Before Galette 1.4.0, `_define.php` called
+`$this->setCsrfExclusions([...])` next to `$this->register()`.
 
 ## Controllers
 

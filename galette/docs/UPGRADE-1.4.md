@@ -48,27 +48,87 @@ so ACLs overrides must still be declared in the plugin `_define.php`.
 type, separators included. A plugin creating dynamic fields from code must
 give them a name.
 
+## Plugin definition
+
+`_define.php` now returns a `Galette\Core\Plugins\PluginDefinition`
+instead of calling `$this->register()`, which is deprecated (a notice is
+logged in debug mode). Arguments are the same; CSRF exclusions move from
+`$this->setCsrfExclusions()` to the `csrf_exclusions` argument.
+
+Before:
+
+```php
+/** @var \Galette\Core\Plugins $this */
+$this->register(
+    name: 'Galette My Plugin',
+    desc: 'My plugin description',
+    author: 'Your Name',
+    version: '1.0.0',
+    compver: '1.3.0',
+    route: 'myplugin',
+    date: '2026-01-15',
+    acls: ['myplugin_list' => 'member'],
+    dbver: 1.0
+);
+$this->setCsrfExclusions(['/myplugin_notify/']);
+```
+
+After:
+
+```php
+use Galette\Core\Plugins\PluginDefinition;
+
+return new PluginDefinition(
+    name: 'Galette My Plugin',
+    desc: 'My plugin description',
+    author: 'Your Name',
+    version: '1.0.0',
+    compver: '1.4.0',
+    route: 'myplugin',
+    date: '2026-01-15',
+    acls: ['myplugin_list' => 'member'],
+    dbver: 1.0,
+    csrf_exclusions: ['/myplugin_notify/']
+);
+```
+
+Do not forget the `return`: a definition file that neither returns a
+definition nor calls `$this->register()` disables the plugin as invalid,
+as does a definition file that throws an error. A plugin that must still
+run on Galette 1.3 keeps calling `$this->register()`.
+
+See [Registration](@ref plugins_define).
+
+## Permissions
+
+Roles made of permissions replace access levels and group managers
+preferences. Plugins ACLs levels (`member`, `groupmanager`, `staff`,
+`admin`, `superadmin`) still work, but:
+
+- a route can require a permission instead, `domain:action`, or several
+  separated with a pipe;
+- a plugin can declare its own permissions, implementing
+  `Galette\Core\Plugins\PermissionsProviderInterface`, and check them with
+  `AccessControl::can()` in PHP or `can()` in Twig;
+- plugin objects implement `Galette\Interfaces\AccessSubjectInterface` so
+  that owners and group managers rules apply to them.
+
+Checks such as `$login->isGroupManager()` or `$login->isStaff()` still
+exist, but prefer permissions: they follow what administrators set in
+roles.
+
+See [Permissions](@ref plugins_permissions).
+
 ## Coming changes
 
 The following changes are not merged yet. Each of them will complete its
 section when it is.
-
-### Plugin definition
-
-Plugins will be declared with a `#[PluginDefinition]` attribute on their
-main class, rather than calling `$this->register()` in `_define.php`.
 
 ### Routes, menus and dashboards
 
 Routes can be declared with `#[Route]` attributes on plugin controllers.
 Menus, dashboard entries, actions and news move to a `Navigation` service.
 Core listeners go through the event dispatcher.
-
-### Permissions
-
-Roles and permissions replace access levels. Route ACLs such as `'staff'` or
-`'groupmanager'` will have to name permissions, and plugins will be able to
-declare their own.
 
 ### PDF
 
