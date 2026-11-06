@@ -1189,7 +1189,7 @@ class MembersController extends CrudController
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens'],
                 'parent_fields'     => $tpl_parent_fields,
-                'addchild'          => ($action === 'addchild'),
+                'addchild'          => $this->isAddChild(),
                 'show_photo'        => $fc->isVisibleFor('photo', $this->login->getAccessLevel()),
                 'osocials'          => new Social($this->zdb),
                 'documentation'     => 'usermanual/adherents.html'

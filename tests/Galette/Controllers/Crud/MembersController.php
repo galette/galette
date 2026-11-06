@@ -1122,6 +1122,12 @@ class MembersController extends GaletteRoutingTestCase
             sprintf('<input type="hidden" name="parent_id" value="%1$s"/>', $member_one->id),
             $body
         );
+        //child form is stored from the child route, other ones are for groups managers
+        $this->assertStringContainsString(
+            sprintf('<form action="%1$s"', $this->routeparser->urlFor('doAddMemberChild')),
+            $body
+        );
+        $this->assertStringContainsString('<input type="hidden" name="addchild" value="true"/>', $body);
 
         //groups managers using addMemberChild route must be set as parent, as every other member
         $this->logSuperAdmin();
