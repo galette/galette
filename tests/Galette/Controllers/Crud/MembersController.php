@@ -1071,7 +1071,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->expectFlashData([]);
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so members can create child members - route is still not accessible
         $this->preferences->pref_bool_create_member = true;
@@ -1087,7 +1087,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->expectFlashData([]);
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         $this->login->logout();
 
@@ -1103,7 +1103,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->expectFlashData([]);
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so members can create child members - route is now accessible
         $this->preferences->pref_bool_create_member = true;
@@ -1147,7 +1147,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->expectFlashData([]);
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so managers can create child members
         $this->preferences->pref_bool_create_member = true;
@@ -1778,7 +1778,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->expectFlashData([]);
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so members can create child members - route is still not accessible
         $this->preferences->pref_bool_create_member = true;
@@ -1793,7 +1793,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->expectFlashData([]);
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         $this->login->logout();
 
@@ -1808,7 +1808,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->expectFlashData([]);
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so members can create child members - route is now accessible
         $this->preferences->pref_bool_create_member = true;
@@ -1863,7 +1863,7 @@ class MembersController extends GaletteRoutingTestCase
         $this->assertSame(['Location' => [$this->routeparser->urlFor('slash')]], $test_response->getHeaders());
         $this->assertSame(301, $test_response->getStatusCode());
         $this->expectNoLogEntry();
-        $this->expectFlashData([]);
+        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
 
         //change preferences so managers can create child members
         $this->preferences->pref_bool_create_member = true;
