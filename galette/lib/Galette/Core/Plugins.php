@@ -14,6 +14,7 @@ use Composer\Autoload\ClassLoader;
 use DI\Attribute\Inject;
 use Exception;
 use Analog\Analog;
+use Galette\Core\Plugins\PluginDefinition;
 use Galette\Exception\MissingPluginException;
 use League\Event\EventDispatcher;
 use League\Event\ListenerSubscriber;
@@ -59,6 +60,7 @@ class Plugins
     public const int DISABLED_DBVERSION = 3;
     public const int DISABLED_NOT_INSTALLED = 4;
     public const int DISABLED_NOT_UP2DATE = 5;
+    public const int DISABLED_INVALID = 6;
 
     /** @var array<string> */
     protected array $path;
@@ -68,7 +70,7 @@ class Plugins
     protected array $disabled = [];
     /** @var array<ModuleId, ?float> */
     protected array $db_existing = [];
-    /** @var string[] */
+    /** @var array<ModuleId, string[]> */
     protected array $csrf_exclusions = [];
 
     protected ?string $id = null;
@@ -98,7 +100,7 @@ class Plugins
      * This method must be called before session start so that plugin classes
      * stored in session can be properly deserialized. It scans plugin directories
      * and registers class loaders for each plugin's lib/ directory without
-     * requiring the database or _define.php files.
+     * requiring the database or plugins definitions.
      *
      * Plugin namespaces are added to the Composer PSR-4 loader already present
      * on the SPL stack so that a single autoloader handles both core and plugin
@@ -251,22 +253,9 @@ class Plugins
                                     . 'files that are required.', $entry),
                                 Analog::WARNING
                             );
-                            // Ensure plugin appears in modules list even if required files are missing.
-                            $this->modules[$entry] ??= [
-                                'name'      => $entry,
-                                'desc'      => '',
-                                'author'    => '',
-                                'version'   => '',
-                                'date'      => '',
-                                'priority'  => 0,
-                                'root'      => $full_entry,
-                                'route'     => null,
-                                'dbversion' => null,
-                            ];
-                            $this->setDisabled(self::DISABLED_MISS);
+                            $this->setInvalid(self::DISABLED_MISS);
                         } else {
-                            //Will call $this->register()
-                            include $full_entry . '/_define.php';
+                            $this->loadDefinition($full_entry . '/_define.php');
                             if ($this->moduleExists($entry)) {
                                 if ($this->isDisabled($entry)) {
                                     //register() already disabled the plugin (e.g. DISABLED_COMPAT):
@@ -375,6 +364,74 @@ class Plugins
     }
 
     /**
+     * Load a module definition from its _define.php file
+     *
+     * The file returns a PluginDefinition; it may still call the deprecated $this->register().
+     *
+     * @param string $file Definition file path
+     */
+    private function loadDefinition(string $file): void
+    {
+        try {
+            $definition = include $file;
+        } catch (Throwable $e) {
+            Logs::exception($e, sprintf('Plugin "%s" definition is invalid', $this->id));
+            $this->setInvalid(self::DISABLED_INVALID);
+            return;
+        }
+
+        if ($definition instanceof PluginDefinition) {
+            $this->registerDefinition($definition);
+            return;
+        }
+
+        if (!$this->moduleExists((string)$this->id)) {
+            //neither returned nor registered, a missing return is likely
+            Analog::log(
+                sprintf('Plugin "%s" _define.php file does not return a PluginDefinition.', $this->id),
+                Analog::ERROR
+            );
+            $this->setInvalid(self::DISABLED_INVALID);
+            return;
+        }
+
+        if (Galette::isDebugEnabled()) {
+            //log level is not applied: do not flood production logs
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" calls $this->register() from its _define.php file, which is deprecated; '
+                    . 'please return a PluginDefinition instead.',
+                    $this->id
+                ),
+                Analog::NOTICE
+            );
+        }
+    }
+
+    /**
+     * Disable a module that cannot be registered
+     *
+     * @param self::DISABLED_* $cause Disabling cause
+     */
+    private function setInvalid(int $cause): void
+    {
+        // Ensure plugin appears in modules list even if it cannot be registered.
+        $this->modules[$this->id] ??= [
+            'name'      => $this->id,
+            'desc'      => '',
+            'author'    => '',
+            'version'   => '',
+            'acls'      => null,
+            'date'      => '',
+            'priority'  => 0,
+            'root'      => $this->mroot,
+            'route'     => null,
+            'dbversion' => null,
+        ];
+        $this->setDisabled($cause);
+    }
+
+    /**
      * This method registers a module in modules list. You should use this to
      * register a new module.
      *
@@ -397,6 +454,8 @@ class Plugins
      * @param ?float                $dbver      Module database version
      * @param ?string               $repository GitHub repository releases are published on,
      *                                          as owner/name. Defaults to galette-plugins/<plugin directory>
+     *
+     * @deprecated 1.4.0 Return a PluginDefinition from _define.php
      */
     public function register(
         string $name,
@@ -411,20 +470,50 @@ class Plugins
         ?float $dbver = null,
         ?string $repository = null
     ): void {
+        $this->registerDefinition(
+            new PluginDefinition(
+                name: $name,
+                desc: $desc,
+                author: $author,
+                version: $version,
+                compver: $compver,
+                route: $route,
+                date: $date,
+                acls: $acls,
+                priority: $priority,
+                dbver: $dbver,
+                repository: $repository
+            )
+        );
+    }
+
+    /**
+     * Register a module from its definition
+     *
+     * @param PluginDefinition $definition Module definition
+     */
+    private function registerDefinition(PluginDefinition $definition): void
+    {
+        $name = $definition->name;
+        $compver = $definition->compver;
+
         //store module information
         $this->modules[$this->id] = [
             'root'          => $this->mroot,
             'name'          => $name,
-            'desc'          => $desc,
-            'author'        => $author,
-            'version'       => $version,
-            'acls'          => $acls,
-            'date'          => $date,
-            'priority'      => $priority ?? 1000,
-            'route'         => $route,
-            'dbversion'     => $dbver,
-            'repository'    => $this->checkRepository($name, $repository)
+            'desc'          => $definition->desc,
+            'author'        => $definition->author,
+            'version'       => $definition->version,
+            'acls'          => $definition->acls,
+            'date'          => $definition->date,
+            'priority'      => $definition->priority ?? 1000,
+            'route'         => $definition->route,
+            'dbversion'     => $definition->dbver,
+            'repository'    => $this->checkRepository($name, $definition->repository)
         ];
+        if ($definition->csrf_exclusions !== null) {
+            $this->setCsrfExclusions($definition->csrf_exclusions);
+        }
 
         //check compatibility
         if ($compver === null) {
@@ -1172,18 +1261,26 @@ class Plugins
      */
     public function setCsrfExclusions(array $exclusions): self
     {
-        $this->csrf_exclusions = array_merge($this->csrf_exclusions, $exclusions);
+        $id = (string)$this->id;
+        $this->csrf_exclusions[$id] = array_merge($this->csrf_exclusions[$id] ?? [], $exclusions);
         return $this;
     }
 
     /**
-     * Get CSRF excluded routes patterns
+     * Get CSRF excluded routes patterns, from active plugins only
      *
      * @return array<string>
      */
     public function getCsrfExclusions(): array
     {
-        return $this->csrf_exclusions;
+        $exclusions = [];
+        foreach ($this->csrf_exclusions as $id => $patterns) {
+            //exclusions are declared before compatibility checks and explicit disabling
+            if (!$this->isDisabled((string)$id)) {
+                $exclusions = array_merge($exclusions, $patterns);
+            }
+        }
+        return $exclusions;
     }
 
     /**
