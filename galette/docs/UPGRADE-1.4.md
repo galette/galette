@@ -124,11 +124,98 @@ See [Permissions](@ref plugins_permissions).
 The following changes are not merged yet. Each of them will complete its
 section when it is.
 
-### Routes, menus and dashboards
+### Routes and listeners
 
 Routes can be declared with `#[Route]` attributes on plugin controllers.
-Menus, dashboard entries, actions and news move to a `Navigation` service.
 Core listeners go through the event dispatcher.
+
+### Menus, dashboards, actions and news
+
+The static methods of `Galette\Core\Galette` building menus, dashboards,
+members actions, news and release notices are removed. Services of the
+`Galette\Navigation` namespace replace them: inject the one you need, or
+call its Twig function from templates.
+
+| Removed | Service method | Twig function |
+|---------|----------------|---------------|
+| `Galette::getAllMenus()` | `MainMenu::getAllMenus()` | `main_menus()` |
+| `Galette::getMenus($public)` | `MainMenu::getMenus($public)` | |
+| `Galette::getPublicMenus()` | `PublicMenu::getMenus()` | `public_menus()` |
+| `Galette::getDashboards()` | `Dashboards::getEntries()` | `dashboards()` |
+| `Galette::getMyDashboards()` | `Dashboards::getMyEntries()` | `my_dashboards()` |
+| `Galette::getListActions($member)` | `MemberActions::getListActions($member)` | `member_list_actions(member)` |
+| `Galette::getDetailedActions($member)` | `MemberActions::getDetailedActions($member)` | `member_detailed_actions(member)` |
+| `Galette::getBatchActions()` | `MemberActions::getBatchActions()` | `members_batch_actions()` |
+| `Galette::getNews()` | `NewsFeed::getEntries()` | |
+| `Galette::hasNews()` | `NewsFeed::hasEntries()` | |
+| `Galette::getNewRelease()` | `ReleaseNotices::getNewRelease()` | `new_release()` |
+| `Galette::getPluginsUpdates()` | `ReleaseNotices::getPluginsUpdates()` | |
+
+In a template, before:
+
+```twig
+{% set menus = callstatic('\\Galette\\Core\\Galette', 'getAllMenus') %}
+```
+
+After:
+
+```twig
+{% set menus = main_menus() %}
+```
+
+Menus, entries and actions are now objects, no longer arrays:
+
+- `Menu`: `title`, `icon` and `items`, a list of `MenuEntry`;
+- `MenuEntry`: `label`, `route`, `title`, `icon`, `badge`, `children` and
+  `extraClass`, for menu items, dashboard cards and members actions;
+- `RouteTarget`: `name`, `args` and `aliases`;
+- `BatchAction`: `name`, `label`, `icon` and `title`.
+
+Templates read their properties as they read the arrays keys
+(`entry.label`, `entry.route.name`), except:
+
+- `extra_class` is now `extraClass`;
+- an entry grouping children has a null `route`. Check `entry.route` or
+  `entry.children`: `is defined` is always true on an object property,
+  null or not.
+
+Plugin interfaces do not change: `MenuProviderInterface`,
+`DashboardProviderInterface` and `MemberActionProviderInterface` still
+return arrays, the core builds the objects from them. Invalid entries now
+throw an `\InvalidArgumentException`, where they used to break, or not,
+when the template was rendered:
+
+- a menu entry, dashboard card or member action needs a `label`, and a
+  `route` with a `name` or `children`;
+- a batch action needs a `name`, a `label` and an `icon`;
+- route `args` keys must be strings, other ones are ignored.
+
+A plugin menu named after a core one (`myaccount`, `members`,
+`contributions`, `management`, `configuration`) adds its items to it;
+its `title` and `icon` are only used for a menu of its own.
+
+Methods deprecated since 1.2.2 are no longer called: implement the
+interfaces instead.
+
+| No longer called | Interface |
+|------------------|-----------|
+| `getMenusContents()`, `getPublicMenusItemsList()` | `MenuProviderInterface` |
+| `getDashboardsContents()`, `getMyDashboardsContents()` | `DashboardProviderInterface` |
+| `getListActionsContents()`, `getDetailedActionsContents()` | `MemberActionProviderInterface` |
+| `getNews()` without the interface | `NewsProviderInterface` |
+
+`GalettePlugin` no longer defines `getMenus()`, `getDashboards()`,
+`getMyDashboards()`, `getListActions()`, `getDetailedActions()` nor
+`getBatchActions()`: do not call their parent implementation.
+
+To work with the plugins implementing an interface, use
+`Plugins::getProviders()`; it returns the installed ones only:
+
+```php
+foreach ($plugins->getProviders(MenuProviderInterface::class) as $plugin) {
+    $menus = $plugin->getMenus();
+}
+```
 
 ### PDF
 
