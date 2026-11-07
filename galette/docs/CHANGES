@@ -9,6 +9,7 @@ Changes
 - Members allowed to create child members were refused access when storing them
 - Members not allowed to create child members were sent back to the dashboard without any message
 - On PostgreSQL, searching members, contributions dynamic fields or mailings subjects with uppercase accented letters found nothing
+- Logging in from an already logged in session kept some rights of the previous user, super administrator ones included
 
 1.3.1 -> 1.3.2
 

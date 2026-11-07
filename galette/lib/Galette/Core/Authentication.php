@@ -76,6 +76,7 @@ abstract class Authentication
      */
     public function logAdmin(string $login, Preferences $preferences): bool
     {
+        $this->resetState();
         $this->logged = true;
         $this->name = 'Admin';
         $this->login = $login;
@@ -103,6 +104,19 @@ abstract class Authentication
      */
     public function logOut(): bool
     {
+        $this->resetState();
+        return true;
+    }
+
+    /**
+     * Forget everything about the authenticated user
+     *
+     * Every way in starts here: logging in again from a logged in session
+     * would otherwise keep the rights of the previous user that the new one
+     * does not set, such as the super administrator or staff flags.
+     */
+    protected function resetState(): void
+    {
         unset($this->id);
         $this->logged = false;
         $this->tfa_pending = false;
@@ -117,8 +131,8 @@ abstract class Authentication
         //staff members and admins do not load managed groups at login,
         //they must not get the ones of a previous login
         $this->managed_groups = [];
+        $this->cron = false;
         unset($this->lang);
-        return true;
     }
 
     /**
