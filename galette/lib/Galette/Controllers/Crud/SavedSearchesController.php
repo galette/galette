@@ -31,6 +31,24 @@ use function Safe\json_encode;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removeSearch',
+    pattern: '/search/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'removeSearches',
+    pattern: '/searches/remove',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveSearch',
+    pattern: '/search/remove[/{id:\d+}]',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class SavedSearchesController extends CrudController
 {
     // CRUD - Create

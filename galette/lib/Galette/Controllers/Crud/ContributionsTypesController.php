@@ -23,6 +23,18 @@ use Analog\Analog;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removeContributionType',
+    pattern: '/contributions-types/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveContributionType',
+    pattern: '/contributions-types/remove/{id:\d+}',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class ContributionsTypesController extends CrudController
 {
     // CRUD - Create

@@ -298,6 +298,37 @@ class MembersController extends GaletteRoutingTestCase
     }
 
     /**
+     * Former public members list and gallery URLs redirect to the current ones
+     */
+    public function testLegacyPublicPages(): void
+    {
+        $visibility = $this->preferences->pref_publicpages_visibility_generic;
+        $this->preferences->pref_publicpages_visibility_generic = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_PUBLIC;
+        $this->assertTrue($this->preferences->store());
+
+        $list = $this->app->handle(
+            $this->createRequest('publicMembersListLegacy', ['orig' => 'list', 'option' => 'page', 'value' => '2'])
+        );
+        $members = $this->app->handle($this->createRequest('publicMembersListLegacy', ['orig' => 'members']));
+        $gallery = $this->app->handle($this->createRequest('publicMembersGalleryLegacy', ['orig' => 'trombi']));
+
+        //reset
+        $this->preferences->pref_publicpages_visibility_generic = $visibility;
+        $this->assertTrue($this->preferences->store());
+
+        $this->assertSame(301, $list->getStatusCode());
+        $this->assertSame(
+            [$this->routeparser->urlFor('publicMembersList', ['option' => 'page', 'value' => '2'])],
+            $list->getHeader('Location')
+        );
+        $this->assertSame(301, $members->getStatusCode());
+        $this->assertSame([$this->routeparser->urlFor('publicMembersList')], $members->getHeader('Location'));
+        $this->assertSame(301, $gallery->getStatusCode());
+        $this->assertSame([$this->routeparser->urlFor('publicMembersGallery')], $gallery->getHeader('Location'));
+        $this->expectFlashData([]);
+    }
+
+    /**
      * Test public members gallery
      */
     public function testPublicMembersGallery(): void

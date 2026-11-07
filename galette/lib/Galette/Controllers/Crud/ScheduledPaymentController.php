@@ -28,6 +28,24 @@ use Galette\Repository\PaymentTypes;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removeScheduledPayment',
+    pattern: '/scheduled-payment/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'removeScheduledPayments',
+    pattern: '/scheduled-payment/batch/remove',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveScheduledPayment',
+    pattern: '/scheduled-payment/remove[/{id}]',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class ScheduledPaymentController extends CrudController
 {
     private bool $show_mine = false;

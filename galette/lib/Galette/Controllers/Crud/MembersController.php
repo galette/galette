@@ -34,6 +34,7 @@ use Galette\Entity\Social;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Util\RelativeDate;
 use Galette\Filters\MembersList;
+use Galette\Middleware\PublicPages;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\Repository\Groups;
 use Galette\Repository\Members;
@@ -50,6 +51,24 @@ use function Safe\preg_replace;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removeMember',
+    pattern: '/member/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'removeMembers',
+    pattern: '/members/remove',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveMember',
+    pattern: '/member/remove[/{id:\d+}]',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class MembersController extends CrudController
 {
     private bool $is_self_membership = false;
@@ -415,6 +434,55 @@ class MembersController extends CrudController
     }
 
     /**
+     * Redirect former public members list URLs
+     *
+     * "list" is deprecated since 1.2.0, "members" since 0.9.3
+     *
+     * @param string|null $option One of 'page' or 'order'
+     * @param string|null $value  Value of the option
+     */
+    #[Route(
+        name: 'publicMembersListLegacy',
+        pattern: '/public/{orig:list|members}[/{option:page|order}/{value:\d+|\w+}]',
+        methods: ['GET'],
+        requiresAuth: false,
+        middleware: [PublicPages::class]
+    )]
+    public function legacyPublicMembersList(
+        Response $response,
+        ?string $option = null,
+        ?string $value = null
+    ): Response {
+        $args = [];
+        if ($option !== null && $value !== null) {
+            $args['option'] = $option;
+            $args['value'] = $value;
+        }
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->routeparser->urlFor('publicMembersList', $args));
+    }
+
+    /**
+     * Redirect former public members gallery URLs
+     *
+     * "trombi" is deprecated since 1.2.0, "trombinoscope" since 0.9.3
+     */
+    #[Route(
+        name: 'publicMembersGalleryLegacy',
+        pattern: '/public/{orig:trombinoscope|trombi}',
+        methods: ['GET'],
+        requiresAuth: false,
+        middleware: [PublicPages::class]
+    )]
+    public function legacyPublicMembersGallery(Response $response): Response
+    {
+        return $response
+            ->withStatus(301)
+            ->withHeader('Location', $this->routeparser->urlFor('publicMembersGallery'));
+    }
+
+    /**
      * Public members list
      *
      * @param string|null     $option One of 'page' or 'order'
@@ -424,7 +492,8 @@ class MembersController extends CrudController
         name: 'publicMembersList',
         pattern: '/public/members/list[/{option:page|order}/{value:\d+|\w+}]',
         methods: ['GET'],
-        requiresAuth: false
+        requiresAuth: false,
+        middleware: [PublicPages::class]
     )]
     public function publicMembersList(
         Response $response,
@@ -455,7 +524,8 @@ class MembersController extends CrudController
         name: 'publicMembersGallery',
         pattern: '/public/members/gallery[/{option:page|order}/{value:\d+|\w+}]',
         methods: ['GET'],
-        requiresAuth: false
+        requiresAuth: false,
+        middleware: [PublicPages::class]
     )]
     public function publicMembersGallery(
         Response $response,
@@ -486,7 +556,8 @@ class MembersController extends CrudController
         name: 'publicStaffList',
         pattern: '/public/staff/list[/{option:page|order}/{value:\d+|\w+}]',
         methods: ['GET'],
-        requiresAuth: false
+        requiresAuth: false,
+        middleware: [PublicPages::class]
     )]
     public function publicStaffList(
         Response $response,
@@ -522,7 +593,8 @@ class MembersController extends CrudController
         name: 'publicStaffGallery',
         pattern: '/public/staff/gallery[/{option:page|order}/{value:\d+|\w+}]',
         methods: ['GET'],
-        requiresAuth: false
+        requiresAuth: false,
+        middleware: [PublicPages::class]
     )]
     public function publicStaffGallery(
         Response $response,
@@ -611,7 +683,8 @@ class MembersController extends CrudController
         name: 'filterPublicMembersList',
         pattern: '/public/members/list/filter[/{from}]',
         methods: ['POST'],
-        requiresAuth: false
+        requiresAuth: false,
+        middleware: [PublicPages::class]
     )]
     public function filterPublicMembersList(Request $request, Response $response): Response
     {
@@ -630,7 +703,8 @@ class MembersController extends CrudController
         name: 'filterPublicMembersGallery',
         pattern: '/public/members/gallery/filter[/{from}]',
         methods: ['POST'],
-        requiresAuth: false
+        requiresAuth: false,
+        middleware: [PublicPages::class]
     )]
     public function filterPublicMembersGallery(Request $request, Response $response): Response
     {

@@ -18,6 +18,8 @@ use Attribute;
  * This attribute is for developer reference and documentation only.
  * Actual routes MUST still be declared in galette/includes/routes/*.routes.php files.
  * Multiple Route attributes can be added to a method if it's called by multiple routes.
+ * A route calling an inherited method is declared on the class, naming the method
+ * with $handler.
  *
  * Example usage:
  * ```php
@@ -35,7 +37,7 @@ use Attribute;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-#[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class Route
 {
     /**
@@ -46,13 +48,20 @@ class Route
      * @param string|string[] $methods      HTTP methods (e.g., 'GET', ['GET', 'POST'])
      * @param string|null     $description  Optional description of what this route does
      * @param bool            $requiresAuth Whether this route requires authentication (default: true)
+     * @param string|null     $handler      Method to call; only for a Route on a class
+     * @param class-string[]  $middleware   Additional route middlewares, added in order.
+     *                                      Authentication, if required, runs before them.
+     * @param bool            $debugOnly    Only declared when debug mode is enabled
      */
     public function __construct(
         public readonly string $name,
         public readonly string $pattern,
         public readonly string|array $methods = 'GET',
         public readonly ?string $description = null,
-        public readonly bool $requiresAuth = true
+        public readonly bool $requiresAuth = true,
+        public readonly ?string $handler = null,
+        public readonly array $middleware = [],
+        public readonly bool $debugOnly = false
     ) {
     }
 

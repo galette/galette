@@ -23,6 +23,18 @@ use Galette\Entity\Title;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removeTitle',
+    pattern: '/titles/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveTitle',
+    pattern: '/titles/remove/{id:\d+}',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class TitlesController extends CrudController
 {
     // CRUD - Create

@@ -33,6 +33,24 @@ use Galette\Repository\PaymentTypes;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 
+#[Route(
+    name: 'removeContribution',
+    pattern: '/{type:contributions|transactions}/remove/{id:\d+}',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'removeContributions',
+    pattern: '/{type:contributions|transactions}/batch/remove',
+    methods: ['GET'],
+    handler: 'confirmDelete'
+)]
+#[Route(
+    name: 'doRemoveContribution',
+    pattern: '/{type:contributions|transactions}/remove[/{id}]',
+    methods: ['POST'],
+    handler: 'delete'
+)]
 class ContributionsController extends CrudController
 {
     // CRUD - Create

@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 use Galette\Controllers\Crud;
 use Galette\Middleware\PublicPages;
-use Slim\Psr7\Response;
 use Slim\Routing\RouteCollectorProxy;
-use Slim\Routing\RouteParser;
 
 /**
  * @var \Slim\App<\DI\Container> $app
@@ -59,29 +57,15 @@ $app->group('/public', function (RouteCollectorProxy $app): void {
         [Crud\DocumentsController::class, 'publicList']
     )->setName('documentsPublicList');
 
+    //former public members list URLs
     $app->get(
         '/{orig:list|members}[/{option:page|order}/{value:\d+|\w+}]',
-        function (Response $response, RouteParser $routeParser, ?string $option = null, ?string $value = null) {
-            //list deprecated since 1.2.0
-            //members deprecated since 0.9.3
-            $args = [];
-            if ($option !== null && $value !== null) {
-                $args['option'] = $option;
-                $args['value'] = $value;
-            }
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $routeParser->urlFor('publicMembersList', $args));
-        }
-    );
+        [Crud\MembersController::class, 'legacyPublicMembersList']
+    )->setName('publicMembersListLegacy');
 
+    //former public members gallery URLs
     $app->get(
         '/{orig:trombinoscope|trombi}',
-        fn(Response $response, RouteParser $routeParser)
-            //trombi deprecated since 1.2.0
-            //trombinoscope deprecated since 0.9.3
-            => $response
-            ->withStatus(301)
-            ->withHeader('Location', $routeParser->urlFor('publicMembersGallery'))
-    );
+        [Crud\MembersController::class, 'legacyPublicMembersGallery']
+    )->setName('publicMembersGalleryLegacy');
 })->add(PublicPages::class);

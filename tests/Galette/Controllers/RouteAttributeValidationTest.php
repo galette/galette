@@ -11,15 +11,14 @@ declare(strict_types=1);
 namespace Galette\Tests\Controllers;
 
 use Galette\Controllers\Attributes\Route;
+use Galette\Middleware\Authenticate;
 use Galette\Tests\GaletteRoutingTestCase;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
 
-use function Safe\file;
 use function Safe\file_get_contents;
-use function Safe\glob;
 use function Safe\preg_match;
 
 /**
@@ -59,27 +58,52 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
     }
 
     /**
-     * Build a map of named routes → whether their declaration includes
-     * `->add(Authenticate::class)` (checked textually in *.routes.php files
-     * since Slim does not expose route middleware via its public API).
+     * Get middlewares of named routes, including those of their groups
      *
-     * @return array<string, bool>
+     * Slim does not expose them, they are read by reflection.
+     *
+     * @return array<string, string[]>
      */
-    private function getRouteAuthRequirements(): array
+    private function getRoutesMiddlewares(): array
     {
-        $routesDir = GALETTE_ROOT . 'includes/routes/';
-        $authMap = [];
+        $middlewares = [];
+        foreach ($this->app->getRouteCollector()->getRoutes() as $route) {
+            $name = $route->getName();
+            if ($name === null) {
+                continue;
+            }
 
-        foreach (glob($routesDir . '*.routes.php') as $file) {
-            $lines = file($file);
-            foreach ($lines as $line) {
-                if (preg_match('/->setName\([\'"]([^\'"]+)[\'"]\)/i', $line, $m)) {
-                    $authMap[$m[1]] = str_contains((string)$line, 'Authenticate::class');
+            $names = [];
+            //route middlewares are stacked in its dispatcher, down to the route itself
+            $dispatcher = (new \ReflectionProperty($route, 'middlewareDispatcher'))->getValue($route);
+            $node = (new \ReflectionProperty($dispatcher, 'tip'))->getValue($dispatcher);
+            while ($node !== $route && is_object($node)) {
+                $reflection = new \ReflectionObject($node);
+                $middleware = null;
+                foreach (['middleware', 'callable'] as $property) {
+                    if ($reflection->hasProperty($property)) {
+                        $middleware = $reflection->getProperty($property)->getValue($node);
+                        break;
+                    }
+                }
+                if ($middleware === null) {
+                    break;
+                }
+                $names[] = is_object($middleware) ? $middleware::class : (string)$middleware;
+                $node = $reflection->hasProperty('next') ? $reflection->getProperty('next')->getValue($node) : null;
+            }
+
+            $groups = $route instanceof \Slim\Routing\Route ? $route->getGroups() : [];
+            foreach ($groups as $group) {
+                foreach ((new \ReflectionProperty($group, 'middleware'))->getValue($group) as $middleware) {
+                    $names[] = is_object($middleware) ? $middleware::class : (string)$middleware;
                 }
             }
+
+            $middlewares[$name] = $names;
         }
 
-        return $authMap;
+        return $middlewares;
     }
 
     /**
@@ -132,7 +156,7 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
     /**
      * Collect all Route attributes from controllers
      *
-     * @return array<string, array{class: string, method: string, route: Route}>
+     * @return array<string, array{class: string, method: string, route: Route, on_class: bool}>
      */
     private function getRouteAttributesFromControllers(): array
     {
@@ -141,6 +165,21 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
 
         foreach ($classes as $className) {
             $reflection = new \ReflectionClass($className);
+
+            //routes calling an inherited method are declared on the class
+            foreach ($reflection->getAttributes(Route::class) as $attribute) {
+                $route = $attribute->newInstance();
+                if ($route->debugOnly && !\Galette\Core\Galette::isDebugEnabled()) {
+                    continue;
+                }
+                $method = $route->handler ?? '';
+                $routeAttributes[$route->name . '::' . $className . '::' . $method] = [
+                    'class' => $className,
+                    'method' => $method,
+                    'route' => $route,
+                    'on_class' => true
+                ];
+            }
 
             foreach ($reflection->getMethods() as $method) {
                 // Skip inherited methods to avoid duplicates
@@ -153,12 +192,17 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
                 foreach ($attributes as $attribute) {
                     /** @var Route $route */
                     $route = $attribute->newInstance();
+                    //tests do not run in debug mode, debug routes are not declared
+                    if ($route->debugOnly && !\Galette\Core\Galette::isDebugEnabled()) {
+                        continue;
+                    }
 
                     $key = $route->name . '::' . $className . '::' . $method->getName();
                     $routeAttributes[$key] = [
                         'class' => $className,
                         'method' => $method->getName(),
-                        'route' => $route
+                        'route' => $route,
+                        'on_class' => false
                     ];
                 }
             }
@@ -330,6 +374,19 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
                 $route->getMethods(),
                 sprintf('Route methods are empty in %s::%s()', $className, $methodName)
             );
+
+            //a route on a class names its handler, a route on a method does not
+            if ($attrData['on_class']) {
+                $this->assertTrue(
+                    $route->handler !== null && method_exists($className, $route->handler),
+                    sprintf('Route "%s" declared on %s must name an existing method as handler', $route->name, $className)
+                );
+            } else {
+                $this->assertNull(
+                    $route->handler,
+                    sprintf('Route "%s" declared on %s::%s() cannot name a handler', $route->name, $className, $methodName)
+                );
+            }
         }
     }
 
@@ -352,19 +409,17 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
             array_values($this->container->get(\Galette\Core\Plugins::class)->getActiveModules())
         );
 
-        // Drop routes that have no name (closures, debug/legacy redirects) —
-        // they cannot be addressed by name and are out of scope.
+        // Routes without a name cannot have an attribute: they are reported
         foreach ($routes as $key => $route) {
             $name = $route->getName();
-            if ($name === null) {
-                unset($routes[$key]);
-                continue;
-            }
             foreach ($plugin_prefixes as $prefix) {
                 if (str_starts_with($route->getPattern(), $prefix)) {
                     unset($routes[$key]);
                     continue 2;
                 }
+            }
+            if ($name === null) {
+                continue;
             }
             foreach ($routeAttributes as $akey => $attrData) {
                 if ($name === $attrData['route']->name) {
@@ -383,7 +438,7 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
                 : (is_string($callable) ? $callable : '(closure)');
             $remaining[] = sprintf(
                 "  - '%s' [%s] %s → %s",
-                $name,
+                $name ?? '(unnamed)',
                 implode(',', $route->getMethods()),
                 $route->getPattern(),
                 $target
@@ -394,7 +449,7 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
             0,
             $remaining,
             sprintf(
-                "Found %d named route(s) without a #[Route] attribute (over %d total). "
+                "Found %d route(s) without a name or a #[Route] attribute (over %d total). "
                 . "Add the attribute to the target controller method.\n%s",
                 count($remaining),
                 $totalRoutes,
@@ -404,50 +459,89 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
     }
 
     /**
-     * Test that the #[Route] requiresAuth flag matches the actual
-     * `->add(Authenticate::class)` declared on the route in *.routes.php.
+     * Test that the #[Route] middlewares, and Authenticate when it requires
+     * authentication, are the ones the route is declared with
      */
-    public function testRequiresAuthMatchesMiddleware(): void
+    public function testMiddlewaresMatch(): void
     {
-        $authMap = $this->getRouteAuthRequirements();
+        $middlewares = $this->getRoutesMiddlewares();
         $attrs = $this->getRouteAttributesFromControllers();
         $errors = [];
 
         foreach ($attrs as $attrData) {
             $route = $attrData['route'];
-            $className = $attrData['class'];
-            $methodName = $attrData['method'];
-
-            if (!array_key_exists($route->name, $authMap)) {
+            if (!array_key_exists($route->name, $middlewares)) {
                 // Attribute points at a non-existent route — handled by
                 // testAllRouteAttributesExist; nothing to assert here.
                 continue;
             }
 
-            $hasAuth = $authMap[$route->name];
-            if ($route->requiresAuth && !$hasAuth) {
+            $expected = $route->middleware;
+            if ($route->requiresAuth) {
+                $expected[] = Authenticate::class;
+            }
+            $declared = $middlewares[$route->name];
+            sort($expected);
+            sort($declared);
+
+            if ($expected !== $declared) {
                 $errors[] = sprintf(
-                    "%s::%s() — route '%s' declared requiresAuth=true but has no "
-                    . "Authenticate middleware",
-                    $className,
-                    $methodName,
-                    $route->name
-                );
-            } elseif (!$route->requiresAuth && $hasAuth) {
-                $errors[] = sprintf(
-                    "%s::%s() — route '%s' declared requiresAuth=false but has "
-                    . "Authenticate middleware",
-                    $className,
-                    $methodName,
-                    $route->name
+                    "%s::%s() — route '%s' middlewares mismatch:\n  Attribute: %s\n  Declared:  %s",
+                    $attrData['class'],
+                    $attrData['method'],
+                    $route->name,
+                    implode(', ', $expected),
+                    implode(', ', $declared)
                 );
             }
         }
 
         $this->assertEmpty(
             $errors,
-            "Found Route attributes with requiresAuth flag inconsistent with the "
-            . "Authenticate middleware:\n" . implode("\n", $errors)
+            "Found Route attributes with middlewares inconsistent with the declared route:\n"
+            . implode("\n", $errors)
+        );
+    }
+
+    /**
+     * Test that every route requiring authentication has an ACL, a known level
+     * or permission: Authenticate throws on a route without one, only when it
+     * is called.
+     */
+    public function testAuthenticatedRoutesHaveAcl(): void
+    {
+        $authenticate = $this->container->get(Authenticate::class);
+        $permissions = $this->container->get(\Galette\Access\Permissions::class);
+        $levels = ['superadmin', 'admin', 'staff', 'groupmanager', 'member'];
+        $errors = [];
+
+        foreach ($this->getRouteAttributesFromControllers() as $attrData) {
+            $route = $attrData['route'];
+            if (!$route->requiresAuth) {
+                continue;
+            }
+
+            try {
+                $acl = $authenticate->getAclFor($route->name);
+            } catch (\RuntimeException) {
+                $errors[] = sprintf("Route '%s' has no ACL", $route->name);
+                continue;
+            }
+
+            if (in_array($acl, $levels, strict: true)) {
+                continue;
+            }
+            //or permissions, any of them granting access
+            foreach (explode('|', $acl) as $permission) {
+                if (!$permissions->has($permission)) {
+                    $errors[] = sprintf("Route '%s' ACL '%s' is neither a level nor a permission", $route->name, $permission);
+                }
+            }
+        }
+
+        $this->assertEmpty(
+            $errors,
+            "Found routes requiring authentication without a valid ACL:\n" . implode("\n", $errors)
         );
     }
 
@@ -484,12 +578,7 @@ class RouteAttributeValidationTest extends GaletteRoutingTestCase
             }
 
             [$declaredClass, $declaredMethod] = $callable;
-            // Accept attributes on a parent class — Slim resolves the callable
-            // through the inheritance chain, so an attribute on CrudController
-            // legitimately documents a route handled by a subclass.
-            $classMatches = is_string($declaredClass)
-                && is_a($declaredClass, $className, allow_string: true);
-            if (!$classMatches || $declaredMethod !== $methodName) {
+            if ($declaredClass !== $className || $declaredMethod !== $methodName) {
                 $errors[] = sprintf(
                     "%s::%s() — route '%s' is actually handled by %s::%s()",
                     $className,
