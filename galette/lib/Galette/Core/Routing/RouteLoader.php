@@ -23,6 +23,8 @@ use RuntimeException;
 use Slim\Interfaces\RouteCollectorProxyInterface;
 use Slim\Routing\RouteCollectorProxy;
 
+use function Safe\glob;
+
 /**
  * Registers routes declared with Route attributes on controllers methods
  *
@@ -88,20 +90,66 @@ class RouteLoader
                 $container = $app->getContainer();
                 $modules = $container->get(Plugins::class)->getActiveModules();
 
-                //Declare configured routes for each plugin
+                //Declare routes for each plugin, relative to its own route
                 foreach ($modules as $module_id => $module) {
                     $container->set('Plugin ' . $module['name'], ['module' => $module, 'module_id' => $module_id]);
 
                     $app->group(
                         '/' . $module['route'],
-                        //@phpstan-ignore closure.unusedUse, closure.unusedUse ($module_id and $container may be used in included _routes.php from plugin.)
-                        function (RouteCollectorProxy $app) use ($module, $module_id, $container): void {
-                            require $module['root'] . '/_routes.php';
+                        function (RouteCollectorProxy $app) use ($module, $module_id): void {
+                            $this->register($app, $this->collectPlugin($module['root']));
+                            $this->includePluginRoutesFile($app, $module, $module_id);
                         }
                     );
                 }
             }
         );
+    }
+
+    /**
+     * Collect routes declared on a plugin controllers
+     *
+     * Controllers are expected in lib/{Namespace}/Controllers/.
+     *
+     * @param string $root Plugin root directory
+     *
+     * @return list<array{class: class-string, method: string, route: Route}>
+     */
+    protected function collectPlugin(string $root): array
+    {
+        $routes = [];
+        foreach (glob($root . '/lib/*/Controllers', GLOB_ONLYDIR) as $directory) {
+            $namespace = basename(dirname($directory)) . '\\Controllers';
+            array_push($routes, ...$this->collect($directory, $namespace));
+        }
+        return $routes;
+    }
+
+    /**
+     * Include plugin routes file, if any
+     *
+     * For routes that cannot be declared with attributes. The file has access
+     * to $app (the plugin routes group), $module (plugin information),
+     * $module_id and $container; the two latter are kept for compatibility
+     * with existing plugins.
+     *
+     * @param RouteCollectorProxy<\Psr\Container\ContainerInterface|null> $app       Plugin routes group
+     * @param array<string, mixed>                                        $module    Plugin information
+     * @param string                                                      $module_id Plugin identifier
+     */
+    protected function includePluginRoutesFile(RouteCollectorProxy $app, array $module, string $module_id): void
+    {
+        $file = $module['root'] . '/_routes.php';
+        if (file_exists($file)) {
+            (static function (
+                RouteCollectorProxy $app,
+                array $module,
+                string $module_id,
+                ?\Psr\Container\ContainerInterface $container
+            ) use ($file): void {
+                require $file;
+            })($app, $module, $module_id, $app->getContainer());
+        }
     }
 
     /**
