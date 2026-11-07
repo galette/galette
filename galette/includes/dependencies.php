@@ -27,7 +27,6 @@ use Galette\Core\History;
 use Galette\Core\I18n;
 use Galette\Core\Login;
 use Galette\Core\Logo;
-use Galette\Core\Navigation;
 use Galette\Core\Plugins;
 use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
@@ -40,6 +39,7 @@ use Galette\Events\ContribListener;
 use Galette\Events\MemberListener;
 use Galette\Interfaces\PermissionResolverInterface;
 use Galette\Middleware\Csrf;
+use Galette\Navigation\ReleaseNotices;
 use Galette\Twig\ViewFactory;
 use Galette\Util\Release;
 use League\Event\EventDispatcher;
@@ -87,7 +87,7 @@ return [
     PermissionResolverInterface::class => get(RoleResolver::class),
     AccessControl::class => autowire(),
     FeatureFlagManager::class => autowire(),
-    Navigation::class => autowire()->constructorParameter(
+    ReleaseNotices::class => autowire()->constructorParameter(
         'release',
         factory(fn(ContainerInterface $c): Closure => fn(): Release => $c->get(Release::class))
     ),

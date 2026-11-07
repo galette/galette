@@ -7,13 +7,7 @@
 {% macro renderMenu(title, icon, items, mode) %}
     {% set my_routes = [] %}
     {% for item in items %}
-        {% if item.route is defined %}
-            {% set my_routes = my_routes|merge([item.route.name])|merge(item.route.aliases ?? []) %}
-        {% elseif item.children is defined %}
-            {% for child in item.children %}
-                {% set my_routes = my_routes|merge([child.route.name])|merge(child.route.aliases ?? []) %}
-            {% endfor %}
-        {% endif %}
+        {% set my_routes = my_routes|merge(item.getRouteNames()) %}
     {% endfor %}
     {% if mode == "compact" %}
         <div class="ui{% if cur_route in my_routes %} active-menu{% endif %} dropdown navigation item tooltip" data-html="{{ title }}" data-position="right center">

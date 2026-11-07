@@ -140,7 +140,7 @@
         {% endif %}
         {# plugins actions do not declare the permissions they need yet #}
         {% if login.isAdmin() or login.isStaff() %}
-            {% set actions = navigation.getDetailedActions(member) %}
+            {% set actions = member_detailed_actions(member) %}
             {% for action in actions %}
                 {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon) }}
             {% endfor %}

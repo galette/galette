@@ -1191,6 +1191,27 @@ class Plugins
     }
 
     /**
+     * Get the plugin descriptors of the installed modules implementing an interface
+     *
+     * @template T of object
+     *
+     * @param class-string<T> $interface Interface, one of Plugins\*ProviderInterface
+     *
+     * @return list<GalettePlugin&T>
+     */
+    public function getProviders(string $interface): array
+    {
+        $providers = [];
+        foreach (array_keys($this->getActiveModules()) as $module_id) {
+            $plugin = $this->getPlugin($module_id);
+            if ($plugin instanceof $interface && $plugin->isInstalled()) {
+                $providers[] = $plugin;
+            }
+        }
+        return $providers;
+    }
+
+    /**
      * Get module class name
      *
      * @param string $id   Module ID

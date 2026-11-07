@@ -45,7 +45,7 @@
         </div>
 {% endif %}
         <div id="dashboard-main" class="sixteen wide{% if has_news %} tablet ten wide computer{% endif %} column">
-            {% set my_dashboard_entries = navigation.getMyDashboards() %}
+            {% set my_dashboard_entries = my_dashboards() %}
             {% if my_dashboard_entries|length > 0 %}
             <div class="ui top attached yellow segment">
                 <div class="ui medium header">{{ _T("My activities") }}</div>
@@ -64,7 +64,7 @@
                  </div>
              </div>
             {% endif %}
-            {% set dashboard_entries = navigation.getDashboards() %}
+            {% set dashboard_entries = dashboards() %}
             {% if dashboard_entries|length > 0 %}
             <div class="ui top attached yellow segment">
                 <div class="ui medium header">{{ _T("Activities") }}</div>
