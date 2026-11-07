@@ -28,8 +28,9 @@ use Slim\Routing\RouteParser;
 /**
  * Debug bar switch, assets and stored data
  *
- * Routes are only registered in debug mode (see main.routes.php). Assets and
- * data are only served to a session where the bar has been turned on.
+ * Routes are only declared in debug mode; without the bar, assets and data
+ * are not found. Assets and data are only served to a session where the bar
+ * has been turned on.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
