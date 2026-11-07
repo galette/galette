@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Core\Routing;
 
+use Galette\Access\Permissions;
 use Galette\Core\Plugins;
 use Galette\Core\Routing\RouteLoader;
 use Galette\Core\SlimApp;
@@ -24,12 +25,13 @@ use Galette\Tests\GaletteTestCase;
 class RouteLoaderTest extends GaletteTestCase
 {
     /**
-     * Every route requiring authentication must have an ACL, or Authenticate
-     * throws when the route is called.
+     * Every route requiring authentication must have an ACL, a known level or
+     * permission, or Authenticate throws when the route is called.
      */
     public function testAuthenticatedRoutesHaveAcl(): void
     {
         $authenticate = $this->container->get(Authenticate::class);
+        $permissions = $this->container->get(Permissions::class);
         $levels = ['superadmin', 'admin', 'staff', 'groupmanager', 'member'];
 
         $routes = (new RouteLoader())->collect(GALETTE_ROOT . 'lib/Galette/Controllers', 'Galette\\Controllers');
@@ -42,8 +44,14 @@ class RouteLoaderTest extends GaletteTestCase
             }
             try {
                 $acl = $authenticate->getAclFor($entry['route']->name);
-                if (!in_array($acl, $levels, strict: true)) {
-                    $missing[] = $entry['route']->name . ' (unknown level ' . $acl . ')';
+                if (in_array($acl, $levels, strict: true)) {
+                    continue;
+                }
+                //or permissions, any of them granting access
+                foreach (explode('|', $acl) as $permission) {
+                    if (!$permissions->has($permission)) {
+                        $missing[] = $entry['route']->name . ' (unknown level or permission ' . $permission . ')';
+                    }
                 }
             } catch (\RuntimeException) {
                 $missing[] = $entry['route']->name;
