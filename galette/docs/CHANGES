@@ -1,9 +1,31 @@
 Changes
 -------
 
-1.3.3 -> 1.4.0
+1.3.2 -> 1.4.0
 
+New features
+
+- Access is managed through roles made of permissions, instead of a few hardcoded access levels: roles are managed from the configuration menu, granted globally or for some groups only, and given or taken back from the member card and form
+- Roles granted for some groups never reach beyond these groups; administrator rights, reminders and staff statuses stay global
+- A debug bar is available to the super administrator in debug mode, when development dependencies are installed
+
+Improvements
+
+- Plugins with an invalid definition file are disabled and reported as such, instead of stopping Galette or being reported as incompatible
+
+Removals and requirements
+
+- Database version is now 1.400; new tables have been added for roles and permissions
+- Rights settings from the preferences - members creation, and groups managers rights on members, groups, mailings, exports, contributions and transactions - become system roles on update, and are removed from the preferences
+
+Plugins and development
+
+- Plugins can declare their own permissions, and check them from PHP and Twig; access levels in plugins ACLs still work
 - Plugins _define.php files return a PluginDefinition object; calling $this->register() is deprecated
+- Routes are now only declared from #[Route] attributes on controllers; the includes/routes files have been removed
+- Plugins routes can be declared from their controllers attributes; _routes.php becomes optional
+- Galette is configured from SlimApp and declarative container definitions; menus, dashboards, actions and news come from navigation services
+- Deprecated container aliases, LightSlimApp, GalettePlugin static contents fallbacks, the adaptative cards class and unused methods have been removed
 
 1.3.2 -> 1.3.3
 
