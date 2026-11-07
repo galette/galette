@@ -122,6 +122,24 @@ class RouteLoaderTest extends GaletteTestCase
     }
 
     /**
+     * Plugin fallback routes do not shadow its routes file ones
+     */
+    public function testPluginFallbackRoute(): void
+    {
+        $resolver = $this->app->getRouteResolver();
+        $collector = $this->app->getRouteCollector();
+
+        $results = $resolver->computeRoutingResults('/plugins/plugin1/legacy', 'GET');
+        $this->assertSame(
+            'plugin1_legacy_plugin-test1',
+            $collector->lookupRoute($results->getRouteIdentifier())->getName()
+        );
+
+        $results = $resolver->computeRoutingResults('/plugins/plugin1/other', 'GET');
+        $this->assertSame('plugin1_any_page', $collector->lookupRoute($results->getRouteIdentifier())->getName());
+    }
+
+    /**
      * Cron tasks do not need ajax routes
      */
     public function testCronRoutes(): void

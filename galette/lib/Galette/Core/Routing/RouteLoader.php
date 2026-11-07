@@ -65,14 +65,13 @@ class RouteLoader
                 static fn(array $entry): bool => !in_array($entry['class'], self::CRON_EXCLUSIONS, strict: true)
             );
         }
-        $fallbacks = array_filter($routes, static fn(array $entry): bool => $entry['route']->fallback);
-        $this->register($app, array_diff_key($routes, $fallbacks));
+        [$routes, $fallbacks] = $this->splitFallbacks($routes);
+        $this->register($app, $routes);
 
         if (!$cron) {
             $this->loadPlugins($app);
         }
 
-        //FastRoute rejects a static route declared after a variable one matching it
         $this->register($app, $fallbacks);
     }
 
@@ -101,8 +100,10 @@ class RouteLoader
                     $app->group(
                         '/' . $module['route'],
                         function (RouteCollectorProxy $app) use ($module, $module_id): void {
-                            $this->register($app, $this->collectPlugin($module['root']));
+                            [$routes, $fallbacks] = $this->splitFallbacks($this->collectPlugin($module['root']));
+                            $this->register($app, $routes);
                             $this->includePluginRoutesFile($app, $module, $module_id);
+                            $this->register($app, $fallbacks);
                         }
                     );
                 }
@@ -154,6 +155,21 @@ class RouteLoader
                 require $file;
             })($app, $module, $module_id, $app->getContainer());
         }
+    }
+
+    /**
+     * Separate fallback routes, to be registered last
+     *
+     * FastRoute rejects a static route declared after a variable one matching it.
+     *
+     * @param array<array{class: class-string, method: string, route: Route}> $routes Routes
+     *
+     * @return array{0: array<array{class: class-string, method: string, route: Route}>, 1: array<array{class: class-string, method: string, route: Route}>}
+     */
+    private function splitFallbacks(array $routes): array
+    {
+        $fallbacks = array_filter($routes, static fn(array $entry): bool => $entry['route']->fallback);
+        return [array_diff_key($routes, $fallbacks), $fallbacks];
     }
 
     /**

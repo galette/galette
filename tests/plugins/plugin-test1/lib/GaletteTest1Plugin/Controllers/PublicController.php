@@ -34,4 +34,19 @@ class PublicController
     {
         return $response;
     }
+
+    /**
+     * Any other public page; its pattern matches the routes file ones
+     */
+    #[Route(
+        name: 'plugin1_any_page',
+        pattern: '/{page:[a-z]+}',
+        requiresAuth: false,
+        middleware: [PublicPages::class],
+        fallback: true
+    )]
+    public function anyPage(Response $response): Response
+    {
+        return $response;
+    }
 }
