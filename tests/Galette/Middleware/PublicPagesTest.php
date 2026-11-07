@@ -12,7 +12,7 @@ namespace Galette\Tests\Middleware;
 
 use Galette\Enums\PublicPageVisibility;
 use Galette\Middleware\PublicPages;
-use Galette\Tests\GaletteTestCase;
+use Galette\Tests\GaletteRoutingTestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -33,7 +33,7 @@ use Slim\Routing\RouteParser;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class PublicPagesTest extends GaletteTestCase
+class PublicPagesTest extends GaletteRoutingTestCase
 {
     private const string DECLARED = 'pref_plugin1_publicpages_visibility_page';
 
@@ -141,6 +141,20 @@ class PublicPagesTest extends GaletteTestCase
         //staff only: not for an anonymous visitor
         $this->setDeclared(PublicPageVisibility::StaffOnly->value);
         $this->assertFalse($this->isServed('/plugins/plugin1/public/page', 'plugin1_public_page'));
+    }
+
+    /**
+     * The registered plugin page checks its visibility, without requiring authentication
+     */
+    public function testDeclaredPageRoute(): void
+    {
+        $this->setDeclared(PublicPageVisibility::Everyone->value);
+        $response = $this->app->handle($this->createRequest('plugin1_public_page'));
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->setDeclared(PublicPageVisibility::Hidden->value);
+        $response = $this->app->handle($this->createRequest('plugin1_public_page'));
+        $this->assertSame(302, $response->getStatusCode());
     }
 
     /**
