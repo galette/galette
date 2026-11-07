@@ -281,7 +281,33 @@ class MemberListenerTest extends GaletteTestCase
     }
 
     /**
-     * Storing a member reaches the listener from the container dispatcher
+     * Storing a new member reaches the listener from the container dispatcher
+     */
+    public function testAddReachesListener(): void
+    {
+        $this->preferences->pref_mail_method = GaletteMail::METHOD_DISABLED;
+        $this->preferences->pref_bool_mailadh = false;
+
+        $this->logSuperAdmin();
+        $member = new \Galette\Entity\Adherent($this->zdb);
+        $member->setDependencies(
+            $this->preferences,
+            $this->members_fields,
+            $this->history
+        );
+        $this->assertTrue($member->check($this->dataAdherentOne(), [], []));
+        $member->setSendmail();
+        $this->assertTrue($member->store());
+        $this->login->logOut();
+
+        $this->assertContains(
+            'You asked Galette to send a confirmation email to the member, but email has been disabled in the preferences.',
+            $this->getFlashMessages()['warning_detected'] ?? []
+        );
+    }
+
+    /**
+     * Storing an existing member reaches the listener from the container dispatcher
      */
     public function testStoreReachesListener(): void
     {
