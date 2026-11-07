@@ -25,7 +25,7 @@
         </a>
 {% endif %}
 
-{% set menus = navigation.getAllMenus() %}
+{% set menus = main_menus() %}
 {% for menu in menus %}
     {{ menus_macros.renderMenu(menu.title, menu.icon, menu.items, mode) }}
 {% endfor %}

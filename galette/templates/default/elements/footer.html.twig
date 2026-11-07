@@ -4,7 +4,7 @@
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
 
-{% set new_release = navigation.getNewRelease() %}
+{% set new_release = new_release() %}
     <footer class="page-footer">
         <div class="ui center aligned basic padded segment footer-wrapper{% if login.getCompactMenu() %} extended"{% endif %}">
             <div class="row">
