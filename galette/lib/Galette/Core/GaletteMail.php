@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Galette\Debug\DebugBar;
 use Galette\IO\File;
 use Galette\Util\Html;
 use PHPMailer\PHPMailer\SMTP;
@@ -289,7 +290,9 @@ class GaletteMail
 
         try {
             //let's send the email
-            if (!$this->mail->Send()) {
+            $sent = $this->mail->Send();
+            DebugBar::addMail($this->mail, $sent);
+            if (!$sent) {
                 $this->errors[] = $this->mail->ErrorInfo;
                 Analog::log(
                     'An error occurred sending email to: '
@@ -557,7 +560,9 @@ class GaletteMail
             }
 
             try {
-                if (!$this->mail->Send()) {
+                $sent = $this->mail->Send();
+                DebugBar::addMail($this->mail, $sent);
+                if (!$sent) {
                     $has_error = true;
                     $this->errors[] = $this->mail->ErrorInfo;
                     Analog::log(

@@ -12,6 +12,7 @@
     {% endif %}
 {% endif %}
 {% if login.isLogged() %}
+    {% set debugbar_toggle = debugbar_available and login.isSuperAdmin() %}
     {% if ui == 'item' %}
         <div class="{{ component_classes }}">
             <div class="ui basic center aligned fitted segment">
@@ -24,6 +25,16 @@
                 <i class="icon adjust" aria-hidden="true"></i>
                 {% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}
             </button>
+    {% if debugbar_toggle %}
+            <button
+                type="button"
+                data-url="{{ url_for('debugbarToggle') }}"
+                class="debugbar-toggle ui fluid{% if debugbar_active %} black{% endif %} basic button"
+            >
+                <i class="icon bug" aria-hidden="true"></i>
+                {% if debugbar_active %}{{ _T("Disable debug bar") }}{% else %}{{ _T("Enable debug bar") }}{% endif %}
+            </button>
+    {% endif %}
             <a
                 class="ui fluid {% if login.isImpersonated() %}purple{% else %}red{% endif %} basic button"
                 href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
@@ -50,6 +61,17 @@
                                 <i class="icon adjust" aria-hidden="true"></i>
                                 <span class="visually-hidden">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
                             </button>
+        {% if debugbar_toggle %}
+                            <button
+                                type="button"
+                                data-url="{{ url_for('debugbarToggle') }}"
+                                class="debugbar-toggle ui{% if debugbar_active %} black{% endif %} icon button"
+                                title="{% if debugbar_active %}{{ _T("Disable debug bar") }}{% else %}{{ _T("Enable debug bar") }}{% endif %}"
+                            >
+                                <i class="icon bug" aria-hidden="true"></i>
+                                <span class="visually-hidden">{% if debugbar_active %}{{ _T("Disable debug bar") }}{% else %}{{ _T("Enable debug bar") }}{% endif %}</span>
+                            </button>
+        {% endif %}
                             <a
                                 class="ui {% if login.isImpersonated() %}purple{% else %}red{% endif %} icon button"
                                 href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"
@@ -104,6 +126,18 @@
                     <i class="icon adjust" aria-hidden="true"></i>
                     <span class="visually-hidden">{% if login.isDarkModeEnabled() %}{{ _T("Disable dark mode") }}{% else %}{{ _T("Enable dark mode") }}{% endif %}</span>
                 </button>
+            {% if debugbar_toggle %}
+                <button
+                    type="button"
+                    data-url="{{ url_for('debugbarToggle') }}"
+                    class="debugbar-toggle ui item button{% if debugbar_active %} black{% endif %}"
+                    title="{% if debugbar_active %}{{ _T("Disable debug bar") }}{% else %}{{ _T("Enable debug bar") }}{% endif %}"
+                    data-position="right center"
+                >
+                    <i class="icon bug" aria-hidden="true"></i>
+                    <span class="visually-hidden">{% if debugbar_active %}{{ _T("Disable debug bar") }}{% else %}{{ _T("Enable debug bar") }}{% endif %}</span>
+                </button>
+            {% endif %}
                 <a
                     class="item{% if login.isImpersonated() %} purple{% else %} red{% endif %}"
                     href="{% if login.isImpersonated() %}{{ url_for("unimpersonate") }}{% else %}{{ url_for("logout") }}{% endif %}"

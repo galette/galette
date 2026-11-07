@@ -36,6 +36,10 @@
 
 /**
  * Enable debug mode
+ *
+ * With development dependencies (composer install without --no-dev), the
+ * super administrator can also turn on a debug bar for their own session,
+ * from the user menu.
  */
 //define('GALETTE_DEBUG', true);
 

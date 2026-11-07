@@ -25,6 +25,7 @@ return $config
     // Only loaded in a conditional block that checks if the environment is dev
     ->ignoreErrorsOnPackages([
         'alisqi/twigqi',
+        'php-debugbar/php-debugbar',
     ], [ErrorType::DEV_DEPENDENCY_IN_PROD])
 
     ->ignoreErrorsOnExtension('ext-simplexml', [ErrorType::UNUSED_DEPENDENCY]) // Required; used from Safe lib

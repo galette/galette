@@ -8,9 +8,11 @@
 
 declare(strict_types=1);
 
+use Galette\Controllers\DebugBarController;
 use Galette\Controllers\DebugController;
 use Galette\Controllers\GaletteController;
 use Galette\Controllers\ImagesController;
+use Galette\Debug\DebugBar;
 use Galette\Middleware\Authenticate;
 use Galette\Core\Galette;
 
@@ -73,4 +75,21 @@ if (Galette::isDebugEnabled()) {
         '/debug/routes/',
         [DebugController::class, 'routes']
     )->setName('debugRoutes');
+
+    if (DebugBar::isEnabled()) {
+        $app->get(
+            '/debug/debugbar/assets',
+            [DebugBarController::class, 'assets']
+        )->setName('debugbarAssets');
+
+        $app->get(
+            '/debug/debugbar/open',
+            [DebugBarController::class, 'open']
+        )->setName('debugbarOpen');
+
+        $app->post(
+            '/debug/debugbar/toggle',
+            [DebugBarController::class, 'toggle']
+        )->setName('debugbarToggle')->add(Authenticate::class);
+    }
 }

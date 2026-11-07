@@ -166,6 +166,8 @@ $app->add(function (Request $request, RequestHandler $handler) use ($container) 
         throw new \Slim\Exception\HttpNotFoundException($request);
     }
 
+    \Galette\Debug\DebugBar::setRoute($route);
+
     $name = $route->getName();
     $arguments = $route->getArguments();
 
@@ -214,6 +216,11 @@ $errorHandler->setDefaultErrorRenderer('text/html', \Galette\Renderers\Html::cla
  * At the end, so it can be used to render errors
  */
 $app->add(TwigMiddleware::createFromContainer($app, Twig::class));
+
+//Debug bar, outermost to see final responses
+if (\Galette\Debug\DebugBar::isEnabled()) {
+    $app->add(\Galette\Middleware\DebugBar::class);
+}
 
 if (!defined('GALETTE_TESTS')) {
     $app->run();

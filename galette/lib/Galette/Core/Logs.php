@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Analog\Analog;
+use Galette\Debug\DebugBar;
 use Throwable;
 use WeakMap;
 
@@ -70,6 +71,7 @@ class Logs
      */
     public static function exception(Throwable $e, string $message = '', int $level = Analog::ERROR): void
     {
+        DebugBar::addException($e);
         self::$logged ??= new WeakMap();
 
         $headline = ($message !== '' ? $message . ' | ' : '') . $e->getMessage();

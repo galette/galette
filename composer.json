@@ -93,7 +93,8 @@
         "shipmonk/composer-dependency-analyser": "^1.8",
         "thecodingmachine/phpstan-safe-rule": "^1.4",
         "galette/coding-standard": "^1.0",
-        "nikic/php-parser": "^5.7"
+        "nikic/php-parser": "^5.7",
+        "php-debugbar/php-debugbar": "^3.8"
     },
     "config": {
         "vendor-dir": "galette/vendor/",

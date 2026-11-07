@@ -16,6 +16,7 @@ declare(strict_types=1);
 $core_acls = [
     // Main core rules.
     'impersonate'                       => 'superadmin',
+    'debugbarToggle'                    => 'superadmin',
     'unimpersonate'                     => 'member',
     //roles
     'roles'                             => 'role:manage',

@@ -11,12 +11,13 @@
 var _bindFomanticComponents = function() {
     var
         $sidebar         = $('.ui.sidebar'),
-        $dropdown        = $('.ui.dropdown:not(.navigation, .autosubmit), select'),
+        /* The debug bar has its own widgets: leave them alone */
+        $dropdown        = $('.ui.dropdown:not(.navigation, .autosubmit), select').not('.phpdebugbar *'),
         $dropdownNav     = $('.ui.dropdown.navigation'),
         $accordion       = $('.ui.accordion'),
         $checkbox        = $('.ui.checkbox, .ui.radio.checkbox'),
         $tabulation      = $('.ui.tabbed .item'),
-        $popup           = $('a[title], button[title], .tooltip'),
+        $popup           = $('a[title], button[title], .tooltip').not('.phpdebugbar *'),
         $iconOnly        = $('.icon-only'),
         $inlinePopup     = $('.inline-tooltip'),
         $infoPopup       = $('i.circular.basic.question.icon.tooltip'),

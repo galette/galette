@@ -19,6 +19,7 @@ use Twig\Extra\Intl\IntlExtension;
  * @var \Slim\App<DI\Container> $app
  */
 $container = $app->getContainer();
+\Galette\Debug\DebugBar::setContainer($container);
 
 $routeParser = $app->getRouteCollector()->getRouteParser();
 $container->set(RouteParser::class, $routeParser);
@@ -66,6 +67,10 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
             global $logger;
             $view->addExtension(new AlisQI\TwigQI\Extension($logger));
         }
+        $profiler = \Galette\Debug\DebugBar::getTwigExtension();
+        if ($profiler !== null) {
+            $view->addExtension($profiler);
+        }
     }
     //End Twig extensions
 
@@ -89,6 +94,11 @@ $container->set(\Slim\Views\Twig::class, function (ContainerInterface $c) {
     $view->getEnvironment()->addGlobal('require_charts', value: false);
     $view->getEnvironment()->addGlobal('require_mass', value: false);
     $view->getEnvironment()->addGlobal('autocomplete', value: false);
+    $view->getEnvironment()->addGlobal('debugbar_available', \Galette\Debug\DebugBar::isEnabled());
+    $view->getEnvironment()->addGlobal(
+        'debugbar_active',
+        \Galette\Debug\DebugBar::isActive($c->get(\RKA\Session::class), $c->get(\Galette\Core\Login::class))
+    );
     if ($c->get(\Galette\Core\Login::class)->isAdmin() && $c->get(\Galette\Core\Preferences::class)->pref_telemetry_date) {
         $telemetry = new \Galette\Util\Telemetry(
             $c->get(\Galette\Core\Db::class),

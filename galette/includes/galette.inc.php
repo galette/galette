@@ -80,6 +80,11 @@ if (!defined('GALETTE_DEBUG')) {
     define('GALETTE_DEBUG', value: false);
 }
 
+//debug bar must start before database connection and logger
+if (!$installer) {
+    \Galette\Debug\DebugBar::boot();
+}
+
 if (!isset($_COOKIE['show_galette_dashboard'])) {
     setcookie(
         'show_galette_dashboard',
@@ -139,7 +144,7 @@ if (defined('GALETTE_TESTS')) {
     }
 }
 
-$handler = Analog::handler($galette_run_log);
+$handler = Analog::handler(\Galette\Debug\DebugBar::wrapLogHandler($galette_run_log));
 $logger = new \Analog\Logger();
 $logger->handler($handler);
 

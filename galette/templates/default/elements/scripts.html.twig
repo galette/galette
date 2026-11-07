@@ -88,6 +88,16 @@
                         );
                         window.location.reload();
                     });
+    {% if debugbar_available and login.isSuperAdmin() %}
+                    //the form is only built on click: no extra form in pages
+                    $('.debugbar-toggle').on('click', function(e) {
+                        e.preventDefault();
+                        $('<form method="post"></form>')
+                            .attr('action', $(this).data('url'))
+                            .appendTo('body')
+                            .trigger('submit');
+                    });
+    {% endif %}
                     if (window.matchMedia) {
                         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
                             if (event.matches) {

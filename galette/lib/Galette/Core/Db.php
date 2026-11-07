@@ -20,12 +20,14 @@ use RuntimeException;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Db\MysqlPlatform;
+use Galette\Debug\QueryProfiler;
 use Galette\Core\Db\PostgresqlPlatform;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\Driver\DriverInterface;
 use Laminas\Db\Adapter\Driver\Pdo\Pdo;
 use Laminas\Db\Adapter\Driver\AbstractConnection;
 use Laminas\Db\Adapter\Platform\PlatformInterface;
+use Laminas\Db\Adapter\Profiler\ProfilerInterface;
 use Laminas\Db\Sql\Insert;
 use Laminas\Db\Sql\Update;
 use Laminas\Db\Sql\Select;
@@ -67,6 +69,7 @@ class Db
     public const int MYSQL_DEFAULT_PORT = 3306;
     public const int PGSQL_DEFAULT_PORT = 5432;
     private bool $log_execute = true;
+    private static ?ProfilerInterface $profiler = null;
 
     /**
      * Main constructor
@@ -129,6 +132,16 @@ class Db
     }
 
     /**
+     * Set the profiler attached to connections opened from now on
+     *
+     * @param ?ProfilerInterface $profiler Profiler, null to stop profiling
+     */
+    public static function setProfiler(?ProfilerInterface $profiler): void
+    {
+        self::$profiler = $profiler;
+    }
+
+    /**
      * Do database connection
      */
     private function doConnection(): void
@@ -139,6 +152,9 @@ class Db
             $driver,
             $this->type_db === self::PGSQL ? new PostgresqlPlatform($driver) : new MysqlPlatform($driver)
         );
+        if (self::$profiler !== null) {
+            $this->db->setProfiler(self::$profiler);
+        }
         $driver->getConnection()->connect();
         $this->sql = new Sql($this->db);
 
@@ -668,6 +684,7 @@ class Db
      */
     public function execute(SqlInterface $sql): ResultSet|Result
     {
+        $profiler_mark = self::$profiler instanceof QueryProfiler ? self::$profiler->getMark() : 0;
         try {
             $query_string = $this->sql->buildSqlString($sql);
             $this->last_query = $query_string;
@@ -677,6 +694,9 @@ class Db
                 Adapter::QUERY_MODE_EXECUTE
             );
         } catch (Throwable $e) {
+            if (self::$profiler instanceof QueryProfiler) {
+                self::$profiler->profilerFailed($e->getMessage(), $profiler_mark);
+            }
             if ($this->log_execute) {
                 Logs::exception($e, 'Query error: ' . ($query_string ?? ''));
             }
