@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command\Plugins;
 
+use DI\Attribute\Inject;
 use Galette\Console\Command\AbstractCommand;
 use Galette\Core\Plugins;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -34,7 +35,8 @@ class PluginsList extends AbstractCommand
 {
     use DisplayCause;
 
-    private Plugins $plugins;
+    #[Inject]
+    protected Plugins $plugins;
 
     /**
      * Configure command
@@ -68,15 +70,12 @@ class PluginsList extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        global $container;
-
         $output->writeln([
             '<info><href=https://galette.eu>Galette</> plugins</info>',
             '<info>===============</info>',
             ''
         ]);
 
-        $this->plugins = $container->get(Plugins::class);
         $io = new SymfonyStyle($input, $output);
 
         $definitions = [];

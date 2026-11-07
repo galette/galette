@@ -31,20 +31,15 @@ abstract class AbstractPlugins extends AbstractCommand
 
     public const string ALL = '*';
 
-
-    protected Plugins $plugins;
-
     /**
      * Default constructor
      *
-     * @param string $basepath Base path to Galette installation
+     * @param string  $basepath Base path to Galette installation
+     * @param Plugins $plugins  Plugins instance
      */
-    public function __construct(string $basepath)
+    public function __construct(string $basepath, protected Plugins $plugins)
     {
-        global $container;
-
         parent::__construct($basepath);
-        $this->plugins = $container->get(Plugins::class);
     }
 
     /**

@@ -8,7 +8,7 @@
 
 use Galette\Core\Galette;
 use Galette\Core\History;
-use Galette\Core\LightSlimApp;
+use Galette\Core\SlimApp;
 use Galette\Core\Login;
 use Galette\Core\MailingQueue;
 use Galette\Core\Plugins;
@@ -23,9 +23,9 @@ require_once __DIR__ . '/../includes/galette.inc.php';
 /** @var Plugins $plugins */
 
 session_start();
-$gapp = new LightSlimApp(
+$gapp = new SlimApp(
     plugins: $plugins,
-    mode: 'CRON'
+    mode: SlimApp::MODE_CRON
 );
 $app = $gapp->getApp();
 

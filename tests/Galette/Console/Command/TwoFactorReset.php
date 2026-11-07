@@ -57,7 +57,7 @@ class TwoFactorReset extends GaletteTestCase
      */
     private function runCommand(array $arguments, array $inputs = [], array $options = []): CommandTester
     {
-        $command = new TwoFactorResetCommand(GALETTE_ROOT);
+        $command = $this->container->make(TwoFactorResetCommand::class, ['basepath' => GALETTE_ROOT]);
         $commandTester = new CommandTester($command);
         $commandTester->setInputs($inputs);
         $commandTester->execute($arguments, $options);
