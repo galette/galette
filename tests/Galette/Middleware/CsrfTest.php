@@ -587,9 +587,26 @@ class CsrfTest extends BaseGaletteTestCase
      */
     public function testMiddlewareIsRegistered(): void
     {
-        $this->assertStringContainsString(
-            '$app->add(\Galette\Middleware\Csrf::class);',
-            file_get_contents(GALETTE_ROOT . 'includes/main.inc.php'),
+        $gapp = new \Galette\Core\SlimApp($this->plugins);
+        $gapp->configure(
+            new \RKA\SessionMiddleware(['name' => 'galette_tests']),
+            new \Analog\Logger()
+        );
+
+        //walk the application middleware stack, from outermost to innermost
+        $middlewares = [];
+        $dispatcher = (new \ReflectionProperty(\Slim\App::class, 'middlewareDispatcher'))
+            ->getValue($gapp->getApp());
+        $node = (new \ReflectionProperty($dispatcher, 'tip'))->getValue($dispatcher);
+        while (property_exists($node, 'next')) {
+            $middleware = (new \ReflectionProperty($node, 'middleware'))->getValue($node);
+            $middlewares[] = is_object($middleware) ? $middleware::class : $middleware;
+            $node = (new \ReflectionProperty($node, 'next'))->getValue($node);
+        }
+
+        $this->assertContains(
+            Csrf::class,
+            $middlewares,
             'CSRF middleware is not added to the application anymore!'
         );
     }

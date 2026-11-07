@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command;
 
+use DI\Attribute\Inject;
 use Galette\Core\Db;
 use Galette\Core\History;
 use Galette\Core\Login;
@@ -32,6 +33,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class ProcessMailingQueue extends AbstractCommand
 {
+    #[Inject]
+    protected Preferences $preferences;
+    #[Inject]
+    protected Db $zdb;
+    #[Inject]
+    protected History $history;
+    #[Inject]
+    protected Login $login;
+
     /**
      * Configure command options
      */
@@ -51,8 +61,6 @@ class ProcessMailingQueue extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        global $container;
-
         //spreading a sending over time is still an alpha feature: nothing goes
         //out of this command until somebody says so, or asks for it explicitly
         if (!$input->getOption('force')) {
@@ -76,7 +84,7 @@ class ProcessMailingQueue extends AbstractCommand
             }
         }
 
-        $preferences = $container->get(Preferences::class);
+        $preferences = $this->preferences;
         //the queue may hold reminders, whose messages carry links back to the
         //instance. A command line has no incoming request to guess that URL
         //from: it has to be configured, or the links would be broken
@@ -87,13 +95,13 @@ class ProcessMailingQueue extends AbstractCommand
             return Command::FAILURE;
         }
 
-        $zdb = $container->get(Db::class);
+        $zdb = $this->zdb;
         $queue = new MailingQueue($zdb, $preferences);
         //the queue is shared: it may hold reminders, which need their own
         //collaborators to be rendered and audited
         $queue->setReminderContext(
-            $container->get(History::class),
-            $container->get(Login::class)
+            $this->history,
+            $this->login
         );
         $result = $queue->drain();
 

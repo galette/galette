@@ -368,10 +368,20 @@ class TwoFactorAuthTest extends GaletteTestCase
      */
     private function myAccountRoutes(): array
     {
-        $menus = \Galette\Core\Galette::getMenus();
+        global $login, $preferences, $plugins;
+        $menus = (new \Galette\Navigation\MainMenu(
+            login: $login,
+            preferences: $preferences,
+            plugins: $plugins,
+            access: $this->container->get(\Galette\Access\AccessControl::class),
+            releases: new \Galette\Navigation\ReleaseNotices(
+                fn(): \Galette\Util\Release => $this->container->get(\Galette\Util\Release::class)
+            ),
+            publicMenu: new \Galette\Navigation\PublicMenu($login, $preferences, $plugins)
+        ))->getMenus();
         $routes = [];
-        foreach ($menus['myaccount']['items'] ?? [] as $item) {
-            $routes[] = $item['route']['name'];
+        foreach ($menus['myaccount']->items ?? [] as $item) {
+            $routes[] = $item->route?->name;
         }
         return $routes;
     }

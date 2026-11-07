@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Console\Command;
 
 use Analog\Analog;
+use DI\Attribute\Inject;
 use Galette\Core\History;
 use Galette\Core\Login;
 use Galette\Core\Preferences;
@@ -30,6 +31,13 @@ use Symfony\Component\Console\Input\InputOption;
  */
 abstract class AbstractFeature extends AbstractCommand
 {
+    #[Inject]
+    protected Preferences $preferences;
+    #[Inject]
+    protected Login $login;
+    #[Inject]
+    protected History $history;
+
     /**
      * Add the option every feature command takes
      */
@@ -77,9 +85,7 @@ abstract class AbstractFeature extends AbstractCommand
      */
     protected function store(array $flags, array $changed, bool $turn_on): int
     {
-        global $container;
-
-        $preferences = $container->get(Preferences::class);
+        $preferences = $this->preferences;
         if (!$preferences->storeFeatureFlags($flags)) {
             $this->io->error('Experimental features could not be stored.');
             return Command::FAILURE;
@@ -87,8 +93,8 @@ abstract class AbstractFeature extends AbstractCommand
 
         //history records who did it; access to the server stands for the
         //super administrator
-        $container->get(Login::class)->logAdmin($preferences->pref_admin_login, $preferences, challenge: false);
-        $container->get(History::class)->add(
+        $this->login->logAdmin($preferences->pref_admin_login, $preferences, challenge: false);
+        $this->history->add(
             $turn_on
                 ? _Tn("Feature turned on", "Features turned on", count($changed))
                 : _Tn("Feature turned off", "Features turned off", count($changed)),

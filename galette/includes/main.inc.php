@@ -8,26 +8,12 @@
 
 declare(strict_types=1);
 
-use Galette\Core\I18n;
-use Galette\Core\LightSlimApp;
-use Galette\Core\Login;
 use Galette\Core\Plugins;
 use Galette\Core\SlimApp;
-use Galette\Middleware\Language;
-use Galette\Middleware\Telemetry;
-use Galette\Middleware\UpdateAndMaintenance;
 use RKA\SessionMiddleware;
-use Slim\Routing\RouteContext;
-use Galette\Core\Galette;
-use Slim\Views\Twig;
-use Slim\Views\TwigMiddleware;
-use Slim\Routing\RouteParser;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 
 use function Safe\define;
 use function Safe\ini_set;
-use function Safe\parse_url;
 
 if (!defined('GLOB_BRACE')) {
     \define('GLOB_BRACE', 0); //@phpstan-ignore theCodingMachineSafe.function (dependencies not loaded yet)
@@ -88,139 +74,15 @@ if (session_status() === PHP_SESSION_NONE) {
 //Galette needs database update!
 if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
     define('GALETTE_THEME', 'themes/default/');
-    $gapp = new LightSlimApp(plugins: $plugins);
+    $gapp = new SlimApp(plugins: $plugins, mode: SlimApp::MODE_NEED_UPDATE);
 } else {
     $gapp = new SlimApp(plugins: $plugins);
 }
-/** @var \DI\Container $container */
-$container = $gapp->getApp()->getContainer();
+/** @var \Analog\Logger $logger */
+$gapp->configure($session, $logger);
 $app = $gapp->getApp();
-
-// Globals... :( - see also galette/includes/dependencies.php
-global $zdb, $preferences, $login, $hist, $l10n, $emitter, $routeparser, $i18n, $translator;
-
-$app->setBasePath((function () {
-    $uri = (string)parse_url('http://a' . ($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH);
-    if (stripos($uri, (string)$_SERVER['SCRIPT_NAME']) === 0) {
-        return dirname((string)$_SERVER['SCRIPT_NAME']);
-    }
-
-    $scriptDir = str_replace('\\', '/', dirname((string)$_SERVER['SCRIPT_NAME']));
-    if ($scriptDir !== '/' && stripos($uri, $scriptDir) === 0) {
-        return $scriptDir;
-    }
-
-    return '';
-})());
-
-
-$app->add($session);
-
-$app->add(\Galette\Middleware\Csrf::class);
-
-require_once GALETTE_ROOT . 'includes/routes/main.routes.php';
-
-if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
-    $app->add(
-        new UpdateAndMaintenance(
-            $container->get(I18n::class),
-            $container->get(RouteParser::class),
-            UpdateAndMaintenance::NEED_UPDATE
-        )
-    );
-
-    $app->run();
-    die();
-}
-
-//Maintenance middleware
-if (Galette::isUnderMaintenance() && !$container->get(Login::class)->isSuperAdmin()) {
-    $app->add(
-        new UpdateAndMaintenance(
-            $container->get(I18n::class),
-            $container->get(RouteParser::class),
-            UpdateAndMaintenance::MAINTENANCE
-        )
-    );
-}
-
-/**
- * Change language middleware
- *
- * Require determineRouteBeforeAppMiddleware to be on.
- */
-$app->add(Language::class);
-
-//Telemetry update middleware
-$app->add(Telemetry::class);
-
-Galette::loadRoutes($app);
-
-// Via this middleware you could access the route and routing results from the resolved route
-$app->add(function (Request $request, RequestHandler $handler) use ($container) {
-    $routeContext = RouteContext::fromRequest($request);
-    $route = $routeContext->getRoute();
-
-    // return NotFound for non-existent route
-    if (empty($route)) {
-        throw new \Slim\Exception\HttpNotFoundException($request);
-    }
-
-    \Galette\Debug\DebugBar::setRoute($route);
-
-    $name = $route->getName();
-    $arguments = $route->getArguments();
-
-    $view = $container->get(Twig::class);
-    $view->getEnvironment()->addGlobal('cur_route', $name);
-    $view->getEnvironment()->addGlobal('cur_route_args', $arguments);
-    $view->getEnvironment()->addGlobal('cur_subroute', array_shift($arguments));
-
-    return $handler->handle($request);
-});
-
-// Add Routing Middleware - required for ACLs to work
-$app->addRoutingMiddleware();
-
-/**
- * Add Error Handling Middleware
- *
- * @var bool $displayErrorDetails -> Should be set to false in production
- * @var bool $logErrors -> Parameter is passed to the default ErrorHandler
- * @var bool $logErrorDetails -> Display error details in error log
- * @var \Analog\Logger $logger -> Logger instance
- * which can be replaced by a callable of your choice.
- *
- * Note: This middleware should be added last. It will not handle any exceptions/errors
- * for middleware added after it.
- */
-$errorMiddleware = $app->addErrorMiddleware(
-    displayErrorDetails: Galette::isDebugEnabled(),
-    logErrors: true,
-    logErrorDetails: true,
-    logger: $logger
-);
-
-$errorHandler = new \Galette\Handlers\ErrorHandler(
-    $app->getCallableResolver(),
-    $app->getResponseFactory(),
-    $logger
-);
-$errorMiddleware->setDefaultErrorHandler($errorHandler);
-$errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class);
-//also use Galette error pages for clients that do not negotiate content type (Accept: */*)
-$errorHandler->setDefaultErrorRenderer('text/html', \Galette\Renderers\Html::class);
-
-/**
- * Twig-View Middleware
- * At the end, so it can be used to render errors
- */
-$app->add(TwigMiddleware::createFromContainer($app, Twig::class));
-
-//Debug bar, outermost to see final responses
-if (\Galette\Debug\DebugBar::isEnabled()) {
-    $app->add(\Galette\Middleware\DebugBar::class);
-}
+//global $container is still read by legacy code and tests bootstrap
+$container = $gapp->getContainer(); //phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable
 
 if (!defined('GALETTE_TESTS')) {
     $app->run();

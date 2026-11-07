@@ -16,6 +16,7 @@ use Galette\Controllers\Attributes\Route;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\Social;
 use Galette\Repository\PaymentTypes;
+use Galette\Navigation\NewsFeed;
 use Galette\Util\Telemetry;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -107,13 +108,13 @@ class GaletteController extends AbstractController
         pattern: '/dashboard',
         methods: ['GET']
     )]
-    public function dashboard(Request $request, Response $response, Telemetry $telemetry): Response
+    public function dashboard(Request $request, Response $response, Telemetry $telemetry, NewsFeed $news): Response
     {
         $params = [
             'page_title'        => _T("Dashboard"),
             'contentcls'        => 'desktop',
             //news are loaded asynchronously, they reach the network
-            'has_news'          => Galette::hasNews(),
+            'has_news'          => $news->hasEntries(),
             'show_dashboard'    => $request->getCookieParams()['show_galette_dashboard'] ?? '1',
             'documentation'     => 'usermanual'
         ];

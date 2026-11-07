@@ -339,6 +339,21 @@ class Plugins extends GaletteTestCase
     }
 
     /**
+     * Test getting installed plugins implementing an interface
+     */
+    public function testGetProviders(): void
+    {
+        $this->assertSame(
+            [\GaletteTest1Plugin\PluginGalettePlugin1::class],
+            array_map(
+                fn(object $plugin): string => $plugin::class,
+                $this->plugins->getProviders(\Galette\Core\Plugins\PermissionsProviderInterface::class)
+            )
+        );
+        $this->assertSame([], $this->plugins->getProviders(\Galette\Core\Plugins\MenuProviderInterface::class));
+    }
+
+    /**
      * Test plugin event provider is subscribed
      */
     public function testLoadEventProviders(): void

@@ -178,7 +178,7 @@ class PluginInstallDb extends GaletteTestCase
             $this->plugins->getDisabledCause(self::PLUGIN_INSTALL_ID)
         );
 
-        $command = new \Galette\Console\Command\Plugins\PluginInstallDb(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginInstallDb::class, ['basepath' => GALETTE_ROOT]);
         $tester = new CommandTester($command);
         $tester->execute(['plugins' => [self::PLUGIN_INSTALL_ID]]);
 
@@ -210,7 +210,7 @@ class PluginInstallDb extends GaletteTestCase
         );
         $this->assertSame('0.1', $this->plugins->getInstalledDbVersion(self::PLUGIN_UPGRADE_ID));
 
-        $command = new \Galette\Console\Command\Plugins\PluginInstallDb(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginInstallDb::class, ['basepath' => GALETTE_ROOT]);
         $tester = new CommandTester($command);
         $tester->execute(['plugins' => [self::PLUGIN_UPGRADE_ID]]);
 
@@ -268,7 +268,7 @@ class PluginInstallDb extends GaletteTestCase
         );
         $this->assertSame('0.1', $this->fetchStoredVersion(self::PLUGIN_INSTALL_ID));
 
-        $command = new \Galette\Console\Command\Plugins\PluginInstallDb(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginInstallDb::class, ['basepath' => GALETTE_ROOT]);
         $tester = new CommandTester($command);
         $tester->execute(['plugins' => [self::PLUGIN_INSTALL_ID]]);
 
@@ -329,7 +329,7 @@ class PluginInstallDb extends GaletteTestCase
         $this->seedUpgradePluginOldVersion();
         $this->loadTestPlugins();
 
-        $command = new \Galette\Console\Command\Plugins\PluginInstallDb(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginInstallDb::class, ['basepath' => GALETTE_ROOT]);
         $tester = new CommandTester($command);
         // Use --all flag instead of ['*'] argument: initialize() converts it to
         // plugins=['*'] which execute() recognises as "all relevant plugins",
@@ -354,7 +354,7 @@ class PluginInstallDb extends GaletteTestCase
     {
         $this->loadTestPlugins();
 
-        $command = new \Galette\Console\Command\Plugins\PluginInstallDb(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginInstallDb::class, ['basepath' => GALETTE_ROOT]);
         $tester = new CommandTester($command);
 
         $this->expectException(\Symfony\Component\Console\Exception\InvalidArgumentException::class);
@@ -369,7 +369,7 @@ class PluginInstallDb extends GaletteTestCase
     {
         $this->loadTestPlugins();
 
-        $command = new \Galette\Console\Command\Plugins\PluginInstallDb(GALETTE_ROOT);
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginInstallDb::class, ['basepath' => GALETTE_ROOT]);
         $tester = new CommandTester($command);
 
         $this->expectException(\Symfony\Component\Console\Exception\InvalidArgumentException::class);

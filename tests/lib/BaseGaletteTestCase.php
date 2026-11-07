@@ -89,28 +89,30 @@ abstract class BaseGaletteTestCase extends TestCase
         global $app;
         $app = $this->app;
 
-        /** @var \DI\Container $container */
-        $container = $this->app->getContainer();
+        $container = $gapp->getContainer();
         $_SERVER['HTTP_HOST'] = '';
 
         $container->set(\Slim\Flash\Messages::class, $this->flash);
+        if ($gapp->isFullyBooted()) {
+            //the event dispatcher is built with the application, and so are core
+            //listeners: rebuild them so they use the flash messages above
+            foreach ([\Galette\Events\MemberListener::class, \Galette\Events\ContribListener::class] as $listener) {
+                $container->set($listener, $container->make($listener));
+            }
+            $container->set(
+                \League\Event\EventDispatcher::class,
+                $container->make(\League\Event\EventDispatcher::class)
+            );
+        }
         //release check is autowired into controllers and hits the network from its
         //constructor: serve a local listing instead of querying galette.eu
         $container->set(\Galette\Util\Release::class, \DI\factory(fn() => new StubRelease()));
 
         $this->app->addRoutingMiddleware();
 
-        //error middleware, as in galette/includes/main.inc.php, so HTTP exceptions
-        //are rendered as error pages instead of bubbling up
-        $errorMiddleware = $this->app->addErrorMiddleware(
-            displayErrorDetails: \Galette\Core\Galette::isDebugEnabled(),
-            logErrors: false,
-            logErrorDetails: false
-        );
-        /** @var \Slim\Handlers\ErrorHandler $errorHandler */
-        $errorHandler = $errorMiddleware->getDefaultErrorHandler();
-        $errorHandler->registerErrorRenderer('text/html', \Galette\Renderers\Html::class);
-        $errorHandler->setDefaultErrorRenderer('text/html', \Galette\Renderers\Html::class);
+        //error middleware, as in the web application, so HTTP exceptions are
+        //rendered as error pages instead of bubbling up; but not logged
+        $gapp->addErrorHandling(logger: null);
 
         if ($this->app_mode === GALETTE_MODE) {
             $this->app->add(\Slim\Views\TwigMiddleware::createFromContainer($this->app, \Slim\Views\Twig::class));

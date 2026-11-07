@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Galette\Console\Command;
 
 use Galette\Core\FeatureFlagManager;
-use Galette\Core\Preferences;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -55,9 +54,7 @@ class FeatureDisable extends AbstractFeature
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        global $container;
-
-        $preferences = $container->get(Preferences::class);
+        $preferences = $this->preferences;
         $flags = new FeatureFlagManager($preferences);
 
         $this->io->title('Turn off experimental features');
