@@ -257,7 +257,7 @@ class MailingHistory extends History
                 $select->where(
                     new PredicateExpression(
                         'LOWER(mailing_subject) LIKE ?',
-                        ['%' . strtolower((string)$this->filters->subject_filter) . '%']
+                        ['%' . mb_strtolower((string)$this->filters->subject_filter) . '%']
                     )
                 );
             }

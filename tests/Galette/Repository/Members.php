@@ -724,6 +724,37 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test uppercase accented letters are found in names, whatever their case
+     */
+    public function testFilterOnAccentedName(): void
+    {
+        $this->logSuperAdmin();
+
+        $member = new \Galette\Entity\Adherent($this->zdb);
+        $member->setDependencies($this->preferences, $this->members_fields, $this->history);
+        $data = array_merge(
+            $this->dataAdherentOne(),
+            [
+                'nom_adh' => 'Doré',
+                'login_adh' => 'dore',
+                'mail_adh' => 'dore@galette.eu'
+            ]
+        );
+        $this->assertTrue($member->check($data, [], []));
+        $this->assertTrue($member->store());
+
+        foreach (['doré', 'DORÉ', 'Doré'] as $search) {
+            $filters = new \Galette\Filters\MembersList();
+            $filters->filter_str = $search;
+            $filters->field_filter = \Galette\Repository\Members::FILTER_NAME;
+            $members = new \Galette\Repository\Members($filters);
+            $list = $members->getList();
+
+            $this->assertSame(1, $list->count(), $search);
+        }
+    }
+
+    /**
      * Test a quote in a search criteria is searched, not interpreted
      */
     public function testFreeSearchOnQuotedValue(): void

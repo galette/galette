@@ -10,13 +10,14 @@
 # ssantos <ssantos@web.de>, 2026.
 # Snowy <snowyyt@protonmail.com>, 2026.
 # Johan Cwiklinski <trasher@x-tnd.be>, 2026.
+# Nelson JESUS <nels-j@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-11-02 13:04+0100\n"
-"PO-Revision-Date: 2026-10-06 05:58+0000\n"
-"Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
+"PO-Revision-Date: 2026-11-06 13:51+0000\n"
+"Last-Translator: Nelson JESUS <nels-j@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
 "galette/pt/>\n"
 "Language: pt\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.10.1.dev0\n"
+"X-Generator: Weblate 2026.11.2.dev0\n"
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
@@ -46,18 +47,14 @@ msgstr ""
 msgid "Two-factor authentication reset for %1$s"
 msgstr ""
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication throttled"
-msgstr "Autenticação falhou"
+msgstr "Autenticação limitada"
 
 msgid "Too many failed attempts. Please try again later."
 msgstr ""
 
-#, fuzzy
-#| msgid "No password"
 msgid "Wrong password!"
-msgstr "Nenhuma palavra-passe"
+msgstr "Palavra-passe incorreta !"
 
 msgid "Administration tools"
 msgstr "Ferramentas de administração"
@@ -94,25 +91,21 @@ msgstr "O recurso de datas dinâmicas foi corrigido."
 msgid "An error occurred fixing dynamic dates :("
 msgstr "Ocorreu um erro ao corrigir datas dinâmicas :("
 
-#, fuzzy
-#| msgid "Attendance sheet configuration"
 msgid "Advanced configuration"
-msgstr "Configuração da planilha de presença"
+msgstr "Configuração avançada"
 
 msgid "Please confirm your password again."
-msgstr ""
+msgstr "Por favor, confirme novamente a sua palavra-passe."
 
 #. TRANS: parameter is the preference name
-#, fuzzy, php-format
-#| msgid "Preferences has been saved."
+#, php-format
 msgid "Preference '%1$s' has been stored."
-msgstr "As preferências foram guardadas."
+msgstr "A preferência '%1$s' foi guardada."
 
 #. TRANS: parameter is the preference name
-#, fuzzy, php-format
-#| msgid "Preferences has been saved."
+#, php-format
 msgid "Preference '%1$s' has been reset to its default."
-msgstr "As preferências foram guardadas."
+msgstr "A preferência '%1$s' foi reposto para o valor predefinido."
 
 #, php-format
 msgid "Set by the %s constant in behavior.inc.php, which takes precedence."
@@ -161,12 +154,11 @@ msgid "You currently use Galette %1$s, and %2$s is available."
 msgstr "Atualmente, utiliza Galette %1$s, e está disponível %2$s ."
 
 #. TRANS: %1$d is the number of plugins that have a new release
-#, fuzzy, php-format
-#| msgid "A new Galette release is available."
+#, php-format
 msgid "%1$d plugin has a new release available"
 msgid_plural "%1$d plugins have a new release available"
-msgstr[0] "Está disponível um novo lançamento Galette."
-msgstr[1] "Está disponível um novo lançamento Galette."
+msgstr[0] "Há uma nova versão disponível para %1$d plugin"
+msgstr[1] "Estão disponíveis novas versões para %1$d plugins"
 
 msgid "Your password is too weak! Please consider updating it."
 msgstr "A sua palavra-passe é muito fraca! Por favor, considere atualizá-la."
@@ -207,10 +199,8 @@ msgstr ""
 msgid "Too many requests. Please try again later."
 msgstr ""
 
-#, fuzzy
-#| msgid "Password recovery"
 msgid "Password recovery throttled"
-msgstr "Recuperação de palavra-passe"
+msgstr "Recuperação da palavra-passe limitada"
 
 #, php-format
 msgid "Email sent to '%s' for password recovery."
@@ -242,16 +232,13 @@ msgstr "O endereço de e-mail %s não existe"
 msgid "Login %s does not exist"
 msgstr "A credencial %s não existe"
 
-#, fuzzy
-#| msgid ""
-#| "An email has been sent to your address.<br/>Please check your inbox and "
-#| "follow the instructions."
 msgid ""
 "If an account matches, an email has been sent to its address.<br/>Please "
 "check your inbox and follow the instructions."
 msgstr ""
-"Um e-mail foi enviado para seu endereço.<br>Verifique sua caixa de entrada e "
-"siga as instruções."
+"Se for encontrada uma conta correspondente, foi enviado um e-mail para o "
+"endereço associado a essa conta.<br>Por favor, verifique sua caixa de "
+"entrada e siga as instruções."
 
 msgid ""
 "This link is no longer valid. You should ask to retrieve your password again."
@@ -278,23 +265,17 @@ msgstr "Palavra-passe alterada para o membro: '%s'."
 msgid "Your password has been changed!"
 msgstr "A sua palavra-passe foi alterada!"
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication attempts"
-msgstr "Autenticação falhou"
+msgstr "Tentativas de autenticação"
 
 msgid "All authentication counters have been lifted."
 msgstr ""
 
-#, fuzzy
-#| msgid "Member account has been modified."
 msgid "The counter has been lifted."
-msgstr "A conta do membro foi modificada."
+msgstr "A restrição foi levantada."
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication counters lifted"
-msgstr "Autenticação falhou"
+msgstr "Contadores de autenticação desativados"
 
 msgid "Nothing to lift; it may have expired on its own."
 msgstr ""
@@ -360,36 +341,31 @@ msgid "Comments:"
 msgstr "Comentários:"
 
 #. TRANS: %1$s is the number of selected contributions
-#, fuzzy, php-format
-#| msgid "Mass add contributions"
+#, php-format
 msgid "Mass change %1$s contributions"
-msgstr "Adição em massa de contribuições"
+msgstr "Alteração em massa de %1$s contribuições"
 
 msgid "Mass changes has not been confirmed!"
 msgstr "Mudanças em massa não foram confirmadas!"
 
 #. TRANS: %1$s is the number of selected contributions
-#, fuzzy, php-format
-#| msgid "Review mass change %1$s members"
+#, php-format
 msgid "Review mass change %1$s contributions"
-msgstr "Revisar alteração em massa de %1$s membros"
+msgstr "Revisar a alteração em massa destas %1$s contribuições"
 
 msgid "Nothing to do!"
 msgstr "Não há nada para fazer!"
 
 #. TRANS: %1$s is the contribution id, %2$s the error message
-#, fuzzy, php-format
-#| msgid "Contributions"
+#, php-format
 msgid "Contribution #%1$s: %2$s"
-msgstr "Contribuições"
+msgstr "Contribuição #%1$s : %2$s"
 
-#, fuzzy, php-format
-#| msgid "%1$s member has been changed successfully!"
-#| msgid_plural "%1$s members has been changed successfully!"
+#, php-format
 msgid "%1$s contribution has been changed successfully!"
 msgid_plural "%1$s contributions have been changed successfully!"
-msgstr[0] "O membro %1$s foi alterado com sucesso!"
-msgstr[1] "Os membros %1$s foram alterados com sucesso!"
+msgstr[0] "%1$s contribuição foi alterada com sucesso !"
+msgstr[1] "Foram alteradas com sucesso %1$s contribuições !"
 
 msgid "Something went wrong during mass edition!"
 msgstr "Algo deu errado durante a edição em massa!"
@@ -599,20 +575,14 @@ msgstr ""
 msgid "Sending mailing"
 msgstr ""
 
-#, fuzzy
-#| msgid "Unable to get members list."
 msgid "Back to members list"
-msgstr "Não é possível obter a lista de membros."
+msgstr "Voltar à lista de membros"
 
-#, fuzzy
-#| msgid "Mailings"
 msgid "Mailings history"
-msgstr "Correspondências"
+msgstr "Histórico de envios"
 
-#, fuzzy
-#| msgid "Sent reminders:"
 msgid "Sending reminders"
-msgstr "Lembretes enviados:"
+msgstr "Envio de lembretes"
 
 msgid "Reminders"
 msgstr "Lembretes"
@@ -620,10 +590,8 @@ msgstr "Lembretes"
 msgid "Registration"
 msgstr "Subscrição"
 
-#, fuzzy
-#| msgid "Subscription"
 msgid "Self registration throttled"
-msgstr "Subscrição"
+msgstr "Limitação do auto-registo"
 
 msgid "Profile"
 msgstr "Perfil"
@@ -756,15 +724,11 @@ msgstr "A pesquisa foi guardada."
 msgid "Saved searches"
 msgstr "Pesquisas guardadas"
 
-#, fuzzy
-#| msgid "Status %1$s does not exists!"
 msgid "Saved search does not exist."
-msgstr "O estado %1$s não existe!"
+msgstr "Não há pesquisas registadas."
 
-#, fuzzy
-#| msgid "Remove saved search"
 msgid "Edit saved search"
-msgstr "Remover pesquisa guardada"
+msgstr "Modificar pesquisa guardada"
 
 msgid "Remove saved search"
 msgstr "Remover pesquisa guardada"
@@ -819,7 +783,7 @@ msgstr[0] "Remover pagamento agendado"
 msgstr[1] "Remover pagamentos agendados"
 
 msgid "User statuses"
-msgstr "Estado do utilizador"
+msgstr "Estados dos utilizadores"
 
 msgid "Edit status"
 msgstr "Editar estado"
@@ -977,10 +941,8 @@ msgstr "Não é possível remover '%1$s' do disco :/"
 msgid "%1$s (occurrence %2$s)"
 msgstr ""
 
-#, fuzzy
-#| msgid "Remove group %1$s"
 msgid "Managed groups"
-msgstr "Remover grupo %1$s"
+msgstr "Grupos geridos"
 
 msgid "CSV import model"
 msgstr "Modelo de importação CSV"
@@ -1048,10 +1010,8 @@ msgstr "Minhas informações"
 msgid "Passwords mismatch"
 msgstr "Senhas incorretas"
 
-#, fuzzy
-#| msgid "Preferences has been saved."
 msgid "Your credentials have been saved."
-msgstr "As preferências foram guardadas."
+msgstr "As suas informações de acesso foram guardadas."
 
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
@@ -1186,10 +1146,8 @@ msgstr "E-mail: '%1$s' foi modificado com sucesso."
 msgid "Two-factor authentication"
 msgstr ""
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication failed."
-msgstr "Autenticação falhou"
+msgstr "A autenticação de dois fatores falhou."
 
 msgid "Second factor failed"
 msgstr ""
@@ -1205,19 +1163,15 @@ msgstr ""
 msgid "That code does not match. Check your application clock, then try again."
 msgstr ""
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication enabled"
-msgstr "Autenticação falhou"
+msgstr "Autenticação de dois fatores ativada"
 
 msgid ""
 "Two-factor authentication is now enabled for the super administrator account."
 msgstr ""
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication disabled"
-msgstr "Autenticação falhou"
+msgstr "Autenticação de dois fatores desativada"
 
 msgid "Two-factor authentication has been disabled."
 msgstr ""
@@ -1240,10 +1194,8 @@ msgstr ""
 msgid "This member has no two-factor authentication to reset."
 msgstr ""
 
-#, fuzzy
-#| msgid "An email has been sent to the member."
 msgid "Two-factor authentication has been reset for this member."
-msgstr "Um e-mail foi enviado ao membro."
+msgstr "A autenticação de dois fatores foi reiniciada para este membro."
 
 msgid "Two-factor authentication is not enabled on this instance."
 msgstr ""
@@ -1318,7 +1270,7 @@ msgid "View my member card"
 msgstr "Ver meu cartão de membro"
 
 msgid "My contributions"
-msgstr "Minhas contribuições"
+msgstr "As minhas contribuições"
 
 msgid "View and filter all my contributions"
 msgstr "Ver e filtrar todas as minhas contribuições"
@@ -1335,10 +1287,8 @@ msgstr "Minhas transações"
 msgid "View and filter all my transactions"
 msgstr "Visualizar e filtrar todas as minhas transações"
 
-#, fuzzy
-#| msgid "You must provide both login and password."
 msgid "Modify my login and password"
-msgstr "Tem de fornecer ambos, a credencial e a palavra-passe."
+msgstr "Alterar o meu nome de utilizador e palavra-passe"
 
 msgid "Add a child member"
 msgstr "Adicionar um membro filho"
@@ -1498,7 +1448,7 @@ msgstr "Transações"
 #. TRANS: parameter is the member name
 #, php-format
 msgid "%1$s: edit information"
-msgstr "%1$s: Editar informações"
+msgstr "%1$s: editar informações"
 
 #. TRANS: parameter is the member name
 #, php-format
@@ -1542,12 +1492,8 @@ msgstr "Notícias da Galette"
 msgid "Association news"
 msgstr "Notícias da associação"
 
-#, fuzzy
-#| msgid "Email sent is disabled in the preferences. Ask galette admin"
 msgid "Emailing has been disabled in the preferences."
-msgstr ""
-"O e-mail enviado está desabilitado nas preferências. Pergunte ao "
-"administrador"
+msgstr "O envio de e-mails foi desativado nas preferências."
 
 #, php-format
 msgid "Unknown emailing method '%s'."
@@ -1556,10 +1502,9 @@ msgstr ""
 msgid "Unable to reach the SMTP server."
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "The file does not exists or cannot be read :("
+#, php-format
 msgid "'%s' does not exist, or cannot be run."
-msgstr "O arquivo não existe ou não pode ser lido :("
+msgstr "O ficheiro '%s' não existe ou não pode ser executado."
 
 msgid "The PHP mail() function is not available on this server."
 msgstr ""
@@ -1665,10 +1610,8 @@ msgstr "O script %1$s foi executado com sucesso :)"
 msgid "Unable to run %1$s update script :("
 msgstr "Não é possível executar o script de atualização %1$s :("
 
-#, fuzzy
-#| msgid "Write configuration file"
 msgid "No configuration file found!"
-msgstr "Escrever arquivo de configuração"
+msgstr "Não foi encontrado nenhum ficheiro de configuração!"
 
 msgid "Existing configuration file is incomplete or unreadable!"
 msgstr ""
@@ -1744,10 +1687,9 @@ msgid "File not found!"
 msgstr "Arquivo não encontrado!"
 
 #. TRANS: parameter is the preference name
-#, fuzzy, php-format
-#| msgid "Unknown lang (%1$s)"
+#, php-format
 msgid "Unknown preference '%1$s'!"
-msgstr "Linguagem desconhecida (%1$s)"
+msgstr "Preferência '%1$s' è desconhecida !"
 
 #. TRANS: parameter is the preference name
 #, php-format
@@ -1879,10 +1821,8 @@ msgid "- Value for '%1$s' must be a positive number!"
 msgstr ""
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
-#, fuzzy
-#| msgid "- Unknown contribution type!"
 msgid "- Unknown two-factor authentication mode!"
-msgstr "- Tipo de contribuição desconhecido!"
+msgstr "- Modo de autenticação de dois fatores desconhecido !"
 
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
@@ -1894,10 +1834,9 @@ msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr ""
 
 #. TRANS: parameter is the setting name
-#, fuzzy, php-format
-#| msgid "Unknown lang (%1$s)"
+#, php-format
 msgid "- Unknown visibility for '%1$s'!"
-msgstr "Linguagem desconhecida (%1$s)"
+msgstr "- Visibilidade desconhecida para '%1$s'!"
 
 msgid "Missing required field name!"
 msgstr ""
@@ -2198,9 +2137,8 @@ msgid "Credit card"
 msgstr ""
 
 #. TRANS: payment method, a bank cheque
-#, fuzzy
 msgid "Check"
-msgstr "Verificar"
+msgstr "Cheque"
 
 msgid "Transfer"
 msgstr ""
@@ -2460,8 +2398,8 @@ msgid ""
 "A problem happened while sending to admin notification for user %1$s (%2$s) "
 "contribution"
 msgstr ""
-"Ocorreu um problema ao enviar a notificação ao administrador referente à "
-"contribuição do usuário %1$s (%2$s)."
+"Ocorreu um problema ao enviar uma notificação ao administrador relativa à "
+"contribuição do utilizador %1$s (%2$s)"
 
 msgid "Post contribution script failed"
 msgstr ""
@@ -2573,7 +2511,7 @@ msgid "Your organisation phone number"
 msgstr ""
 
 msgid "Your organisation email address"
-msgstr "Endereço de e-mail da sua organização!"
+msgstr "Endereço de e-mail da sua organização"
 
 msgid "Your organisation website"
 msgstr ""
@@ -2697,22 +2635,19 @@ msgid "Member information"
 msgstr ""
 
 #. TRANS: %1$s is the status identifier
-#, fuzzy, php-format
-#| msgid "Status %1$s does not exists!"
+#, php-format
 msgid "status #%1$s no longer exists"
-msgstr "O estado %1$s não existe!"
+msgstr "O estado #%1$s já não existe"
 
 #. TRANS: %1$s is the contribution type identifier
-#, fuzzy, php-format
-#| msgid "Contribution type #%1$s has not been updated"
+#, php-format
 msgid "contribution type #%1$s no longer exists"
-msgstr "O tipo de contribuição #%1$s não foi atualizado"
+msgstr "o tipo de contribuição #%1$s já não existe"
 
 #. TRANS: %1$s is the payment type identifier
-#, fuzzy, php-format
-#| msgid "Payment type '%1$s' has not been added!"
+#, php-format
 msgid "payment type #%1$s no longer exists"
-msgstr "O tipo de pagamento '%1$s' não foi adicionado!"
+msgstr "o tipo de pagamento #%1$s já não existe"
 
 #. TRANS: %1$s is the dynamic field identifier
 #, php-format
@@ -2720,10 +2655,9 @@ msgid "dynamic field #%1$s no longer exists"
 msgstr ""
 
 #. TRANS: %1$s is the group identifier
-#, fuzzy, php-format
-#| msgid "Status %1$s does not exists!"
+#, php-format
 msgid "group #%1$s no longer exists"
-msgstr "O estado %1$s não existe!"
+msgstr "O grupo #%1$s já não existe"
 
 msgid "Creation date"
 msgstr "Data de criação"
@@ -2734,20 +2668,14 @@ msgstr ""
 msgid "Due date"
 msgstr ""
 
-#, fuzzy
-#| msgid "Contribution type:"
 msgid "Contribution creation date"
-msgstr "Tipo de contribuição:"
+msgstr "Data de criação da contribuição"
 
-#, fuzzy
-#| msgid "Contribution type:"
 msgid "Contribution begin date"
-msgstr "Tipo de contribuição:"
+msgstr "Data de início da contribuição"
 
-#, fuzzy
-#| msgid "Contribution type:"
 msgid "Contribution end date"
-msgstr "Tipo de contribuição:"
+msgstr "Data de fim da contribuição"
 
 #. TRANS: %1$s is the field label, %2$s the date
 #, php-format
@@ -2871,10 +2799,9 @@ msgid "File is empty!"
 msgstr "O Arquivo está vazio!"
 
 #. TRANS: first parameter is a group name, second the row in error
-#, fuzzy, php-format
-#| msgid "Status %1$s does not exists!"
+#, php-format
 msgid "Group \"%1$s\" does not exist (row %2$s)"
-msgstr "O estado %1$s não existe!"
+msgstr "O grupo %1$s não existe (linha %2$s)"
 
 #. TRANS: first parameter is a group name, second the row in error, third a list of groups full names
 #, php-format
@@ -2889,10 +2816,10 @@ msgid "An error occurred storing member at row %1$s (%2$s):"
 msgstr "Ocorreu um erro ao armazenar o membro na linha %1$s (%2$s):"
 
 #. TRANS: first parameter is row, second member name
-#, fuzzy, php-format
-#| msgid "An error occurred storing member at row %1$s (%2$s):"
+#, php-format
 msgid "An error occurred attaching member at row %1$s (%2$s) to its groups"
-msgstr "Ocorreu um erro ao armazenar o membro na linha %1$s (%2$s):"
+msgstr ""
+"Ocorreu um erro ao associar o membro da linha %1$s (%2$s) aos seus grupos"
 
 msgid "An error occurred while importing members"
 msgstr "Um erro ocorreu enquanto importava os membros"
@@ -3102,10 +3029,9 @@ msgstr ""
 msgid "%1$s orphaned rows (unknown %2$s) have been removed from %3$s."
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Title '%1$s' has not been added!"
+#, php-format
 msgid "Foreign key on %1$s.%2$s has been added."
-msgstr "O título '%1$s' não foi adicionado!"
+msgstr "Foi adicionada uma chave estrangeira em %1$s.%2$s ."
 
 #, php-format
 msgid "Unable to add foreign key on %1$s.%2$s: %3$s"
@@ -3148,10 +3074,8 @@ msgstr ""
 msgid "Lowercase and uppercase letters"
 msgstr ""
 
-#, fuzzy
-#| msgid "Members"
 msgid "Numbers"
-msgstr "Membros"
+msgstr "Números"
 
 msgid "Special characters"
 msgstr ""
@@ -3186,21 +3110,17 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
-#, fuzzy, php-format
-#| msgid "How much is %1$s plus %2$s?"
+#, php-format
 msgid "%1$s plus %2$s"
-msgstr "Quanto é %1$s mais %2$s?"
+msgstr "%1$s mais %2$s"
 
 #. TRANS: %1$s is a reference date (today, start of month, ...), %2$s a duration (30 days, ...)
-#, fuzzy, php-format
-#| msgid "How much is %1$s minus %2$s?"
+#, php-format
 msgid "%1$s minus %2$s"
-msgstr "Quanto é %1$s menos %2$s?"
+msgstr "%1$s menos %2$s"
 
-#, fuzzy
-#| msgid "Today"
 msgid "today"
-msgstr "Hoje"
+msgstr "hoje"
 
 msgid "start of the month"
 msgstr ""
@@ -3217,10 +3137,8 @@ msgstr ""
 msgid "start of the membership period"
 msgstr ""
 
-#, fuzzy
-#| msgid "Add a membership fee"
 msgid "end of the membership period"
-msgstr "Adicionar uma taxa de adesão"
+msgstr "fim do prazo de adesão"
 
 msgid "days"
 msgstr ""
@@ -3267,10 +3185,9 @@ msgstr ""
 msgid "Choose your language"
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Current page (%1$s)"
+#, php-format
 msgid "Current locale '%1$s'"
-msgstr "Página atual (%1$s)"
+msgstr "Configuração regional atual '%1$s'"
 
 #, php-format
 msgid "Switch locale to '%1$s'"
@@ -3865,10 +3782,9 @@ msgid ""
 msgstr ""
 
 #. TRANS: %1$s is the directory path
-#, fuzzy, php-format
-#| msgid "Title %1$s does not exists!"
+#, php-format
 msgid "%1$s does not exist"
-msgstr "O título %1$s não existe!"
+msgstr "O caminho da pasta %1$s não existe"
 
 #. TRANS: %1$s is the directory path
 #, php-format
@@ -4094,10 +4010,9 @@ msgid "Data initialized."
 msgstr ""
 
 #. TRANS: parameter is the file path
-#, fuzzy, php-format
-#| msgid "Unable to create configuration file (%1$s)"
+#, php-format
 msgid "Unable to remove installer enable file (%1$s)"
-msgstr "Não foi possível criar o arquivo de configuração (%1$s)"
+msgstr "Não foi possível remover o ficheiro de ativação do instalador (%1$s)"
 
 msgid "Remember to remove it manually to re-secure the installer."
 msgstr ""
@@ -4157,10 +4072,9 @@ msgstr ""
 msgid "Delete the file and remove this occurrence of %1$s"
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Remove title %1$s"
+#, php-format
 msgid "Remove this occurrence of %1$s"
-msgstr "Remover título %1$s"
+msgstr "Remover esta ocorrência de %1$s"
 
 msgid "Select an option"
 msgstr ""
@@ -4220,40 +4134,32 @@ msgctxt "member groups"
 msgid "added"
 msgstr ""
 
-#, fuzzy
-#| msgid "Mass change"
 msgctxt "member groups"
 msgid "changed"
-msgstr "Mudança em massa"
+msgstr "alterado"
 
-#, fuzzy
-#| msgid "Parent removed"
 msgctxt "member groups"
 msgid "will be removed"
-msgstr "Responsável removido"
+msgstr "será cancelado"
 
 msgid "Group you do not manage"
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
+#, php-format
 msgid "Member of group %1$s"
-msgstr "Remover grupo %1$s"
+msgstr "Membro do grupo %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
+#, php-format
 msgid "Manager of group %1$s"
-msgstr "Remover grupo %1$s"
+msgstr "Responsável do grupo %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove from group"
+#, php-format
 msgid "Remove from group %1$s"
-msgstr "Remover do grupo"
+msgstr "Remover do grupo %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
+#, php-format
 msgid "Keep group %1$s"
-msgstr "Remover grupo %1$s"
+msgstr "Manter o grupo %1$s"
 
 msgid "no group"
 msgstr ""
@@ -4265,10 +4171,9 @@ msgid ""
 "Items in this list have been modified. Don't forget to save your changes."
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Page %1$s"
+#, php-format
 msgid "Update %1$s"
-msgstr "Página %1$s"
+msgstr "Atualização %1$s"
 
 msgid "Groups:"
 msgstr ""
@@ -4277,12 +4182,11 @@ msgid "Select a group to add selected members to"
 msgstr ""
 
 msgid "Select a group to remove selected members from"
-msgstr "Selecione um grupo do qual deseja remover os membros selecionados."
+msgstr "Selecione um grupo do qual deseja remover os membros selecionados"
 
-#, fuzzy, php-format
-#| msgid "File is too big. Maximum allowed size is %1$s"
+#, php-format
 msgid "Maximum allowed size is %1$s"
-msgstr "Ficheiro demasiado grande. Tamanho maximo permitido é de %1$s"
+msgstr "O tamanho máximo permitido para um ficheiro é de %1$s"
 
 msgid "Load previous members..."
 msgstr ""
@@ -4456,15 +4360,13 @@ msgstr ""
 msgid "%1$s is member of the group"
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
+#, php-format
 msgid "%1$s is manager of the group"
-msgstr "Remover grupo %1$s"
+msgstr "O %1$s é o responsável pelo grupo"
 
-#, fuzzy, php-format
-#| msgid "Remove from group"
+#, php-format
 msgid "Remove %1$s from the group"
-msgstr "Remover do grupo"
+msgstr "Remover %1$s do grupo"
 
 #, php-format
 msgid "Keep %1$s in the group"
@@ -4588,10 +4490,8 @@ msgstr ""
 msgid "Reference date"
 msgstr ""
 
-#, fuzzy
-#| msgid "creation"
 msgid "Direction"
-msgstr "criação"
+msgstr "Direção"
 
 msgid "Unit"
 msgstr ""
@@ -4605,10 +4505,8 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication is available"
-msgstr "Autenticação falhou"
+msgstr "A autenticação de dois fatores está disponível"
 
 msgid ""
 "A code from an application on your telephone, on top of your password, means "
@@ -4652,25 +4550,20 @@ msgstr ""
 msgid "User menu"
 msgstr ""
 
-#, fuzzy
-#| msgid "Invalid email adress!"
 msgid "No email address"
-msgstr "Endereço de ''e-mail'' inválido!"
+msgstr "Não há endereço de e-mail"
 
 msgctxt "mailing recipients"
 msgid "added"
 msgstr ""
 
-#, fuzzy
-#| msgid "Parent removed"
 msgctxt "mailing recipients"
 msgid "will be removed"
-msgstr "Responsável removido"
+msgstr "será removido"
 
-#, fuzzy, php-format
-#| msgid "Remove from group"
+#, php-format
 msgid "Remove %1$s from recipients"
-msgstr "Remover do grupo"
+msgstr "Remover %1$s da lista de destinatários"
 
 #, php-format
 msgid "Keep %1$s in recipients"
@@ -4704,10 +4597,8 @@ msgstr ""
 msgid "Manage selected members"
 msgstr ""
 
-#, fuzzy
-#| msgid "Add a document"
 msgid "Add a recipient"
-msgstr "Adicionar um documento"
+msgstr "Adicionar um destinatário"
 
 msgid "Recipients have been modified. Validate to apply your changes."
 msgstr ""
@@ -4721,10 +4612,8 @@ msgstr ""
 msgid "Modification"
 msgstr ""
 
-#, fuzzy
-#| msgid "transactions"
 msgid "More actions"
-msgstr "transações"
+msgstr "Mais ações"
 
 msgid ""
 "Send member a link to generate a new password, as if had used the 'lost "
@@ -4809,10 +4698,8 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#, fuzzy
-#| msgid "Public pages"
 msgid "Public pages menu"
-msgstr "Páginas públicas"
+msgstr "Menu das páginas públicas"
 
 msgctxt "self registration"
 msgid "Register"
@@ -4821,10 +4708,8 @@ msgstr ""
 msgid "Generating dark theme..."
 msgstr ""
 
-#, fuzzy
-#| msgid "Unable to get groups list."
 msgid "Unable to store dark theme."
-msgstr "Não é possível obter a lista de grupos."
+msgstr "Não foi possível guardar o tema escuro."
 
 msgid "Deactivate HTML editor"
 msgstr ""
@@ -5001,10 +4886,8 @@ msgstr ""
 msgid "Page content"
 msgstr ""
 
-#, fuzzy
-#| msgid "You do not have permission for requested URL."
 msgid "You don’t have permission to access this resource."
-msgstr "Você não tem permissão para o URL solicitado."
+msgstr "Não tem permissão para aceder a este conteúdo."
 
 msgid "Sorry, the page you are looking for could not be found."
 msgstr ""
@@ -5036,10 +4919,8 @@ msgstr ""
 msgid "Leave empty to keep the current one"
 msgstr ""
 
-#, fuzzy
-#| msgid "No password"
 msgid "Current password:"
-msgstr "Nenhuma palavra-passe"
+msgstr "Palavra-passe atual :"
 
 msgid ""
 "Make sure you've done a backup of the database before using any of the "
@@ -5093,10 +4974,8 @@ msgstr ""
 msgid "Constants"
 msgstr ""
 
-#, fuzzy
-#| msgid "Settings"
 msgid "Filter settings"
-msgstr "Definições"
+msgstr "Definições do filtro"
 
 msgid "Search a setting..."
 msgstr ""
@@ -5131,10 +5010,8 @@ msgstr ""
 msgid "default"
 msgstr ""
 
-#, fuzzy
-#| msgid "modification"
 msgid "modified"
-msgstr "modificação"
+msgstr "modificado"
 
 #, php-format
 msgid "Declared by the %s plugin, and only while it stays active."
@@ -5168,10 +5045,8 @@ msgstr ""
 msgid "Description"
 msgstr "Descrição"
 
-#, fuzzy
-#| msgid "Required"
 msgid "Requirements"
-msgstr "Obrigatório"
+msgstr "Requisitos"
 
 msgid "Disable"
 msgstr ""
@@ -5207,10 +5082,8 @@ msgstr ""
 msgid "Legend"
 msgstr ""
 
-#, fuzzy
-#| msgid "Status"
 msgid "Statuses"
-msgstr "Status"
+msgstr "Estados"
 
 msgid "Never changed: the value Galette ships with."
 msgstr ""
@@ -5251,10 +5124,8 @@ msgstr ""
 msgid "Confirm your super admin password"
 msgstr ""
 
-#, fuzzy
-#| msgid "Configuration"
 msgid "Confirm"
-msgstr "Configuração"
+msgstr "Confirmar"
 
 msgid "Simple search"
 msgstr ""
@@ -5337,15 +5208,11 @@ msgstr ""
 msgid "is not"
 msgstr ""
 
-#, fuzzy
-#| msgid "File is empty!"
 msgid "is empty"
-msgstr "O Arquivo está vazio!"
+msgstr "está vazio"
 
-#, fuzzy
-#| msgid "File is empty!"
 msgid "is not empty"
-msgstr "O Arquivo está vazio!"
+msgstr "não está vazio"
 
 msgid "before"
 msgstr ""
@@ -5391,20 +5258,14 @@ msgid ""
 "anyone are dropped on their own."
 msgstr ""
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Authentication attempts currently refused"
-msgstr "Autenticação falhou"
+msgstr "As tentativas de autenticação foram recusadas neste momento"
 
-#, fuzzy
-#| msgid "Emails content"
 msgid "What is counted"
-msgstr "Conteúdo dos e-mails"
+msgstr "O que é contabilizado"
 
-#, fuzzy
-#| msgid "My Account"
 msgid "Account"
-msgstr "Minha Conta"
+msgstr "Conta"
 
 msgid "Failures"
 msgstr ""
@@ -5463,10 +5324,8 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#, fuzzy
-#| msgid "Dynamic fields"
 msgid "Dynamic field"
-msgstr "Campos dinâmicos"
+msgstr "Campo dinâmico"
 
 msgid "Field name"
 msgstr ""
@@ -5474,10 +5333,9 @@ msgstr ""
 msgid "Available fields"
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
+#, php-format
 msgid "Keep field %1$s"
-msgstr "Remover grupo %1$s"
+msgstr "Manter o campo %1$s"
 
 msgid ""
 "Deleting the last field is not possible. There must be at least one field in "
@@ -5842,10 +5700,8 @@ msgstr "Atividades"
 msgid "Show dashboard on login"
 msgstr ""
 
-#, fuzzy
-#| msgid "An error occurred moving field :("
 msgid "An error occurred displaying news :("
-msgstr "Ocorreu um erro ao mover o campo :("
+msgstr "Ocorreu um erro ao apresentar as notícias :("
 
 msgid "Please confirm your email address:"
 msgstr ""
@@ -6140,20 +5996,16 @@ msgstr ""
 msgid "Sending is over, but %1$s recipient(s) could not be reached."
 msgstr ""
 
-#, fuzzy
-#| msgid "Mailing has been successfully sent!"
 msgid "Sending has been successfully completed!"
-msgstr "A correspondência foi enviada com sucesso!"
+msgstr "O envio foi concluído com sucesso!"
 
 msgid ""
 "Sending rate limit reached. Sending will resume later (reopen this page or "
 "drain the queue from a cron job)."
 msgstr ""
 
-#, fuzzy
-#| msgid "An error occurred while saving the member."
 msgid "An error occurred while sending. You may retry."
-msgstr "Ocorreu um erro ao armazenar o membro."
+msgstr "Ocorreu um erro durante o envio. Pode tentar novamente."
 
 msgid "Sender"
 msgstr ""
@@ -6188,19 +6040,17 @@ msgstr ""
 msgid "Display mailing '%1$s' details in preview window"
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Edit donation %1$s"
+#, php-format
 msgid "Follow the sending of mailing '%1$s'"
-msgstr "Editar doação %1$s"
+msgstr "Seguir o envio da comunicação '%1$s'"
 
 #, php-format
 msgid "Use mailing '%1$s' as a template for a new one"
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Edit donation %1$s"
+#, php-format
 msgid "Edit mailing '%1$s'"
-msgstr "Editar doação %1$s"
+msgstr "Editar comunicação '%1$s'"
 
 #, php-format
 msgid "Delete mailing '%1$s'"
@@ -6414,10 +6264,9 @@ msgstr ""
 msgid "Check its compatibility with your Galette version before upgrading."
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "New parent is %1$s"
+#, php-format
 msgid "New version: %1$s"
-msgstr "Novo grupo pai: %1$s"
+msgstr "Nova versão: %1$s"
 
 #, php-format
 msgid "Unable to check for new releases: no release found in %1$s repository."
@@ -6467,10 +6316,8 @@ msgstr ""
 msgid "Plugin database initialization: %1$s"
 msgstr ""
 
-#, fuzzy
-#| msgid "An error occurred reinitializing texts :("
 msgid "An error occurred on plugin database initialization :("
-msgstr "Ocorreu um erro ao reinicializar os textos :("
+msgstr "Ocorreu um erro na inicialização da base de dados do plugin :("
 
 msgid "A required file is missing"
 msgstr ""
@@ -6478,18 +6325,14 @@ msgstr ""
 msgid "Incompatible with current version"
 msgstr ""
 
-#, fuzzy
-#| msgid "Database access and permissions"
 msgid "Database version missing"
-msgstr "Acesso e permissões ao banco de dados"
+msgstr "Falta a versão da base de dados"
 
 msgid "Not installed"
 msgstr ""
 
-#, fuzzy
-#| msgid "End date"
 msgid "Need update"
-msgstr "Data de término"
+msgstr "Precisa de atualização"
 
 msgid "Explicitly disabled"
 msgstr ""
@@ -6757,10 +6600,8 @@ msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr ""
 
-#, fuzzy
-#| msgid "Send reminders to late members"
 msgid "Can members create child members?"
-msgstr "Enviar lembretes aos membros atrasados"
+msgstr "Os membros podem criar membros subordinados?"
 
 msgid "Can group managers edit their groups?"
 msgstr ""
@@ -6906,10 +6747,8 @@ msgstr ""
 msgid "Tests run on the settings displayed above, even those not saved yet."
 msgstr ""
 
-#, fuzzy
-#| msgid "Tables Creation"
 msgid "Test connection"
-msgstr "Criação de tabelas"
+msgstr "Testar a ligação"
 
 msgid "Send a test email"
 msgstr ""
@@ -7013,10 +6852,8 @@ msgstr ""
 msgid "Card height from 40 to 55mm:"
 msgstr ""
 
-#, fuzzy
-#| msgid "Remove dynamic field %1$s"
 msgid "Configure dynamic fields"
-msgstr "Remover campo dinâmico %1$s"
+msgstr "Configurar campos dinâmicos"
 
 msgid ""
 "Asks for a code from an application on the member's phone in addition to "
@@ -7113,10 +6950,8 @@ msgstr ""
 msgid "An error occurred sending test email :("
 msgstr ""
 
-#, fuzzy
-#| msgid "An error occurred while saving fields configuration :("
 msgid "An error occurred testing mail server connection :("
-msgstr "Ocorreu um erro quando guardava a configuração dos campos :("
+msgstr "Ocorreu um erro ao testar a ligação ao servidor de e-mail :("
 
 msgid "Manages:"
 msgstr ""
@@ -7248,10 +7083,8 @@ msgstr ""
 msgid "New status"
 msgstr "Novo estado"
 
-#, fuzzy
-#| msgid "System information"
 msgid "Copy system information"
-msgstr "Informação do sistema"
+msgstr "Copiar informações do sistema"
 
 msgid "Transaction details"
 msgstr ""
@@ -7369,10 +7202,8 @@ msgstr ""
 msgid "Confirm and enable"
 msgstr ""
 
-#, fuzzy
-#| msgid "Authentication failed"
 msgid "Two-factor authentication is enabled"
-msgstr "Autenticação falhou"
+msgstr "A autenticação de dois fatores está ativada"
 
 msgid ""
 "A code from your authentication application is asked for at every login."
