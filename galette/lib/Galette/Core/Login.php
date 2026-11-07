@@ -84,6 +84,7 @@ class Login extends Authentication
         $ok = ['reminder', 'mailing_queue'];
 
         if (in_array($name, $ok)) {
+            $this->resetState();
             $this->logged = true;
             $this->cron = true;
             $this->login = 'cron';
@@ -163,6 +164,8 @@ class Login extends Authentication
                     return false;
                 }
 
+                //a real login ends any impersonation going on in this session
+                $this->impersonated = false;
                 $this->logUser($row);
                 return true;
             }
@@ -206,6 +209,7 @@ class Login extends Authentication
      */
     private function logUser(ArrayObject $row): void
     {
+        $this->resetState();
         Analog::log('User `' . $row->login_adh . '` logged in.', Analog::INFO);
         $this->id = (int)$row->id_adh;
         $this->login = $row->login_adh;
