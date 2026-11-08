@@ -56,5 +56,16 @@ test.describe('Preferences', () => {
     expect(hasTabs + hasSegments).toBeGreaterThan(0);
   });
 
+  test('Preferences - Records per page choice holds the current number', async ({ loggedInPage: page }) => {
+    // a fresh session lists members with the number of the preferences
+    await page.goto('/members');
+    const numrows = await page.locator('input[name="nbshow"]').inputValue();
+    await expect(page.locator(`.autosubmit .menu .item.active[data-value="${numrows}"]`)).toHaveCount(1);
+
+    // and the settings select that number, rather than the first choice
+    await page.goto('/preferences');
+    await expect(page.locator('#pref_numrows')).toHaveValue(numrows);
+  });
+
 });
 
