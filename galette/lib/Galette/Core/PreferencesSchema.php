@@ -512,7 +512,7 @@ final class PreferencesSchema
                 'default' => I18n::DEFAULT_LANG,
                 'required' => true,
             ],
-            'pref_numrows' => $measure + ['default' => 30, 'required' => true],
+            'pref_numrows' => $measure + ['default' => 20, 'required' => true],
             'pref_statut' => [
                 'type' => self::TYPE_INT,
                 'default' => Status::DEFAULT_STATUS,

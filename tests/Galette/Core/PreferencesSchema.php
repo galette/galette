@@ -85,7 +85,7 @@ class PreferencesSchema extends GaletteTestCase
 
         $this->assertSame(array_keys(Schema::getAll()), array_keys($defaults));
         $this->assertSame('Galette', $defaults['pref_nom']);
-        $this->assertSame(30, $defaults['pref_numrows']);
+        $this->assertSame(20, $defaults['pref_numrows']);
         $this->assertFalse($defaults['pref_noindex']);
     }
 

@@ -181,6 +181,30 @@ abstract class Pagination
     }
 
     /**
+     * Choices of records per page
+     *
+     * The current number is listed even when it is not one of the usual ones,
+     * so that a list, or the settings page, never shows another one as
+     * selected; the default preference (30) is such a number.
+     *
+     * @param int $current Current records per page, 0 for all
+     *
+     * @return array<int, string>
+     */
+    public static function getShowOptions(int $current): array
+    {
+        $options = [];
+        foreach ([10, 20, 50, 100] as $number) {
+            $options[$number] = (string)$number;
+        }
+        if ($current > 0 && !isset($options[$current])) {
+            $options[$current] = (string)$current;
+            ksort($options);
+        }
+        return $options;
+    }
+
+    /**
      * Creates pagination links and assign some useful variables to the template
      *
      * @param RouteParser $routeparser Application instance
@@ -248,12 +272,7 @@ abstract class Pagination
             $is_paginated = false;
         }
 
-        $options = [
-            10 => "10",
-            20 => "20",
-            50 => "50",
-            100 => "100"
-        ];
+        $options = self::getShowOptions($this->show);
 
         if ($restricted === false) {
             $options[0] = _T("All");
