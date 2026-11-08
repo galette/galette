@@ -319,7 +319,7 @@ const isVisible = await ModalHelper.isVisible(page);
 
 ### FlashMessageHelper (`helpers/flash.ts`)
 
-Verifies flash messages (success, error, warning):
+Verifies flash messages (success, error, warning, info), shown as toasts or inline:
 
 ```typescript
 import { FlashMessageHelper } from '../helpers/flash';
@@ -697,6 +697,76 @@ npx playwright show-trace test-results/.../trace.zip
 ## CI/CD Integration
 
 E2E tests are run in CI, as well as PHPUnit tests, no further configuration should be needed.
+
+## Plugins
+
+Plugins bring their own specs, run with this tooling: there is nothing to copy
+from core, and what is generic belongs here rather than in a plugin.
+
+### Writing plugin specs
+
+- Specs go in `tests/e2e/specs/*.spec.ts` of the plugin. The `plugins-chromium`
+  project of `playwright.config.ts` finds them in `galette/plugins/*/`, and
+  `tsconfig.json` type checks them.
+- Fixtures and helpers of core are imported with the `@e2e/` alias:
+
+  ```typescript
+  import { test, expect } from '@e2e/fixtures/auth.fixture';
+  import { FlashMessageHelper } from '@e2e/helpers/flash';
+
+  test('my test', async ({ loggedInAs }) => {
+    const page = await loggedInAs('admin');
+    await page.goto('/plugins/myplugin/list');
+    await FlashMessageHelper.expectSuccess(page);
+  });
+  ```
+
+- Plugin data comes from a `Fixtures` class of the plugin namespace, implementing
+  `Galette\Core\Plugins\FixturesProviderInterface`: `galette:seed-fixtures` seeds it
+  after core fixtures, for each active plugin, and `--clean` removes it.
+- A helper only the plugin needs stays in the plugin `tests/e2e/`; one another
+  plugin could use comes here, in `helpers/`.
+- Specs run in parallel with those of other plugins: an entry a spec changes is
+  one it created, under a unique name. A spec changing an instance wide setting
+  runs its tests in serial mode and restores the setting in `afterAll`.
+
+### Running plugin specs
+
+The plugin has to be active: its database installed, its scripts built when its
+pages need them, and `GALETTE_PLUGINS_PATH` set for console commands as well as for
+the server, since test mode otherwise loads `tests/plugins/`.
+
+```bash
+export GALETTE_TESTS=1 DB=pgsql GALETTE_PLUGINS_PATH=$(pwd)/galette/plugins
+bin/console galette:install ...            # see Prerequisites
+bin/console galette:plugins:install-db --all
+bin/console galette:seed-fixtures
+(cd galette/plugins/plugin-xxx && npm install && npm run build)
+php -S 0.0.0.0:8090 -t galette/webroot tests/router_e2e.php &
+
+npx playwright test --project plugins-chromium                       # all plugins
+npx playwright test galette/plugins/plugin-xxx/tests/e2e/specs/       # one plugin
+```
+
+Plugin specs are found by Playwright in real directories only: a plugin linked
+into `galette/plugins/` is not.
+
+### Plugin CI
+
+Plugins run their specs with the `plugin-e2e` reusable workflow of
+[galette/.github](https://github.com/galette/.github), which does all of the above
+against a given core branch:
+
+```yaml
+jobs:
+  e2e-tests:
+    uses: galette/.github/.github/workflows/plugin-e2e.yml@main
+    with:
+      galette-ref: master
+```
+
+A plugin needing more before the fixtures are seeded (keys, configuration files)
+provides a `tests/e2e/setup.sh`, run from its directory.
 
 ## Best Practices
 
