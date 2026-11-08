@@ -151,6 +151,46 @@ Checks such as `$login->isGroupManager()` or `$login->isStaff()` still
 exist, but prefer permissions: they follow what administrators set in
 roles.
 
+The rights preferences are removed from `Preferences`: reading one of
+them now fails on an undefined property. Their values are only read when
+upgrading, to set the system roles permissions. Check the permission
+instead:
+
+| Removed preference | Permission |
+|--------------------|------------|
+| `pref_bool_create_member` | `member:create-child` |
+| `pref_bool_groupsmanagers_create_member` | `member:create` |
+| `pref_bool_groupsmanagers_edit_member` | `member:edit` |
+| `pref_bool_groupsmanagers_edit_groups` | `group:edit` |
+| `pref_bool_groupsmanagers_mailings` | `mailing:send` |
+| `pref_bool_groupsmanagers_exports` | `member:export`, `member:print`, `group:export` |
+| `pref_bool_groupsmanagers_create_contributions` | `contribution:create` |
+| `pref_bool_groupsmanagers_see_contributions` | `contribution:read` |
+| `pref_bool_groupsmanagers_create_transactions` | `transaction:create` |
+| `pref_bool_groupsmanagers_see_transactions` | `transaction:read` |
+
+Permissions cover administrators and staff members as well, so the whole
+condition goes:
+
+```php
+// Before
+if (
+    !$this->login->isAdmin()
+    && !$this->login->isStaff()
+    && !$this->preferences->pref_bool_groupsmanagers_exports
+) {
+    // access denied
+}
+
+// After
+if (!$this->accessControl->can('member:export')) {
+    // access denied
+}
+```
+
+Without a subject, `can()` grants a group manager who has the permission
+on at least one group; pass the object to check it against its groups.
+
 See [Permissions](@ref plugins_permissions).
 
 ## Routes
