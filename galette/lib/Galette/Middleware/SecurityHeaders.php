@@ -25,6 +25,12 @@ use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 class SecurityHeaders
 {
     /**
+     * Policy for SVG images: harmless as images, an SVG opened on its own is a
+     * document able to run scripts, within Galette
+     */
+    public const string SVG_POLICY = "default-src 'none'; style-src 'unsafe-inline'; img-src data:";
+
+    /**
      * @param Csp $csp Content Security Policy of the request
      */
     public function __construct(private readonly Csp $csp)
@@ -44,6 +50,9 @@ class SecurityHeaders
             ->withHeader('Referrer-Policy', 'same-origin');
 
         $type = $response->getHeaderLine('Content-Type');
+        if (str_contains($type, 'image/svg+xml')) {
+            return $response->withHeader('Content-Security-Policy', self::SVG_POLICY);
+        }
         if ($type !== '' && !str_contains($type, 'text/html')) {
             //CSV, PDF, images, JSON... are not documents scripts can run in
             return $response;

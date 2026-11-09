@@ -113,6 +113,23 @@ class SecurityHeadersTest extends GaletteTestCase
     }
 
     /**
+     * Test SVG responses cannot run scripts when opened on their own
+     */
+    public function testSvgResponse(): void
+    {
+        foreach (['image/svg+xml', 'image/svg+xml; charset=utf-8'] as $type) {
+            $response = $this->process($this->container->get(Csp::class), $type);
+            $this->assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'), $type);
+            $this->assertSame(
+                "default-src 'none'; style-src 'unsafe-inline'; img-src data:",
+                $response->getHeaderLine('Content-Security-Policy'),
+                $type
+            );
+            $this->assertFalse($response->hasHeader('Content-Security-Policy-Report-Only'), $type);
+        }
+    }
+
+    /**
      * Test templates use the nonce of the request
      */
     public function testTwigNonce(): void
