@@ -80,6 +80,7 @@ class CspTest extends BaseGaletteTestCase
             $policy
         );
         $this->assertStringContainsString("default-src 'self';", $policy);
+        $this->assertStringContainsString("img-src 'self' data: blob: https:;", $policy);
         $this->assertStringContainsString("object-src 'none';", $policy);
         $this->assertStringNotContainsString("'unsafe-eval'", $policy);
     }
@@ -91,13 +92,13 @@ class CspTest extends BaseGaletteTestCase
     {
         $csp = $this->csp();
         $csp
-            ->addSource('img-src', 'https://tile.openstreetmap.org')
-            ->addSource('IMG-SRC', 'https://tile.openstreetmap.org')
+            ->addSource('connect-src', 'https://tile.openstreetmap.org')
+            ->addSource('CONNECT-SRC', 'https://tile.openstreetmap.org')
             ->addSource('frame-src', 'https://js.stripe.com');
 
         $policy = $csp->getFullPolicy();
         $this->assertStringContainsString(
-            "img-src 'self' data: blob: https://tile.openstreetmap.org;",
+            "connect-src 'self' https://tile.openstreetmap.org;",
             $policy
         );
         $this->assertSame(1, substr_count($policy, 'openstreetmap'));

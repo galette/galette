@@ -45,7 +45,9 @@ class Csp
         'default-src' => ["'self'"],
         'script-src' => ['%nonce%', "'strict-dynamic'"],
         'style-src' => ["'self'", "'unsafe-inline'"],
-        'img-src' => ["'self'", 'data:', 'blob:'],
+        //images do not run anything: any https one is allowed, for stored
+        //contents (mailings, texts) that point to images hosted elsewhere
+        'img-src' => ["'self'", 'data:', 'blob:', 'https:'],
         'font-src' => ["'self'", 'data:'],
         'connect-src' => ["'self'"],
         'form-action' => ["'self'"],
