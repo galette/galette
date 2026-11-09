@@ -14,7 +14,7 @@ const localServer = {
   url: 'http://galette.localhost/'
 }
 
-var gulp = require('gulp'),
+const gulp = require('gulp'),
   del = require('del'),
   uglify = require('gulp-uglify'),
   cleanCSS = require('gulp-clean-css'),
@@ -34,7 +34,7 @@ gulp.task('build-css', buildCSS);
 gulp.task('build-javascript', buildJS);
 gulp.task('build-assets', buildAssets);
 
-var paths = {
+const paths = {
   webroot: './galette/webroot/',
   assets: {
     public: './galette/webroot/assets/',
@@ -128,23 +128,23 @@ var paths = {
 };
 
 function galette() {
-  favicon = gulp.src(paths.src.favicon, {encoding: false})
+  const favicon = gulp.src(paths.src.favicon, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  logo = gulp.src(paths.src.logo, {encoding: false})
+  const logo = gulp.src(paths.src.logo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  halloween_logo = gulp.src(paths.src.halloween_logo, {encoding: false})
+  const halloween_logo = gulp.src(paths.src.halloween_logo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  xmas_logo = gulp.src(paths.src.xmas_logo, {encoding: false})
+  const xmas_logo = gulp.src(paths.src.xmas_logo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
-  photo = gulp.src(paths.src.photo, {encoding: false})
+  const photo = gulp.src(paths.src.photo, {encoding: false})
     .pipe(gulp.dest(paths.assets.theme.images))
     .pipe(browserSync.stream());
 
@@ -152,27 +152,27 @@ function galette() {
 }
 
 function theme() {
-  config = gulp.src(paths.src.config)
+  const config = gulp.src(paths.src.config)
     .pipe(gulp.dest(paths.semantic.src))
     .pipe(browserSync.stream());
 
-  theme =  gulp.src(paths.src.files)
+  const themeFiles = gulp.src(paths.src.files)
     .pipe(gulp.dest(paths.semantic.theme))
     .pipe(browserSync.stream());
 
-  background = gulp.src(paths.src.background, {encoding: false})
+  const background = gulp.src(paths.src.background, {encoding: false})
     .pipe(gulp.dest(paths.semantic.theme + 'assets/images'))
     .pipe(browserSync.stream());
 
-  background_rtl = gulp.src(paths.src.background_rtl, {encoding: false})
+  const background_rtl = gulp.src(paths.src.background_rtl, {encoding: false})
     .pipe(gulp.dest(paths.semantic.theme + 'assets/images'))
     .pipe(browserSync.stream());
 
-  emojis = gulp.src(paths.src.emojis)
+  const emojis = gulp.src(paths.src.emojis)
     .pipe(gulp.dest(paths.semantic.theme + 'assets/emojis'))
     .pipe(browserSync.stream());
 
-  return merge(config, theme, emojis);
+  return merge(config, themeFiles, background, background_rtl, emojis);
 }
 
 function clean() {
@@ -183,14 +183,14 @@ function clean() {
 }
 
 function styles() {
-  summernote = gulp.src(paths.styles.summernote)
+  const summernote = gulp.src(paths.styles.summernote)
     .pipe(replace('url(font/', 'url(../webfonts/'))
     .pipe(cleanCSS())
     .pipe(concat('summernote.min.css'))
     .pipe(gulp.dest(paths.assets.css))
     .pipe(browserSync.stream());
 
-  codemirror = download(paths.styles.codemirror, { ci: true })
+  const codemirror = download(paths.styles.codemirror, { ci: true })
     .pipe(gulp.dest(paths.assets.css))
     .pipe(browserSync.stream());
 
@@ -198,7 +198,7 @@ function styles() {
 }
 
 function scripts() {
-  main = gulp.src(paths.scripts.main)
+  const main = gulp.src(paths.scripts.main)
     .pipe(concat('galette-main.bundle.min.js'))
     .pipe(uglify({
       output: {
@@ -208,7 +208,7 @@ function scripts() {
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  masschanges = gulp.src(paths.scripts.masschanges)
+  const masschanges = gulp.src(paths.scripts.masschanges)
     .pipe(concat('masschanges.min.js'))
     .pipe(uglify({
       output: {
@@ -218,34 +218,34 @@ function scripts() {
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  chartjs = gulp.src(paths.scripts.chartjs)
+  const chartjs = gulp.src(paths.scripts.chartjs)
     .pipe(concat('chartjs.min.js'))
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  sortablejs = gulp.src(paths.scripts.sortablejs)
+  const sortablejs = gulp.src(paths.scripts.sortablejs)
     .pipe(concat('sortable.min.js'))
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  summernote = gulp.src(paths.scripts.summernote)
+  const summernote = gulp.src(paths.scripts.summernote)
     .pipe(concat('summernote.min.js'))
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  codemirror = download(paths.scripts.codemirror, { ci: true })
+  const codemirror = download(paths.scripts.codemirror, { ci: true })
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  codemirrorxml = download(paths.scripts.codemirrorxml, { ci: true })
+  const codemirrorxml = download(paths.scripts.codemirrorxml, { ci: true })
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  codemirrorformatting = download(paths.scripts.codemirrorformatting, { ci: true })
+  const codemirrorformatting = download(paths.scripts.codemirrorformatting, { ci: true })
     .pipe(gulp.dest(paths.assets.js))
     .pipe(browserSync.stream());
 
-  darkreader = gulp.src(paths.scripts.darkreader)
+  const darkreader = gulp.src(paths.scripts.darkreader)
     .pipe(concat('darkreader.min.js'))
     .pipe(uglify({
       output: {
@@ -259,7 +259,7 @@ function scripts() {
 }
 
 function movefiles() {
-  extras = paths.extras.map(function (extra) {
+  const extras = paths.extras.map(function (extra) {
     const srcOptions = extra.encoding === false ? { encoding: false } : {};
 
     return gulp.src(extra.src, srcOptions)
@@ -292,5 +292,4 @@ exports.scripts = scripts;
 exports.movefiles = movefiles;
 exports.watch = watch;
 
-var build = gulp.series(theme, clean, styles, scripts, movefiles, 'build ui', galette);
-exports.default = build;
+exports.default = gulp.series(theme, clean, styles, scripts, movefiles, 'build ui', galette);
