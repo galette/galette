@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Core\Preferences;
 
 use Analog\Analog;
+use Galette\Core\Csp;
 use Galette\Core\Galette;
 use Galette\Core\GaletteMail;
 use Galette\Core\Login;
@@ -71,6 +72,7 @@ final class Fields
             PreferencesSchema::TYPE_DATE_MD => $this->validateBegMembership($value),
             PreferencesSchema::TYPE_YEAR => $this->validateCardYear($value),
             PreferencesSchema::TYPE_URL => $this->validateWebUrl($value),
+            PreferencesSchema::TYPE_CSP_SOURCES => $this->validateCspSources($fieldname, $value),
             default => $value,
         };
     }
@@ -300,5 +302,25 @@ final class Fields
         }
 
         return $value;
+    }
+
+    /**
+     * Check a list of Content Security Policy sources
+     *
+     * The value ends up in an HTTP header: anything but the expected
+     * keywords and origins could add directives to the policy.
+     *
+     * @param string $fieldname Field name
+     * @param mixed  $value     Value to check
+     */
+    private function validateCspSources(string $fieldname, mixed $value): mixed
+    {
+        $sources = is_string($value) ? Csp::parseFrameAncestors($value) : null;
+        if ($sources === null) {
+            $this->errors[] = PreferencesSchema::getErrorMessage(PreferencesSchema::ERR_CSP_SOURCES, $fieldname);
+            return $value;
+        }
+
+        return implode(' ', $sources);
     }
 }

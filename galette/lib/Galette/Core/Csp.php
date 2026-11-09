@@ -10,7 +10,11 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Analog\Analog;
+use Throwable;
+
 use function Safe\preg_match;
+use function Safe\preg_split;
 
 /**
  * Content Security Policy for the current request
@@ -20,7 +24,8 @@ use function Safe\preg_match;
  *
  * Two policies are sent:
  * - an enforced one, limited to directives that cannot break pages
- *   (framing, plugins, base URI);
+ *   (framing, plugins, base URI); sites allowed to frame Galette come from
+ *   the pref_csp_frame_ancestors preference;
  * - a report-only one, with the complete policy, so violations show up in
  *   browsers consoles without blocking anything.
  *
@@ -28,6 +33,8 @@ use function Safe\preg_match;
  */
 class Csp
 {
+    public const string DEFAULT_FRAME_ANCESTORS = "'self'";
+
     private const array ENFORCED = [
         'frame-ancestors' => ["'self'"],
         'object-src' => ["'none'"],
@@ -51,6 +58,16 @@ class Csp
 
     /** @var array<string, string[]> */
     private array $extra_sources = [];
+
+    /** @var string[]|null */
+    private ?array $frame_ancestors = null;
+
+    /**
+     * @param Preferences $preferences Preferences instance
+     */
+    public function __construct(private readonly Preferences $preferences)
+    {
+    }
 
     /**
      * Get the nonce of current request
@@ -85,11 +102,86 @@ class Csp
     }
 
     /**
+     * Parse a list of sites allowed to display Galette in a frame
+     *
+     * Accepts 'self', 'none' (alone), and http(s) origins, with an optional
+     * wildcard on the first label: https://*.example.org
+     *
+     * @param string $value Space separated sources
+     *
+     * @return string[]|null Normalized sources, null when value is invalid
+     */
+    public static function parseFrameAncestors(string $value): ?array
+    {
+        $tokens = preg_split('/\s+/', trim($value), -1, PREG_SPLIT_NO_EMPTY);
+        if ($tokens === []) {
+            return null;
+        }
+
+        $sources = [];
+        foreach ($tokens as $token) {
+            $keyword = strtolower($token);
+            if ($keyword === "'self'" || $keyword === "'none'") {
+                $sources[] = $keyword;
+                continue;
+            }
+
+            $label = '[a-z0-9](?:[a-z0-9-]*[a-z0-9])?';
+            if (!preg_match('~^https?://(?:\*\.)?' . $label . '(?:\.' . $label . ')*(?::[0-9]{1,5})?/?$~i', $token)) {
+                return null;
+            }
+            $sources[] = rtrim(strtolower($token), '/');
+        }
+
+        $sources = array_values(array_unique($sources));
+        if (in_array("'none'", $sources, true) && count($sources) > 1) {
+            //'none' along with other sources is ignored by browsers
+            return null;
+        }
+
+        return $sources;
+    }
+
+    /**
+     * Get sites allowed to display Galette in a frame
+     *
+     * @return string[]
+     */
+    public function getFrameAncestors(): array
+    {
+        if ($this->frame_ancestors !== null) {
+            return $this->frame_ancestors;
+        }
+
+        $default = [self::DEFAULT_FRAME_ANCESTORS];
+        try {
+            $value = $this->preferences->getConfigValue('pref_csp_frame_ancestors');
+        } catch (Throwable) {
+            // no log: preference may not exist yet, when database needs an update
+            return $this->frame_ancestors = $default;
+        }
+
+        //checked again here: the value may come from a constant, which is never validated
+        $sources = is_string($value) ? self::parseFrameAncestors($value) : null;
+        if ($sources === null) {
+            Analog::log(
+                sprintf('Invalid frame ancestors "%1$s", falling back to default.', print_r($value, true)),
+                Analog::WARNING
+            );
+            $sources = $default;
+        }
+
+        return $this->frame_ancestors = $sources;
+    }
+
+    /**
      * Get enforced policy
      */
     public function getEnforcedPolicy(): string
     {
-        return $this->build(self::ENFORCED);
+        $directives = self::ENFORCED;
+        $directives['frame-ancestors'] = $this->getFrameAncestors();
+        return $this->build($directives);
     }
 
     /**
@@ -98,6 +190,7 @@ class Csp
     public function getFullPolicy(): string
     {
         $directives = self::FULL;
+        $directives['frame-ancestors'] = $this->getFrameAncestors();
         foreach ($this->extra_sources as $directive => $sources) {
             //a directive that is not declared falls back to default-src
             $directives[$directive] = array_merge($directives[$directive] ?? self::FULL['default-src'], $sources);

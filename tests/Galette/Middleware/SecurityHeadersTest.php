@@ -12,7 +12,7 @@ namespace Galette\Tests\Middleware;
 
 use Galette\Core\Csp;
 use Galette\Middleware\SecurityHeaders;
-use Galette\Tests\BaseGaletteTestCase;
+use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -31,7 +31,7 @@ use function Safe\preg_match_all;
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class SecurityHeadersTest extends BaseGaletteTestCase
+class SecurityHeadersTest extends GaletteTestCase
 {
     /**
      * Run the middleware on a response of given type
@@ -87,7 +87,7 @@ class SecurityHeadersTest extends BaseGaletteTestCase
     #[DataProvider('htmlTypesProvider')]
     public function testHtmlResponse(?string $type): void
     {
-        $csp = new Csp();
+        $csp = $this->container->get(Csp::class);
         $response = $this->process($csp, $type);
 
         $this->assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'));
@@ -105,7 +105,7 @@ class SecurityHeadersTest extends BaseGaletteTestCase
     public function testNonHtmlResponse(): void
     {
         foreach (['application/json', 'application/pdf', 'text/csv', 'image/png'] as $type) {
-            $response = $this->process(new Csp(), $type);
+            $response = $this->process($this->container->get(Csp::class), $type);
             $this->assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'), $type);
             $this->assertFalse($response->hasHeader('Content-Security-Policy'), $type);
             $this->assertFalse($response->hasHeader('Content-Security-Policy-Report-Only'), $type);
@@ -161,6 +161,40 @@ class SecurityHeadersTest extends BaseGaletteTestCase
         }
 
         $this->assertSame([], $faulty, "Scripts that would be blocked:\n" . implode("\n", $faulty));
+    }
+
+    /**
+     * Test frame ancestors preference is validated
+     */
+    public function testFrameAncestorsPreference(): void
+    {
+        $this->logSuperAdmin();
+        try {
+            $this->assertFalse(
+                $this->preferences->setValue(
+                    'pref_csp_frame_ancestors',
+                    "https://example.org; script-src *",
+                    $this->login
+                )
+            );
+            $this->assertCount(1, $this->preferences->getErrors());
+            $this->assertSame(Csp::DEFAULT_FRAME_ANCESTORS, $this->preferences->pref_csp_frame_ancestors);
+
+            $this->assertTrue(
+                $this->preferences->setValue(
+                    'pref_csp_frame_ancestors',
+                    "'self'  https://Asso.example.org/",
+                    $this->login
+                ),
+                print_r($this->preferences->getErrors(), true)
+            );
+            $this->assertSame(
+                "'self' https://asso.example.org",
+                $this->preferences->pref_csp_frame_ancestors
+            );
+        } finally {
+            $this->preferences->setValue('pref_csp_frame_ancestors', Csp::DEFAULT_FRAME_ANCESTORS, $this->login);
+        }
     }
 
     /**

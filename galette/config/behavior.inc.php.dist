@@ -120,3 +120,11 @@
  * Now stored as pref_session_timeout.
  */
 //define('GALETTE_TIMEOUT', 0);
+
+/**
+ * Sites allowed to display Galette in a frame, separated by spaces:
+ * 'self', 'none', or origins such as https://example.org or https://*.example.org
+ *
+ * Now stored as pref_csp_frame_ancestors.
+ */
+//define('GALETTE_CSP_FRAME_ANCESTORS', "'self'");
