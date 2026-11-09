@@ -359,6 +359,42 @@ class AuthThrottleTest extends GaletteTestCase
     }
 
     /**
+     * Locks of a scope of its own are listed with their address when it
+     * counts addresses, IPv6 ones included, which are grouped by /64
+     */
+    public function testOwnScopeLocksShowTheirAddress(): void
+    {
+        $scope = 'plugin-payment';
+        $ipv6 = AuthThrottle::normalizeAddress('2001:db8:1:2:3:4:5:6');
+        $this->assertSame('2001:db8:1:2::/64', $ipv6);
+        $identifiers = ['192.0.2.90', $ipv6, 'some-login'];
+
+        $this->assertTrue($this->throttle->releaseAll());
+        try {
+            foreach ($identifiers as $identifier) {
+                for ($i = 0; $i < AuthThrottle::MIN_ATTEMPTS; $i++) {
+                    $this->throttle->recordEvent($scope, $identifier, AuthThrottle::MIN_ATTEMPTS, 600);
+                }
+            }
+
+            $locks = [];
+            foreach ($this->throttle->getLocks() as $lock) {
+                $locks[$lock['address'] ?? $lock['login']] = $lock;
+            }
+            $this->assertCount(3, $locks);
+
+            foreach (['192.0.2.90', $ipv6] as $address) {
+                $this->assertSame($address, $locks[$address]['address'], $address);
+                $this->assertNull($locks[$address]['login'], $address);
+            }
+            $this->assertNull($locks['some-login']['address']);
+            $this->assertSame('some-login', $locks['some-login']['login']);
+        } finally {
+            $this->assertTrue($this->throttle->releaseAll());
+        }
+    }
+
+    /**
      * The mechanism cannot be turned off: a value written straight in the
      * database, or a form sending zeroes, is held to its floor
      */
