@@ -41,11 +41,11 @@ class SecurityHeadersTest extends GaletteTestCase
      */
     private function process(Csp $csp, ?string $type): ResponseInterface
     {
-        $handler = new class ($type) implements RequestHandlerInterface {
+        $handler = new readonly class ($type) implements RequestHandlerInterface {
             /**
              * @param ?string $type Response Content-Type, if any
              */
-            public function __construct(private readonly ?string $type)
+            public function __construct(private ?string $type)
             {
             }
 
@@ -186,7 +186,7 @@ class SecurityHeadersTest extends GaletteTestCase
                     "'self'  https://Asso.example.org/",
                     $this->login
                 ),
-                print_r($this->preferences->getErrors(), true)
+                print_r($this->preferences->getErrors(), return: true)
             );
             $this->assertSame(
                 "'self' https://asso.example.org",

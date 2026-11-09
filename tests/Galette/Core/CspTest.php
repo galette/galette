@@ -13,14 +13,14 @@ namespace Galette\Tests\Core;
 use Galette\Core\Csp;
 use Galette\Core\Preferences;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+use Galette\Tests\BaseGaletteTestCase;
 
 /**
  * Content Security Policy tests
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
-class CspTest extends TestCase
+class CspTest extends BaseGaletteTestCase
 {
     /**
      * Get a policy for given frame ancestors preference
@@ -195,8 +195,19 @@ class CspTest extends TestCase
      */
     public function testFrameAncestorsFallback(): void
     {
-        foreach (["https://example.org; script-src *", 42, null, new \RuntimeException('No such preference')] as $value) {
+        foreach (["https://example.org; script-src *", 42, null] as $value) {
             $this->assertSame(["'self'"], $this->csp($value)->getFrameAncestors());
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                sprintf('Invalid frame ancestors "%1$s", falling back to default.', print_r($value, return: true))
+            );
         }
+
+        //a missing preference is expected before database update: nothing to report
+        $this->assertSame(
+            ["'self'"],
+            $this->csp(new \RuntimeException('No such preference'))->getFrameAncestors()
+        );
+        $this->expectNoLogEntry();
     }
 }

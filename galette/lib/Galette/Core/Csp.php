@@ -74,9 +74,7 @@ class Csp
      */
     public function getNonce(): string
     {
-        if ($this->nonce === null) {
-            $this->nonce = base64_encode(random_bytes(16));
-        }
+        $this->nonce ??= base64_encode(random_bytes(16));
         return $this->nonce;
     }
 
@@ -95,7 +93,7 @@ class Csp
                 sprintf('Invalid CSP source "%1$s" for directive "%2$s"', $source, $directive)
             );
         }
-        if (!in_array($source, $this->extra_sources[$directive] ?? [], true)) {
+        if (!in_array($source, $this->extra_sources[$directive] ?? [], strict: true)) {
             $this->extra_sources[$directive][] = $source;
         }
         return $this;
@@ -113,7 +111,7 @@ class Csp
      */
     public static function parseFrameAncestors(string $value): ?array
     {
-        $tokens = preg_split('/\s+/', trim($value), -1, PREG_SPLIT_NO_EMPTY);
+        $tokens = preg_split(pattern: '/\s+/', subject: trim($value), limit: -1, flags: PREG_SPLIT_NO_EMPTY);
         if ($tokens === []) {
             return null;
         }
@@ -134,7 +132,7 @@ class Csp
         }
 
         $sources = array_values(array_unique($sources));
-        if (in_array("'none'", $sources, true) && count($sources) > 1) {
+        if (in_array("'none'", $sources, strict: true) && count($sources) > 1) {
             //'none' along with other sources is ignored by browsers
             return null;
         }
@@ -165,7 +163,7 @@ class Csp
         $sources = is_string($value) ? self::parseFrameAncestors($value) : null;
         if ($sources === null) {
             Analog::log(
-                sprintf('Invalid frame ancestors "%1$s", falling back to default.', print_r($value, true)),
+                sprintf('Invalid frame ancestors "%1$s", falling back to default.', print_r($value, return: true)),
                 Analog::WARNING
             );
             $sources = $default;
