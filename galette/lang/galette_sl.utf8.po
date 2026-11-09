@@ -6889,7 +6889,7 @@ msgid "Can group managers edit their groups?"
 msgstr "Ali lahko upravitelji skupin urejajo svoje skupine?"
 
 msgid "Can group managers create members?"
-msgstr "Ali lahko upravitelji skupin ustvarjajo člane?"
+msgstr "Ali lahko vodje skupin ustvarjajo člane?"
 
 msgid "Can group managers edit members?"
 msgstr "Ali lahko upravitelji skupin urejajo člane?"
@@ -6911,10 +6911,10 @@ msgid "Can group managers see contributions?"
 msgstr "Ali lahko upravitelji skupin vidijo prispevke?"
 
 msgid "Can group managers create contributions?"
-msgstr "Ali lahko upravitelji skupine vidijo prispevke?"
+msgstr "Ali lahko vodje skupin ustvarjajo prispevke?"
 
 msgid "Can group managers see transactions?"
-msgstr "Ali lahko upravitelji skupin vidijo transakcije?"
+msgstr "Ali lahko vodje skupin vidijo transakcije?"
 
 msgid "Can group managers create transactions?"
 msgstr "Ali lahko upravitelji skupin ustvarjajo transakcije?"
