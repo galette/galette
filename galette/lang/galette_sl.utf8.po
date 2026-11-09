@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Jože Felicijan <joze@felicijan.com>, 2026.
 # Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>, 2026.
+# Weblate Translation Memory <noreply-mt-weblate-translation-memory@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-11-02 13:04+0100\n"
 "PO-Revision-Date: 2026-11-10 07:27+0000\n"
-"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Weblate Translation Memory <noreply-mt-weblate-translation-"
+"memory@weblate.org>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -2519,7 +2520,7 @@ msgid "Group manager"
 msgstr "Vodja skupine"
 
 msgid "Staff member"
-msgstr "Član ekipe"
+msgstr "Član osebja"
 
 msgid "Administrator"
 msgstr "Skrbnik"
@@ -6889,7 +6890,7 @@ msgid "Can group managers edit their groups?"
 msgstr "Ali lahko upravitelji skupin urejajo svoje skupine?"
 
 msgid "Can group managers create members?"
-msgstr "Ali lahko vodje skupin ustvarjajo člane?"
+msgstr "Ali lahko upravitelji skupin ustvarjajo člane?"
 
 msgid "Can group managers edit members?"
 msgstr "Ali lahko upravitelji skupin urejajo člane?"
@@ -6911,10 +6912,10 @@ msgid "Can group managers see contributions?"
 msgstr "Ali lahko upravitelji skupin vidijo prispevke?"
 
 msgid "Can group managers create contributions?"
-msgstr "Ali lahko vodje skupin ustvarjajo prispevke?"
+msgstr "Ali lahko upravitelji skupine vidijo prispevke?"
 
 msgid "Can group managers see transactions?"
-msgstr "Ali lahko vodje skupin vidijo transakcije?"
+msgstr "Ali lahko upravitelji skupin vidijo transakcije?"
 
 msgid "Can group managers create transactions?"
 msgstr "Ali lahko upravitelji skupin ustvarjajo transakcije?"
