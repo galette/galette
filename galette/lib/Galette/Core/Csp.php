@@ -37,6 +37,9 @@ class Csp
 {
     public const string DEFAULT_FRAME_ANCESTORS = "'self'";
 
+    /** Reporting API endpoint name */
+    public const string REPORT_GROUP = 'csp-endpoint';
+
     private const array ENFORCED = [
         'frame-ancestors' => ["'self'"],
         'object-src' => ["'none'"],
@@ -70,6 +73,8 @@ class Csp
     public const string MAPS_GEOCODER = 'https://nominatim.openstreetmap.org';
 
     private bool $maps_sources = false;
+
+    private ?string $report_uri = null;
 
     /**
      * @param Preferences $preferences Preferences instance
@@ -106,6 +111,28 @@ class Csp
             $this->extra_sources[$directive][] = $source;
         }
         return $this;
+    }
+
+    /**
+     * Set where browsers send violation reports
+     *
+     * @param string $uri Report URI, relative to the instance
+     */
+    public function setReportUri(string $uri): self
+    {
+        if ($uri === '' || preg_match('/[;,\s"]/', $uri)) {
+            throw new \InvalidArgumentException(sprintf('Invalid CSP report URI "%1$s"', $uri));
+        }
+        $this->report_uri = $uri;
+        return $this;
+    }
+
+    /**
+     * Get the Reporting-Endpoints header value, if reports are expected
+     */
+    public function getReportingEndpoints(): ?string
+    {
+        return $this->report_uri === null ? null : sprintf('%1$s="%2$s"', self::REPORT_GROUP, $this->report_uri);
     }
 
     /**
@@ -287,6 +314,11 @@ class Csp
                 $sources
             );
             $parts[] = $directive . ' ' . implode(' ', array_unique($sources));
+        }
+        if ($this->report_uri !== null) {
+            //report-uri for browsers that do not know about report-to (Firefox)
+            $parts[] = 'report-uri ' . $this->report_uri;
+            $parts[] = 'report-to ' . self::REPORT_GROUP;
         }
         return implode('; ', $parts);
     }

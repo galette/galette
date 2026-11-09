@@ -301,4 +301,35 @@ class CspTest extends BaseGaletteTestCase
         );
         $this->expectNoLogEntry();
     }
+
+    /**
+     * Test violation reports
+     */
+    public function testReportUri(): void
+    {
+        $csp = $this->csp();
+        $this->assertNull($csp->getReportingEndpoints());
+        $this->assertStringNotContainsString('report-', $csp->getFullPolicy());
+
+        $csp->setReportUri('/galette/csp-report');
+        $this->assertSame('csp-endpoint="/galette/csp-report"', $csp->getReportingEndpoints());
+        foreach ([$csp->getEnforcedPolicy(), $csp->getFullPolicy()] as $policy) {
+            $this->assertStringEndsWith('; report-uri /galette/csp-report; report-to csp-endpoint', $policy);
+        }
+    }
+
+    /**
+     * Test invalid report URIs are rejected
+     */
+    public function testInvalidReportUri(): void
+    {
+        foreach (['', '/csp-report; script-src *', '/csp report', '/csp-report"'] as $uri) {
+            try {
+                $this->csp()->setReportUri($uri);
+                $this->fail('Report URI "' . $uri . '" has been accepted');
+            } catch (\InvalidArgumentException) {
+                $this->addToAssertionCount(1);
+            }
+        }
+    }
 }

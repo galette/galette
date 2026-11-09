@@ -10,10 +10,13 @@ declare(strict_types=1);
 
 namespace Galette\Middleware;
 
+use Galette\Controllers\CspReportController;
 use Galette\Core\Csp;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Routing\RouteParser;
+use Throwable;
 
 /**
  * Galette Slim security headers middleware
@@ -31,10 +34,13 @@ class SecurityHeaders
     public const string SVG_POLICY = "default-src 'none'; style-src 'unsafe-inline'; img-src data:";
 
     /**
-     * @param Csp $csp Content Security Policy of the request
+     * @param Csp         $csp         Content Security Policy of the request
+     * @param RouteParser $routeparser Route parser instance
      */
-    public function __construct(private readonly Csp $csp)
-    {
+    public function __construct(
+        private readonly Csp $csp,
+        private readonly RouteParser $routeparser
+    ) {
     }
 
     /**
@@ -45,6 +51,12 @@ class SecurityHeaders
      */
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
+        try {
+            $this->csp->setReportUri($this->routeparser->urlFor(CspReportController::ROUTE));
+        } catch (Throwable) {
+            // no log: policy is still sent, only without reports
+        }
+
         $response = $handler->handle($request)
             ->withHeader('X-Content-Type-Options', 'nosniff')
             ->withHeader('Referrer-Policy', 'same-origin');
@@ -56,6 +68,11 @@ class SecurityHeaders
         if ($type !== '' && !str_contains($type, 'text/html')) {
             //CSV, PDF, images, JSON... are not documents scripts can run in
             return $response;
+        }
+
+        $endpoints = $this->csp->getReportingEndpoints();
+        if ($endpoints !== null) {
+            $response = $response->withHeader('Reporting-Endpoints', $endpoints);
         }
 
         return $response

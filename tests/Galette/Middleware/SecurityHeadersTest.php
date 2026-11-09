@@ -62,7 +62,7 @@ class SecurityHeadersTest extends GaletteTestCase
         };
 
         $request = (new ServerRequestFactory())->createServerRequest('GET', 'https://galette.example.org/');
-        return (new SecurityHeaders($csp))($request, $handler);
+        return (new SecurityHeaders($csp, $this->routeparser))($request, $handler);
     }
 
     /**
@@ -97,6 +97,16 @@ class SecurityHeadersTest extends GaletteTestCase
             $csp->getFullPolicy(),
             $response->getHeaderLine('Content-Security-Policy-Report-Only')
         );
+
+        //violations are reported to Galette
+        $uri = $this->routeparser->urlFor('cspReport');
+        $this->assertSame('csp-endpoint="' . $uri . '"', $response->getHeaderLine('Reporting-Endpoints'));
+        foreach (['Content-Security-Policy', 'Content-Security-Policy-Report-Only'] as $header) {
+            $this->assertStringEndsWith(
+                '; report-uri ' . $uri . '; report-to csp-endpoint',
+                $response->getHeaderLine($header)
+            );
+        }
     }
 
     /**
@@ -109,6 +119,7 @@ class SecurityHeadersTest extends GaletteTestCase
             $this->assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'), $type);
             $this->assertFalse($response->hasHeader('Content-Security-Policy'), $type);
             $this->assertFalse($response->hasHeader('Content-Security-Policy-Report-Only'), $type);
+            $this->assertFalse($response->hasHeader('Reporting-Endpoints'), $type);
         }
     }
 
@@ -212,6 +223,36 @@ class SecurityHeadersTest extends GaletteTestCase
         } finally {
             $this->preferences->setValue('pref_csp_frame_ancestors', Csp::DEFAULT_FRAME_ANCESTORS, $this->login);
         }
+    }
+
+    /**
+     * Test reports are not blocked by CSRF protection
+     *
+     * Browsers post them on their own, with whatever Sec-Fetch-Site they see fit.
+     */
+    public function testReportsAreExcludedFromCsrf(): void
+    {
+        $route = $this->createStub(\Slim\Interfaces\RouteInterface::class);
+        $route->method('getName')->willReturn('cspReport');
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'https://galette.example.org/csp-report')
+            ->withHeader('Sec-Fetch-Site', 'cross-site')
+            ->withAttribute(\Slim\Routing\RouteContext::ROUTE, $route);
+
+        $handler = new readonly class implements RequestHandlerInterface {
+            /**
+             * Handle request
+             *
+             * @param ServerRequestInterface $request PSR7 request
+             */
+            public function handle(ServerRequestInterface $request): ResponseInterface
+            {
+                return (new Response())->withStatus(204);
+            }
+        };
+
+        $response = $this->container->get(\Galette\Middleware\Csrf::class)($request, $handler);
+        $this->assertSame(204, $response->getStatusCode());
     }
 
     /**
