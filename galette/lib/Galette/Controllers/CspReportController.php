@@ -39,9 +39,6 @@ class CspReportController
 {
     public const string ROUTE = 'cspReport';
 
-    /** Throttle scope, counting reports per address */
-    public const string SCOPE = 'csp-report-ip';
-
     /** Requests accepted per address in WINDOW seconds */
     public const int MAX_REQUESTS = 30;
     public const int WINDOW = 600;
@@ -85,8 +82,8 @@ class CspReportController
         //the browser does not care about the answer: always the same, whatever happened
         $response = $response->withStatus(204);
 
-        $body = (string)$request->getBody();
-        if ($body === '' || strlen($body) > self::MAX_BODY) {
+        $body = $this->readBody($request);
+        if ($body === null || $body === '') {
             return $response;
         }
 
@@ -94,11 +91,11 @@ class CspReportController
         //an unknown address is still counted, all together
         $address = $address !== '' ? $address : 'unknown';
         try {
-            if ($this->throttle->getDelayForEvent(self::SCOPE, $address) > 0) {
+            if ($this->throttle->getDelayForEvent(AuthThrottle::SCOPE_CSP_REPORT_IP, $address) > 0) {
                 return $response;
             }
             $this->throttle->recordEvent(
-                scope: self::SCOPE,
+                scope: AuthThrottle::SCOPE_CSP_REPORT_IP,
                 identifier: $address,
                 attempts: self::MAX_REQUESTS,
                 window: self::WINDOW
@@ -113,6 +110,33 @@ class CspReportController
         }
 
         return $response;
+    }
+
+    /**
+     * Read request body, never more than allowed
+     *
+     * @param Request $request PSR7 request
+     *
+     * @return ?string Body, null when it is too big
+     */
+    private function readBody(Request $request): ?string
+    {
+        $stream = $request->getBody();
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+
+        //one byte more than allowed is enough to know it is too big
+        $body = '';
+        while (!$stream->eof() && strlen($body) <= self::MAX_BODY) {
+            $chunk = $stream->read(self::MAX_BODY + 1 - strlen($body));
+            if ($chunk === '') {
+                break;
+            }
+            $body .= $chunk;
+        }
+
+        return strlen($body) > self::MAX_BODY ? null : $body;
     }
 
     /**

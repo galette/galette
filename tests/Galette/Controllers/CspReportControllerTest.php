@@ -43,7 +43,7 @@ class CspReportControllerTest extends GaletteTestCase
      */
     public function tearDown(): void
     {
-        $this->getThrottle()->clearEvent(CspReportController::SCOPE, self::ADDRESS);
+        $this->getThrottle()->clearEvent(AuthThrottle::SCOPE_CSP_REPORT_IP, self::ADDRESS);
         unset($_SERVER['REMOTE_ADDR']);
         parent::tearDown();
     }
@@ -200,12 +200,55 @@ class CspReportControllerTest extends GaletteTestCase
         for ($i = 1; $i < CspReportController::MAX_REQUESTS; ++$i) {
             $this->post($this->legacyReport());
         }
-        $this->assertGreaterThan(0, $this->getThrottle()->getDelayForEvent(CspReportController::SCOPE, self::ADDRESS));
+        $this->assertGreaterThan(0, $this->getThrottle()->getDelayForEvent(AuthThrottle::SCOPE_CSP_REPORT_IP, self::ADDRESS));
 
         //drop what has been logged so far
         $galette_log_var = '';
 
         $this->assertSame(204, $this->post($this->legacyReport())->getStatusCode());
         $this->expectNoLogEntry();
+    }
+
+    /**
+     * Test a report of the largest allowed size is read in full
+     */
+    public function testLargestBody(): void
+    {
+        $body = $this->legacyReport();
+        $body .= str_repeat(' ', CspReportController::MAX_BODY - strlen($body));
+        $this->assertSame(CspReportController::MAX_BODY, strlen($body));
+
+        $this->assertSame(204, $this->post($body)->getStatusCode());
+        $this->expectLogEntry(Analog::WARNING, 'script-src-elem blocked inline');
+
+        //one byte more is ignored
+        $this->assertSame(204, $this->post($body . ' ')->getStatusCode());
+        $this->expectNoLogEntry();
+    }
+
+    /**
+     * Test IPv6 locks are listed with their address
+     */
+    public function testIpV6Lock(): void
+    {
+        $_SERVER['REMOTE_ADDR'] = '2001:db8:1:2:3:4:5:6';
+        $identifier = AuthThrottle::normalizeAddress($_SERVER['REMOTE_ADDR']);
+        $this->assertSame('2001:db8:1:2::/64', $identifier);
+
+        try {
+            for ($i = 0; $i < CspReportController::MAX_REQUESTS; ++$i) {
+                $this->post('{}');
+            }
+
+            $locks = array_values(array_filter(
+                $this->getThrottle()->getLocks(),
+                fn(array $lock): bool => $lock['scope'] === AuthThrottle::SCOPE_CSP_REPORT_IP
+            ));
+            $this->assertCount(1, $locks);
+            $this->assertSame($identifier, $locks[0]['address']);
+            $this->assertNull($locks[0]['login']);
+        } finally {
+            $this->getThrottle()->clearEvent(AuthThrottle::SCOPE_CSP_REPORT_IP, $identifier);
+        }
     }
 }
