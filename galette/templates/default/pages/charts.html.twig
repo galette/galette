@@ -32,7 +32,7 @@
 {% endblock %}
 
 {% block javascripts %}
-        <script type="module">
+        <script nonce="{{ csp_nonce() }}" type="module">
             // Chart.js plugins
             Chart.register(ChartDataLabels);
             const autocolors = window['chartjs-plugin-autocolors'];

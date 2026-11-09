@@ -268,7 +268,7 @@
 
 {% block javascripts %}
     {% if not role.isSystem() %}
-    <script type="text/javascript">
+    <script nonce="{{ csp_nonce() }}" type="text/javascript">
         {% include "elements/js/choose_adh.js.twig" %}
         document.getElementById('id_adh_input').type = 'hidden';
 

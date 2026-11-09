@@ -517,7 +517,7 @@
     {% if require_maps %}
         {% include 'elements/maps/libraries.html.twig' with {lazy_gl: true} %}
     {% endif %}
-    <script type="text/javascript">
+    <script nonce="{{ csp_nonce() }}" type="text/javascript">
         {# Use of Javascript to draw specific elements that are not relevant is JS is inactive #}
         $(function(){
             $('#savesearch').on('click', function(e) {
