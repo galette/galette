@@ -226,6 +226,44 @@ class SecurityHeadersTest extends GaletteTestCase
     }
 
     /**
+     * Test external sources preference is validated
+     */
+    public function testExternalSourcesPreference(): void
+    {
+        $this->logSuperAdmin();
+        try {
+            $this->assertFalse(
+                $this->preferences->setValue(
+                    'pref_csp_external_sources',
+                    "https://stats.example.org 'unsafe-inline'",
+                    $this->login
+                )
+            );
+            $this->assertCount(1, $this->preferences->getErrors());
+            $this->assertSame('', $this->preferences->pref_csp_external_sources);
+
+            $this->assertTrue(
+                $this->preferences->setValue(
+                    'pref_csp_external_sources',
+                    "  https://stats.example.org   https://stats.example.org https://*.example.net ",
+                    $this->login
+                ),
+                print_r($this->preferences->getErrors(), return: true)
+            );
+            $this->assertSame(
+                'https://stats.example.org https://*.example.net',
+                $this->preferences->pref_csp_external_sources
+            );
+
+            //emptied, nothing is added anymore
+            $this->assertTrue($this->preferences->setValue('pref_csp_external_sources', '', $this->login));
+            $this->assertSame('', $this->preferences->pref_csp_external_sources);
+        } finally {
+            $this->preferences->setValue('pref_csp_external_sources', '', $this->login);
+        }
+    }
+
+    /**
      * Test reports are not blocked by CSRF protection
      *
      * Browsers post them on their own, with whatever Sec-Fetch-Site they see fit.

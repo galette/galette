@@ -28,8 +28,9 @@ use function Safe\preg_split;
  *   (framing, plugins, base URI); sites allowed to frame Galette come from
  *   the pref_csp_frame_ancestors preference;
  * - a report-only one, with the complete policy, so violations show up in
- *   browsers consoles without blocking anything; it allows the servers of
- *   maps backgrounds and address search.
+ *   browsers consoles without blocking anything; external sites come from
+ *   plugins and from the pref_csp_external_sources preference; servers of maps
+ *   backgrounds and address search are allowed as well.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -89,7 +90,19 @@ class Csp
 
     private const string HOST_LABEL = '[a-z0-9](?:[a-z0-9-]*[a-z0-9])?';
 
+    /** Directives external sites set by administrators are added to */
+    public const array EXTERNAL_DIRECTIVES = [
+        'script-src',
+        'style-src',
+        'font-src',
+        'connect-src',
+        'frame-src',
+    ];
+
     private ?string $report_uri = null;
+
+    /** @var string[]|null */
+    private ?array $external_sources = null;
 
     private bool $plugins_sources = false;
 
@@ -216,11 +229,75 @@ class Csp
             return $directive !== 'script-src';
         }
 
+        return self::isOrigin($source);
+    }
+
+    /**
+     * Is a source an https:// or wss:// origin?
+     *
+     * An optional wildcard on the first label and an optional path are accepted.
+     *
+     * @param string $source Source expression
+     */
+    private static function isOrigin(string $source): bool
+    {
         $label = self::HOST_LABEL;
         return preg_match(
             '~^(?:https|wss)://(?:\*\.)?' . $label . '(?:\.' . $label . ')*(?::[0-9]{1,5})?(?:/[a-z0-9._\~%/-]*)?$~iD',
             $source
         ) === 1;
+    }
+
+    /**
+     * Parse a list of external sites pages may use
+     *
+     * @param string $value Space separated https:// or wss:// origins; may be empty
+     *
+     * @return string[]|null Sources, null when value is invalid
+     */
+    public static function parseExternalSources(string $value): ?array
+    {
+        $sources = preg_split(pattern: '/\s+/', subject: trim($value), limit: -1, flags: PREG_SPLIT_NO_EMPTY);
+        foreach ($sources as $source) {
+            if (!self::isOrigin($source)) {
+                return null;
+            }
+        }
+        return array_values(array_unique($sources));
+    }
+
+    /**
+     * Get external sites pages may use
+     *
+     * Set by administrators, for the tracking script of the theme or any
+     * customization loading resources from elsewhere.
+     *
+     * @return string[]
+     */
+    public function getExternalSources(): array
+    {
+        if ($this->external_sources !== null) {
+            return $this->external_sources;
+        }
+
+        try {
+            $value = $this->preferences->getConfigValue('pref_csp_external_sources');
+        } catch (Throwable) {
+            // no log: preference may not exist yet, when database needs an update
+            return $this->external_sources = [];
+        }
+
+        //checked again here: the value may come from a constant, which is never validated
+        $sources = is_string($value) ? self::parseExternalSources($value) : null;
+        if ($sources === null) {
+            Analog::log(
+                sprintf('Invalid external sources "%1$s", ignored.', print_r($value, return: true)),
+                Analog::WARNING
+            );
+            $sources = [];
+        }
+
+        return $this->external_sources = $sources;
     }
 
     /**
@@ -330,6 +407,11 @@ class Csp
     {
         $this->addMapsSources();
         $this->addPluginsSources();
+        foreach ($this->getExternalSources() as $source) {
+            foreach (self::EXTERNAL_DIRECTIVES as $directive) {
+                $this->addSource($directive, $source);
+            }
+        }
         $directives = self::FULL;
         $directives['frame-ancestors'] = $this->getFrameAncestors();
         foreach ($this->extra_sources as $directive => $sources) {

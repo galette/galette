@@ -30,23 +30,32 @@ class CspTest extends BaseGaletteTestCase
         . ' https://tiles.openfreemap.org https://tiles.versatiles.org https://data.geopf.fr';
 
     /**
-     * Get a policy for given frame ancestors preference
+     * Get a policy for given preferences
      *
-     * @param mixed               $frame_ancestors Preference value, or a Throwable to throw
-     * @param list<GalettePlugin> $providers       Plugins declaring sources
-     * @param ?\Throwable         $plugins_error   Error thrown when getting plugins
+     * @param mixed               $frame_ancestors  Frame ancestors preference value, or a Throwable to throw
+     * @param list<GalettePlugin> $providers        Plugins declaring sources
+     * @param ?\Throwable         $plugins_error    Error thrown when getting plugins
+     * @param mixed               $external_sources External sources preference value, or a Throwable to throw
      */
     private function csp(
         mixed $frame_ancestors = Csp::DEFAULT_FRAME_ANCESTORS,
         array $providers = [],
-        ?\Throwable $plugins_error = null
+        ?\Throwable $plugins_error = null,
+        mixed $external_sources = ''
     ): Csp {
+        $values = [
+            'pref_csp_frame_ancestors' => $frame_ancestors,
+            'pref_csp_external_sources' => $external_sources,
+        ];
         $preferences = $this->createStub(Preferences::class);
-        if ($frame_ancestors instanceof \Throwable) {
-            $preferences->method('getConfigValue')->willThrowException($frame_ancestors);
-        } else {
-            $preferences->method('getConfigValue')->willReturn($frame_ancestors);
-        }
+        $preferences->method('getConfigValue')->willReturnCallback(
+            function (string $name) use ($values): mixed {
+                if ($values[$name] instanceof \Throwable) {
+                    throw $values[$name];
+                }
+                return $values[$name];
+            }
+        );
 
         $plugins = $this->createStub(Plugins::class);
         if ($plugins_error !== null) {
@@ -247,6 +256,96 @@ class CspTest extends BaseGaletteTestCase
     }
 
     /**
+     * External sources provider
+     *
+     * @return array<string, array{string, ?string[]}>
+     */
+    public static function externalSourcesProvider(): array
+    {
+        return [
+            'empty' => ['', []],
+            'blank' => ['  ', []],
+            'origins' => [
+                ' https://stats.example.org  https://*.example.net:8443/matomo/ wss://live.example.org https://stats.example.org',
+                ['https://stats.example.org', 'https://*.example.net:8443/matomo/', 'wss://live.example.org']
+            ],
+            'http' => ['http://stats.example.org', null],
+            'keyword' => ["'unsafe-inline'", null],
+            'self' => ["'self'", null],
+            'wildcard' => ['*', null],
+            'scheme only' => ['https:', null],
+            'data' => ['data:', null],
+            'no scheme' => ['stats.example.org', null],
+            'query' => ['https://stats.example.org/?x=1', null],
+            'one invalid' => ["https://stats.example.org 'unsafe-eval'", null],
+            'directive injection' => ["https://stats.example.org; script-src 'unsafe-inline'", null],
+            'header splitting' => ["https://stats.example.org\r\nX-Foo: bar", null],
+        ];
+    }
+
+    /**
+     * Test external sources parsing
+     *
+     * @param string    $value    Value to parse
+     * @param ?string[] $expected Expected sources, null when invalid
+     */
+    #[DataProvider('externalSourcesProvider')]
+    public function testParseExternalSources(string $value, ?array $expected): void
+    {
+        $this->assertSame($expected, Csp::parseExternalSources($value));
+    }
+
+    /**
+     * Test external sources come from preferences, in the full policy only
+     */
+    public function testExternalSourcesFromPreferences(): void
+    {
+        $csp = $this->csp(external_sources: 'https://stats.example.org https://*.example.net');
+        $policy = $csp->getFullPolicy();
+        $sources = ' https://stats.example.org https://*.example.net';
+
+        $this->assertStringContainsString(
+            "script-src 'nonce-" . $csp->getNonce() . "' 'strict-dynamic'" . $sources . ';',
+            $policy
+        );
+        $this->assertStringContainsString("style-src 'self' 'unsafe-inline'" . $sources . ';', $policy);
+        $this->assertStringContainsString("font-src 'self' data:" . $sources . ';', $policy);
+        $this->assertStringContainsString("connect-src 'self'" . self::MAPS_CONNECT . $sources . ';', $policy);
+        $this->assertStringContainsString("frame-src 'self'" . $sources, $policy);
+        //https images are already allowed, forms are not concerned
+        $this->assertStringContainsString("img-src 'self' data: blob: https:;", $policy);
+        $this->assertStringContainsString("form-action 'self';", $policy);
+        //built twice, sources are not repeated
+        $this->assertSame($policy, $csp->getFullPolicy());
+
+        $this->assertStringNotContainsString('example', $csp->getEnforcedPolicy());
+        $this->expectNoLogEntry();
+    }
+
+    /**
+     * Test external sources are ignored when preference cannot be used
+     */
+    public function testExternalSourcesFallback(): void
+    {
+        foreach (["https://stats.example.org; script-src *", 42, null] as $value) {
+            $csp = $this->csp(external_sources: $value);
+            $this->assertSame([], $csp->getExternalSources());
+            $this->assertStringNotContainsString('example', $csp->getFullPolicy());
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                sprintf('Invalid external sources "%1$s", ignored.', print_r($value, return: true))
+            );
+        }
+
+        //a missing preference is expected before database update: nothing to report
+        $this->assertSame(
+            [],
+            $this->csp(external_sources: new \RuntimeException('No such preference'))->getExternalSources()
+        );
+        $this->expectNoLogEntry();
+    }
+
+    /**
      * Get a policy for given maps tiles preferences
      *
      * @param array<string, mixed> $values Maps preferences values
@@ -254,7 +353,9 @@ class CspTest extends BaseGaletteTestCase
     private function mapsCsp(array $values): Csp
     {
         $preferences = $this->createStub(Preferences::class);
-        $preferences->method('getConfigValue')->willReturn(Csp::DEFAULT_FRAME_ANCESTORS);
+        $preferences->method('getConfigValue')->willReturnCallback(
+            fn(string $name): mixed => $name === 'pref_csp_frame_ancestors' ? Csp::DEFAULT_FRAME_ANCESTORS : ''
+        );
         $preferences->method('__get')->willReturnCallback(fn(string $name): mixed => $values[$name] ?? null);
         return new Csp($preferences, $this->createStub(Plugins::class));
     }

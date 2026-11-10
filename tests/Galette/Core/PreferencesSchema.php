@@ -64,6 +64,7 @@ class PreferencesSchema extends GaletteTestCase
             Schema::TYPE_DATE_MD,
             Schema::TYPE_YEAR,
             Schema::TYPE_CSP_SOURCES,
+            Schema::TYPE_CSP_ORIGINS,
         ];
 
         $schema = Schema::getAll();
