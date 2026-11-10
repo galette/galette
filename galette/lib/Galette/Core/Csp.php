@@ -32,6 +32,9 @@ use function Safe\preg_split;
  *   plugins and from the pref_csp_external_sources preference; servers of maps
  *   backgrounds and address search are allowed as well.
  *
+ * Once the pref_csp_enforce preference is on, the complete policy alone is
+ * sent, and enforced.
+ *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 class Csp
@@ -105,6 +108,8 @@ class Csp
     private ?array $external_sources = null;
 
     private bool $plugins_sources = false;
+
+    private ?bool $enforced = null;
 
     /**
      * @param Preferences $preferences Preferences instance
@@ -388,6 +393,53 @@ class Csp
         }
 
         return $this->frame_ancestors = $sources;
+    }
+
+    /**
+     * Is the complete policy enforced?
+     */
+    public function isEnforced(): bool
+    {
+        if ($this->enforced !== null) {
+            return $this->enforced;
+        }
+
+        try {
+            $value = $this->preferences->getConfigValue('pref_csp_enforce');
+        } catch (Throwable) {
+            // no log: preference may not exist yet, when database needs an update
+            return $this->enforced = false;
+        }
+
+        //checked here: the value may come from a constant, which is never validated
+        $enforced = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        if ($enforced === null) {
+            Analog::log(
+                sprintf('Invalid CSP enforcement "%1$s", policy is report-only.', print_r($value, return: true)),
+                Analog::WARNING
+            );
+            $enforced = false;
+        }
+
+        return $this->enforced = $enforced;
+    }
+
+    /**
+     * Get policies to send, by header name
+     *
+     * @return array<string, string>
+     */
+    public function getPolicies(): array
+    {
+        if ($this->isEnforced()) {
+            //complete policy includes the directives of the minimal one
+            return ['Content-Security-Policy' => $this->getFullPolicy()];
+        }
+
+        return [
+            'Content-Security-Policy' => $this->getEnforcedPolicy(),
+            'Content-Security-Policy-Report-Only' => $this->getFullPolicy(),
+        ];
     }
 
     /**

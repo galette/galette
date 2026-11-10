@@ -388,6 +388,10 @@ Open the browser console on the plugin pages: each violation is reported as
 CSP violation (report only): frame-src blocked https://js.stripe.com/v3/ on https://galette.example.org/plugins/stripe/form
 ```
 
+To see the plugin as it will behave once the policy is enforced, turn
+`pref_csp_enforce` on, from the advanced configuration page (or define
+`GALETTE_CSP_ENFORCE` in `behavior.inc.php`): violations are then blocked.
+
 ## PDF
 
 TCPDF is replaced by [tc-lib-pdf](https://github.com/tecnickcom/tc-lib-pdf).

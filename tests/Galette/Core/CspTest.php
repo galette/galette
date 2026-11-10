@@ -36,16 +36,19 @@ class CspTest extends BaseGaletteTestCase
      * @param list<GalettePlugin> $providers        Plugins declaring sources
      * @param ?\Throwable         $plugins_error    Error thrown when getting plugins
      * @param mixed               $external_sources External sources preference value, or a Throwable to throw
+     * @param mixed               $enforce          Enforcement preference value, or a Throwable to throw
      */
     private function csp(
         mixed $frame_ancestors = Csp::DEFAULT_FRAME_ANCESTORS,
         array $providers = [],
         ?\Throwable $plugins_error = null,
-        mixed $external_sources = ''
+        mixed $external_sources = '',
+        mixed $enforce = false
     ): Csp {
         $values = [
             'pref_csp_frame_ancestors' => $frame_ancestors,
             'pref_csp_external_sources' => $external_sources,
+            'pref_csp_enforce' => $enforce,
         ];
         $preferences = $this->createStub(Preferences::class);
         $preferences->method('getConfigValue')->willReturnCallback(
@@ -463,6 +466,51 @@ class CspTest extends BaseGaletteTestCase
         //additional sources are not for the enforced policy
         $csp->addSource('img-src', 'https://tile.openstreetmap.org');
         $this->assertStringNotContainsString('openstreetmap', $csp->getEnforcedPolicy());
+    }
+
+    /**
+     * Test policies sent, depending on enforcement
+     */
+    public function testPolicies(): void
+    {
+        $csp = $this->csp();
+        $this->assertFalse($csp->isEnforced());
+        $this->assertSame(
+            [
+                'Content-Security-Policy' => $csp->getEnforcedPolicy(),
+                'Content-Security-Policy-Report-Only' => $csp->getFullPolicy(),
+            ],
+            $csp->getPolicies()
+        );
+
+        //value from database, or from a constant
+        foreach ([true, '1', 1, 'true'] as $value) {
+            $csp = $this->csp(enforce: $value);
+            $this->assertTrue($csp->isEnforced(), var_export($value, return: true));
+            $this->assertSame(['Content-Security-Policy' => $csp->getFullPolicy()], $csp->getPolicies());
+        }
+        foreach ([false, '0', 0, ''] as $value) {
+            $this->assertFalse($this->csp(enforce: $value)->isEnforced(), var_export($value, return: true));
+        }
+        $this->expectNoLogEntry();
+    }
+
+    /**
+     * Test policy is report-only when enforcement cannot be read
+     */
+    public function testEnforceFallback(): void
+    {
+        foreach (['yes please', [true]] as $value) {
+            $this->assertFalse($this->csp(enforce: $value)->isEnforced());
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                sprintf('Invalid CSP enforcement "%1$s", policy is report-only.', print_r($value, return: true))
+            );
+        }
+
+        //a missing preference is expected before database update: nothing to report
+        $this->assertFalse($this->csp(enforce: new \RuntimeException('No such preference'))->isEnforced());
+        $this->expectNoLogEntry();
     }
 
     /**

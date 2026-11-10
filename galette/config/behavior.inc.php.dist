@@ -137,3 +137,12 @@
  * Now stored as pref_csp_external_sources.
  */
 //define('GALETTE_CSP_EXTERNAL_SOURCES', '');
+
+/**
+ * Enforce the complete Content Security Policy: scripts without the nonce,
+ * from core or plugins, are not run anymore. When off, violations are only
+ * reported.
+ *
+ * Now stored as pref_csp_enforce.
+ */
+//define('GALETTE_CSP_ENFORCE', false);

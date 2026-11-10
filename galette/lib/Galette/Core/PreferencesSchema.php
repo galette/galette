@@ -927,6 +927,15 @@ final class PreferencesSchema
                 'constant' => 'GALETTE_CSP_EXTERNAL_SOURCES',
                 'advanced' => true,
             ],
+            /* Enforce the complete Content Security Policy, instead of only
+               reporting violations; a script without the nonce, from core or
+               a plugin, is then not run */
+            'pref_csp_enforce' => [
+                'type' => self::TYPE_BOOL,
+                'default' => false,
+                'constant' => 'GALETTE_CSP_ENFORCE',
+                'advanced' => true,
+            ],
             /* Maximum size of an upload, in Ko, one setting per kind of upload.
                PHP caps them all: whatever is set here, a file bigger than
                upload_max_filesize or a request bigger than post_max_size never

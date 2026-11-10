@@ -110,6 +110,26 @@ class SecurityHeadersTest extends GaletteTestCase
     }
 
     /**
+     * Test the complete policy alone is sent once enforced
+     */
+    public function testEnforcedResponse(): void
+    {
+        $this->logSuperAdmin();
+        try {
+            $this->assertTrue($this->preferences->setValue('pref_csp_enforce', value: true, login: $this->login));
+            $csp = new Csp($this->preferences, $this->plugins);
+            $response = $this->process($csp, 'text/html');
+
+            $this->assertSame($csp->getFullPolicy(), $response->getHeaderLine('Content-Security-Policy'));
+            $this->assertStringContainsString("'nonce-" . $csp->getNonce() . "'", $response->getHeaderLine('Content-Security-Policy'));
+            $this->assertFalse($response->hasHeader('Content-Security-Policy-Report-Only'));
+            $this->assertTrue($response->hasHeader('Reporting-Endpoints'));
+        } finally {
+            $this->preferences->setValue('pref_csp_enforce', value: false, login: $this->login);
+        }
+    }
+
+    /**
      * Test non HTML responses do not get a policy
      */
     public function testNonHtmlResponse(): void

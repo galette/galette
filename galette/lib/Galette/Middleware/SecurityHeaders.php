@@ -75,8 +75,9 @@ class SecurityHeaders
             $response = $response->withHeader('Reporting-Endpoints', $endpoints);
         }
 
-        return $response
-            ->withHeader('Content-Security-Policy', $this->csp->getEnforcedPolicy())
-            ->withHeader('Content-Security-Policy-Report-Only', $this->csp->getFullPolicy());
+        foreach ($this->csp->getPolicies() as $header => $policy) {
+            $response = $response->withHeader($header, $policy);
+        }
+        return $response;
     }
 }
