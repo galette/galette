@@ -1,0 +1,88 @@
+tools:
+    # Coverage is computed and uploaded by the GitHub workflow (ocular);
+    external_code_coverage:
+        timeout: 1800
+
+build:
+    image: default-jammy
+    environment:
+        php:
+            version: 8.4
+    dependencies:
+        override:
+            # post-install scripts (tc-lib-pdf fonts, locales) are useless
+            # for the analysis
+            - composer install --no-interaction --no-progress --prefer-dist --no-scripts
+            # Constants that only exist in an installed instance: config.inc.php
+            # is not versioned and behavior.inc.php ships fully commented.
+            # Generate them so the analyzer knows those constants; they are
+            # declared as dependency paths below, so never reported on.
+            - cp galette/config/config.inc.php.dist galette/config/config.inc.php
+            - sed -E 's#^//(define\()#\1#' galette/config/behavior.inc.php.dist > galette/config/behavior.inc.php
+
+    nodes:
+        analysis:
+            project_setup:
+                override:
+                    - 'true'
+            tests:
+                override:
+                    - php-scrutinizer-run
+                    - js-scrutinizer-run
+
+    cache:
+        directories:
+            - galette/vendor
+            - ~/.composer
+
+filter:
+    excluded_paths:
+        - 'tests/*'
+        - 'bin/*'
+        - 'galette/data/*'
+        - 'galette/plugins/*'
+        - 'galette/webroot/assets/*'
+        - 'galette/webroot/themes/*'
+        - 'ui/semantic/*'
+        - 'semantic/*'
+        - 'node_modules/*'
+        - 'rector.php'
+        - 'composer-dependency-analyser.php'
+        - '.php-cs-fixer.dist.php'
+        - '*.min.js'
+    # Parsed for their symbols only, never reported on. Do not also list
+    # them in excluded_paths, they would not be parsed at all.
+    dependency_paths:
+        - 'galette/vendor/'
+        # Galette constants, same stub PHPStan uses
+        - 'stubs/'
+        # generated above
+        - 'galette/config/'
+
+checks:
+    php:
+        fix_php_opening_tag: false
+        remove_php_closing_tag: false
+        one_class_per_file: false
+        side_effects_or_types: false
+        no_mixed_inline_html: false
+        require_braces_around_control_structures: false
+        php5_style_constructor: false
+        no_global_keyword: false
+        avoid_usage_of_logical_operators: false
+        psr2_class_declaration: false
+        no_underscore_prefix_in_properties: false
+        no_underscore_prefix_in_methods: false
+        blank_line_after_namespace_declaration: false
+        single_namespace_per_use: false
+        psr2_switch_declaration: false
+        psr2_control_structure_declaration: false
+        avoid_superglobals: false
+        security_vulnerabilities: false
+        no_exit: false
+        fix_use_statements:
+            remove_unused: true
+            preserve_multiple: false
+            preserve_blanklines: true
+            order_alphabetically: false
+    javascript: true
