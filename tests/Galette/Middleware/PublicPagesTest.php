@@ -77,19 +77,25 @@ class PublicPagesTest extends GaletteRoutingTestCase
      * @param string  $path       Requested path
      * @param ?string $route_name Name of the resolved route, if any
      * @param ?string $pattern    Pattern of the resolved route
+     * @param string  $base_path  Subdirectory Galette is served from
      *
      * @return bool Whether the page was served
      */
-    private function isServed(string $path, ?string $route_name = null, ?string $pattern = null): bool
-    {
+    private function isServed(
+        string $path,
+        ?string $route_name = null,
+        ?string $pattern = null,
+        string $base_path = ''
+    ): bool {
         $request = new Request(
             method: 'GET',
-            uri: (new UriFactory())->createUri('https://galette.example.org' . $path),
+            uri: (new UriFactory())->createUri('https://galette.example.org' . $base_path . $path),
             headers: new Headers(),
             cookies: [],
             serverParams: [],
             body: (new StreamFactory())->createStream()
         );
+        $request = $request->withAttribute(RouteContext::BASE_PATH, $base_path);
 
         if ($route_name !== null) {
             $route = $this->createStub(RouteInterface::class);
@@ -215,6 +221,49 @@ class PublicPagesTest extends GaletteRoutingTestCase
 
         $this->preferences->pref_publicpages_visibility_generic = PublicPageVisibility::Hidden->value;
         $this->assertFalse($this->isServed('/public/documents', 'documentsPublicList'));
+    }
+
+    /**
+     * Core pages follow their own visibility when Galette is served from a subdirectory
+     */
+    public function testCorePagesInSubdirectory(): void
+    {
+        $this->preferences->pref_publicpages_visibility_generic = PublicPageVisibility::Everyone->value;
+        $this->preferences->pref_publicpages_visibility_memberslist = PublicPageVisibility::UpToDateMembers->value;
+        $this->preferences->pref_publicpages_visibility_membersgallery = PublicPageVisibility::UpToDateMembers->value;
+        $this->preferences->pref_publicpages_visibility_stafflist = PublicPageVisibility::UpToDateMembers->value;
+        $this->preferences->pref_publicpages_visibility_staffgallery = PublicPageVisibility::UpToDateMembers->value;
+        $this->preferences->pref_publicpages_visibility_documents = PublicPageVisibility::UpToDateMembers->value;
+
+        //registered patterns, so the real optional parts and placeholders are read
+        $routes = $this->app->getRouteCollector();
+        $pages = [
+            'publicMembersList' => '/public/members/list',
+            'filterPublicMembersList' => '/public/members/list/filter',
+            'publicMembersGallery' => '/public/members/gallery',
+            'filterPublicMembersGallery' => '/public/members/gallery/filter',
+            'publicStaffList' => '/public/staff/list',
+            'publicStaffGallery' => '/public/staff/gallery',
+            'documentsPublicList' => '/public/documents',
+        ];
+        foreach ($pages as $route_name => $path) {
+            $pattern = $routes->getNamedRoute($route_name)->getPattern();
+            $this->assertFalse($this->isServed($path, $route_name, $pattern), $path);
+            $this->assertFalse($this->isServed(path: $path, route_name: $route_name, pattern: $pattern, base_path: '/galette'), '/galette' . $path);
+        }
+
+        //no route resolved: the path is read relative to the base path
+        $this->assertFalse($this->isServed('/public/members/list'));
+        $this->assertFalse($this->isServed('/public/members/list', base_path: '/galette'));
+        $this->assertFalse($this->isServed('/public/staff/gallery', base_path: '/sub/galette'));
+
+        $this->preferences->pref_publicpages_visibility_memberslist = PublicPageVisibility::Everyone->value;
+        $this->assertTrue($this->isServed(
+            path: '/public/members/list',
+            route_name: 'publicMembersList',
+            pattern: $routes->getNamedRoute('publicMembersList')->getPattern(),
+            base_path: '/galette'
+        ));
     }
 
     /**

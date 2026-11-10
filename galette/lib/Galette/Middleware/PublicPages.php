@@ -93,8 +93,7 @@ class PublicPages
     private function getPathRight(Request $request): string
     {
         $right_pattern = 'pref_publicpages_visibility_%s%s';
-        $current_path = trim($request->getUri()->getPath(), '/');
-        $page = explode('/', $current_path);
+        $page = explode('/', trim($this->getPath($request), '/'));
         if ($page[0] === 'plugins') {
             $right_pattern .= '_%s';
             $right = sprintf(
@@ -112,5 +111,30 @@ class PublicPages
         }
 
         return $right;
+    }
+
+    /**
+     * Get the path of the current page, without the subdirectory Galette may be served from
+     *
+     * The pattern of the route is preferred: unlike the requested path, it never
+     * contains the base path. Only its static part is kept, placeholders and
+     * optional parts are not part of the page name.
+     *
+     * @param Request $request PSR7 request
+     */
+    private function getPath(Request $request): string
+    {
+        $route = $request->getAttribute(RouteContext::ROUTE);
+        if ($route instanceof RouteInterface) {
+            $pattern = $route->getPattern();
+            return substr($pattern, 0, strcspn($pattern, '[{'));
+        }
+
+        $path = $request->getUri()->getPath();
+        $base_path = (string)$request->getAttribute(RouteContext::BASE_PATH, '');
+        if ($base_path !== '' && str_starts_with($path, $base_path . '/')) {
+            $path = substr($path, strlen($base_path));
+        }
+        return $path;
     }
 }
