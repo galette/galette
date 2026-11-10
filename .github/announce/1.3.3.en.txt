@@ -1,0 +1,13 @@
+Galette 1.3.3 is out of the oven! 🥧
+
+A small batch, but don't let it get cold: upgrading is recommended.
+
+🔒 Three security fixes
+👶 Child members can be stored again
+🔎 PostgreSQL searches with accented capitals fixed
+🐛 And a handful of other fixes
+🧩 Activities 1.2.1 and Events 2.3.1 plugins are out too
+
+https://galette.eu/site/post/2026/11/11/galette-1-3-3/
+
+#Galette #FreeSoftware #OpenSource #NonProfit
