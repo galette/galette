@@ -11,6 +11,9 @@ declare(strict_types=1);
 namespace Galette\Tests\Core;
 
 use Galette\Core\Csp;
+use Galette\Core\GalettePlugin;
+use Galette\Core\Plugins;
+use Galette\Core\Plugins\ContentSecurityPolicyProviderInterface;
 use Galette\Core\Preferences;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Galette\Tests\BaseGaletteTestCase;
@@ -22,20 +25,225 @@ use Galette\Tests\BaseGaletteTestCase;
  */
 class CspTest extends BaseGaletteTestCase
 {
+    /** Sources maps add to connect-src */
+    private const string MAPS_CONNECT = ' ' . Csp::MAPS_GEOCODER
+        . ' https://tiles.openfreemap.org https://tiles.versatiles.org https://data.geopf.fr';
+
     /**
      * Get a policy for given frame ancestors preference
      *
-     * @param mixed $frame_ancestors Preference value, or a Throwable to throw
+     * @param mixed               $frame_ancestors Preference value, or a Throwable to throw
+     * @param list<GalettePlugin> $providers       Plugins declaring sources
+     * @param ?\Throwable         $plugins_error   Error thrown when getting plugins
      */
-    private function csp(mixed $frame_ancestors = Csp::DEFAULT_FRAME_ANCESTORS): Csp
-    {
+    private function csp(
+        mixed $frame_ancestors = Csp::DEFAULT_FRAME_ANCESTORS,
+        array $providers = [],
+        ?\Throwable $plugins_error = null
+    ): Csp {
         $preferences = $this->createStub(Preferences::class);
         if ($frame_ancestors instanceof \Throwable) {
             $preferences->method('getConfigValue')->willThrowException($frame_ancestors);
         } else {
             $preferences->method('getConfigValue')->willReturn($frame_ancestors);
         }
-        return new Csp($preferences);
+
+        $plugins = $this->createStub(Plugins::class);
+        if ($plugins_error !== null) {
+            $plugins->method('getProviders')->willThrowException($plugins_error);
+        } else {
+            $plugins->method('getProviders')->willReturnCallback(
+                fn(string $interface): array => array_values(
+                    array_filter($providers, fn(GalettePlugin $plugin): bool => $plugin instanceof $interface)
+                )
+            );
+        }
+
+        return new Csp($preferences, $plugins);
+    }
+
+    /**
+     * Get a plugin declaring CSP sources
+     *
+     * @param array<mixed>|\Throwable $sources Declared sources, or a Throwable to throw
+     */
+    private function provider(array|\Throwable $sources): GalettePlugin
+    {
+        return new class ($sources) extends GalettePlugin implements ContentSecurityPolicyProviderInterface {
+            /**
+             * @param array<mixed>|\Throwable $sources Declared sources, or a Throwable to throw
+             */
+            public function __construct(private readonly array|\Throwable $sources)
+            {
+            }
+
+            /**
+             * Get the sources the plugin adds to the Content Security Policy
+             *
+             * @return array<string, list<string>>
+             */
+            public function getCspSources(): array
+            {
+                if ($this->sources instanceof \Throwable) {
+                    throw $this->sources;
+                }
+                /** @var array<string, list<string>> wrong types on purpose */
+                return $this->sources;
+            }
+
+            /**
+             * Is plugin fully installed?
+             */
+            public function isInstalled(): bool
+            {
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Test sources declared by plugins
+     */
+    public function testPluginsSources(): void
+    {
+        $csp = $this->csp(providers: [
+            $this->provider([
+                'frame-src' => ['https://js.stripe.com', 'https://hooks.stripe.com'],
+                'CONNECT-SRC' => ['https://api.stripe.com', 'wss://*.example.org:8443/socket'],
+                'form-action' => ['https://www.helloasso.com/associations/'],
+                'img-src' => ['data:'],
+            ]),
+            $this->provider(['frame-src' => ['https://js.stripe.com']]),
+            //a plugin that does not declare anything is not asked
+            new class extends GalettePlugin {
+                /**
+                 * Is plugin fully installed?
+                 */
+                public function isInstalled(): bool
+                {
+                    return true;
+                }
+            }
+        ]);
+
+        $policy = $csp->getFullPolicy();
+        $this->assertStringContainsString("; frame-src 'self' https://js.stripe.com https://hooks.stripe.com", $policy);
+        $this->assertStringContainsString(
+            "connect-src 'self'" . self::MAPS_CONNECT . ' https://api.stripe.com wss://*.example.org:8443/socket;',
+            $policy
+        );
+        $this->assertStringContainsString("form-action 'self' https://www.helloasso.com/associations/;", $policy);
+        //already allowed, not repeated
+        $this->assertStringContainsString("img-src 'self' data: blob: https:;", $policy);
+        //asked once per request
+        $this->assertSame($policy, $csp->getFullPolicy());
+
+        //never enforced
+        $this->assertStringNotContainsString('stripe', $csp->getEnforcedPolicy());
+        $this->expectNoLogEntry();
+    }
+
+    /**
+     * Plugin sources provider
+     *
+     * @return array<string, array{string, string, bool}>
+     */
+    public static function pluginSourcesProvider(): array
+    {
+        return [
+            'origin' => ['frame-src', 'https://js.stripe.com', true],
+            'wildcard origin' => ['img-src', 'https://*.tile.openstreetmap.org', true],
+            'port and path' => ['connect-src', 'https://example.org:8443/api/v1/', true],
+            'websocket' => ['connect-src', 'wss://example.org', true],
+            'data image' => ['img-src', 'data:', true],
+            'blob worker' => ['worker-src', 'blob:', true],
+            'script origin' => ['script-src', 'https://js.stripe.com', true],
+            'data script' => ['script-src', 'data:', false],
+            'blob script' => ['script-src', 'blob:', false],
+            'http' => ['img-src', 'http://example.org', false],
+            'scheme only' => ['img-src', 'https:', false],
+            'wildcard' => ['img-src', '*', false],
+            'keyword' => ['script-src', "'unsafe-inline'", false],
+            'self' => ['img-src', "'self'", false],
+            'javascript' => ['form-action', 'javascript:', false],
+            'no scheme' => ['img-src', 'example.org', false],
+            'query' => ['connect-src', 'https://example.org/api?x=1', false],
+            'injection' => ['img-src', "https://example.org; script-src 'unsafe-inline'", false],
+            'several' => ['img-src', 'https://a.example.org https://b.example.org', false],
+            'header splitting' => ['img-src', "https://example.org\r\nX-Foo: bar", false],
+            'trailing newline' => ['img-src', "https://example.org\n", false],
+            'frame ancestors' => ['frame-ancestors', 'https://example.org', false],
+            'object' => ['object-src', 'https://example.org', false],
+            'base uri' => ['base-uri', 'https://example.org', false],
+            'default' => ['default-src', 'https://example.org', false],
+            'report' => ['report-uri', 'https://example.org', false],
+            'unknown' => ['foo-src', 'https://example.org', false],
+        ];
+    }
+
+    /**
+     * Test which sources plugins may add
+     *
+     * @param string $directive Directive
+     * @param string $source    Source
+     * @param bool   $expected  Expected result
+     */
+    #[DataProvider('pluginSourcesProvider')]
+    public function testIsPluginSource(string $directive, string $source, bool $expected): void
+    {
+        $this->assertSame($expected, Csp::isPluginSource($directive, $source));
+    }
+
+    /**
+     * Test invalid sources from plugins are ignored, and logged
+     */
+    public function testInvalidPluginsSources(): void
+    {
+        $csp = $this->csp(providers: [
+            $this->provider([
+                'frame-ancestors' => ['https://evil.example.org'],
+                'script-src' => ["'unsafe-inline'", 'https://js.stripe.com'],
+                'img-src' => 'https://tile.example.org',
+                'connect-src' => [42],
+            ]),
+            $this->provider(new \RuntimeException('Broken plugin')),
+        ]);
+
+        $policy = $csp->getFullPolicy();
+        $this->assertStringContainsString(
+            "script-src 'nonce-" . $csp->getNonce() . "' 'strict-dynamic' https://js.stripe.com;",
+            $policy
+        );
+        $this->assertStringContainsString("img-src 'self' data: blob: https: https://tile.example.org;", $policy);
+        $this->assertStringNotContainsString('evil', $policy);
+        $this->assertStringContainsString("connect-src 'self'" . self::MAPS_CONNECT . ';', $policy);
+
+        foreach (
+            [
+                ['https://evil.example.org', 'frame-ancestors'],
+                ["'unsafe-inline'", 'script-src'],
+                ['42', 'connect-src'],
+            ] as [$source, $directive]
+        ) {
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                sprintf('Invalid CSP source "%1$s" for directive "%2$s" from ', $source, $directive)
+            );
+        }
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Broken plugin');
+    }
+
+    /**
+     * Test policy is still built when plugins cannot be listed
+     */
+    public function testPluginsError(): void
+    {
+        $csp = $this->csp(plugins_error: new \RuntimeException('Module "foo" has no plugin descriptor.'));
+        $this->assertStringStartsWith("default-src 'self';", $csp->getFullPolicy());
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Cannot get plugins CSP sources | Module "foo" has no plugin descriptor.'
+        );
     }
 
     /**
@@ -48,7 +256,7 @@ class CspTest extends BaseGaletteTestCase
         $preferences = $this->createStub(Preferences::class);
         $preferences->method('getConfigValue')->willReturn(Csp::DEFAULT_FRAME_ANCESTORS);
         $preferences->method('__get')->willReturnCallback(fn(string $name): mixed => $values[$name] ?? null);
-        return new Csp($preferences);
+        return new Csp($preferences, $this->createStub(Plugins::class));
     }
 
     /**
@@ -89,11 +297,7 @@ class CspTest extends BaseGaletteTestCase
     public function testMapsSources(): void
     {
         $policy = $this->csp()->getFullPolicy();
-        $this->assertStringContainsString(
-            "connect-src 'self' " . Csp::MAPS_GEOCODER
-                . ' https://tiles.openfreemap.org https://tiles.versatiles.org https://data.geopf.fr;',
-            $policy
-        );
+        $this->assertStringContainsString("connect-src 'self'" . self::MAPS_CONNECT . ';', $policy);
         //raster backgrounds are images, already allowed
         $this->assertStringNotContainsString('openstreetmap.fr', $policy);
         $this->assertStringContainsString("img-src 'self' data: blob: https:;", $policy);

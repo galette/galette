@@ -74,13 +74,33 @@ class Csp
 
     private bool $maps_sources = false;
 
+    /** Directives plugins may add sources to */
+    public const array PLUGIN_DIRECTIVES = [
+        'connect-src',
+        'font-src',
+        'form-action',
+        'frame-src',
+        'img-src',
+        'media-src',
+        'script-src',
+        'style-src',
+        'worker-src',
+    ];
+
+    private const string HOST_LABEL = '[a-z0-9](?:[a-z0-9-]*[a-z0-9])?';
+
     private ?string $report_uri = null;
+
+    private bool $plugins_sources = false;
 
     /**
      * @param Preferences $preferences Preferences instance
+     * @param Plugins     $plugins     Plugins instance
      */
-    public function __construct(private readonly Preferences $preferences)
-    {
+    public function __construct(
+        private readonly Preferences $preferences,
+        private readonly Plugins $plugins
+    ) {
     }
 
     /**
@@ -160,7 +180,7 @@ class Csp
                 continue;
             }
 
-            $label = '[a-z0-9](?:[a-z0-9-]*[a-z0-9])?';
+            $label = self::HOST_LABEL;
             if (!preg_match('~^https?://(?:\*\.)?' . $label . '(?:\.' . $label . ')*(?::[0-9]{1,5})?/?$~i', $token)) {
                 return null;
             }
@@ -174,6 +194,91 @@ class Csp
         }
 
         return $sources;
+    }
+
+    /**
+     * Is a source one a plugin may add?
+     *
+     * Plugins only add origins they talk to: no keyword, no wildcard, and no
+     * directive that would weaken the enforced policy.
+     *
+     * @param string $directive Directive name
+     * @param string $source    Source expression
+     */
+    public static function isPluginSource(string $directive, string $source): bool
+    {
+        if (!in_array($directive, self::PLUGIN_DIRECTIVES, strict: true)) {
+            return false;
+        }
+
+        if ($source === 'data:' || $source === 'blob:') {
+            //would let any injected content run as a script
+            return $directive !== 'script-src';
+        }
+
+        $label = self::HOST_LABEL;
+        return preg_match(
+            '~^(?:https|wss)://(?:\*\.)?' . $label . '(?:\.' . $label . ')*(?::[0-9]{1,5})?(?:/[a-z0-9._\~%/-]*)?$~iD',
+            $source
+        ) === 1;
+    }
+
+    /**
+     * Add sources declared by plugins
+     *
+     * Done once, when the full policy is first built: plugins are loaded by then.
+     */
+    private function addPluginsSources(): void
+    {
+        if ($this->plugins_sources) {
+            return;
+        }
+        $this->plugins_sources = true;
+
+        try {
+            $providers = $this->plugins->getProviders(Plugins\ContentSecurityPolicyProviderInterface::class);
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Cannot get plugins CSP sources');
+            return;
+        }
+
+        foreach ($providers as $plugin) {
+            try {
+                $this->addDeclaredSources($plugin->getCspSources(), $plugin::class);
+            } catch (Throwable $e) {
+                Logs::exception($e, sprintf('Cannot get CSP sources of %1$s', $plugin::class));
+            }
+        }
+    }
+
+    /**
+     * Add sources declared by a plugin
+     *
+     * Plugin code is not trusted to respect the declared types.
+     *
+     * @param array<mixed> $declared Sources, indexed by directive
+     * @param string       $plugin   Plugin class, for logs
+     */
+    private function addDeclaredSources(array $declared, string $plugin): void
+    {
+        foreach ($declared as $directive => $sources) {
+            $directive = strtolower((string)$directive);
+            foreach (is_array($sources) ? $sources : [$sources] as $source) {
+                if (!is_string($source) || !self::isPluginSource($directive, $source)) {
+                    Analog::log(
+                        sprintf(
+                            'Invalid CSP source "%1$s" for directive "%2$s" from %3$s, ignored.',
+                            print_r($source, return: true),
+                            $directive,
+                            $plugin
+                        ),
+                        Analog::WARNING
+                    );
+                    continue;
+                }
+                $this->addSource($directive, $source);
+            }
+        }
     }
 
     /**
@@ -224,6 +329,7 @@ class Csp
     public function getFullPolicy(): string
     {
         $this->addMapsSources();
+        $this->addPluginsSources();
         $directives = self::FULL;
         $directives['frame-ancestors'] = $this->getFrameAncestors();
         foreach ($this->extra_sources as $directive => $sources) {
