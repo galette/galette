@@ -12,8 +12,8 @@ For plugins development in general, see [Plugin development](@ref plugins).
 
 PHP 8.3 minimum, as for 1.3.
 
-The compatibility version is now `1.4.0`: plugins must declare
-`compver: '1.4.0'`, those still declaring `1.3.0` are disabled.
+The compatibility version is now `1.4.0`: plugins must declare `compver: '1.4.0'`,
+those still declaring `1.3.0` are disabled.
 
 ## Removed methods and classes
 
