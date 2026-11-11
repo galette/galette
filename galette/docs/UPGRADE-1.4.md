@@ -12,7 +12,7 @@ For plugins development in general, see [Plugin development](@ref plugins).
 
 PHP 8.3 minimum, as for 1.3.
 
-The compatibility version is now `1.4.0`: plugins must declare `compver: '1.4.0'`,
+The compatibility version is now `1.4.0`: plugins must declare ``compver: '1.4.0'``,
 those still declaring `1.3.0` are disabled.
 
 ## Removed methods and classes
@@ -22,7 +22,7 @@ them and use the replacement when there is one.
 
 | Removed | Use instead |
 |---------|-------------|
-| `PluginControllerTrait::getModuleRoute()` | `$this->module_info['module']['route']` |
+| `PluginControllerTrait::getModuleRoute()` | ``$this->module_info['module']['route']`` |
 | `Plugins::getDisabledModule($id)` | `$plugins->getDisabledModules()[$id] ?? null` |
 | `Preferences::cleanHtmlValue($value)` | `Galette\Util\Html::clean($value)` |
 | `Galette\Util\Text::convertHtmlToText($html)` | `Galette\Util\Html::convertToText($html)` |
@@ -329,7 +329,7 @@ can still be written sequentially.
 | `SetMargins()`, `setPageOrientation()` | `setPageMargins()`, `$this->orientation`, in `init()` |
 | `SetAutoPageBreak()` | `setAutoPageBreak(bool)`; text cells never break pages, call `checkPageBreak(?float $height)` |
 | `SetFont($family, $style, $size)` | `setFont(?string $style, ?float $size)`, the font is always DejaVu Sans |
-| `SetTextColor(r, g, b)`, `SetDrawColor()`, `SetFillColor()` | `setTextColor('#rrggbb')`, `setDrawColor('#rrggbb')`, `fill` argument of `text()` |
+| `SetTextColor(r, g, b)`, `SetDrawColor()`, `SetFillColor()` | ``setTextColor('#rrggbb')``, ``setDrawColor('#rrggbb')``, `fill` argument of `text()` |
 | `Cell()`, `MultiCell()`, `Write()` | `text()`; `wrap: false` keeps it on a single line, as `Cell()` did |
 | `writeHTML()`, `writeHTMLCell()`, `MultiCell(..., ishtml: true)` | `writeHTML(string $html, ?float $x, ?float $y, float $w, float $h)` |
 | `Image()`, `Rect()`, `Line()` | `image()`, `rect()`, `line()` |
@@ -337,8 +337,8 @@ can still be written sequentially.
 | `GetX()`, `GetY()`, `SetX()`, `SetY()`, `SetXY()`, `Ln()` | `getX()`, `getY()`, `setXY()`, `ln()` |
 | `getNumPages()` | `getNumPages()` |
 | `Header()`, `Footer()` overrides | `drawPageHeader(int $page, int $total)`, drawn once all pages exist; the footer comes from the models |
-| `Output($name, 'D')`, `Output($name, 'S')` | `getContents()`, the controller writes it in the response |
-| `Output($path, 'F')` | `storeAs(string $path)` |
+| ``Output($name, 'D')``, ``Output($name, 'S')`` | `getContents()`, the controller writes it in the response |
+| ``Output($path, 'F')`` | `storeAs(string $path)` |
 
 Mind PHP methods names are case insensitive: a private `addHtmlCell()` in a
 plugin class now clashes with tc-lib-pdf's `addHTMLCell()`.

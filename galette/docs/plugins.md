@@ -575,7 +575,7 @@ class MyController extends AbstractPluginController
 }
 ```
 
-`$this->module_info['module']['route']` gives the plugin route.
+``$this->module_info['module']['route']`` gives the plugin route.
 Other services are injected the same way, with `#[Inject]` on typed
 properties.
 
