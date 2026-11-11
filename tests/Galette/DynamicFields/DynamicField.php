@@ -292,6 +292,25 @@ class DynamicField extends GaletteTestCase
         $this->assertSame(['Missing required field name!'], $df->getErrors());
         $this->assertFalse($df->store($values));
 
+        $values = $orig_values;
+        $values['field_name'] = '   ';
+        $this->assertFalse($df->check($values));
+        $this->assertSame(['Missing required field name!'], $df->getErrors());
+
+        //separators require a name as well
+        $separator = \Galette\DynamicFields\DynamicField::getFieldType(
+            $this->zdb,
+            \Galette\DynamicFields\DynamicField::SEPARATOR
+        );
+        $values = $orig_values;
+        $values['field_type'] = \Galette\DynamicFields\DynamicField::SEPARATOR;
+        $values['field_name'] = '';
+        $this->assertFalse($separator->check($values));
+        $this->assertSame(['Missing required field name!'], $separator->getErrors());
+        $values['field_name'] = 'A separator';
+        $this->assertTrue($separator->check($values));
+        $this->assertSame([], $separator->getErrors());
+
         //no error since field type does not have width
         $this->assertFalse($df->hasWidth());
         $values = $orig_values;

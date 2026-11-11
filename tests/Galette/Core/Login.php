@@ -343,6 +343,74 @@ class Login extends GaletteTestCase
     }
 
     /**
+     * Logging in from a super administrator session drops its rights
+     */
+    public function testLoginAfterSuperAdmin(): void
+    {
+        $this->createUser();
+
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->assertTrue($this->login->isSuperAdmin());
+
+        $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertTrue($this->login->isLogged());
+        $this->assertSame($this->login_adh, $this->login->login);
+        $this->assertFalse($this->login->isSuperAdmin());
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
+    }
+
+    /**
+     * Logging in from an impersonating session ends impersonation: the way
+     * back would hand super administrator rights to the new user
+     */
+    public function testLoginWhileImpersonating(): void
+    {
+        $this->createUser();
+
+        $this->login->logAdmin('superadmin', $this->preferences);
+        $this->assertTrue($this->login->impersonate($this->adh->id));
+        $this->assertTrue($this->login->isImpersonated());
+
+        $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertFalse($this->login->isImpersonated());
+        $this->assertFalse($this->login->isSuperAdmin());
+    }
+
+    /**
+     * Rights only set for some users do not survive a new login
+     */
+    public function testLoginForgetsPreviousStaffAndCron(): void
+    {
+        $this->createUser();
+
+        $login = new class ($this->zdb, $this->i18n) extends \Galette\Core\Login {
+            /**
+             * Pretend a staff member has just logged in
+             */
+            public function logStaff(): void
+            {
+                $this->logged = true;
+                $this->staff = true;
+                $this->managed_groups = [1];
+            }
+        };
+
+        $login->logStaff();
+        $this->assertTrue($login->isStaff());
+        $this->assertTrue($login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertFalse($login->isStaff());
+        $this->assertSame([], $login->getManagedGroups());
+
+        $login->logCron('reminder', $this->preferences);
+        $this->assertTrue($login->isCron());
+        $this->assertTrue($login->logIn($this->login_adh, $this->mdp_adh));
+        $this->assertFalse($login->isCron());
+
+        $login->logOut();
+    }
+
+    /**
      * Logging out forgets managed groups: staff members and admins do not
      * load them at login, and would get the ones of a previous login
      */

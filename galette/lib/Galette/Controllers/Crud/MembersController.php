@@ -82,9 +82,11 @@ class MembersController extends CrudController
     public function addChild(Request $request, Response $response): Response
     {
         if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('slash'));
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
         }
         $this->setAddChild();
         return $this->edit(request: $request, response: $response, id: null, action: 'add');
@@ -196,9 +198,11 @@ class MembersController extends CrudController
     public function doAddChild(Request $request, Response $response): Response
     {
         if (!$this->preferences->pref_bool_create_member || $this->login->isSuperAdmin()) {
-            return $response
-                ->withStatus(301)
-                ->withHeader('Location', $this->routeparser->urlFor('slash'));
+            return $this->redirectWithErrors(
+                response: $response,
+                errors: [_T("You do not have permission for requested URL.")],
+                redirect_url: $this->routeparser->urlFor('slash')
+            );
         }
         $this->setAddChild();
         return $this->store($request, $response);
@@ -1189,7 +1193,7 @@ class MembersController extends CrudController
                 'fieldsets'         => $form_elements['fieldsets'],
                 'hidden_elements'   => $form_elements['hiddens'],
                 'parent_fields'     => $tpl_parent_fields,
-                'addchild'          => ($action === 'addchild'),
+                'addchild'          => $this->isAddChild(),
                 'show_photo'        => $fc->isVisibleFor('photo', $this->login->getAccessLevel()),
                 'osocials'          => new Social($this->zdb),
                 'documentation'     => 'usermanual/adherents.html'
@@ -1719,8 +1723,11 @@ class MembersController extends CrudController
             }
         }
 
-        // send email to member
-        if ($this->isSelfMembership() || isset($post['mail_confirm']) && $post['mail_confirm'] == '1') {
+        // send email to member; on self subscription, only when emailing is enabled
+        if (
+            $this->isSelfMembership() && $this->preferences->pref_mail_method > GaletteMail::METHOD_DISABLED
+            || isset($post['mail_confirm']) && $post['mail_confirm'] == '1'
+        ) {
             $member->setSendmail(); //flag to send creation email
         }
 

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-11-02 13:04+0100\n"
-"PO-Revision-Date: 2026-11-02 19:46+0000\n"
+"PO-Revision-Date: 2026-11-07 10:55+0000\n"
 "Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
 "\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 2026.11.1.dev0\n"
+"X-Generator: Weblate 2026.11.2.dev0\n"
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
@@ -1020,7 +1020,7 @@ msgid "Preferences has been saved."
 msgstr "Nastavitve so bile shranjene."
 
 msgid "My information"
-msgstr "Moji podatki"
+msgstr "Podatki o članu"
 
 msgid "Passwords mismatch"
 msgstr "Neujemanje gesel"
@@ -1523,7 +1523,7 @@ msgid "Galette news"
 msgstr "Novice iz Galette"
 
 msgid "Association news"
-msgstr "Novice združenja"
+msgstr "Novice iz društva"
 
 msgid "Emailing has been disabled in the preferences."
 msgstr "Pošiljanje e-pošte je v nastavitvah onemogočeno."
@@ -1765,7 +1765,7 @@ msgstr "Datoteka CSS temnega načina je bila ponastavljena."
 #. TRANS: first parameter is name, second is status
 #, php-format
 msgid "%1$s association's %2$s"
-msgstr "%2$s združenja %1$s"
+msgstr "%2$sdruštva %1$s"
 
 msgid "You have to select a staff member to retrieve its address"
 msgstr "Za pridobitev naslova morate izbrati člana osebja"
@@ -3033,7 +3033,7 @@ msgid "Contributions deleted (%1$s)"
 msgstr "Prispevki izbrisani (%1$s)"
 
 msgid "Association status"
-msgstr "Status združenja"
+msgstr "Status društva"
 
 msgid "Rules of procedure"
 msgstr "Poslovnik"
@@ -3728,7 +3728,7 @@ msgstr "* Samo za podjetja"
 
 #, php-format
 msgid "Hereby, I agree to comply to %s association statutes and its rules."
-msgstr "S tem se strinjam, da bom upošteval/a statut in pravila združenja %s."
+msgstr "S tem se strinjam, da bom upošteval/a statut in pravila društva %s."
 
 msgid "At ................................................"
 msgstr "Ob ................................................"
@@ -3754,7 +3754,7 @@ msgid ""
 "by the generous donor."
 msgstr ""
 "Minimalni prispevek za vsako vrsto članstva je določen na spletni strani "
-"združenja. Višino donacij prosto določi velikodušni donator."
+"društva. Višino donacij prosto določi velikodušni donator."
 
 msgid "Required membership:"
 msgstr "Zahtevano članstvo:"
@@ -6624,16 +6624,16 @@ msgid "Security parameters"
 msgstr "Varnostni parametri"
 
 msgid "Name of the association:"
-msgstr "Ime združenja:"
+msgstr "Ime društva:"
 
 msgid "Association's short description:"
-msgstr "Kratek opis združenja:"
+msgstr "Kratek opis društva:"
 
 msgid ""
 "Enter here a short description for your association, it will be displayed on "
 "the index page and into pages' title."
 msgstr ""
-"Vnesite kratek opis vašega združenja, ki bo prikazan na indeksni strani in v "
+"Vnesite kratek opis vašega društva, ki bo prikazan na indeksni strani in v "
 "naslovu strani."
 
 msgid "Logo:"

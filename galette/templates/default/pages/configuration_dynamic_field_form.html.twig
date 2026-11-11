@@ -16,9 +16,9 @@
         <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">
     {% endif %}
-                <div class="{% if df.getType != 0 %} required {% endif %}inline field">
+                <div class="required inline field">
                     <label for="field_name">{{ _T("Name:") }}</label>
-                    <input type="text" name="field_name" id="field_name" value="{{ df.getName(false) }}"{% if df.getType != 0 %} required="required"{% endif %} aria-describedby="field_name-translation-hint"/>
+                    <input type="text" name="field_name" id="field_name" value="{{ df.getName(false) }}" required="required" aria-describedby="field_name-translation-hint"/>
                 </div>
                 {% include "elements/translatable_label_hint.html.twig" with {
                     label: df.getName(false),
@@ -118,7 +118,7 @@
             <button type="submit" class="ui labeled icon primary button action">
                 <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
             </button>
-            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button" formnovalidate/>
             <input type="hidden" name="form_name" id="form_name" value="{{ form_name }}"/>
         </div>
     {% endif %}
@@ -132,9 +132,9 @@
         <div class="ui bottom attached accordion-styled segment">
             <div class="active content field">
     {% endif %}
-                <div class="inline field">
+                <div class="required inline field">
                     <label for="field_name">{{ _T("Field name") }}</label>
-                    <input size="40" type="text" name="field_name" id="field_name" value="{% if df is defined %}{{ df.getName() }}{% endif %}"/>
+                    <input size="40" type="text" name="field_name" id="field_name" value="{% if df is defined %}{{ df.getName() }}{% endif %}" required="required"/>
                 </div>
                 <div class="inline field">
                     <label for="field_perm">{{ _T("Visibility") }}</label>
@@ -151,7 +151,7 @@
                 <div class="inline field">
                     <label for="field_type">{{ _T("Type") }}</label>
                     <select name="field_type" id="field_type" class="ui dropdown">
-                        {% set type = 0 %}
+                        {% set type = constant('Galette\\DynamicFields\\DynamicField::LINE') %}
                         {% if df is defined %}
                             {% set type = df.getType() %}
                         {% endif %}
@@ -174,7 +174,7 @@
             <button type="submit" name="valid" class="ui labeled icon primary button action">
                 <i class="plus icon" aria-hidden="true"></i> {{ _T("Add") }}
             </button>
-            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button"/>
+            <input type="submit" name="cancel" value="{{ _T("Cancel") }}" class="ui button" formnovalidate/>
     {% endif %}
             <input type="hidden" name="form_name" id="form_name" value="{{ form_name }}"/>
     {% if mode == 'ajax' %}

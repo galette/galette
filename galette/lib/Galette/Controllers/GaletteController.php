@@ -24,6 +24,7 @@ use Galette\Core\PrintLogo;
 use Galette\Core\Galette;
 use Galette\Core\GaletteMail;
 use Galette\Core\MailingQueue;
+use Galette\Core\Pagination;
 use Galette\Core\Preferences;
 use Galette\Core\PreferencesSchema;
 use Galette\Core\SysInfos;
@@ -216,12 +217,7 @@ class GaletteController extends AbstractController
                 'visibility_choices'    => PublicPageVisibility::choices(),
                 'default_visibility_choices' => PublicPageVisibility::choices(inherit: false),
                 'plugin_public_pages'   => $this->plugins->getPublicPages(),
-                'pref_numrows_options'  => [
-                    10 => '10',
-                    20 => '20',
-                    50 => '50',
-                    100 => '100'
-                ],
+                'pref_numrows_options'  => Pagination::getShowOptions((int)$pref['pref_numrows']),
                 'print_logo'            => $this->print_logo,
                 'required'              => $required,
                 'themes'                => $themes,

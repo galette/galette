@@ -133,7 +133,7 @@ class MailingHistory extends GaletteTestCase
         //add another mailing in history
         $mailing = new \Galette\Core\Mailing($this->preferences, $members);
 
-        $mailing->subject = 'Filter subject test';
+        $mailing->subject = 'Filter subject test, été';
         $mailing->message = 'This is a test mailing for filters';
         $mailing->current_step = \Galette\Core\Mailing::STEP_SEND;
 
@@ -153,6 +153,11 @@ class MailingHistory extends GaletteTestCase
         $this->assertCount(2, $list);
 
         $filters->subject_filter = 'filter';
+        $list = $mh->getHistory();
+        $this->assertCount(1, $list);
+
+        //uppercase accented letters are lowered too
+        $filters->subject_filter = 'ÉTÉ';
         $list = $mh->getHistory();
         $this->assertCount(1, $list);
 

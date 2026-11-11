@@ -357,7 +357,7 @@ class AuthThrottle
                     || $scope === self::SCOPE_SUBSCRIBE_IP
                 ) {
                     $address = $identifier;
-                } elseif (self::normalizeAddress($identifier) === $identifier) {
+                } elseif (self::isNormalizedAddress($identifier)) {
                     //a scope of its own, counting what looks like an address
                     $address = $identifier;
                 } else {
@@ -444,6 +444,24 @@ class AuthThrottle
             Logs::exception($e, 'An error occurred cleaning authentication attempts', Analog::WARNING);
             return false;
         }
+    }
+
+    /**
+     * Is that identifier an address, as normalizeAddress() returns it?
+     *
+     * An IPv4 address comes back as it is, but an IPv6 one comes back as the
+     * /64 network it belongs to, which is not an address itself.
+     *
+     * @param string $identifier Counted identifier
+     */
+    private static function isNormalizedAddress(string $identifier): bool
+    {
+        if (self::normalizeAddress($identifier) === $identifier) {
+            return true;
+        }
+
+        return str_ends_with($identifier, '/64')
+            && self::normalizeAddress(substr($identifier, 0, -3)) === $identifier;
     }
 
     /**

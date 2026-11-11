@@ -688,4 +688,74 @@ class MailingsController extends GaletteRoutingTestCase
         );
         $this->assertSame([1, 1], array_column($mails, 'to'));
     }
+
+    /**
+     * Attachments that could run scripts are downloaded, not shown
+     */
+    public function testPreviewAttachmentTypes(): void
+    {
+        $member_two = $this->getMemberTwo();
+        $insert = $this->zdb->insert(MailingHistory::TABLE);
+        $insert->values([
+            'mailing_sender' => null,
+            'mailing_subject' => 'With attachments',
+            'mailing_body' => 'See attached files',
+            'mailing_date' => '2026-01-01 00:00:00',
+            'mailing_recipients' => \Safe\json_encode([$member_two->id => $member_two->email]),
+            'mailing_sent' => true
+        ]);
+        $this->zdb->execute($insert);
+        $select = $this->zdb->select(MailingHistory::TABLE);
+        $select->where(['mailing_subject' => 'With attachments']);
+        $mailing_id = (int)$this->zdb->execute($select)->current()->mailing_id;
+
+        //listed in alphabetical order
+        $files = [
+            'a.pdf' => ["%PDF-1.4\n%%EOF\n", 'application/pdf', ''],
+            'b.html' => [
+                '<!DOCTYPE html><html><body><script>alert(1)</script></body></html>',
+                'text/html',
+                "attachment; filename*=UTF-8''b.html"
+            ],
+            'c.svg' => [
+                '<?xml version="1.0"?><svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>',
+                'image/svg+xml',
+                "attachment; filename*=UTF-8''c.svg"
+            ],
+            'd.txt' => ['Some text', 'text/plain', ''],
+        ];
+        $dir = GALETTE_ATTACHMENTS_PATH . $mailing_id . '/';
+        \Safe\mkdir($dir, recursive: true);
+        foreach ($files as $name => [$contents]) {
+            \Safe\file_put_contents($dir . $name, $contents);
+        }
+
+        try {
+            $this->logSuperAdmin();
+            $pos = 0;
+            foreach ($files as $name => [$contents, $mime, $disposition]) {
+                $request = $this->createRequest(
+                    'previewAttachment',
+                    ['id' => (string)$mailing_id, 'pos' => (string)$pos++]
+                );
+                $test_response = $this->app->handle($request);
+
+                $this->assertSame(200, $test_response->getStatusCode(), $name);
+                $this->assertSame($mime, $test_response->getHeaderLine('Content-Type'), $name);
+                $this->assertSame('nosniff', $test_response->getHeaderLine('X-Content-Type-Options'), $name);
+                $this->assertSame($disposition, $test_response->getHeaderLine('Content-Disposition'), $name);
+                $this->assertSame($contents, (string)$test_response->getBody(), $name);
+            }
+
+            //no such attachment
+            $request = $this->createRequest('previewAttachment', ['id' => (string)$mailing_id, 'pos' => '42']);
+            $this->assertSame(404, $this->app->handle($request)->getStatusCode());
+        } finally {
+            $this->login->logOut();
+            foreach (array_keys($files) as $name) {
+                \Safe\unlink($dir . $name);
+            }
+            \Safe\rmdir($dir);
+        }
+    }
 }

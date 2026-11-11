@@ -21,6 +21,7 @@ use Galette\Core\MailingQueue;
 use Galette\Filters\MailingsList;
 use Galette\Filters\MembersList;
 use Galette\Repository\Members;
+use Slim\Exception\HttpNotFoundException;
 use Analog\Analog;
 use Galette\Core\Logs;
 use Throwable;
@@ -35,6 +36,22 @@ use function Safe\file_get_contents;
 
 class MailingsController extends CrudController
 {
+    /**
+     * Attachment types shown in the browser; any other one is downloaded.
+     *
+     * An attachment is uploaded by whoever sends a mailing, and previewed by
+     * whoever reads the history: rendered inline, an HTML or SVG file would run
+     * its scripts within Galette, with the session of the reader.
+     */
+    private const array INLINE_ATTACHMENT_TYPES = [
+        'application/pdf',
+        'image/gif',
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+        'text/plain',
+    ];
+
     // CRUD - Create
 
     /**
@@ -787,10 +804,23 @@ class MailingsController extends CrudController
         $mailing = new Mailing($this->preferences);
         MailingHistory::loadFrom(zdb: $this->zdb, id: $id, mailing: $mailing, new: false);
         $attachments = $mailing->attachments;
+        if (!isset($attachments[$pos])) {
+            throw new HttpNotFoundException($request);
+        }
         $attachment = $attachments[$pos];
         $filepath = $attachment->getDestDir() . $attachment->getFileName();
+        $mime = $attachment->getMimeType($filepath);
 
-        $response = $response->withHeader('Content-type', $attachment->getMimeType($filepath));
+        $response = $response
+            ->withHeader('Content-type', $mime)
+            //never let the browser guess another type than the one sent
+            ->withHeader('X-Content-Type-Options', 'nosniff');
+        if (!in_array($mime, self::INLINE_ATTACHMENT_TYPES, strict: true)) {
+            $response = $response->withHeader(
+                'Content-Disposition',
+                "attachment; filename*=UTF-8''" . rawurlencode($attachment->getFileName())
+            );
+        }
 
         $body = $response->getBody();
         $body->write(file_get_contents($filepath));
