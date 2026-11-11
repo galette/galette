@@ -760,6 +760,9 @@ against a given core branch:
 ```yaml
 jobs:
   e2e-tests:
+    # the workflow runs code of the tested branch: read-only token
+    permissions:
+      contents: read
     uses: galette/.github/.github/workflows/plugin-e2e.yml@main
     with:
       galette-ref: master
