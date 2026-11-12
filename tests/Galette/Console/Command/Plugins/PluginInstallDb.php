@@ -42,6 +42,8 @@ class PluginInstallDb extends GaletteTestCase
     private const string PLUGINS_PATH = GALETTE_TESTS_PATH . '/plugins-installdb/';
     private const string PLUGIN_INSTALL_ID = 'plugin-db-install';
     private const string PLUGIN_UPGRADE_ID = 'plugin-db-upgrade';
+    private const string BROKEN_PLUGINS_PATH = GALETTE_TESTS_PATH . '/plugins-installdb-broken/';
+    private const string PLUGIN_BROKEN_ID = 'plugin-db-broken';
 
     /** Tables created by test SQL scripts that must be dropped during tear-down. */
     private const array TABLES_TO_DROP = [
@@ -65,7 +67,7 @@ class PluginInstallDb extends GaletteTestCase
         }
 
         $delete = $this->zdb->delete(Plugins::TABLE);
-        $delete->where->in('plugin_id', [self::PLUGIN_INSTALL_ID, self::PLUGIN_UPGRADE_ID]);
+        $delete->where->in('plugin_id', [self::PLUGIN_INSTALL_ID, self::PLUGIN_UPGRADE_ID, self::PLUGIN_BROKEN_ID]);
         $this->zdb->execute($delete);
         \GaletteDbUpgradePlugin\PluginGalettePlugdbupgrade::$legacy_version = null;
 
@@ -360,6 +362,27 @@ class PluginInstallDb extends GaletteTestCase
         $this->expectException(\Symfony\Component\Console\Exception\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown plugin(s): plugin-does-not-exist');
         $tester->execute(['plugins' => ['plugin-does-not-exist']], ['interactive' => $interactive]);
+    }
+
+    /**
+     * A plugin whose scripts fail must not be marked as installed, and the command must fail
+     */
+    public function testFailingScriptsDoNotMarkInstalled(): void
+    {
+        $this->plugins->resetModulesList();
+        $this->plugins->loadModules($this->preferences, self::BROKEN_PLUGINS_PATH);
+
+        $command = new \Galette\Console\Command\Plugins\PluginInstallDb(GALETTE_ROOT);
+        $tester = new CommandTester($command);
+        $tester->execute(['plugins' => [self::PLUGIN_BROKEN_ID]], ['interactive' => false]);
+
+        $this->assertSame(Command::FAILURE, $tester->getStatusCode());
+        $this->assertStringContainsString(
+            'Database for plugin "plugin-db-broken" has not been installed',
+            $tester->getDisplay()
+        );
+        $this->assertNull($this->fetchStoredVersion(self::PLUGIN_BROKEN_ID));
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Error executing query');
     }
 
     /**
