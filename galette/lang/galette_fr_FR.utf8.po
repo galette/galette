@@ -18,9 +18,9 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-11-13 19:32+0100\n"
-"PO-Revision-Date: 2026-11-10 07:27+0000\n"
-"Last-Translator: Johan Cwiklinski "
-"<trasher@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-11-13 20:23+0000\n"
+"Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: French <https://hosted.weblate.org/projects/galette/galette/"
 "fr/>\n"
 "Language: fr_FR\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.11.2.dev0\n"
+"X-Generator: Weblate 2026.12.dev0\n"
 
 msgid "Members"
 msgstr "Adhérents"
@@ -67,13 +67,13 @@ msgid "Plugins"
 msgstr "Plugins"
 
 msgid "Roles"
-msgstr ""
+msgstr "Rôles"
 
 msgid "Create members"
-msgstr ""
+msgstr "Créer des adhérents"
 
 msgid "Create child members"
-msgstr ""
+msgstr "Créer des adhérents enfants"
 
 msgid "Display members"
 msgstr "Afficher les adhérents"
@@ -132,10 +132,10 @@ msgid "Send reminders to late members"
 msgstr "Envoyer un rappel aux adhérents retardataires"
 
 msgid "Create transactions"
-msgstr ""
+msgstr "Créer des transactions"
 
 msgid "Display transactions"
-msgstr ""
+msgstr "Afficher les transactions"
 
 msgid "Edit transactions"
 msgstr ""
@@ -156,13 +156,13 @@ msgid "Delete groups"
 msgstr ""
 
 msgid "Edit groups"
-msgstr ""
+msgstr "Modifier les groupes"
 
 msgid "Export groups as PDF"
 msgstr ""
 
 msgid "Send mailings"
-msgstr ""
+msgstr "Envoyer des mailings"
 
 msgid "Browse and delete sent mailings"
 msgstr ""
@@ -4850,7 +4850,7 @@ msgid "Right"
 msgstr "Droit"
 
 msgid "Role"
-msgstr ""
+msgstr "Rôle"
 
 msgid "Every logged in member"
 msgstr ""
@@ -4876,7 +4876,7 @@ msgstr "Tous les groupes"
 
 msgctxt "member roles"
 msgid "will be removed"
-msgstr ""
+msgstr "sera retiré"
 
 #, php-format
 msgid "Take role %1$s back"
@@ -4888,7 +4888,7 @@ msgstr ""
 
 msgctxt "member roles"
 msgid "added"
-msgstr ""
+msgstr "ajouté"
 
 msgid "Give role"
 msgstr ""
@@ -8034,7 +8034,7 @@ msgid "Change parent role"
 msgstr ""
 
 msgid "Inherits from"
-msgstr ""
+msgstr "Hérite de"
 
 msgid "permissions granted"
 msgstr ""
