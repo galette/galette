@@ -8,78 +8,15 @@
  * Content Security Policy tests
  *
  * The complete policy is sent report-only: a page breaking it still works,
- * nothing but the console tells. Browsers fire a securitypolicyviolation
- * event for each violation, enforced or not; pages are browsed while
- * listening to it, any violation fails the test.
+ * nothing but the console tells. Pages are browsed while listening to
+ * violations, any of them fails the test. Maps pages are checked by the maps
+ * spec, which runs in a project of its own.
  */
 
-import { test as base, expect, Page } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 import { logIn, test } from '../fixtures/auth.fixture';
 import { enableDarkMode } from '../fixtures/a11y.fixture';
-
-type Violation = {
-  directive: string;
-  blocked: string;
-  source: string;
-  line: number;
-  sample: string;
-};
-
-declare global {
-  interface Window {
-    __cspViolations: Violation[];
-  }
-}
-
-/**
- * Record violations of every document the page loads
- */
-async function listenViolations(page: Page): Promise<void> {
-  await page.addInitScript(() => {
-    window.__cspViolations = [];
-    document.addEventListener('securitypolicyviolation', (event) => {
-      window.__cspViolations.push({
-        directive: event.effectiveDirective,
-        blocked: event.blockedURI,
-        source: event.sourceFile,
-        line: event.lineNumber,
-        sample: event.sample,
-      });
-    });
-  });
-}
-
-/**
- * Get violations of the current document
- *
- * Waits for the network to settle first: scripts loaded late, fetch calls and
- * images are checked when they are requested.
- */
-async function violations(page: Page): Promise<Violation[]> {
-  await page.waitForLoadState('networkidle');
-  return page.evaluate(() => window.__cspViolations ?? []);
-}
-
-/**
- * Format violations for an assertion message
- */
-function format(found: Violation[]): string {
-  return found
-    .map((v) => `${v.directive} blocked ${v.blocked || '(inline)'} (from ${v.source}:${v.line}) ${v.sample}`)
-    .join('\n');
-}
-
-/**
- * Browse pages, and check none breaks the policy
- */
-async function expectNoViolation(page: Page, urls: string[], status = 200): Promise<void> {
-  for (const url of urls) {
-    const response = await page.goto(url);
-    expect(response?.status(), url).toBe(status);
-    const found = await violations(page);
-    expect(found, `${url}\n${format(found)}`).toEqual([]);
-  }
-}
+import { expectNoViolation, format, listenViolations, violations } from '../fixtures/csp.fixture';
 
 test.describe('Content Security Policy', () => {
 
@@ -91,7 +28,8 @@ test.describe('Content Security Policy', () => {
     expect(headers['content-security-policy']).toContain("object-src 'none'");
     expect(headers['x-content-type-options']).toBe('nosniff');
 
-    const policy = headers['content-security-policy-report-only'];
+    // complete policy is report-only, unless enforced from the advanced configuration
+    const policy = headers['content-security-policy-report-only'] ?? headers['content-security-policy'];
     const nonce = policy.match(/'nonce-([^']+)'/)?.[1];
     expect(nonce).toBeTruthy();
 
