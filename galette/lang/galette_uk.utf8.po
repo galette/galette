@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-02 13:04+0100\n"
+"POT-Creation-Date: 2026-11-13 19:32+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -30,6 +30,192 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 2026.11.dev0\n"
+
+msgid "Members"
+msgstr "Членів"
+
+msgid "Contributions"
+msgstr "Внески"
+
+msgid "Transactions"
+msgstr "Перекази"
+
+msgid "Groups"
+msgstr "Групи"
+
+msgid "Mailings"
+msgstr "Розсилки"
+
+msgid "Documents"
+msgstr "Документи"
+
+msgid "Configuration"
+msgstr "Конфігурація"
+
+msgid "Exports"
+msgstr "Експорти"
+
+msgid "Logs"
+msgstr "Журнали"
+
+msgid "System information"
+msgstr "Системи відомостей"
+
+msgid "Security"
+msgstr "Безпека"
+
+msgid "Plugins"
+msgstr "Розширення"
+
+msgid "Roles"
+msgstr ""
+
+msgid "Create members"
+msgstr ""
+
+msgid "Create child members"
+msgstr ""
+
+msgid "Display members"
+msgstr ""
+
+msgid "Edit members"
+msgstr ""
+
+msgid "Delete members"
+msgstr ""
+
+msgid ""
+"Manage members administrative information (status, exemption, account, "
+"parent)"
+msgstr ""
+
+msgid "Grant administrator rights to members"
+msgstr ""
+
+msgid "Change or delete members in mass"
+msgstr ""
+
+msgid "Send members new password links, reset their two-factor authentication"
+msgstr ""
+
+msgid "Import members"
+msgstr ""
+
+msgid "Export members as CSV"
+msgstr ""
+
+msgid "Print members cards, labels and attendance sheets"
+msgstr ""
+
+msgid "Create contributions"
+msgstr ""
+
+msgid "Display contributions"
+msgstr ""
+
+msgid "Add contributions in mass"
+msgstr ""
+
+msgid "Edit contributions"
+msgstr ""
+
+msgid "Delete contributions"
+msgstr ""
+
+msgid "Export contributions as CSV"
+msgstr ""
+
+msgid "Manage scheduled payments"
+msgstr ""
+
+msgid "Send reminders to late members"
+msgstr "Надіслати нагадування спізнілим членам"
+
+msgid "Create transactions"
+msgstr ""
+
+msgid "Display transactions"
+msgstr ""
+
+msgid "Edit transactions"
+msgstr ""
+
+msgid "Delete transactions"
+msgstr ""
+
+msgid "Attach contributions to transactions"
+msgstr ""
+
+msgid "Display groups"
+msgstr ""
+
+msgid "Create groups"
+msgstr ""
+
+msgid "Delete groups"
+msgstr ""
+
+msgid "Edit groups"
+msgstr ""
+
+msgid "Export groups as PDF"
+msgstr ""
+
+msgid "Send mailings"
+msgstr ""
+
+msgid "Browse and delete sent mailings"
+msgstr ""
+
+msgid "Manage documents"
+msgstr ""
+
+msgid ""
+"Manage statuses, titles, contributions and payment types, labels translations"
+msgstr ""
+
+msgid "Manage emails contents and PDF models"
+msgstr ""
+
+msgid "Change settings"
+msgstr ""
+
+msgid "Configure core and dynamic fields, and lists"
+msgstr ""
+
+msgid "Export data"
+msgstr ""
+
+msgid "Browse and flush logs"
+msgstr ""
+
+msgid "Display system information and charts"
+msgstr ""
+
+msgid "Lift authentication restrictions"
+msgstr ""
+
+msgid "Manage plugins"
+msgstr ""
+
+msgid "Manage roles and their permissions"
+msgstr ""
+
+msgid "Member"
+msgstr "Члени"
+
+msgid "Up to date member"
+msgstr ""
+
+msgid "Group manager"
+msgstr "Менеджер групи"
+
+msgid "Staff member"
+msgstr "Співробітник"
+
+msgid "Administrator"
+msgstr "Адміністратор"
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
@@ -351,6 +537,9 @@ msgstr "- Невідомий вид оплати!"
 msgid "- Unknown contribution type!"
 msgstr "- Невідомий тип внеску!"
 
+msgid "You do not have permission for requested URL."
+msgstr "У Вас нема дозволу на запитувану URL-адресу."
+
 msgid "No contribution was selected, please check at least one."
 msgstr "Жодного внеску не вибрано. Помітьте принаймні один."
 
@@ -465,12 +654,6 @@ msgstr "Видалити тип внеску \"%1$s\""
 msgid "New document"
 msgstr "Жодного документа"
 
-msgid "Documents"
-msgstr "Документи"
-
-msgid "You do not have permission for requested URL."
-msgstr "У Вас нема дозволу на запитувану URL-адресу."
-
 msgid "The file does not exists or cannot be read :("
 msgstr "Файл не існує або його неможливо прочитати :("
 
@@ -530,9 +713,6 @@ msgstr "Файл із такою назвою вже існує!"
 
 msgid "Group added"
 msgstr "Групу додано"
-
-msgid "Groups"
-msgstr "Групи"
 
 #, php-format
 msgid "New parent is %1$s"
@@ -603,9 +783,6 @@ msgstr "Пошта успішно надіслана!"
 msgid "Mailing has been successfully saved."
 msgstr "Поштову розсилку успішно збережено."
 
-msgid "Mailings"
-msgstr "Розсилки"
-
 #, php-format
 msgid "Remove mailing #%1$s"
 msgstr "Видалити поштову розсилку #%1$s"
@@ -653,9 +830,6 @@ msgstr "Увімкнено самопідписку?"
 #| msgid "file"
 msgid "Profile"
 msgstr "файл"
-
-msgid "Members"
-msgstr "Членів"
 
 msgid "Gallery"
 msgstr "Дошка членів"
@@ -730,6 +904,11 @@ msgstr "Нового члена успішно додано."
 msgid "Member account has been modified."
 msgstr "Обліковий запис члена змінено."
 
+#. TRANS: %1$d is the number of roles given, %2$d the number taken back, %3$d the member identifier
+#, php-format
+msgid "%1$d role(s) given, %2$d taken back for member #%3$d"
+msgstr ""
+
 msgid "An error occurred adding member to its groups as manager."
 msgstr "Не вдалося додати члена до своїх груп як управника."
 
@@ -777,6 +956,71 @@ msgstr "Вид оплати \"%1$s\" успішно змінено."
 #, php-format
 msgid "Remove payment type %1$s"
 msgstr "Вилучити вид оплати %1$s"
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has not been added; is its name missing or already used?"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been added; choose its permissions."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s'"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has not been modified!"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' modified"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been successfully modified."
+msgstr ""
+
+msgid "System roles are given from members data."
+msgstr ""
+
+msgid "Please choose a member."
+msgstr ""
+
+msgid "Requested group does not exist."
+msgstr ""
+
+msgid "Member already has this role."
+msgstr ""
+
+#. TRANS: %1$s is the role name, %2$d the member identifier
+#, php-format
+msgid "Role '%1$s' given to member #%2$d"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been given."
+msgstr ""
+
+msgid "This role was not given."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been taken back."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Remove role %1$s"
+msgstr ""
 
 msgid "This search is already saved."
 msgstr "Цей пошук уже збережено."
@@ -949,9 +1193,6 @@ msgstr "Успішно видалено!"
 msgid "An error occurred trying to delete :("
 msgstr "Під час видалення виникла помилка :("
 
-msgid "Exports"
-msgstr "Експорти"
-
 #. TRANS: parameter is the table name
 #, php-format
 msgid "Table %1$s is empty, and has not been exported."
@@ -973,6 +1214,11 @@ msgstr "Сталася помилка під час запуску параме�
 
 msgid "Imports"
 msgstr "Імпорти"
+
+msgid ""
+"You are not allowed to import groups managers; remove that column from the "
+"import model."
+msgstr ""
 
 msgid "An error occurred importing the file :("
 msgstr "Під час імпортування файлу сталася помилка :("
@@ -1048,9 +1294,6 @@ msgstr "Не вдалося зберегти мітку `%1$s` для мови`%
 
 msgid "Labels has been successfully translated!"
 msgstr "Мітки успішно перекладено!"
-
-msgid "System information"
-msgstr "Системи відомостей"
 
 msgid "Dashboard"
 msgstr "Дошка даних"
@@ -1158,9 +1401,6 @@ msgstr "Надіслані нагадування:"
 msgid "Download document"
 msgstr "Завантажити документ"
 
-msgid "Logs"
-msgstr "Журнали"
-
 msgid "Logs have been flushed!"
 msgstr "Журнали очищено!"
 
@@ -1169,6 +1409,66 @@ msgstr "Сталася помилка під час спроби очистит�
 
 msgid "Flush the logs"
 msgstr "Очистити журнали"
+
+msgid "Maps are not enabled."
+msgstr ""
+
+msgid "Maps"
+msgstr "Maps"
+
+msgid "Coordinates have not been loaded."
+msgstr ""
+
+msgid "Superadmin cannot be localized."
+msgstr "Суперадмін не може бути локалізований."
+
+msgid ""
+"Town search is not available for now, you can still search or click on the "
+"map."
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s geographic position"
+msgstr "Географічне положення %1$s"
+
+msgid "Maps settings"
+msgstr ""
+
+msgid "Unknown position precision."
+msgstr ""
+
+msgid ""
+"Maps center needs both a latitude, between -90 and 90, and a longitude, "
+"between -180 and 180."
+msgstr ""
+
+msgid "An address is required to use your own background map."
+msgstr ""
+
+msgid "Maps settings have been saved."
+msgstr ""
+
+msgid "Town search is not available for now, you can still enter coordinates."
+msgstr ""
+
+msgid "Coordinates have been removed!"
+msgstr "Координати видалено!"
+
+msgid "Coordinates have not been removed :("
+msgstr "Координати не видалено :("
+
+msgid "Invalid coordinates."
+msgstr ""
+
+msgid "New coordinates have been stored!"
+msgstr "Збережено нові координати!"
+
+msgid "Coordinates have not been stored :("
+msgstr "Координати не зберігаються :("
+
+msgid "Unable to generate PDF file."
+msgstr ""
 
 msgid "Unable to get members list."
 msgstr "Не вдається отримати список членів."
@@ -1199,9 +1499,6 @@ msgstr "Модель не збережено :("
 
 msgid "Invalid link!"
 msgstr "Недійсне посилання!"
-
-msgid "Plugins"
-msgstr "Розширення"
 
 #, php-format
 msgid "Plugin %1$s has been enabled"
@@ -1355,235 +1652,6 @@ msgstr "Гаразд"
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
 msgstr "Мінімальна версія для двигуна %1$s – %2$s, знайдено %1$s %3$s!"
-
-msgid "My Account"
-msgstr "Мій обліковий запис"
-
-msgid "View my member card"
-msgstr "Переглянути мою картку члена"
-
-msgid "My contributions"
-msgstr "Мої внески"
-
-msgid "View and filter all my contributions"
-msgstr "Перегляд і добірка всіх моїх внесків"
-
-msgid "My scheduled payments"
-msgstr "Мої заплановані платежі"
-
-msgid "View and filter all my scheduled payments"
-msgstr "Переглянути та відфільтрувати всі мої заплановані платежі"
-
-msgid "My transactions"
-msgstr "Мої перекази"
-
-msgid "View and filter all my transactions"
-msgstr "Перегляд і добірка всіх моїх переказів"
-
-#, fuzzy
-#| msgid "Fill all empty login and passwords"
-msgid "Modify my login and password"
-msgstr "Заповніть всі порожні логіни та паролі"
-
-msgid "Add a child member"
-msgstr "Додати дочірнього члена"
-
-msgid "Add new child member in database"
-msgstr "Додати нового дочірнього члена в базу даних"
-
-msgid "Manage my two-factor authentication"
-msgstr ""
-
-msgid "View, search into and filter member's list"
-msgstr "Перегляд, пошук і добірка списку членів"
-
-msgid "Perform advanced search into members list"
-msgstr "Виконуйте розширений пошук у списку членів"
-
-msgid "Add a member"
-msgstr "Додати члена"
-
-msgid "Add new member in database"
-msgstr "Додати нового члена в базу даних"
-
-msgid "Empty adhesion form"
-msgstr "Порожня форма зчіпляння"
-
-msgid "Download empty adhesion form"
-msgstr "Завантажити порожню форму зчіпляння"
-
-msgid "Contributions"
-msgstr "Внески"
-
-msgid "View and filter contributions"
-msgstr "Перегляд і добірка внесків"
-
-msgid "View and filter scheduled payments"
-msgstr "Переглядайте та фільтруйте заплановані платежі"
-
-msgid "View and filter transactions"
-msgstr "Перегляд і добірка переказів"
-
-msgid "Add a membership fee"
-msgstr "Додати членський внесок"
-
-msgid "Add new membership fee in database"
-msgstr "Додати новий членський внесок до бази даних"
-
-msgid "Add a donation"
-msgstr "Додати пожертву"
-
-msgid "Add new donation in database"
-msgstr "Додати нову пожертву в базу даних"
-
-msgid "Add a transaction"
-msgstr "Додати переказ"
-
-msgid "Add new transaction in database"
-msgstr "Додати новий переказ у базу даних"
-
-msgid "Send reminders to late members"
-msgstr "Надіслати нагадування спізнілим членам"
-
-msgid "Management"
-msgstr "Керування"
-
-msgid "View and manage groups"
-msgstr "Переглядайте групи та управляйте ними"
-
-msgid ""
-"Add documents to share related to your association (status, rules of "
-"procedure, ...)"
-msgstr ""
-"Додайте документи для спільного використання, пов’язані з вашою асоціацією "
-"(статус, правила процедури, ...)"
-
-msgid "Manage mailings that has been sent"
-msgstr "Управління надісланими розсиланнями"
-
-msgid "Various charts"
-msgstr "Різні діаграми"
-
-msgid "Export some data in various formats"
-msgstr "Експорт деяких даних у різних форматах"
-
-msgid "Import members from CSV files"
-msgstr "Імпорт членів із файлів CSV"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
-
-msgid "View application's logs"
-msgstr "Перегляд журналів застосунку"
-
-msgid "Configuration"
-msgstr "Конфігурація"
-
-msgid ""
-"Set applications preferences (address, website, member's cards "
-"configuration, ...)"
-msgstr ""
-"Установити параметри застосунків (адреса, вебсайт, конфігурація карток "
-"членів, ...)"
-
-msgid "Information about available plugins"
-msgstr "Відомості про доступні втулки"
-
-msgid "Customize lists fields and order"
-msgstr "Налаштування полів списків та впорядкування"
-
-msgid ""
-"Customize fields order, set which are required, and for who they're visibles"
-msgstr "Налаштування впорядкування полів, обов'язкових і видимих полів"
-
-msgid "Manage additional fields for various forms"
-msgstr "Управління додатковими полями для різних форм"
-
-msgid "Manage contributions types"
-msgstr "Управління типами внесків"
-
-msgid "Manage payment types"
-msgstr "Управління видами оплати"
-
-msgid "Manage titles"
-msgstr "Управління заголовками"
-
-msgid "Manage PDF models"
-msgstr "Управління моделями PDF"
-
-msgid "Manage emails texts and subjects"
-msgstr "Управління текстами й темами е-пошти"
-
-msgid "Manage translatable labels"
-msgstr "Керуйте мітками, які можна перекладати"
-
-msgid "Various administrative tools"
-msgstr "Різні адміністративні засоби"
-
-msgid "Edit every setting, including those the settings form does not show"
-msgstr ""
-
-msgid "Directories"
-msgstr "Довідники"
-
-msgid "Galleries"
-msgstr "Галереї"
-
-msgid "View documents related to your association"
-msgstr "Перегляньте документи, що стосуються вашої асоціації"
-
-msgid "Public pages"
-msgstr "Загальнодоступні сторінки"
-
-msgid "Transactions"
-msgstr "Перекази"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "%1$s: edit information"
-msgstr "%1$s: редагування відомостей"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "%1$s: contributions"
-msgstr "%1$s: внески"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "%1$s: remove from database"
-msgstr "%1$s: видалити з бази даних"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "Log in as %1$s"
-msgstr "Увійти як %1$s"
-
-msgid "Mass change"
-msgstr "Масова зміна"
-
-msgid "Mass add contributions"
-msgstr "Масове додавання внесків"
-
-msgid "Delete"
-msgstr "Видалити"
-
-msgid "Mail"
-msgstr "Пошта"
-
-msgid "Generate labels"
-msgstr "Утворити мітки"
-
-msgid "Generate Member Cards"
-msgstr "Утворити картки члена"
-
-msgid "Export as CSV"
-msgstr "Експорт у форматі CSV"
-
-msgid "Galette news"
-msgstr "Новини Галетти"
-
-msgid "Association news"
-msgstr "Новини Асоціації"
 
 #, fuzzy
 #| msgid "Email sent is disabled in the preferences. Ask galette admin"
@@ -1780,6 +1848,9 @@ msgstr "Такого модуля немає."
 
 msgid "Cannot deactivate plugin."
 msgstr "Не вдалося знедіяти розширення."
+
+msgid "Plugin features are part of Galette now, it cannot be enabled."
+msgstr ""
 
 msgid "Cannot activate plugin."
 msgstr "Не вдалося задіяти розширення."
@@ -2160,11 +2231,19 @@ msgstr "- Будь ласка, виберіть учасника з групи, 
 msgid "- The amount must be an integer!"
 msgstr "- Сума має бути цілим числом!"
 
+msgid "- You are not allowed to attach a contribution to this transaction!"
+msgstr ""
+
 msgid "- The duration must be a positive integer!"
 msgstr "- Тривалість має бути додатним цілим числом!"
 
 msgid "- The end date must be after the start date!"
 msgstr "- Дата завершення має бути після дати початку!"
+
+msgid ""
+"- You are not allowed to change the amount of a contribution attached to a "
+"transaction you cannot access!"
+msgstr ""
 
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr "- Сума всіх внесків перевищує відповідну суму переказу."
@@ -2579,7 +2658,6 @@ msgstr "Файл завеликий. Найбільш допустимий ро�
 msgid "Unable to add dynamic translation for %1$s :("
 msgstr "Не вдалося додати динамічний переклад для %1$s :("
 
-#. TRANS: paramter is a field name
 #. TRANS: parameter is a field name
 #, php-format
 msgid "Unable to update dynamic translation for %1$s :("
@@ -2598,15 +2676,6 @@ msgstr "Користувач, лише для читання"
 
 msgid "User, read/write"
 msgstr "Користувач, читання/запис"
-
-msgid "Group manager"
-msgstr "Менеджер групи"
-
-msgid "Staff member"
-msgstr "Співробітник"
-
-msgid "Administrator"
-msgstr "Адміністратор"
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
@@ -3058,9 +3127,6 @@ msgstr "Картки члена"
 msgid "Cards"
 msgstr "Картки"
 
-msgid "Member"
-msgstr "Члени"
-
 msgid "labels_print_filename"
 msgstr "label_print_filename"
 
@@ -3069,6 +3135,63 @@ msgstr "Мітки члена"
 
 msgid "Labels"
 msgstr "Мітки"
+
+msgid "About 100 km"
+msgstr ""
+
+msgid "About 50 km"
+msgstr ""
+
+msgid "About 5 km"
+msgstr ""
+
+msgid "About 500 m"
+msgstr ""
+
+msgid "About 50 m"
+msgstr ""
+
+msgid "Exact position"
+msgstr ""
+
+msgid "OpenFreeMap, light grey"
+msgstr ""
+
+msgid "OpenFreeMap, colours"
+msgstr ""
+
+msgid "VersaTiles, colours"
+msgstr ""
+
+msgid "VersaTiles, grey"
+msgstr ""
+
+msgid "Plan IGN, France only"
+msgstr ""
+
+msgid "OpenStreetMap"
+msgstr ""
+
+msgid "OpenStreetMap France"
+msgstr ""
+
+msgid "Humanitarian OSM Team"
+msgstr ""
+
+msgid "OpenStreetMap Germany"
+msgstr ""
+
+msgid "CyclOSM, for cycling"
+msgstr ""
+
+msgid "OpenTopoMap, topographic"
+msgstr ""
+
+msgid "Esri, light grey"
+msgstr ""
+
+msgid "Your own values"
+msgstr ""
 
 msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
@@ -3109,6 +3232,251 @@ msgstr "Ваша база даних Galette відсутня або не оно
 msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr ""
 "Запустіть процедуру встановлення або оновлення (перегляньте документацію)"
+
+msgid "View my member card"
+msgstr "Переглянути мою картку члена"
+
+msgid "My contributions"
+msgstr "Мої внески"
+
+msgid "View and filter all my contributions"
+msgstr "Перегляд і добірка всіх моїх внесків"
+
+msgid "My transactions"
+msgstr "Мої перекази"
+
+msgid "View and filter all my transactions"
+msgstr "Перегляд і добірка всіх моїх переказів"
+
+msgid "My localization"
+msgstr "Моя локалізація"
+
+msgid "Set my position on the members map"
+msgstr ""
+
+msgid "View, search into and filter member's list"
+msgstr "Перегляд, пошук і добірка списку членів"
+
+msgid "View and manage groups"
+msgstr "Переглядайте групи та управляйте ними"
+
+msgid "Manage mailings that has been sent"
+msgstr "Управління надісланими розсиланнями"
+
+msgid "View and filter contributions"
+msgstr "Перегляд і добірка внесків"
+
+msgid "View and filter transactions"
+msgstr "Перегляд і добірка переказів"
+
+msgid "View documents related to your association"
+msgstr "Перегляньте документи, що стосуються вашої асоціації"
+
+msgid ""
+"Set applications preferences (address, website, member's cards "
+"configuration, ...)"
+msgstr ""
+"Установити параметри застосунків (адреса, вебсайт, конфігурація карток "
+"членів, ...)"
+
+msgid "Information about available plugins"
+msgstr "Відомості про доступні втулки"
+
+msgid "My scheduled payments"
+msgstr "Мої заплановані платежі"
+
+msgid "View and filter all my scheduled payments"
+msgstr "Переглянути та відфільтрувати всі мої заплановані платежі"
+
+#, fuzzy
+#| msgid "Fill all empty login and passwords"
+msgid "Modify my login and password"
+msgstr "Заповніть всі порожні логіни та паролі"
+
+msgid "Add a child member"
+msgstr "Додати дочірнього члена"
+
+msgid "Add new child member in database"
+msgstr "Додати нового дочірнього члена в базу даних"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
+
+msgid "My Account"
+msgstr "Мій обліковий запис"
+
+msgid "Perform advanced search into members list"
+msgstr "Виконуйте розширений пошук у списку членів"
+
+msgid "Add a member"
+msgstr "Додати члена"
+
+msgid "Add new member in database"
+msgstr "Додати нового члена в базу даних"
+
+msgid "Empty adhesion form"
+msgstr "Порожня форма зчіпляння"
+
+msgid "Download empty adhesion form"
+msgstr "Завантажити порожню форму зчіпляння"
+
+msgid "View and filter scheduled payments"
+msgstr "Переглядайте та фільтруйте заплановані платежі"
+
+msgid "Add a membership fee"
+msgstr "Додати членський внесок"
+
+msgid "Add new membership fee in database"
+msgstr "Додати новий членський внесок до бази даних"
+
+msgid "Add a donation"
+msgstr "Додати пожертву"
+
+msgid "Add new donation in database"
+msgstr "Додати нову пожертву в базу даних"
+
+msgid "Add a transaction"
+msgstr "Додати переказ"
+
+msgid "Add new transaction in database"
+msgstr "Додати новий переказ у базу даних"
+
+msgid "Management"
+msgstr "Керування"
+
+msgid ""
+"Add documents to share related to your association (status, rules of "
+"procedure, ...)"
+msgstr ""
+"Додайте документи для спільного використання, пов’язані з вашою асоціацією "
+"(статус, правила процедури, ...)"
+
+msgid "Various charts"
+msgstr "Різні діаграми"
+
+msgid "Export some data in various formats"
+msgstr "Експорт деяких даних у різних форматах"
+
+msgid "Import members from CSV files"
+msgstr "Імпорт членів із файлів CSV"
+
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
+msgid "View application's logs"
+msgstr "Перегляд журналів застосунку"
+
+msgid "Display members positions on maps, and choose the background map"
+msgstr ""
+
+msgid "Customize lists fields and order"
+msgstr "Налаштування полів списків та впорядкування"
+
+msgid ""
+"Customize fields order, set which are required, and for who they're visibles"
+msgstr "Налаштування впорядкування полів, обов'язкових і видимих полів"
+
+msgid "Manage additional fields for various forms"
+msgstr "Управління додатковими полями для різних форм"
+
+msgid "Manage contributions types"
+msgstr "Управління типами внесків"
+
+msgid "Manage payment types"
+msgstr "Управління видами оплати"
+
+msgid "Manage titles"
+msgstr "Управління заголовками"
+
+msgid "Manage PDF models"
+msgstr "Управління моделями PDF"
+
+msgid "Manage emails texts and subjects"
+msgstr "Управління текстами й темами е-пошти"
+
+msgid "Manage translatable labels"
+msgstr "Керуйте мітками, які можна перекладати"
+
+msgid "Various administrative tools"
+msgstr "Різні адміністративні засоби"
+
+msgid "Edit every setting, including those the settings form does not show"
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: edit information"
+msgstr "%1$s: редагування відомостей"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: contributions"
+msgstr "%1$s: внески"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: remove from database"
+msgstr "%1$s: видалити з бази даних"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Log in as %1$s"
+msgstr "Увійти як %1$s"
+
+msgid "Geolocalize"
+msgstr "Геолокалізувати"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Geolocalize %1$s"
+msgstr "Геолокалізувати %1$s"
+
+msgid "Show on map"
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Show %1$s on map"
+msgstr ""
+
+msgid "Mass change"
+msgstr "Масова зміна"
+
+msgid "Mass add contributions"
+msgstr "Масове додавання внесків"
+
+msgid "Delete"
+msgstr "Видалити"
+
+msgid "Mail"
+msgstr "Пошта"
+
+msgid "Generate labels"
+msgstr "Утворити мітки"
+
+msgid "Generate Member Cards"
+msgstr "Утворити картки члена"
+
+msgid "Export as CSV"
+msgstr "Експорт у форматі CSV"
+
+msgid "Galette news"
+msgstr "Новини Галетти"
+
+msgid "Association news"
+msgstr "Новини Асоціації"
+
+msgid "Directories"
+msgstr "Довідники"
+
+msgid "Galleries"
+msgstr "Галереї"
+
+msgid "See where members live"
+msgstr ""
+
+msgid "Public pages"
+msgstr "Загальнодоступні сторінки"
 
 msgid "Galette error"
 msgstr "Помилка Galette"
@@ -3158,6 +3526,10 @@ msgstr "Пошукові запити видалено (%1$s)"
 #, php-format
 msgid "Scheduled payments deleted (%1$s)"
 msgstr "Заплановані платежі видалено (%1$s)"
+
+#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
+msgid "YYYY-MM-DD"
+msgstr "DD.MM.YYYY"
 
 #, php-format
 msgid "Table %1$s has been converted to InnoDB/utf8mb4."
@@ -3388,10 +3760,6 @@ msgstr "Установлення бази даних"
 
 msgid "Documentation"
 msgstr "Документація"
-
-#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
-msgid "YYYY-MM-DD"
-msgstr "DD.MM.YYYY"
 
 msgid "Member id:"
 msgstr "ID члена:"
@@ -3933,6 +4301,14 @@ msgstr ""
 msgid "Unable to migrate choices for field %d: %s"
 msgstr ""
 
+msgid "System roles have been created."
+msgstr ""
+
+msgid ""
+"Members positions from the maps plugin have been taken over, the plugin can "
+"be removed."
+msgstr ""
+
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr ""
 "Будь ласка, оберіть параметри облікового запису адміністратора на Galette"
@@ -4438,10 +4814,9 @@ msgstr "Управління групами"
 msgid "Remove from group %1$s"
 msgstr "Видалити з групи"
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
-msgid "Keep group %1$s"
-msgstr "Вилучити групу %1$s"
+#, php-format
+msgid "Cancel removal from group %1$s"
+msgstr ""
 
 msgid "no group"
 msgstr "немає групи"
@@ -4521,6 +4896,53 @@ msgstr "Ліворуч"
 
 msgid "Right"
 msgstr "Праворуч"
+
+msgid "Role"
+msgstr ""
+
+msgid "Every logged in member"
+msgstr ""
+
+msgid "Active account, up to date membership"
+msgstr ""
+
+#, php-format
+msgid "From their status: %1$s"
+msgstr ""
+
+msgid "Marked as administrator"
+msgstr ""
+
+msgid "Manager of the group, see groups above"
+msgstr ""
+
+msgid "Computed from member's information"
+msgstr ""
+
+msgid "All groups"
+msgstr "Всі групи"
+
+msgctxt "member roles"
+msgid "will be removed"
+msgstr ""
+
+#, php-format
+msgid "Take role %1$s back"
+msgstr ""
+
+#, php-format
+msgid "Cancel removal of role %1$s"
+msgstr ""
+
+msgctxt "member roles"
+msgid "added"
+msgstr ""
+
+msgid "Give role"
+msgstr ""
+
+msgid "Choose a role"
+msgstr ""
 
 msgid "Not supplied"
 msgstr "Не вказано"
@@ -4848,6 +5270,12 @@ msgstr "Вимкніть темний режим"
 msgid "Enable dark mode"
 msgstr "Увімкніть темний режим"
 
+msgid "Disable debug bar"
+msgstr ""
+
+msgid "Enable debug bar"
+msgstr ""
+
 msgid "Unimpersonate"
 msgstr "Безособовий"
 
@@ -4925,6 +5353,73 @@ msgstr "Елементи цього списку було змінено. Не �
 
 msgid "Recipients"
 msgstr "Одержувачі"
+
+msgid "Legend"
+msgstr "Умовне позначення"
+
+msgid "Display map in full screen"
+msgstr "Відкрити мапу на весь екран"
+
+msgid "Exit full screen"
+msgstr "Вийти з повноекранного режиму"
+
+msgid "Search your town..."
+msgstr "Пошук вашого міста..."
+
+msgid "Search a town..."
+msgstr "Пошук міста..."
+
+msgid "Sorry, that town could not be found."
+msgstr "На жаль, цього міста не вдалося знайти."
+
+msgid "Search"
+msgstr "Пошук"
+
+msgid "Show me where I am"
+msgstr "Показати де я"
+
+msgid "You seem located outside the boundaries of the map"
+msgstr "Здається, ви знаходитесь поза межами мапи"
+
+msgid "aka"
+msgstr "він же"
+
+#, php-format
+msgid "You clicked at %1$s"
+msgstr "Ви натиснули на %1$s"
+
+msgid "I live here!"
+msgstr "Я живу тут!"
+
+msgid "Member lives here!"
+msgstr "Член живе тут!"
+
+msgid "Remove my coordinates"
+msgstr "Видалити мої координати"
+
+msgid "Remove member coordinates"
+msgstr "Видалити координати члена"
+
+msgid "Are you sure you want to remove coordinates from the database?"
+msgstr "Ви впевнені, що хочете видалити координати з бази даних?"
+
+msgid "An error occurred during 'I live here' process :("
+msgstr "Помилка під час процесу \"Я живу тут\" :("
+
+msgid "An error occurred removing coordinates :("
+msgstr "Під час видалення координат сталася помилка :("
+
+msgid "Member (company)"
+msgstr "Член (компанія)"
+
+msgid "Search result"
+msgstr "Підсумки пошуку"
+
+msgid "The map could not be loaded."
+msgstr ""
+
+msgid "No geographic position yet."
+msgstr ""
 
 msgid "See member profile"
 msgstr "Див. профіль члена"
@@ -5465,9 +5960,6 @@ msgstr ""
 #, php-format
 msgid "Go to %s"
 msgstr ""
-
-msgid "Legend"
-msgstr "Умовне позначення"
 
 #, fuzzy
 #| msgid "Status"
@@ -6529,6 +7021,76 @@ msgstr ""
 msgid "Follow the sending"
 msgstr "Для вибору:"
 
+msgid "Display members positions on maps"
+msgstr ""
+
+msgid ""
+"Members can then set their position, and a map is added to public pages."
+msgstr ""
+
+msgid "Members positions precision"
+msgstr ""
+
+msgid ""
+"How far from their stored position members may appear on the map. Staff, "
+"administrators and members themselves always see the exact position."
+msgstr ""
+
+msgid "Background map provider"
+msgstr ""
+
+msgid "Vector tiles"
+msgstr ""
+
+msgid "Tick for a MapLibre style, leave unticked for classic raster tiles."
+msgstr ""
+
+msgid "Style address for vector tiles, tiles address for raster ones, such as:"
+msgstr ""
+
+msgid "Attribution"
+msgstr ""
+
+msgid ""
+"Credit the provider requires, HTML allowed. Data licences make it mandatory."
+msgstr ""
+
+msgid "Maximum zoom"
+msgstr ""
+
+msgid "Subdomains"
+msgstr ""
+
+msgid ""
+"Letters the {s} token in the address is replaced with, such as abc. Raster "
+"tiles only."
+msgstr ""
+
+msgid "Maps center"
+msgstr ""
+
+msgid ""
+"Where maps open when they have nothing else to show, such as the association "
+"town. Left empty, maps show the whole of France."
+msgstr ""
+
+msgid "Search coordinates"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid ""
+"Public map as the form sets it, with sample positions: where they are "
+"stored, and where visitors see them."
+msgstr ""
+
+msgid "No town found."
+msgstr ""
+
 msgid "Attached to:"
 msgstr "Долучено до:"
 
@@ -6585,8 +7147,25 @@ msgid ""
 msgstr ""
 "Член отримає своє ім'я користувача і пароль е-оштою, якщо у нього є адреса."
 
+msgid "Choose your location"
+msgstr "Виберіть своє місцеперебування"
+
+#, php-format
+msgid "Choose %1$s location"
+msgstr "Оберіть розташування %1$s"
+
+msgid "Select your town."
+msgstr "Виберіть своє місто."
+
+#, php-format
+msgid "In the database, town is set to: '%1$s'"
+msgstr "У базі даних установлено місто: '%1$s'"
+
 msgid "Family"
 msgstr "Родина"
+
+msgid "Roles:"
+msgstr ""
 
 msgid "Not managed group"
 msgstr "Група, що не управляється"
@@ -6613,9 +7192,6 @@ msgstr[2] "%1$s членів"
 
 msgid "among:"
 msgstr "серед:"
-
-msgid "All groups"
-msgstr "Всі групи"
 
 msgid "Members that have an email address:"
 msgstr "Члени, які мають адресу е-пошти:"
@@ -6800,6 +7376,9 @@ msgstr "Необхідний файл відсутній"
 msgid "Incompatible with current version"
 msgstr "Несумісно з поточною версією"
 
+msgid "Invalid plugin definition"
+msgstr ""
+
 #, fuzzy
 #| msgid "Database access and permissions"
 msgid "Database version missing"
@@ -6814,6 +7393,9 @@ msgstr "Не зареєстровано"
 #| msgid "Member card updated"
 msgid "Need update"
 msgstr "Картку члена оновлено"
+
+msgid "Part of Galette now, can be removed"
+msgstr ""
 
 msgid "Explicitly disabled"
 msgstr "Явно вимкнено"
@@ -7114,44 +7696,11 @@ msgstr ""
 "Уведіть повну URL-адресу RSS-стрічки. Вона відображатиметься на стільниці "
 "Galette."
 
-#, fuzzy
-#| msgid "Can members create child?"
-msgid "Can members create child members?"
-msgstr "Чи можуть члени створити дочірнє?"
-
-msgid "Can group managers edit their groups?"
-msgstr "Чи можуть менеджери групи редагувати свої групи?"
-
-msgid "Can group managers create members?"
-msgstr "Чи можуть менеджери груп створювати учасників?"
-
-msgid "Can group managers edit members?"
-msgstr "Чи можуть менеджери груп редагувати учасників?"
-
-msgid "Can group managers send mailings?"
-msgstr "Чи можуть менеджери груп надсилати листи?"
-
-msgid "Can group managers do exports?"
-msgstr "Чи можуть менеджери груп здійснювати експорт?"
-
-msgid ""
-"Groups managers will be allowed to export members as csv, pdf cards, "
-"attendence sheetss and groups pdf"
+msgid "Rights are managed with roles."
 msgstr ""
-"Менеджерам груп буде дозволено експортувати учасників у форматі CSV, карток "
-"PDF, аркушів супроводу та груп PDF"
 
-msgid "Can group managers see contributions?"
-msgstr "Чи можуть керівники груп бачити внески?"
-
-msgid "Can group managers create contributions?"
-msgstr "Чи можуть менеджери груп створювати внески?"
-
-msgid "Can group managers see transactions?"
-msgstr "Чи можуть керівники груп бачити транзакції?"
-
-msgid "Can group managers create transactions?"
-msgstr "Чи можуть керівники груп створювати транзакції?"
+msgid "Manage roles"
+msgstr ""
 
 msgid "Sender name:"
 msgstr "Ім'я відправника:"
@@ -7543,6 +8092,119 @@ msgstr "Нагадування не вибрано"
 msgid "Please make sure to select at least one reminder."
 msgstr "Будь ласка, обов’язково виберіть хоча б одне нагадування."
 
+msgid "Given to every logged in member."
+msgstr ""
+
+msgid ""
+"Given to members whose account is active and whose membership is up to date."
+msgstr ""
+
+msgid ""
+"Given to members with a staff status; change their status to give or take it "
+"back."
+msgstr ""
+
+msgid ""
+"Given to members marked as administrators; change it with the Galette Admin "
+"field, when editing them."
+msgstr ""
+
+msgid ""
+"Given to managers of a group, on that group only; choose managers from the "
+"group page."
+msgstr ""
+
+msgid "Only its permissions can be changed."
+msgstr ""
+
+msgid "System"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s permissions"
+msgstr ""
+
+msgid "Rename role"
+msgstr ""
+
+msgid "Change parent role"
+msgstr ""
+
+msgid "Inherits from"
+msgstr ""
+
+msgid "permissions granted"
+msgstr ""
+
+msgid "Granted"
+msgstr ""
+
+msgid "Permission"
+msgstr ""
+
+#, php-format
+msgid "Inherited from %1$s"
+msgstr ""
+
+msgid ""
+"Members are always granted on what they own, and what their children own."
+msgstr ""
+
+msgid "Always on own"
+msgstr ""
+
+msgid ""
+"This permission does not apply to members: it is not granted when the role "
+"is given for a group."
+msgstr ""
+
+msgid "Not on a group"
+msgstr ""
+
+msgid "No member has this role."
+msgstr ""
+
+#, php-format
+msgid "%1$s member has this role."
+msgid_plural "%1$s members have this role."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Nearly every member has it, they are not listed."
+msgstr ""
+
+msgid "Take role back"
+msgstr ""
+
+#, php-format
+msgid "Take role back from %1$s"
+msgstr ""
+
+msgid "This role has not been given to anyone yet."
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s from %3$s"
+msgstr ""
+
+msgid "No parent role"
+msgstr ""
+
+msgid ""
+"System roles are given from members data: any logged-in member, members up "
+"to date, groups managers (on the groups they manage), staff members and "
+"administrators. Other roles are given explicitly, for all groups or for one."
+msgstr ""
+
+#, php-format
+msgid "Edit role '%1$s'"
+msgstr ""
+
+#, php-format
+msgid "Delete role '%1$s'"
+msgstr ""
+
 msgid "Replace parameters with the current advanced search"
 msgstr ""
 
@@ -7841,6 +8503,50 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Зміст загальнодоступної сторінки"
+
+#, fuzzy, php-format
+#~| msgid "Remove group %1$s"
+#~ msgid "Keep group %1$s"
+#~ msgstr "Вилучити групу %1$s"
+
+#, fuzzy
+#~| msgid "Can members create child?"
+#~ msgid "Can members create child members?"
+#~ msgstr "Чи можуть члени створити дочірнє?"
+
+#~ msgid "Can group managers edit their groups?"
+#~ msgstr "Чи можуть менеджери групи редагувати свої групи?"
+
+#~ msgid "Can group managers create members?"
+#~ msgstr "Чи можуть менеджери груп створювати учасників?"
+
+#~ msgid "Can group managers edit members?"
+#~ msgstr "Чи можуть менеджери груп редагувати учасників?"
+
+#~ msgid "Can group managers send mailings?"
+#~ msgstr "Чи можуть менеджери груп надсилати листи?"
+
+#~ msgid "Can group managers do exports?"
+#~ msgstr "Чи можуть менеджери груп здійснювати експорт?"
+
+#~ msgid ""
+#~ "Groups managers will be allowed to export members as csv, pdf cards, "
+#~ "attendence sheetss and groups pdf"
+#~ msgstr ""
+#~ "Менеджерам груп буде дозволено експортувати учасників у форматі CSV, "
+#~ "карток PDF, аркушів супроводу та груп PDF"
+
+#~ msgid "Can group managers see contributions?"
+#~ msgstr "Чи можуть керівники груп бачити внески?"
+
+#~ msgid "Can group managers create contributions?"
+#~ msgstr "Чи можуть менеджери груп створювати внески?"
+
+#~ msgid "Can group managers see transactions?"
+#~ msgstr "Чи можуть керівники груп бачити транзакції?"
+
+#~ msgid "Can group managers create transactions?"
+#~ msgstr "Чи можуть керівники груп створювати транзакції?"
 
 #~ msgid "no member"
 #~ msgstr "немає члена"
@@ -8392,9 +9098,6 @@ msgstr "Зміст загальнодоступної сторінки"
 #~ msgstr ""
 #~ "Galette налаштовано для відображення помилок. Цього слід уникати у "
 #~ "виробничих умовах."
-
-#~ msgid "Security"
-#~ msgstr "Безпека"
 
 #~ msgid "General information"
 #~ msgstr "Загальні відомості"
