@@ -51,7 +51,7 @@ class News extends BaseGaletteTestCase
     {
         global $i18n;
 
-        return GALETTE_CACHE_DIR . md5(($url ?? $this->local_url) . '|' . $i18n->getAbbrev()) . '.cache';
+        return GALETTE_CACHE_DIR . hash('xxh128', ($url ?? $this->local_url) . '|' . $i18n->getAbbrev()) . '.cache';
     }
 
     /**

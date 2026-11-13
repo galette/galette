@@ -195,7 +195,7 @@ class PluginsController extends AbstractController
             throw new HttpBadRequestException($request);
         }
 
-        $mdplugin = md5((string)$plugin['root']);
+        $mdplugin = hash('xxh128', (string)$plugin['root']);
         if (
             isset($this->session->$mdplugin)
             && !isset($_GET['raz'])

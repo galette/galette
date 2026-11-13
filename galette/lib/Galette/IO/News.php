@@ -128,7 +128,7 @@ class News
 
         return GALETTE_CACHE_DIR . str_replace(
             '%feed',
-            md5($this->requested_url . '|' . $i18n->getAbbrev()),
+            hash('xxh128', $this->requested_url . '|' . $i18n->getAbbrev()),
             $this->cache_filename
         );
     }

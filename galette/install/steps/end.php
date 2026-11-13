@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 /** @var \Galette\Core\Install $install */
 
-$session[md5(GALETTE_ROOT)] = null;
-unset($session[md5(GALETTE_ROOT)]);
+$session[hash('xxh128', GALETTE_ROOT)] = null;
+unset($session[hash('xxh128', GALETTE_ROOT)]);
 ?>
     <p class="ui green message">
 <?php

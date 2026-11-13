@@ -48,15 +48,15 @@ $gapp = new \Galette\Core\SlimApp($plugins);
 $app = $gapp->getApp(); // phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
 
 if (isset($_POST['abort_btn'])) {
-    if (isset($session[md5(GALETTE_ROOT)])) {
-        unset($session[md5(GALETTE_ROOT)]);
+    if (isset($session[hash('xxh128', GALETTE_ROOT)])) {
+        unset($session[hash('xxh128', GALETTE_ROOT)]);
     }
     header('location: ' . GALETTE_BASE_PATH);
 }
 
 $install = null;
-if (isset($session[md5(GALETTE_ROOT)]) && !isset($_GET['raz'])) {
-    $install = unserialize($session[md5(GALETTE_ROOT)]);
+if (isset($session[hash('xxh128', GALETTE_ROOT)]) && !isset($_GET['raz'])) {
+    $install = unserialize($session[hash('xxh128', GALETTE_ROOT)]);
 } else {
     $install = new GaletteInstall();
 }
@@ -543,7 +543,7 @@ if ($install_disabled) {
 </html>
 <?php
 if (!$install->isEndStep()) {
-    $session[md5(GALETTE_ROOT)] = serialize($install);
+    $session[hash('xxh128', GALETTE_ROOT)] = serialize($install);
 }
 
 if (isset($profiler)) {
