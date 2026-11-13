@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Analog\Analog;
+use Galette\Maps\TileProviders;
 use Throwable;
 
 use function Safe\preg_match;
@@ -27,7 +28,8 @@ use function Safe\preg_split;
  *   (framing, plugins, base URI); sites allowed to frame Galette come from
  *   the pref_csp_frame_ancestors preference;
  * - a report-only one, with the complete policy, so violations show up in
- *   browsers consoles without blocking anything.
+ *   browsers consoles without blocking anything; it allows the servers of
+ *   maps backgrounds and address search.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -63,6 +65,11 @@ class Csp
 
     /** @var string[]|null */
     private ?array $frame_ancestors = null;
+
+    /** Address search of maps, run from browsers */
+    public const string MAPS_GEOCODER = 'https://nominatim.openstreetmap.org';
+
+    private bool $maps_sources = false;
 
     /**
      * @param Preferences $preferences Preferences instance
@@ -189,6 +196,7 @@ class Csp
      */
     public function getFullPolicy(): string
     {
+        $this->addMapsSources();
         $directives = self::FULL;
         $directives['frame-ancestors'] = $this->getFrameAncestors();
         foreach ($this->extra_sources as $directive => $sources) {
@@ -196,6 +204,73 @@ class Csp
             $directives[$directive] = array_merge($directives[$directive] ?? self::FULL['default-src'], $sources);
         }
         return $this->build($directives);
+    }
+
+    /**
+     * Allow what maps load from browsers
+     *
+     * Raster backgrounds are images, already allowed; vector ones are fetched
+     * from the server of their style, which serves tiles and fonts as well.
+     * Every vector preset is allowed: maps settings preview them all.
+     */
+    private function addMapsSources(): void
+    {
+        if ($this->maps_sources) {
+            return;
+        }
+        $this->maps_sources = true;
+
+        $this->addSource('connect-src', self::MAPS_GEOCODER);
+        foreach (TileProviders::getPresets() as $preset) {
+            $origin = $preset['vector'] ? self::getOrigin($preset['url']) : null;
+            if ($origin !== null) {
+                $this->addSource('connect-src', $origin);
+            }
+        }
+
+        try {
+            $tiles = TileProviders::resolve($this->preferences);
+        } catch (Throwable) {
+            // no log: preferences may not exist yet, when database needs an update
+            return;
+        }
+        if ($tiles['id'] !== TileProviders::CUSTOM) {
+            return;
+        }
+
+        $origin = self::getOrigin((string)$tiles['url']);
+        if ($origin === null) {
+            Analog::log(
+                sprintf('Invalid maps tiles URL "%1$s", not allowed.', $tiles['url']),
+                Analog::WARNING
+            );
+            return;
+        }
+        $this->addSource($tiles['vector'] ? 'connect-src' : 'img-src', $origin);
+    }
+
+    /**
+     * Get the origin of an URL
+     *
+     * The subdomains placeholder of tiles URLs, {s}, becomes a wildcard.
+     *
+     * @param string $url URL
+     */
+    public static function getOrigin(string $url): ?string
+    {
+        $matches = [];
+        if (
+            preg_match(
+                '~^(https?)://(\{s\}\.)?([a-z0-9](?:[a-z0-9.-]*[a-z0-9])?)(:[0-9]{1,5})?(?:[/?#]|$)~iD',
+                $url,
+                $matches
+            ) !== 1
+        ) {
+            return null;
+        }
+
+        return strtolower($matches[1]) . '://' . ($matches[2] !== '' ? '*.' : '')
+            . strtolower($matches[3]) . ($matches[4] ?? '');
     }
 
     /**
