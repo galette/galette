@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-02 13:04+0100\n"
+"POT-Creation-Date: 2026-11-13 19:32+0100\n"
 "PO-Revision-Date: 2026-10-11 06:55+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/galette/galette/"
@@ -26,6 +26,201 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2026.10.1.dev0\n"
+
+#, fuzzy
+msgid "Members"
+msgstr "Membres"
+
+msgid "Contributions"
+msgstr "Contribucions"
+
+msgid "Transactions"
+msgstr "Transaccions"
+
+msgid "Groups"
+msgstr "Grups"
+
+msgid "Mailings"
+msgstr "Correus electrònics"
+
+#, fuzzy
+msgid "Documents"
+msgstr "Documentació"
+
+#, fuzzy
+msgid "Configuration"
+msgstr "Configuració"
+
+#, fuzzy
+msgid "Exports"
+msgstr "Exportacions"
+
+#, fuzzy
+msgid "Logs"
+msgstr "Registres"
+
+msgid "System information"
+msgstr "Informació del sistema"
+
+#, fuzzy
+msgid "Security"
+msgstr "Seguretat"
+
+msgid "Plugins"
+msgstr "Connectors"
+
+msgid "Roles"
+msgstr ""
+
+msgid "Create members"
+msgstr ""
+
+msgid "Create child members"
+msgstr ""
+
+msgid "Display members"
+msgstr ""
+
+msgid "Edit members"
+msgstr ""
+
+msgid "Delete members"
+msgstr ""
+
+msgid ""
+"Manage members administrative information (status, exemption, account, "
+"parent)"
+msgstr ""
+
+msgid "Grant administrator rights to members"
+msgstr ""
+
+msgid "Change or delete members in mass"
+msgstr ""
+
+msgid "Send members new password links, reset their two-factor authentication"
+msgstr ""
+
+msgid "Import members"
+msgstr ""
+
+msgid "Export members as CSV"
+msgstr ""
+
+msgid "Print members cards, labels and attendance sheets"
+msgstr ""
+
+msgid "Create contributions"
+msgstr ""
+
+msgid "Display contributions"
+msgstr ""
+
+msgid "Add contributions in mass"
+msgstr ""
+
+msgid "Edit contributions"
+msgstr ""
+
+msgid "Delete contributions"
+msgstr ""
+
+msgid "Export contributions as CSV"
+msgstr ""
+
+msgid "Manage scheduled payments"
+msgstr ""
+
+#, fuzzy
+msgid "Send reminders to late members"
+msgstr "Envia els recordatoris als membres finals"
+
+msgid "Create transactions"
+msgstr ""
+
+msgid "Display transactions"
+msgstr ""
+
+msgid "Edit transactions"
+msgstr ""
+
+msgid "Delete transactions"
+msgstr ""
+
+msgid "Attach contributions to transactions"
+msgstr ""
+
+msgid "Display groups"
+msgstr ""
+
+msgid "Create groups"
+msgstr ""
+
+msgid "Delete groups"
+msgstr ""
+
+msgid "Edit groups"
+msgstr ""
+
+msgid "Export groups as PDF"
+msgstr ""
+
+msgid "Send mailings"
+msgstr ""
+
+msgid "Browse and delete sent mailings"
+msgstr ""
+
+msgid "Manage documents"
+msgstr ""
+
+msgid ""
+"Manage statuses, titles, contributions and payment types, labels translations"
+msgstr ""
+
+msgid "Manage emails contents and PDF models"
+msgstr ""
+
+msgid "Change settings"
+msgstr ""
+
+msgid "Configure core and dynamic fields, and lists"
+msgstr ""
+
+msgid "Export data"
+msgstr ""
+
+msgid "Browse and flush logs"
+msgstr ""
+
+msgid "Display system information and charts"
+msgstr ""
+
+msgid "Lift authentication restrictions"
+msgstr ""
+
+msgid "Manage plugins"
+msgstr ""
+
+msgid "Manage roles and their permissions"
+msgstr ""
+
+msgid "Member"
+msgstr "Usuari"
+
+msgid "Up to date member"
+msgstr ""
+
+#, fuzzy
+msgid "Group manager"
+msgstr "Gestor de grups"
+
+#, fuzzy
+msgid "Staff member"
+msgstr "Membre del personal"
+
+msgid "Administrator"
+msgstr "Administrador"
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
@@ -377,6 +572,9 @@ msgstr "- Tipus de pagament desconegut!"
 msgid "- Unknown contribution type!"
 msgstr "- Nou tipus de contribució!"
 
+msgid "You do not have permission for requested URL."
+msgstr "No teniu permís per a l'URL sol·licitat."
+
 msgid "No contribution was selected, please check at least one."
 msgstr ""
 "No s'ha seleccionat cap contribució, si us plau selecciona'n al menys una."
@@ -496,13 +694,6 @@ msgstr "Elimina %type '%1$s'"
 msgid "New document"
 msgstr "Descarrega el document"
 
-#, fuzzy
-msgid "Documents"
-msgstr "Documentació"
-
-msgid "You do not have permission for requested URL."
-msgstr "No teniu permís per a l'URL sol·licitat."
-
 msgid "The file does not exists or cannot be read :("
 msgstr "El fitxer no existeix o no es pot llegir :("
 
@@ -567,9 +758,6 @@ msgstr "Ja existeix un fitxer amb aquest nom!"
 #, fuzzy
 msgid "Group added"
 msgstr "Grup afegit"
-
-msgid "Groups"
-msgstr "Grups"
 
 #, fuzzy, php-format
 #| msgid "Next page (%1$s)"
@@ -644,9 +832,6 @@ msgstr "El correu s'ha enviat correctament!"
 msgid "Mailing has been successfully saved."
 msgstr "El correu s'ha desat correctament."
 
-msgid "Mailings"
-msgstr "Correus electrònics"
-
 #, php-format
 msgid "Remove mailing #%1$s"
 msgstr "Elimina el mailing #%1$s"
@@ -690,10 +875,6 @@ msgstr "S'ha habilitat l'autosubscripció?"
 #, fuzzy
 msgid "Profile"
 msgstr "fitxer"
-
-#, fuzzy
-msgid "Members"
-msgstr "Membres"
 
 msgid "Gallery"
 msgstr "Trombinoscopi"
@@ -773,6 +954,11 @@ msgstr "El nou membre s'ha afegit exitosament."
 msgid "Member account has been modified."
 msgstr "S'ha modificat el compte del membre."
 
+#. TRANS: %1$d is the number of roles given, %2$d the number taken back, %3$d the member identifier
+#, php-format
+msgid "%1$d role(s) given, %2$d taken back for member #%3$d"
+msgstr ""
+
 msgid "An error occurred adding member to its groups as manager."
 msgstr "Hi ha hagut un error afegint el membre als seus grups com a gestor."
 
@@ -823,6 +1009,71 @@ msgstr "El tipus de pagament «%1$s» s'ha modificat amb èxit."
 #, php-format
 msgid "Remove payment type %1$s"
 msgstr "Elimina el tipus de pagament %1$s"
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has not been added; is its name missing or already used?"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been added; choose its permissions."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s'"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has not been modified!"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' modified"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been successfully modified."
+msgstr ""
+
+msgid "System roles are given from members data."
+msgstr ""
+
+msgid "Please choose a member."
+msgstr ""
+
+msgid "Requested group does not exist."
+msgstr ""
+
+msgid "Member already has this role."
+msgstr ""
+
+#. TRANS: %1$s is the role name, %2$d the member identifier
+#, php-format
+msgid "Role '%1$s' given to member #%2$d"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been given."
+msgstr ""
+
+msgid "This role was not given."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been taken back."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Remove role %1$s"
+msgstr ""
 
 msgid "This search is already saved."
 msgstr "Aquesta cerca ja està desada."
@@ -1016,10 +1267,6 @@ msgstr "S'ha suprimit correctament!"
 msgid "An error occurred trying to delete :("
 msgstr "Hi ha hagut un error en intentar suprimir ("
 
-#, fuzzy
-msgid "Exports"
-msgstr "Exportacions"
-
 #. TRANS: parameter is the table name
 #, fuzzy, php-format
 msgid "Table %1$s is empty, and has not been exported."
@@ -1042,6 +1289,11 @@ msgstr "S'ha produït un error en executar l'exportació parametada '%1$s'."
 #, fuzzy
 msgid "Imports"
 msgstr "Importacions"
+
+msgid ""
+"You are not allowed to import groups managers; remove that column from the "
+"import model."
+msgstr ""
 
 #, fuzzy
 msgid "An error occurred importing the file :("
@@ -1125,9 +1377,6 @@ msgstr ""
 #, fuzzy
 msgid "Labels has been successfully translated!"
 msgstr "Les etiquetes s'han traduït amb sucessió!"
-
-msgid "System information"
-msgstr "Informació del sistema"
 
 msgid "Dashboard"
 msgstr "Tauler"
@@ -1250,10 +1499,6 @@ msgid "Download document"
 msgstr "Descarrega el document"
 
 #, fuzzy
-msgid "Logs"
-msgstr "Registres"
-
-#, fuzzy
 msgid "Logs have been flushed!"
 msgstr "S'han netejat els registres!"
 
@@ -1264,6 +1509,66 @@ msgstr "S'ha produït un error en intentar buidar els registres ("
 #, fuzzy
 msgid "Flush the logs"
 msgstr "Neteja els registres"
+
+msgid "Maps are not enabled."
+msgstr ""
+
+msgid "Maps"
+msgstr "Mapes"
+
+msgid "Coordinates have not been loaded."
+msgstr ""
+
+msgid "Superadmin cannot be localized."
+msgstr ""
+
+msgid ""
+"Town search is not available for now, you can still search or click on the "
+"map."
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s geographic position"
+msgstr ""
+
+msgid "Maps settings"
+msgstr ""
+
+msgid "Unknown position precision."
+msgstr ""
+
+msgid ""
+"Maps center needs both a latitude, between -90 and 90, and a longitude, "
+"between -180 and 180."
+msgstr ""
+
+msgid "An address is required to use your own background map."
+msgstr ""
+
+msgid "Maps settings have been saved."
+msgstr ""
+
+msgid "Town search is not available for now, you can still enter coordinates."
+msgstr ""
+
+msgid "Coordinates have been removed!"
+msgstr ""
+
+msgid "Coordinates have not been removed :("
+msgstr ""
+
+msgid "Invalid coordinates."
+msgstr ""
+
+msgid "New coordinates have been stored!"
+msgstr ""
+
+msgid "Coordinates have not been stored :("
+msgstr ""
+
+msgid "Unable to generate PDF file."
+msgstr ""
 
 #, fuzzy
 msgid "Unable to get members list."
@@ -1303,9 +1608,6 @@ msgstr "El model no s'ha desat ("
 #, fuzzy
 msgid "Invalid link!"
 msgstr "Enllaç invàlid!"
-
-msgid "Plugins"
-msgstr "Connectors"
 
 #, php-format
 msgid "Plugin %1$s has been enabled"
@@ -1458,291 +1760,6 @@ msgstr "D'acord"
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
 msgstr ""
-
-#, fuzzy
-msgid "My Account"
-msgstr "Compte"
-
-#, fuzzy
-msgid "View my member card"
-msgstr "Visualitza la meva targeta de membre"
-
-#, fuzzy
-msgid "My contributions"
-msgstr "Les meves contribucions"
-
-#, fuzzy
-msgid "View and filter all my contributions"
-msgstr "Visualitza i filtra totes les meves contribucions"
-
-msgid "My scheduled payments"
-msgstr ""
-
-#, fuzzy
-msgid "View and filter all my scheduled payments"
-msgstr "Visualitza i filtra totes les meves transaccions"
-
-#, fuzzy
-msgid "My transactions"
-msgstr "Les meves transaccions"
-
-#, fuzzy
-msgid "View and filter all my transactions"
-msgstr "Visualitza i filtra totes les meves transaccions"
-
-#, fuzzy
-msgid "Modify my login and password"
-msgstr "Omple tots els inicis de sessió i contrasenyes buits"
-
-#, fuzzy
-msgid "Add a child member"
-msgstr "Afegeix un membre"
-
-#, fuzzy
-msgid "Add new child member in database"
-msgstr "Afegeix un membre nou a la base de dades"
-
-msgid "Manage my two-factor authentication"
-msgstr ""
-
-#, fuzzy
-msgid "View, search into and filter member's list"
-msgstr "Visualitza cerca i filtra la llista de membres"
-
-#, fuzzy
-msgid "Perform advanced search into members list"
-msgstr "Realitza una cerca avançada a la llista de membres"
-
-#, fuzzy
-msgid "Add a member"
-msgstr "Afegeix un membre"
-
-#, fuzzy
-msgid "Add new member in database"
-msgstr "Afegeix un membre nou a la base de dades"
-
-#, fuzzy
-msgid "Empty adhesion form"
-msgstr "Forma d'adhesió buida"
-
-#, fuzzy
-msgid "Download empty adhesion form"
-msgstr "Baixa un formulari d'adhesió buit"
-
-msgid "Contributions"
-msgstr "Contribucions"
-
-#, fuzzy
-msgid "View and filter contributions"
-msgstr "Visualitza i filtra contribucions"
-
-#, fuzzy
-msgid "View and filter scheduled payments"
-msgstr "Visualitza i filtra transaccions"
-
-#, fuzzy
-msgid "View and filter transactions"
-msgstr "Visualitza i filtra transaccions"
-
-#, fuzzy
-msgid "Add a membership fee"
-msgstr "Afegeix una quota de pertinença"
-
-#, fuzzy
-msgid "Add new membership fee in database"
-msgstr "Afegeix una tarifa de pertinença nova a la base de dades"
-
-#, fuzzy
-msgid "Add a donation"
-msgstr "Afegeix una donació"
-
-#, fuzzy
-msgid "Add new donation in database"
-msgstr "Afegeix una donació nova a la base de dades"
-
-msgid "Add a transaction"
-msgstr "Afegeix una transacció"
-
-#, fuzzy
-msgid "Add new transaction in database"
-msgstr "Afegeix una operació nova a la base de dades"
-
-#, fuzzy
-msgid "Send reminders to late members"
-msgstr "Envia els recordatoris als membres finals"
-
-#, fuzzy
-#| msgid "Members management"
-msgid "Management"
-msgstr "Gestió de membres"
-
-#, fuzzy
-msgid "View and manage groups"
-msgstr "Visualitza i gestiona grups"
-
-msgid ""
-"Add documents to share related to your association (status, rules of "
-"procedure, ...)"
-msgstr ""
-
-#, fuzzy
-msgid "Manage mailings that has been sent"
-msgstr "Gestiona els mailings que s'han enviat"
-
-#, fuzzy
-msgid "Various charts"
-msgstr "Diversos diagrames"
-
-#, fuzzy
-msgid "Export some data in various formats"
-msgstr "Exporta algunes dades en diversos formats"
-
-#, fuzzy
-msgid "Import members from CSV files"
-msgstr "Importa els membres des de fitxers CSV"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
-
-#, fuzzy
-msgid "View application's logs"
-msgstr "Visualitza els registres de l'aplicació"
-
-#, fuzzy
-msgid "Configuration"
-msgstr "Configuració"
-
-#, fuzzy
-msgid ""
-"Set applications preferences (address, website, member's cards "
-"configuration, ...)"
-msgstr ""
-"Estableix les preferències de les aplicacions (adreça del lloc web de "
-"configuració de targetes)"
-
-msgid "Information about available plugins"
-msgstr "Informació quant als connectors disponibles"
-
-#, fuzzy
-msgid "Customize lists fields and order"
-msgstr "Personalitza les llistes els camps i l'ordre"
-
-#, fuzzy
-msgid ""
-"Customize fields order, set which are required, and for who they're visibles"
-msgstr ""
-"Personalitza l'ordre dels camps que són necessaris i per a qui són visibles"
-
-#, fuzzy
-msgid "Manage additional fields for various forms"
-msgstr "Gestiona els camps addicionals per a diversos formularis"
-
-#, fuzzy
-msgid "Manage contributions types"
-msgstr "Gestiona els tipus de contribucions"
-
-#, fuzzy
-msgid "Manage payment types"
-msgstr "Gestiona els tipus de pagament"
-
-#, fuzzy
-msgid "Manage titles"
-msgstr "Gestiona els títols"
-
-#, fuzzy
-msgid "Manage PDF models"
-msgstr "Gestiona els models PDF"
-
-#, fuzzy
-msgid "Manage emails texts and subjects"
-msgstr "Gestiona els correus electrònics els textos i els temes"
-
-#, fuzzy
-msgid "Manage translatable labels"
-msgstr "Traduir etiquetes"
-
-#, fuzzy
-msgid "Various administrative tools"
-msgstr "Diverses eines administratives"
-
-msgid "Edit every setting, including those the settings form does not show"
-msgstr ""
-
-#, fuzzy
-msgid "Directories"
-msgstr "nomdedirectori"
-
-#, fuzzy
-#| msgid "Gallery"
-msgid "Galleries"
-msgstr "Trombinoscopi"
-
-msgid "View documents related to your association"
-msgstr ""
-
-#, fuzzy
-msgid "Public pages"
-msgstr "Pàgines públiques"
-
-msgid "Transactions"
-msgstr "Transaccions"
-
-#. TRANS: parameter is the member name
-#, fuzzy, php-format
-msgid "%1$s: edit information"
-msgstr "%1$s edita informació"
-
-#. TRANS: parameter is the member name
-#, fuzzy, php-format
-msgid "%1$s: contributions"
-msgstr "Contribucions del nom de membre"
-
-#. TRANS: parameter is the member name
-#, fuzzy, php-format
-msgid "%1$s: remove from database"
-msgstr "Elimina de la base de dades el nom d'un membre de la base de dades"
-
-#. TRANS: parameter is the member name
-#, fuzzy, php-format
-msgid "Log in as %1$s"
-msgstr "Inicia sessió com a nomdepermembre"
-
-#, fuzzy
-msgid "Mass change"
-msgstr "Canvi massiu"
-
-#, fuzzy
-msgid "Mass add contributions"
-msgstr "Les meves contribucions"
-
-#, fuzzy
-msgid "Delete"
-msgstr "Suprimeix"
-
-#, fuzzy
-msgid "Mail"
-msgstr "Correu"
-
-#, fuzzy
-msgid "Generate labels"
-msgstr "Genera etiquetes"
-
-#, fuzzy
-msgid "Generate Member Cards"
-msgstr "Genera targetes de membre"
-
-#, fuzzy
-msgid "Export as CSV"
-msgstr "Exporta com a CSV"
-
-#, fuzzy
-msgid "Galette news"
-msgstr "Administració de Galette"
-
-#, fuzzy
-#| msgid "Association %s"
-msgid "Association news"
-msgstr "Associacion %s"
 
 #, fuzzy
 msgid "Emailing has been disabled in the preferences."
@@ -1952,6 +1969,9 @@ msgstr "No existeix aquest mòdul."
 #, fuzzy
 msgid "Cannot deactivate plugin."
 msgstr "No es pot desactivar el connector."
+
+msgid "Plugin features are part of Galette now, it cannot be enabled."
+msgstr ""
 
 #, fuzzy
 msgid "Cannot activate plugin."
@@ -2406,6 +2426,9 @@ msgstr ""
 msgid "- The amount must be an integer!"
 msgstr "- La quantitat ha de ser un enter!"
 
+msgid "- You are not allowed to attach a contribution to this transaction!"
+msgstr ""
+
 #, fuzzy
 msgid "- The duration must be a positive integer!"
 msgstr "- La durada ha de ser un enter positiu!"
@@ -2413,6 +2436,11 @@ msgstr "- La durada ha de ser un enter positiu!"
 #, fuzzy
 msgid "- The end date must be after the start date!"
 msgstr "- La data de naixement s'ha d'establir en el passat!"
+
+msgid ""
+"- You are not allowed to change the amount of a contribution attached to a "
+"transaction you cannot access!"
+msgstr ""
 
 #, fuzzy
 msgid "- Sum of all contributions exceed corresponding transaction amount."
@@ -2902,7 +2930,6 @@ msgstr "El fitxer és massa gran. La mida màxima permesa és de %1$s"
 msgid "Unable to add dynamic translation for %1$s :("
 msgstr "No s'ha pogut afegir una traducció dinàmica per a l'ordre del %1$s ("
 
-#. TRANS: paramter is a field name
 #. TRANS: parameter is a field name
 #, fuzzy, php-format
 msgid "Unable to update dynamic translation for %1$s :("
@@ -2924,17 +2951,6 @@ msgstr "Només lectura de l'usuari"
 #, fuzzy
 msgid "User, read/write"
 msgstr "Lectura/escriptura de l'usuari"
-
-#, fuzzy
-msgid "Group manager"
-msgstr "Gestor de grups"
-
-#, fuzzy
-msgid "Staff member"
-msgstr "Membre del personal"
-
-msgid "Administrator"
-msgstr "Administrador"
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
@@ -3468,9 +3484,6 @@ msgstr "Targetes de membre"
 msgid "Cards"
 msgstr "Targetes"
 
-msgid "Member"
-msgstr "Usuari"
-
 #, fuzzy
 msgid "labels_print_filename"
 msgstr "Nom del fitxer d'impressió"
@@ -3481,6 +3494,63 @@ msgstr "Etiquetes dels membres"
 
 msgid "Labels"
 msgstr "Etiquetes"
+
+msgid "About 100 km"
+msgstr ""
+
+msgid "About 50 km"
+msgstr ""
+
+msgid "About 5 km"
+msgstr ""
+
+msgid "About 500 m"
+msgstr ""
+
+msgid "About 50 m"
+msgstr ""
+
+msgid "Exact position"
+msgstr ""
+
+msgid "OpenFreeMap, light grey"
+msgstr ""
+
+msgid "OpenFreeMap, colours"
+msgstr ""
+
+msgid "VersaTiles, colours"
+msgstr ""
+
+msgid "VersaTiles, grey"
+msgstr ""
+
+msgid "Plan IGN, France only"
+msgstr ""
+
+msgid "OpenStreetMap"
+msgstr ""
+
+msgid "OpenStreetMap France"
+msgstr ""
+
+msgid "Humanitarian OSM Team"
+msgstr ""
+
+msgid "OpenStreetMap Germany"
+msgstr ""
+
+msgid "CyclOSM, for cycling"
+msgstr ""
+
+msgid "OpenTopoMap, topographic"
+msgstr ""
+
+msgid "Esri, light grey"
+msgstr ""
+
+msgid "Your own values"
+msgstr ""
 
 msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
@@ -3528,6 +3598,305 @@ msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr ""
 "Si us plau executeu instal·la o actualitza el procediment (verifiqueu la "
 "documentació)"
+
+#, fuzzy
+msgid "View my member card"
+msgstr "Visualitza la meva targeta de membre"
+
+#, fuzzy
+msgid "My contributions"
+msgstr "Les meves contribucions"
+
+#, fuzzy
+msgid "View and filter all my contributions"
+msgstr "Visualitza i filtra totes les meves contribucions"
+
+#, fuzzy
+msgid "My transactions"
+msgstr "Les meves transaccions"
+
+#, fuzzy
+msgid "View and filter all my transactions"
+msgstr "Visualitza i filtra totes les meves transaccions"
+
+msgid "My localization"
+msgstr "La meva localització"
+
+msgid "Set my position on the members map"
+msgstr ""
+
+#, fuzzy
+msgid "View, search into and filter member's list"
+msgstr "Visualitza cerca i filtra la llista de membres"
+
+#, fuzzy
+msgid "View and manage groups"
+msgstr "Visualitza i gestiona grups"
+
+#, fuzzy
+msgid "Manage mailings that has been sent"
+msgstr "Gestiona els mailings que s'han enviat"
+
+#, fuzzy
+msgid "View and filter contributions"
+msgstr "Visualitza i filtra contribucions"
+
+#, fuzzy
+msgid "View and filter transactions"
+msgstr "Visualitza i filtra transaccions"
+
+msgid "View documents related to your association"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"Set applications preferences (address, website, member's cards "
+"configuration, ...)"
+msgstr ""
+"Estableix les preferències de les aplicacions (adreça del lloc web de "
+"configuració de targetes)"
+
+msgid "Information about available plugins"
+msgstr "Informació quant als connectors disponibles"
+
+msgid "My scheduled payments"
+msgstr ""
+
+#, fuzzy
+msgid "View and filter all my scheduled payments"
+msgstr "Visualitza i filtra totes les meves transaccions"
+
+#, fuzzy
+msgid "Modify my login and password"
+msgstr "Omple tots els inicis de sessió i contrasenyes buits"
+
+#, fuzzy
+msgid "Add a child member"
+msgstr "Afegeix un membre"
+
+#, fuzzy
+msgid "Add new child member in database"
+msgstr "Afegeix un membre nou a la base de dades"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
+
+#, fuzzy
+msgid "My Account"
+msgstr "Compte"
+
+#, fuzzy
+msgid "Perform advanced search into members list"
+msgstr "Realitza una cerca avançada a la llista de membres"
+
+#, fuzzy
+msgid "Add a member"
+msgstr "Afegeix un membre"
+
+#, fuzzy
+msgid "Add new member in database"
+msgstr "Afegeix un membre nou a la base de dades"
+
+#, fuzzy
+msgid "Empty adhesion form"
+msgstr "Forma d'adhesió buida"
+
+#, fuzzy
+msgid "Download empty adhesion form"
+msgstr "Baixa un formulari d'adhesió buit"
+
+#, fuzzy
+msgid "View and filter scheduled payments"
+msgstr "Visualitza i filtra transaccions"
+
+#, fuzzy
+msgid "Add a membership fee"
+msgstr "Afegeix una quota de pertinença"
+
+#, fuzzy
+msgid "Add new membership fee in database"
+msgstr "Afegeix una tarifa de pertinença nova a la base de dades"
+
+#, fuzzy
+msgid "Add a donation"
+msgstr "Afegeix una donació"
+
+#, fuzzy
+msgid "Add new donation in database"
+msgstr "Afegeix una donació nova a la base de dades"
+
+msgid "Add a transaction"
+msgstr "Afegeix una transacció"
+
+#, fuzzy
+msgid "Add new transaction in database"
+msgstr "Afegeix una operació nova a la base de dades"
+
+#, fuzzy
+#| msgid "Members management"
+msgid "Management"
+msgstr "Gestió de membres"
+
+msgid ""
+"Add documents to share related to your association (status, rules of "
+"procedure, ...)"
+msgstr ""
+
+#, fuzzy
+msgid "Various charts"
+msgstr "Diversos diagrames"
+
+#, fuzzy
+msgid "Export some data in various formats"
+msgstr "Exporta algunes dades en diversos formats"
+
+#, fuzzy
+msgid "Import members from CSV files"
+msgstr "Importa els membres des de fitxers CSV"
+
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
+#, fuzzy
+msgid "View application's logs"
+msgstr "Visualitza els registres de l'aplicació"
+
+msgid "Display members positions on maps, and choose the background map"
+msgstr ""
+
+#, fuzzy
+msgid "Customize lists fields and order"
+msgstr "Personalitza les llistes els camps i l'ordre"
+
+#, fuzzy
+msgid ""
+"Customize fields order, set which are required, and for who they're visibles"
+msgstr ""
+"Personalitza l'ordre dels camps que són necessaris i per a qui són visibles"
+
+#, fuzzy
+msgid "Manage additional fields for various forms"
+msgstr "Gestiona els camps addicionals per a diversos formularis"
+
+#, fuzzy
+msgid "Manage contributions types"
+msgstr "Gestiona els tipus de contribucions"
+
+#, fuzzy
+msgid "Manage payment types"
+msgstr "Gestiona els tipus de pagament"
+
+#, fuzzy
+msgid "Manage titles"
+msgstr "Gestiona els títols"
+
+#, fuzzy
+msgid "Manage PDF models"
+msgstr "Gestiona els models PDF"
+
+#, fuzzy
+msgid "Manage emails texts and subjects"
+msgstr "Gestiona els correus electrònics els textos i els temes"
+
+#, fuzzy
+msgid "Manage translatable labels"
+msgstr "Traduir etiquetes"
+
+#, fuzzy
+msgid "Various administrative tools"
+msgstr "Diverses eines administratives"
+
+msgid "Edit every setting, including those the settings form does not show"
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, fuzzy, php-format
+msgid "%1$s: edit information"
+msgstr "%1$s edita informació"
+
+#. TRANS: parameter is the member name
+#, fuzzy, php-format
+msgid "%1$s: contributions"
+msgstr "Contribucions del nom de membre"
+
+#. TRANS: parameter is the member name
+#, fuzzy, php-format
+msgid "%1$s: remove from database"
+msgstr "Elimina de la base de dades el nom d'un membre de la base de dades"
+
+#. TRANS: parameter is the member name
+#, fuzzy, php-format
+msgid "Log in as %1$s"
+msgstr "Inicia sessió com a nomdepermembre"
+
+msgid "Geolocalize"
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Geolocalize %1$s"
+msgstr ""
+
+msgid "Show on map"
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Show %1$s on map"
+msgstr ""
+
+#, fuzzy
+msgid "Mass change"
+msgstr "Canvi massiu"
+
+#, fuzzy
+msgid "Mass add contributions"
+msgstr "Les meves contribucions"
+
+#, fuzzy
+msgid "Delete"
+msgstr "Suprimeix"
+
+#, fuzzy
+msgid "Mail"
+msgstr "Correu"
+
+#, fuzzy
+msgid "Generate labels"
+msgstr "Genera etiquetes"
+
+#, fuzzy
+msgid "Generate Member Cards"
+msgstr "Genera targetes de membre"
+
+#, fuzzy
+msgid "Export as CSV"
+msgstr "Exporta com a CSV"
+
+#, fuzzy
+msgid "Galette news"
+msgstr "Administració de Galette"
+
+#, fuzzy
+#| msgid "Association %s"
+msgid "Association news"
+msgstr "Associacion %s"
+
+#, fuzzy
+msgid "Directories"
+msgstr "nomdedirectori"
+
+#, fuzzy
+#| msgid "Gallery"
+msgid "Galleries"
+msgstr "Trombinoscopi"
+
+msgid "See where members live"
+msgstr ""
+
+#, fuzzy
+msgid "Public pages"
+msgstr "Pàgines públiques"
 
 msgid "Galette error"
 msgstr "Error de Galette"
@@ -3583,6 +3952,10 @@ msgstr "Cerca esborrada (%1$s)"
 #| msgid "Searches deleted (%list)"
 msgid "Scheduled payments deleted (%1$s)"
 msgstr "Cerca esborrada (%1$s)"
+
+#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
+msgid "YYYY-MM-DD"
+msgstr "YYYY-MM-DD"
 
 #, php-format
 msgid "Table %1$s has been converted to InnoDB/utf8mb4."
@@ -3817,10 +4190,6 @@ msgstr "Instal·lació de la base de dades"
 
 msgid "Documentation"
 msgstr ""
-
-#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
-msgid "YYYY-MM-DD"
-msgstr "YYYY-MM-DD"
 
 msgid "Member id:"
 msgstr "ID de usuari:"
@@ -4457,6 +4826,14 @@ msgstr ""
 msgid "Unable to migrate choices for field %d: %s"
 msgstr ""
 
+msgid "System roles have been created."
+msgstr ""
+
+msgid ""
+"Members positions from the maps plugin have been taken over, the plugin can "
+"be removed."
+msgstr ""
+
 #, fuzzy
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Trieu els paràmetres del compte d'administració a Galette"
@@ -5038,10 +5415,9 @@ msgstr "Gestiona els grups"
 msgid "Remove from group %1$s"
 msgstr "Elimina el grup %1$s"
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
-msgid "Keep group %1$s"
-msgstr "Elimina el grup %1$s"
+#, php-format
+msgid "Cancel removal from group %1$s"
+msgstr ""
 
 #, fuzzy
 msgid "no group"
@@ -5126,6 +5502,53 @@ msgstr ""
 #| msgid "Rights"
 msgid "Right"
 msgstr "Drets"
+
+msgid "Role"
+msgstr ""
+
+msgid "Every logged in member"
+msgstr ""
+
+msgid "Active account, up to date membership"
+msgstr ""
+
+#, php-format
+msgid "From their status: %1$s"
+msgstr ""
+
+msgid "Marked as administrator"
+msgstr ""
+
+msgid "Manager of the group, see groups above"
+msgstr ""
+
+msgid "Computed from member's information"
+msgstr ""
+
+msgid "All groups"
+msgstr "Tots els grups"
+
+msgctxt "member roles"
+msgid "will be removed"
+msgstr ""
+
+#, php-format
+msgid "Take role %1$s back"
+msgstr ""
+
+#, php-format
+msgid "Cancel removal of role %1$s"
+msgstr ""
+
+msgctxt "member roles"
+msgid "added"
+msgstr ""
+
+msgid "Give role"
+msgstr ""
+
+msgid "Choose a role"
+msgstr ""
 
 #, fuzzy
 msgid "Not supplied"
@@ -5488,6 +5911,12 @@ msgstr "Desactivat"
 msgid "Enable dark mode"
 msgstr "Nom de la taula"
 
+msgid "Disable debug bar"
+msgstr ""
+
+msgid "Enable debug bar"
+msgstr ""
+
 #, fuzzy
 msgid "Unimpersonate"
 msgstr "No s'ha pogut suplantar com a percentid"
@@ -5567,6 +5996,74 @@ msgstr ""
 #, fuzzy
 msgid "Recipients"
 msgstr "Destinataris"
+
+#, fuzzy
+msgid "Legend"
+msgstr "Llegenda"
+
+msgid "Display map in full screen"
+msgstr ""
+
+msgid "Exit full screen"
+msgstr ""
+
+msgid "Search your town..."
+msgstr ""
+
+msgid "Search a town..."
+msgstr "Buscar una localitat…"
+
+msgid "Sorry, that town could not be found."
+msgstr ""
+
+msgid "Search"
+msgstr "Cerca"
+
+msgid "Show me where I am"
+msgstr ""
+
+msgid "You seem located outside the boundaries of the map"
+msgstr "Sembla que estàs fora dels límits del mapa"
+
+msgid "aka"
+msgstr ""
+
+#, php-format
+msgid "You clicked at %1$s"
+msgstr ""
+
+msgid "I live here!"
+msgstr "Visc aquí!"
+
+msgid "Member lives here!"
+msgstr ""
+
+msgid "Remove my coordinates"
+msgstr "Esborra les meves coordenades"
+
+msgid "Remove member coordinates"
+msgstr ""
+
+msgid "Are you sure you want to remove coordinates from the database?"
+msgstr "Segur que vols esborrar aquestes coordenades de la base de dades?"
+
+msgid "An error occurred during 'I live here' process :("
+msgstr ""
+
+msgid "An error occurred removing coordinates :("
+msgstr ""
+
+msgid "Member (company)"
+msgstr ""
+
+msgid "Search result"
+msgstr ""
+
+msgid "The map could not be loaded."
+msgstr ""
+
+msgid "No geographic position yet."
+msgstr ""
 
 #, fuzzy
 msgid "See member profile"
@@ -6168,10 +6665,6 @@ msgstr ""
 #, php-format
 msgid "Go to %s"
 msgstr ""
-
-#, fuzzy
-msgid "Legend"
-msgstr "Llegenda"
 
 #, fuzzy
 #| msgid "Status"
@@ -7400,6 +7893,76 @@ msgstr ""
 msgid "Follow the sending"
 msgstr "Per a la selecció:"
 
+msgid "Display members positions on maps"
+msgstr ""
+
+msgid ""
+"Members can then set their position, and a map is added to public pages."
+msgstr ""
+
+msgid "Members positions precision"
+msgstr ""
+
+msgid ""
+"How far from their stored position members may appear on the map. Staff, "
+"administrators and members themselves always see the exact position."
+msgstr ""
+
+msgid "Background map provider"
+msgstr ""
+
+msgid "Vector tiles"
+msgstr ""
+
+msgid "Tick for a MapLibre style, leave unticked for classic raster tiles."
+msgstr ""
+
+msgid "Style address for vector tiles, tiles address for raster ones, such as:"
+msgstr ""
+
+msgid "Attribution"
+msgstr ""
+
+msgid ""
+"Credit the provider requires, HTML allowed. Data licences make it mandatory."
+msgstr ""
+
+msgid "Maximum zoom"
+msgstr ""
+
+msgid "Subdomains"
+msgstr ""
+
+msgid ""
+"Letters the {s} token in the address is replaced with, such as abc. Raster "
+"tiles only."
+msgstr ""
+
+msgid "Maps center"
+msgstr ""
+
+msgid ""
+"Where maps open when they have nothing else to show, such as the association "
+"town. Left empty, maps show the whole of France."
+msgstr ""
+
+msgid "Search coordinates"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid ""
+"Public map as the form sets it, with sample positions: where they are "
+"stored, and where visitors see them."
+msgstr ""
+
+msgid "No town found."
+msgstr ""
+
 #, fuzzy
 msgid "Attached to:"
 msgstr "Adjuntat a"
@@ -7471,9 +8034,26 @@ msgstr ""
 "El diputat rebrà el seu nom d'usuari i contrasenya per correu electrònic si "
 "té una adreça."
 
+msgid "Choose your location"
+msgstr ""
+
+#, php-format
+msgid "Choose %1$s location"
+msgstr ""
+
+msgid "Select your town."
+msgstr ""
+
+#, php-format
+msgid "In the database, town is set to: '%1$s'"
+msgstr ""
+
 #, fuzzy
 msgid "Family"
 msgstr "Família"
+
+msgid "Roles:"
+msgstr ""
 
 #, fuzzy
 msgid "Not managed group"
@@ -7503,9 +8083,6 @@ msgstr[1] "%1$s membres"
 
 msgid "among:"
 msgstr "entre:"
-
-msgid "All groups"
-msgstr "Tots els grups"
 
 msgid "Members that have an email address:"
 msgstr "Membres que tenen una adreça de correu electrònic:"
@@ -7730,6 +8307,9 @@ msgstr "Falta un fitxer necessari"
 msgid "Incompatible with current version"
 msgstr "Incompatible amb la versió actual"
 
+msgid "Invalid plugin definition"
+msgstr ""
+
 #, fuzzy
 #| msgid "Database access and permissions"
 msgid "Database version missing"
@@ -7742,6 +8322,9 @@ msgstr "No registrat"
 #, fuzzy
 msgid "Need update"
 msgstr "Targeta de soci actualitzada"
+
+msgid "Part of Galette now, can be removed"
+msgstr ""
 
 #, fuzzy
 msgid "Explicitly disabled"
@@ -8077,50 +8660,11 @@ msgid ""
 msgstr ""
 "Introduïu l'URL complet del canal RSS. Es mostrarà a l'escriptori Galette."
 
-#, fuzzy
-msgid "Can members create child members?"
-msgstr "No hi ha cap membre adjuntat?"
-
-#, fuzzy
-msgid "Can group managers edit their groups?"
-msgstr "Els gestors de grups poden editar els seus grups?"
-
-#, fuzzy
-msgid "Can group managers create members?"
-msgstr "Envia els recordatoris als membres finals?"
-
-#, fuzzy
-msgid "Can group managers edit members?"
-msgstr "Els gestors de grup poden editar els seus membres?"
-
-msgid "Can group managers send mailings?"
-msgstr "Els gestors de grup poden enviar correus massius?"
-
-#, fuzzy
-msgid "Can group managers do exports?"
-msgstr "Poden fer exportacions els gestors de grups?"
-
-#, fuzzy
-msgid ""
-"Groups managers will be allowed to export members as csv, pdf cards, "
-"attendence sheetss and groups pdf"
+msgid "Rights are managed with roles."
 msgstr ""
-"Els gestors de grups tindran permís per exportar membres com a cvs, cartes "
-"pdf, assistència i grups pdf"
 
-msgid "Can group managers see contributions?"
-msgstr "Els gestors de grup poden veure les contribucions?"
-
-#, fuzzy
-msgid "Can group managers create contributions?"
-msgstr "Envia els recordatoris als membres finals?"
-
-msgid "Can group managers see transactions?"
-msgstr "Els gestors de grup poden veure les transaccions?"
-
-#, fuzzy
-msgid "Can group managers create transactions?"
-msgstr "Envia els recordatoris als membres finals?"
+msgid "Manage roles"
+msgstr ""
 
 #, fuzzy
 msgid "Sender name:"
@@ -8588,6 +9132,118 @@ msgstr "No s'ha seleccionat cap recordatori"
 msgid "Please make sure to select at least one reminder."
 msgstr "Assegureu-vos de seleccionar almenys un recordatori."
 
+msgid "Given to every logged in member."
+msgstr ""
+
+msgid ""
+"Given to members whose account is active and whose membership is up to date."
+msgstr ""
+
+msgid ""
+"Given to members with a staff status; change their status to give or take it "
+"back."
+msgstr ""
+
+msgid ""
+"Given to members marked as administrators; change it with the Galette Admin "
+"field, when editing them."
+msgstr ""
+
+msgid ""
+"Given to managers of a group, on that group only; choose managers from the "
+"group page."
+msgstr ""
+
+msgid "Only its permissions can be changed."
+msgstr ""
+
+msgid "System"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s permissions"
+msgstr ""
+
+msgid "Rename role"
+msgstr ""
+
+msgid "Change parent role"
+msgstr ""
+
+msgid "Inherits from"
+msgstr ""
+
+msgid "permissions granted"
+msgstr ""
+
+msgid "Granted"
+msgstr ""
+
+msgid "Permission"
+msgstr ""
+
+#, php-format
+msgid "Inherited from %1$s"
+msgstr ""
+
+msgid ""
+"Members are always granted on what they own, and what their children own."
+msgstr ""
+
+msgid "Always on own"
+msgstr ""
+
+msgid ""
+"This permission does not apply to members: it is not granted when the role "
+"is given for a group."
+msgstr ""
+
+msgid "Not on a group"
+msgstr ""
+
+msgid "No member has this role."
+msgstr ""
+
+#, php-format
+msgid "%1$s member has this role."
+msgid_plural "%1$s members have this role."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Nearly every member has it, they are not listed."
+msgstr ""
+
+msgid "Take role back"
+msgstr ""
+
+#, php-format
+msgid "Take role back from %1$s"
+msgstr ""
+
+msgid "This role has not been given to anyone yet."
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s from %3$s"
+msgstr ""
+
+msgid "No parent role"
+msgstr ""
+
+msgid ""
+"System roles are given from members data: any logged-in member, members up "
+"to date, groups managers (on the groups they manage), staff members and "
+"administrators. Other roles are given explicitly, for all groups or for one."
+msgstr ""
+
+#, php-format
+msgid "Edit role '%1$s'"
+msgstr ""
+
+#, php-format
+msgid "Delete role '%1$s'"
+msgstr ""
+
 msgid "Replace parameters with the current advanced search"
 msgstr ""
 
@@ -8920,6 +9576,56 @@ msgstr ""
 #, fuzzy
 msgid "Public page content"
 msgstr "Contingut de la pàgina pública"
+
+#, fuzzy, php-format
+#~| msgid "Remove group %1$s"
+#~ msgid "Keep group %1$s"
+#~ msgstr "Elimina el grup %1$s"
+
+#, fuzzy
+#~ msgid "Can members create child members?"
+#~ msgstr "No hi ha cap membre adjuntat?"
+
+#, fuzzy
+#~ msgid "Can group managers edit their groups?"
+#~ msgstr "Els gestors de grups poden editar els seus grups?"
+
+#, fuzzy
+#~ msgid "Can group managers create members?"
+#~ msgstr "Envia els recordatoris als membres finals?"
+
+#, fuzzy
+#~ msgid "Can group managers edit members?"
+#~ msgstr "Els gestors de grup poden editar els seus membres?"
+
+#~ msgid "Can group managers send mailings?"
+#~ msgstr "Els gestors de grup poden enviar correus massius?"
+
+#, fuzzy
+#~ msgid "Can group managers do exports?"
+#~ msgstr "Poden fer exportacions els gestors de grups?"
+
+#, fuzzy
+#~ msgid ""
+#~ "Groups managers will be allowed to export members as csv, pdf cards, "
+#~ "attendence sheetss and groups pdf"
+#~ msgstr ""
+#~ "Els gestors de grups tindran permís per exportar membres com a cvs, "
+#~ "cartes pdf, assistència i grups pdf"
+
+#~ msgid "Can group managers see contributions?"
+#~ msgstr "Els gestors de grup poden veure les contribucions?"
+
+#, fuzzy
+#~ msgid "Can group managers create contributions?"
+#~ msgstr "Envia els recordatoris als membres finals?"
+
+#~ msgid "Can group managers see transactions?"
+#~ msgstr "Els gestors de grup poden veure les transaccions?"
+
+#, fuzzy
+#~ msgid "Can group managers create transactions?"
+#~ msgstr "Envia els recordatoris als membres finals?"
 
 #, fuzzy
 #~ msgid "no member"
@@ -9552,10 +10258,6 @@ msgstr "Contingut de la pàgina pública"
 #~ msgstr ""
 #~ "Galette està configurada per mostrar errors. Això s'ha d'evitar en "
 #~ "entorns de producció."
-
-#, fuzzy
-#~ msgid "Security"
-#~ msgstr "Seguretat"
 
 #, fuzzy
 #~ msgid "General information"

@@ -34,7 +34,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-02 13:04+0100\n"
+"POT-Creation-Date: 2026-11-13 19:32+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -45,6 +45,192 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2026.11.dev0\n"
+
+msgid "Members"
+msgstr "Membri"
+
+msgid "Contributions"
+msgstr "Contributi"
+
+msgid "Transactions"
+msgstr "Transazioni"
+
+msgid "Groups"
+msgstr "Gruppi"
+
+msgid "Mailings"
+msgstr "L'invio di e-mail"
+
+msgid "Documents"
+msgstr "Documenti"
+
+msgid "Configuration"
+msgstr "Configurazione"
+
+msgid "Exports"
+msgstr "Esportazioni"
+
+msgid "Logs"
+msgstr "Accessi"
+
+msgid "System information"
+msgstr "Informazioni di sistema"
+
+msgid "Security"
+msgstr "Sicurezza"
+
+msgid "Plugins"
+msgstr "Plugin"
+
+msgid "Roles"
+msgstr ""
+
+msgid "Create members"
+msgstr ""
+
+msgid "Create child members"
+msgstr ""
+
+msgid "Display members"
+msgstr ""
+
+msgid "Edit members"
+msgstr ""
+
+msgid "Delete members"
+msgstr ""
+
+msgid ""
+"Manage members administrative information (status, exemption, account, "
+"parent)"
+msgstr ""
+
+msgid "Grant administrator rights to members"
+msgstr ""
+
+msgid "Change or delete members in mass"
+msgstr ""
+
+msgid "Send members new password links, reset their two-factor authentication"
+msgstr ""
+
+msgid "Import members"
+msgstr ""
+
+msgid "Export members as CSV"
+msgstr ""
+
+msgid "Print members cards, labels and attendance sheets"
+msgstr ""
+
+msgid "Create contributions"
+msgstr ""
+
+msgid "Display contributions"
+msgstr ""
+
+msgid "Add contributions in mass"
+msgstr ""
+
+msgid "Edit contributions"
+msgstr ""
+
+msgid "Delete contributions"
+msgstr ""
+
+msgid "Export contributions as CSV"
+msgstr ""
+
+msgid "Manage scheduled payments"
+msgstr ""
+
+msgid "Send reminders to late members"
+msgstr "Manda un promemoria ai membri in ritardo"
+
+msgid "Create transactions"
+msgstr ""
+
+msgid "Display transactions"
+msgstr ""
+
+msgid "Edit transactions"
+msgstr ""
+
+msgid "Delete transactions"
+msgstr ""
+
+msgid "Attach contributions to transactions"
+msgstr ""
+
+msgid "Display groups"
+msgstr ""
+
+msgid "Create groups"
+msgstr ""
+
+msgid "Delete groups"
+msgstr ""
+
+msgid "Edit groups"
+msgstr ""
+
+msgid "Export groups as PDF"
+msgstr ""
+
+msgid "Send mailings"
+msgstr ""
+
+msgid "Browse and delete sent mailings"
+msgstr ""
+
+msgid "Manage documents"
+msgstr ""
+
+msgid ""
+"Manage statuses, titles, contributions and payment types, labels translations"
+msgstr ""
+
+msgid "Manage emails contents and PDF models"
+msgstr ""
+
+msgid "Change settings"
+msgstr ""
+
+msgid "Configure core and dynamic fields, and lists"
+msgstr ""
+
+msgid "Export data"
+msgstr ""
+
+msgid "Browse and flush logs"
+msgstr ""
+
+msgid "Display system information and charts"
+msgstr ""
+
+msgid "Lift authentication restrictions"
+msgstr ""
+
+msgid "Manage plugins"
+msgstr ""
+
+msgid "Manage roles and their permissions"
+msgstr ""
+
+msgid "Member"
+msgstr "Membro"
+
+msgid "Up to date member"
+msgstr ""
+
+msgid "Group manager"
+msgstr "Gruppo manager"
+
+msgid "Staff member"
+msgstr "Membri dello staff"
+
+msgid "Administrator"
+msgstr "Amministratore"
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
@@ -361,6 +547,9 @@ msgstr "- Metodo di pagamento sconosciuto!"
 msgid "- Unknown contribution type!"
 msgstr "- Tipo di contributo sconosciuto!"
 
+msgid "You do not have permission for requested URL."
+msgstr "Non hai i premessi per l'URL richiesto."
+
 msgid "No contribution was selected, please check at least one."
 msgstr ""
 "Non è stato selezionato nessun contribuo, per favore selezionane almeno uno."
@@ -475,12 +664,6 @@ msgstr "Rimuovi il tipo di contributo '%1$s'"
 msgid "New document"
 msgstr "Nessun documento"
 
-msgid "Documents"
-msgstr "Documenti"
-
-msgid "You do not have permission for requested URL."
-msgstr "Non hai i premessi per l'URL richiesto."
-
 msgid "The file does not exists or cannot be read :("
 msgstr "Il file non esiste o non può essere letto :("
 
@@ -540,9 +723,6 @@ msgstr "Esiste già un file con quel nome!"
 
 msgid "Group added"
 msgstr "Gruppo aggiunto"
-
-msgid "Groups"
-msgstr "Gruppi"
 
 #, php-format
 msgid "New parent is %1$s"
@@ -612,9 +792,6 @@ msgstr "L' email è stata inviata con successo!"
 msgid "Mailing has been successfully saved."
 msgstr "L'email è stata salvata con successo."
 
-msgid "Mailings"
-msgstr "L'invio di e-mail"
-
 #, php-format
 msgid "Remove mailing #%1$s"
 msgstr "Rimuovi mailing #%1$s"
@@ -662,9 +839,6 @@ msgstr "Autoiscrizione abilitata?"
 #| msgid "file"
 msgid "Profile"
 msgstr "file"
-
-msgid "Members"
-msgstr "Membri"
 
 msgid "Gallery"
 msgstr "Registro"
@@ -739,6 +913,11 @@ msgstr "Un nuovo socio è stato aggiunto con successo."
 msgid "Member account has been modified."
 msgstr "L'account socio è stato modificato."
 
+#. TRANS: %1$d is the number of roles given, %2$d the number taken back, %3$d the member identifier
+#, php-format
+msgid "%1$d role(s) given, %2$d taken back for member #%3$d"
+msgstr ""
+
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 "Si è verificato un errore nell'aggiungere un socio al gruppo come gestore."
@@ -787,6 +966,71 @@ msgstr "La tipologia di pagamento \"%1$s\" è stata modificata correttamente."
 #, php-format
 msgid "Remove payment type %1$s"
 msgstr "Rimuovi la tipologia di pagamento %1$s"
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has not been added; is its name missing or already used?"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been added; choose its permissions."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s'"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has not been modified!"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' modified"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been successfully modified."
+msgstr ""
+
+msgid "System roles are given from members data."
+msgstr ""
+
+msgid "Please choose a member."
+msgstr ""
+
+msgid "Requested group does not exist."
+msgstr ""
+
+msgid "Member already has this role."
+msgstr ""
+
+#. TRANS: %1$s is the role name, %2$d the member identifier
+#, php-format
+msgid "Role '%1$s' given to member #%2$d"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been given."
+msgstr ""
+
+msgid "This role was not given."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been taken back."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Remove role %1$s"
+msgstr ""
 
 msgid "This search is already saved."
 msgstr "Questa ricerca è stata già salvata."
@@ -959,9 +1203,6 @@ msgstr "Cancellata con successo!"
 msgid "An error occurred trying to delete :("
 msgstr "Si è verificato un errore nel tentativo di eliminare :("
 
-msgid "Exports"
-msgstr "Esportazioni"
-
 #. TRANS: parameter is the table name
 #, php-format
 msgid "Table %1$s is empty, and has not been exported."
@@ -983,6 +1224,11 @@ msgstr "Si è verificato un errore nel caricamento dell'export '%1$s'."
 
 msgid "Imports"
 msgstr "Importazioni"
+
+msgid ""
+"You are not allowed to import groups managers; remove that column from the "
+"import model."
+msgstr ""
 
 msgid "An error occurred importing the file :("
 msgstr "Si è verificato un errore nell'importare i file :("
@@ -1057,9 +1303,6 @@ msgstr "Si è verificato un errore nel salvare `%1$s` per la lingua `%2$s`"
 
 msgid "Labels has been successfully translated!"
 msgstr "L'Etichetta è stata tradotta!"
-
-msgid "System information"
-msgstr "Informazioni di sistema"
 
 msgid "Dashboard"
 msgstr "Cruscotto"
@@ -1168,9 +1411,6 @@ msgstr "Invia promemoria:"
 msgid "Download document"
 msgstr "Scarica documento"
 
-msgid "Logs"
-msgstr "Accessi"
-
 msgid "Logs have been flushed!"
 msgstr "Gli accessi sono stati ripuliti!"
 
@@ -1179,6 +1419,66 @@ msgstr "Si è verificato un errore nella pulizia degli accessi :("
 
 msgid "Flush the logs"
 msgstr "Elimina gli accessi"
+
+msgid "Maps are not enabled."
+msgstr ""
+
+msgid "Maps"
+msgstr "Mappe"
+
+msgid "Coordinates have not been loaded."
+msgstr ""
+
+msgid "Superadmin cannot be localized."
+msgstr "Il Super-amministratore non può essere localizzato."
+
+msgid ""
+"Town search is not available for now, you can still search or click on the "
+"map."
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s geographic position"
+msgstr "Posizione geografica del %1$s"
+
+msgid "Maps settings"
+msgstr ""
+
+msgid "Unknown position precision."
+msgstr ""
+
+msgid ""
+"Maps center needs both a latitude, between -90 and 90, and a longitude, "
+"between -180 and 180."
+msgstr ""
+
+msgid "An address is required to use your own background map."
+msgstr ""
+
+msgid "Maps settings have been saved."
+msgstr ""
+
+msgid "Town search is not available for now, you can still enter coordinates."
+msgstr ""
+
+msgid "Coordinates have been removed!"
+msgstr "Le coordinate sono state rimosse!"
+
+msgid "Coordinates have not been removed :("
+msgstr "Le coordinate non sono state rimosse :("
+
+msgid "Invalid coordinates."
+msgstr ""
+
+msgid "New coordinates have been stored!"
+msgstr "Nuove coordinate sono state memorizzate!"
+
+msgid "Coordinates have not been stored :("
+msgstr "Le coordinate non sono state memorizzate :("
+
+msgid "Unable to generate PDF file."
+msgstr ""
 
 msgid "Unable to get members list."
 msgstr "Lista dei membri non ottenuta."
@@ -1209,9 +1509,6 @@ msgstr "Il modello non è stato salvato :("
 
 msgid "Invalid link!"
 msgstr "Collegamento non valido!"
-
-msgid "Plugins"
-msgstr "Plugin"
 
 #, php-format
 msgid "Plugin %1$s has been enabled"
@@ -1365,237 +1662,6 @@ msgstr "OK"
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
 msgstr "La versione minima per il motore %1$s è %2$s, trovata %1$s %3$s!"
-
-msgid "My Account"
-msgstr "Il mio account"
-
-msgid "View my member card"
-msgstr "Visualizza la mia tessera associativa"
-
-msgid "My contributions"
-msgstr "I miei contributi"
-
-msgid "View and filter all my contributions"
-msgstr "Visualizza e filtra tutti i miei contributi"
-
-msgid "My scheduled payments"
-msgstr "I miei pagamenti programmati"
-
-msgid "View and filter all my scheduled payments"
-msgstr "Visualizza e filtra tutti i miei pagamenti programmati"
-
-msgid "My transactions"
-msgstr "Le mie transazioni"
-
-msgid "View and filter all my transactions"
-msgstr "Visualizza e filtra tutte le mie transazioni"
-
-#, fuzzy
-#| msgid "Fill all empty login and passwords"
-msgid "Modify my login and password"
-msgstr "Compila tutti i login e le password vuoti"
-
-msgid "Add a child member"
-msgstr "Aggiungi socio minorenne"
-
-msgid "Add new child member in database"
-msgstr "Aggiungi un nuovo socio minorenne nell'archivio"
-
-msgid "Manage my two-factor authentication"
-msgstr ""
-
-msgid "View, search into and filter member's list"
-msgstr "Visualizza, cerca e filtra l'elenco dei membri"
-
-msgid "Perform advanced search into members list"
-msgstr "Effettua una ricerca avanzata nella lista membri"
-
-msgid "Add a member"
-msgstr "Aggiungi un socio"
-
-msgid "Add new member in database"
-msgstr "Aggiungi un nuovo socio nell'archivio"
-
-msgid "Empty adhesion form"
-msgstr "Modulo di adesione vuoto"
-
-msgid "Download empty adhesion form"
-msgstr "Scarica il modulo di adesione vuoto"
-
-msgid "Contributions"
-msgstr "Contributi"
-
-msgid "View and filter contributions"
-msgstr "Visualizza e filtra le contribuzioni"
-
-msgid "View and filter scheduled payments"
-msgstr "Visualizza e filtra i pagamenti programmati"
-
-msgid "View and filter transactions"
-msgstr "Visualizza e filtra le transazioni"
-
-msgid "Add a membership fee"
-msgstr "Aggiungi una quota associativa"
-
-msgid "Add new membership fee in database"
-msgstr "Aggiungi una nuova quota associativa nel database"
-
-msgid "Add a donation"
-msgstr "Aggiungi una donazione"
-
-msgid "Add new donation in database"
-msgstr "Aggiungi una nuova donazione nel database"
-
-msgid "Add a transaction"
-msgstr "Aggiuni una transazione"
-
-msgid "Add new transaction in database"
-msgstr "Aggiungi una nuova transazione nel database"
-
-msgid "Send reminders to late members"
-msgstr "Manda un promemoria ai membri in ritardo"
-
-msgid "Management"
-msgstr "Gestione"
-
-msgid "View and manage groups"
-msgstr "Visualizza e gestisci i gruppi"
-
-msgid ""
-"Add documents to share related to your association (status, rules of "
-"procedure, ...)"
-msgstr ""
-"Aggiungi documenti da condividere relativi alla tua associazione (stato, "
-"regolamento interno, ...)"
-
-msgid "Manage mailings that has been sent"
-msgstr "Gestisci i messaggi inviati"
-
-msgid "Various charts"
-msgstr "Grafici vari"
-
-msgid "Export some data in various formats"
-msgstr "Esportazione dati in vari formati"
-
-msgid "Import members from CSV files"
-msgstr "Importa membri da file CSV"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr ""
-
-msgid "View application's logs"
-msgstr "Visualizza i registri dell'applicazione"
-
-msgid "Configuration"
-msgstr "Configurazione"
-
-msgid ""
-"Set applications preferences (address, website, member's cards "
-"configuration, ...)"
-msgstr ""
-"Imposta le preferenze delle applicazioni (indirizzo, sito web, "
-"configurazione tessere soci, ...)"
-
-msgid "Information about available plugins"
-msgstr "Informazioni sui plugin disponibili"
-
-msgid "Customize lists fields and order"
-msgstr "Personalizza i campi e l'ordine degli elenchi"
-
-msgid ""
-"Customize fields order, set which are required, and for who they're visibles"
-msgstr ""
-"Personalizza l'ordine dei campi, imposta quelli obbligatori e per chi sono "
-"visibili"
-
-msgid "Manage additional fields for various forms"
-msgstr "Gestisci campi aggiuntivi per vari moduli"
-
-msgid "Manage contributions types"
-msgstr "Gestisci i tipi di contributi"
-
-msgid "Manage payment types"
-msgstr "Gestisci le tipologie di pagamento"
-
-msgid "Manage titles"
-msgstr "Gestisci i titoli"
-
-msgid "Manage PDF models"
-msgstr "Gestione modelli PDF"
-
-msgid "Manage emails texts and subjects"
-msgstr "Gestione dei testi e degli oggetti delle email"
-
-msgid "Manage translatable labels"
-msgstr "Gestisci etichette traducibili"
-
-msgid "Various administrative tools"
-msgstr "Vari strumenti amministrativi"
-
-msgid "Edit every setting, including those the settings form does not show"
-msgstr ""
-
-msgid "Directories"
-msgstr "Cartelle"
-
-msgid "Galleries"
-msgstr "Gallerie"
-
-msgid "View documents related to your association"
-msgstr "Visualizza i documenti relativi alla tua associazione"
-
-msgid "Public pages"
-msgstr "Pagine pubbliche"
-
-msgid "Transactions"
-msgstr "Transazioni"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "%1$s: edit information"
-msgstr "%1$s: modifica informazioni"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "%1$s: contributions"
-msgstr "%1$s: contributi"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "%1$s: remove from database"
-msgstr "%1$s: rimuovi dal database"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "Log in as %1$s"
-msgstr "Accedi come %1$s"
-
-msgid "Mass change"
-msgstr "Cambiamenti massivi"
-
-msgid "Mass add contributions"
-msgstr "Aggiunta contributi in massa"
-
-msgid "Delete"
-msgstr "Elimina"
-
-msgid "Mail"
-msgstr "Posta"
-
-msgid "Generate labels"
-msgstr "Genera etichette"
-
-msgid "Generate Member Cards"
-msgstr "Genera tessere soci"
-
-msgid "Export as CSV"
-msgstr "Esporta come CSV"
-
-msgid "Galette news"
-msgstr "Novità di Galette"
-
-msgid "Association news"
-msgstr "Novità dell'associazione"
 
 #, fuzzy
 #| msgid "Email sent is disabled in the preferences. Ask galette admin"
@@ -1793,6 +1859,9 @@ msgstr "Nessun modulo del genere."
 
 msgid "Cannot deactivate plugin."
 msgstr "Il plugin non può essere disattivato."
+
+msgid "Plugin features are part of Galette now, it cannot be enabled."
+msgstr ""
 
 msgid "Cannot activate plugin."
 msgstr "Non è possibile attivare il plugin."
@@ -2185,11 +2254,19 @@ msgstr "- Selezionare un membro da un gruppo che si gestisce."
 msgid "- The amount must be an integer!"
 msgstr "- L'importo deve essere un numero intero!"
 
+msgid "- You are not allowed to attach a contribution to this transaction!"
+msgstr ""
+
 msgid "- The duration must be a positive integer!"
 msgstr "- La durata deve essere un numero intero positivo!"
 
 msgid "- The end date must be after the start date!"
 msgstr "- La data di inizio deve precedere la data di fine!"
+
+msgid ""
+"- You are not allowed to change the amount of a contribution attached to a "
+"transaction you cannot access!"
+msgstr ""
 
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
@@ -2607,7 +2684,6 @@ msgstr "Il file è troppo grande. La dimensione massima consentita è %1$s"
 msgid "Unable to add dynamic translation for %1$s :("
 msgstr "Impossibile aggiungere la traduzione dinamica per %1$s :("
 
-#. TRANS: paramter is a field name
 #. TRANS: parameter is a field name
 #, php-format
 msgid "Unable to update dynamic translation for %1$s :("
@@ -2626,15 +2702,6 @@ msgstr "Utente, sola lettura"
 
 msgid "User, read/write"
 msgstr "Utente, lettura/scrittura"
-
-msgid "Group manager"
-msgstr "Gruppo manager"
-
-msgid "Staff member"
-msgstr "Membri dello staff"
-
-msgid "Administrator"
-msgstr "Amministratore"
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
@@ -3093,9 +3160,6 @@ msgstr "Tessere socio"
 msgid "Cards"
 msgstr "Tessere"
 
-msgid "Member"
-msgstr "Membro"
-
 msgid "labels_print_filename"
 msgstr "nomefile_stampa_etichette"
 
@@ -3104,6 +3168,63 @@ msgstr "Etichette dei membri"
 
 msgid "Labels"
 msgstr "Etichette"
+
+msgid "About 100 km"
+msgstr ""
+
+msgid "About 50 km"
+msgstr ""
+
+msgid "About 5 km"
+msgstr ""
+
+msgid "About 500 m"
+msgstr ""
+
+msgid "About 50 m"
+msgstr ""
+
+msgid "Exact position"
+msgstr ""
+
+msgid "OpenFreeMap, light grey"
+msgstr ""
+
+msgid "OpenFreeMap, colours"
+msgstr ""
+
+msgid "VersaTiles, colours"
+msgstr ""
+
+msgid "VersaTiles, grey"
+msgstr ""
+
+msgid "Plan IGN, France only"
+msgstr ""
+
+msgid "OpenStreetMap"
+msgstr ""
+
+msgid "OpenStreetMap France"
+msgstr ""
+
+msgid "Humanitarian OSM Team"
+msgstr ""
+
+msgid "OpenStreetMap Germany"
+msgstr ""
+
+msgid "CyclOSM, for cycling"
+msgstr ""
+
+msgid "OpenTopoMap, topographic"
+msgstr ""
+
+msgid "Esri, light grey"
+msgstr ""
+
+msgid "Your own values"
+msgstr ""
 
 msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
@@ -3145,6 +3266,253 @@ msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr ""
 "Eseguire la procedura d'installazione o d'aggiornamento (controllare la "
 "documentazione)"
+
+msgid "View my member card"
+msgstr "Visualizza la mia tessera associativa"
+
+msgid "My contributions"
+msgstr "I miei contributi"
+
+msgid "View and filter all my contributions"
+msgstr "Visualizza e filtra tutti i miei contributi"
+
+msgid "My transactions"
+msgstr "Le mie transazioni"
+
+msgid "View and filter all my transactions"
+msgstr "Visualizza e filtra tutte le mie transazioni"
+
+msgid "My localization"
+msgstr "La mia localizzazione"
+
+msgid "Set my position on the members map"
+msgstr ""
+
+msgid "View, search into and filter member's list"
+msgstr "Visualizza, cerca e filtra l'elenco dei membri"
+
+msgid "View and manage groups"
+msgstr "Visualizza e gestisci i gruppi"
+
+msgid "Manage mailings that has been sent"
+msgstr "Gestisci i messaggi inviati"
+
+msgid "View and filter contributions"
+msgstr "Visualizza e filtra le contribuzioni"
+
+msgid "View and filter transactions"
+msgstr "Visualizza e filtra le transazioni"
+
+msgid "View documents related to your association"
+msgstr "Visualizza i documenti relativi alla tua associazione"
+
+msgid ""
+"Set applications preferences (address, website, member's cards "
+"configuration, ...)"
+msgstr ""
+"Imposta le preferenze delle applicazioni (indirizzo, sito web, "
+"configurazione tessere soci, ...)"
+
+msgid "Information about available plugins"
+msgstr "Informazioni sui plugin disponibili"
+
+msgid "My scheduled payments"
+msgstr "I miei pagamenti programmati"
+
+msgid "View and filter all my scheduled payments"
+msgstr "Visualizza e filtra tutti i miei pagamenti programmati"
+
+#, fuzzy
+#| msgid "Fill all empty login and passwords"
+msgid "Modify my login and password"
+msgstr "Compila tutti i login e le password vuoti"
+
+msgid "Add a child member"
+msgstr "Aggiungi socio minorenne"
+
+msgid "Add new child member in database"
+msgstr "Aggiungi un nuovo socio minorenne nell'archivio"
+
+msgid "Manage my two-factor authentication"
+msgstr ""
+
+msgid "My Account"
+msgstr "Il mio account"
+
+msgid "Perform advanced search into members list"
+msgstr "Effettua una ricerca avanzata nella lista membri"
+
+msgid "Add a member"
+msgstr "Aggiungi un socio"
+
+msgid "Add new member in database"
+msgstr "Aggiungi un nuovo socio nell'archivio"
+
+msgid "Empty adhesion form"
+msgstr "Modulo di adesione vuoto"
+
+msgid "Download empty adhesion form"
+msgstr "Scarica il modulo di adesione vuoto"
+
+msgid "View and filter scheduled payments"
+msgstr "Visualizza e filtra i pagamenti programmati"
+
+msgid "Add a membership fee"
+msgstr "Aggiungi una quota associativa"
+
+msgid "Add new membership fee in database"
+msgstr "Aggiungi una nuova quota associativa nel database"
+
+msgid "Add a donation"
+msgstr "Aggiungi una donazione"
+
+msgid "Add new donation in database"
+msgstr "Aggiungi una nuova donazione nel database"
+
+msgid "Add a transaction"
+msgstr "Aggiuni una transazione"
+
+msgid "Add new transaction in database"
+msgstr "Aggiungi una nuova transazione nel database"
+
+msgid "Management"
+msgstr "Gestione"
+
+msgid ""
+"Add documents to share related to your association (status, rules of "
+"procedure, ...)"
+msgstr ""
+"Aggiungi documenti da condividere relativi alla tua associazione (stato, "
+"regolamento interno, ...)"
+
+msgid "Various charts"
+msgstr "Grafici vari"
+
+msgid "Export some data in various formats"
+msgstr "Esportazione dati in vari formati"
+
+msgid "Import members from CSV files"
+msgstr "Importa membri da file CSV"
+
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr ""
+
+msgid "View application's logs"
+msgstr "Visualizza i registri dell'applicazione"
+
+msgid "Display members positions on maps, and choose the background map"
+msgstr ""
+
+msgid "Customize lists fields and order"
+msgstr "Personalizza i campi e l'ordine degli elenchi"
+
+msgid ""
+"Customize fields order, set which are required, and for who they're visibles"
+msgstr ""
+"Personalizza l'ordine dei campi, imposta quelli obbligatori e per chi sono "
+"visibili"
+
+msgid "Manage additional fields for various forms"
+msgstr "Gestisci campi aggiuntivi per vari moduli"
+
+msgid "Manage contributions types"
+msgstr "Gestisci i tipi di contributi"
+
+msgid "Manage payment types"
+msgstr "Gestisci le tipologie di pagamento"
+
+msgid "Manage titles"
+msgstr "Gestisci i titoli"
+
+msgid "Manage PDF models"
+msgstr "Gestione modelli PDF"
+
+msgid "Manage emails texts and subjects"
+msgstr "Gestione dei testi e degli oggetti delle email"
+
+msgid "Manage translatable labels"
+msgstr "Gestisci etichette traducibili"
+
+msgid "Various administrative tools"
+msgstr "Vari strumenti amministrativi"
+
+msgid "Edit every setting, including those the settings form does not show"
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: edit information"
+msgstr "%1$s: modifica informazioni"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: contributions"
+msgstr "%1$s: contributi"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: remove from database"
+msgstr "%1$s: rimuovi dal database"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Log in as %1$s"
+msgstr "Accedi come %1$s"
+
+msgid "Geolocalize"
+msgstr "Geolocalizza"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Geolocalize %1$s"
+msgstr "Geolocalizza %1$s"
+
+msgid "Show on map"
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Show %1$s on map"
+msgstr ""
+
+msgid "Mass change"
+msgstr "Cambiamenti massivi"
+
+msgid "Mass add contributions"
+msgstr "Aggiunta contributi in massa"
+
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Mail"
+msgstr "Posta"
+
+msgid "Generate labels"
+msgstr "Genera etichette"
+
+msgid "Generate Member Cards"
+msgstr "Genera tessere soci"
+
+msgid "Export as CSV"
+msgstr "Esporta come CSV"
+
+msgid "Galette news"
+msgstr "Novità di Galette"
+
+msgid "Association news"
+msgstr "Novità dell'associazione"
+
+msgid "Directories"
+msgstr "Cartelle"
+
+msgid "Galleries"
+msgstr "Gallerie"
+
+msgid "See where members live"
+msgstr ""
+
+msgid "Public pages"
+msgstr "Pagine pubbliche"
 
 msgid "Galette error"
 msgstr "Errore di Galette"
@@ -3193,6 +3561,10 @@ msgstr "Ricerche eliminate (%1$s)"
 #, php-format
 msgid "Scheduled payments deleted (%1$s)"
 msgstr "Pagamenti programmati cancellati (%1$s)"
+
+#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
+msgid "YYYY-MM-DD"
+msgstr "DD/MM/YYYY"
 
 #, php-format
 msgid "Table %1$s has been converted to InnoDB/utf8mb4."
@@ -3419,10 +3791,6 @@ msgstr "Installazione della banca dati"
 
 msgid "Documentation"
 msgstr "Documentazione"
-
-#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
-msgid "YYYY-MM-DD"
-msgstr "DD/MM/YYYY"
 
 msgid "Member id:"
 msgstr "Lista dei soci:"
@@ -3970,6 +4338,14 @@ msgstr "Le scelte per il campo %d sono state migrate."
 msgid "Unable to migrate choices for field %d: %s"
 msgstr "Non è stato possibile migrare le scelte per il campo %d: %s"
 
+msgid "System roles have been created."
+msgstr ""
+
+msgid ""
+"Members positions from the maps plugin have been taken over, the plugin can "
+"be removed."
+msgstr ""
+
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Prego scegliere i parametri dell'account admin su Galette"
 
@@ -4483,10 +4859,9 @@ msgstr "Gestisci gruppi"
 msgid "Remove from group %1$s"
 msgstr "Rimuovi da un gruppo"
 
-#, fuzzy, php-format
-#| msgid "Remove group %1$s"
-msgid "Keep group %1$s"
-msgstr "Rimuovi il gruppo %1$s"
+#, php-format
+msgid "Cancel removal from group %1$s"
+msgstr ""
 
 msgid "no group"
 msgstr "nessun gruppo"
@@ -4568,6 +4943,53 @@ msgstr "Sinistra"
 
 msgid "Right"
 msgstr "Destra"
+
+msgid "Role"
+msgstr ""
+
+msgid "Every logged in member"
+msgstr ""
+
+msgid "Active account, up to date membership"
+msgstr ""
+
+#, php-format
+msgid "From their status: %1$s"
+msgstr ""
+
+msgid "Marked as administrator"
+msgstr ""
+
+msgid "Manager of the group, see groups above"
+msgstr ""
+
+msgid "Computed from member's information"
+msgstr ""
+
+msgid "All groups"
+msgstr "Tutti i gruppi"
+
+msgctxt "member roles"
+msgid "will be removed"
+msgstr ""
+
+#, php-format
+msgid "Take role %1$s back"
+msgstr ""
+
+#, php-format
+msgid "Cancel removal of role %1$s"
+msgstr ""
+
+msgctxt "member roles"
+msgid "added"
+msgstr ""
+
+msgid "Give role"
+msgstr ""
+
+msgid "Choose a role"
+msgstr ""
 
 msgid "Not supplied"
 msgstr "Non fornito"
@@ -4893,6 +5315,12 @@ msgstr "Disabilita modalità scura"
 msgid "Enable dark mode"
 msgstr "Abilita modalità scura"
 
+msgid "Disable debug bar"
+msgstr ""
+
+msgid "Enable debug bar"
+msgstr ""
+
 msgid "Unimpersonate"
 msgstr "Deimpersonare"
 
@@ -4972,6 +5400,73 @@ msgstr ""
 
 msgid "Recipients"
 msgstr "Destinatari"
+
+msgid "Legend"
+msgstr "Legenda"
+
+msgid "Display map in full screen"
+msgstr "Visualizza la mappa a schermo intero"
+
+msgid "Exit full screen"
+msgstr "Esci da schermo intero"
+
+msgid "Search your town..."
+msgstr "Cerca la tua città ..."
+
+msgid "Search a town..."
+msgstr "Cerca una città ..."
+
+msgid "Sorry, that town could not be found."
+msgstr "Spiacente, quella città non è stata trovata."
+
+msgid "Search"
+msgstr "Cerca"
+
+msgid "Show me where I am"
+msgstr "Mostrami dove mi trovo"
+
+msgid "You seem located outside the boundaries of the map"
+msgstr "Sembra che ti trovi al di fuori dei confini della mappa"
+
+msgid "aka"
+msgstr "Alias"
+
+#, php-format
+msgid "You clicked at %1$s"
+msgstr "Hai fatto clic su %1$s"
+
+msgid "I live here!"
+msgstr "Io vivo qui!"
+
+msgid "Member lives here!"
+msgstr "L'utente vive qui!"
+
+msgid "Remove my coordinates"
+msgstr "Rimuovi le mie coordinate"
+
+msgid "Remove member coordinates"
+msgstr "Rimuovi le coordinate dell'utente"
+
+msgid "Are you sure you want to remove coordinates from the database?"
+msgstr "Sei sicuro di voler rimuovere le coordinate dal database?"
+
+msgid "An error occurred during 'I live here' process :("
+msgstr "Si è verificato un errore durante il processo \"Io vivo qui\" :("
+
+msgid "An error occurred removing coordinates :("
+msgstr "Si è verificato un errore durante la rimozione delle coordinate :("
+
+msgid "Member (company)"
+msgstr "Utente (Azienda)"
+
+msgid "Search result"
+msgstr "Risultato di ricerca"
+
+msgid "The map could not be loaded."
+msgstr ""
+
+msgid "No geographic position yet."
+msgstr ""
 
 msgid "See member profile"
 msgstr "Visualizzare il profilo del socio"
@@ -5517,9 +6012,6 @@ msgstr ""
 #, php-format
 msgid "Go to %s"
 msgstr ""
-
-msgid "Legend"
-msgstr "Legenda"
 
 #, fuzzy
 #| msgid "Status"
@@ -6578,6 +7070,76 @@ msgstr ""
 msgid "Follow the sending"
 msgstr "Per la selezione:"
 
+msgid "Display members positions on maps"
+msgstr ""
+
+msgid ""
+"Members can then set their position, and a map is added to public pages."
+msgstr ""
+
+msgid "Members positions precision"
+msgstr ""
+
+msgid ""
+"How far from their stored position members may appear on the map. Staff, "
+"administrators and members themselves always see the exact position."
+msgstr ""
+
+msgid "Background map provider"
+msgstr ""
+
+msgid "Vector tiles"
+msgstr ""
+
+msgid "Tick for a MapLibre style, leave unticked for classic raster tiles."
+msgstr ""
+
+msgid "Style address for vector tiles, tiles address for raster ones, such as:"
+msgstr ""
+
+msgid "Attribution"
+msgstr ""
+
+msgid ""
+"Credit the provider requires, HTML allowed. Data licences make it mandatory."
+msgstr ""
+
+msgid "Maximum zoom"
+msgstr ""
+
+msgid "Subdomains"
+msgstr ""
+
+msgid ""
+"Letters the {s} token in the address is replaced with, such as abc. Raster "
+"tiles only."
+msgstr ""
+
+msgid "Maps center"
+msgstr ""
+
+msgid ""
+"Where maps open when they have nothing else to show, such as the association "
+"town. Left empty, maps show the whole of France."
+msgstr ""
+
+msgid "Search coordinates"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid ""
+"Public map as the form sets it, with sample positions: where they are "
+"stored, and where visitors see them."
+msgstr ""
+
+msgid "No town found."
+msgstr ""
+
 msgid "Attached to:"
 msgstr "Collegato a:"
 
@@ -6637,8 +7199,25 @@ msgstr ""
 "Il socio riceverà il suo nome utente e la password via e-mail, se ha un "
 "indirizzo."
 
+msgid "Choose your location"
+msgstr "Scegli la tua posizione"
+
+#, php-format
+msgid "Choose %1$s location"
+msgstr "Scegli posizione del %1$s"
+
+msgid "Select your town."
+msgstr "Seleziona la tua città."
+
+#, php-format
+msgid "In the database, town is set to: '%1$s'"
+msgstr "Nel database, la città è impostata su: '%1$s'"
+
 msgid "Family"
 msgstr "Famiglia"
+
+msgid "Roles:"
+msgstr ""
 
 msgid "Not managed group"
 msgstr "Gruppo non gestito"
@@ -6662,9 +7241,6 @@ msgstr[1] "%1$s soci"
 
 msgid "among:"
 msgstr "tra:"
-
-msgid "All groups"
-msgstr "Tutti i gruppi"
 
 msgid "Members that have an email address:"
 msgstr "Membri che hanno un indirizzo e-mail:"
@@ -6852,6 +7428,9 @@ msgstr "Manca un file richiesto"
 msgid "Incompatible with current version"
 msgstr "Incompatibile con la versione attuale"
 
+msgid "Invalid plugin definition"
+msgstr ""
+
 #, fuzzy
 #| msgid "Database access and permissions"
 msgid "Database version missing"
@@ -6866,6 +7445,9 @@ msgstr "Non registrato"
 #| msgid "Member card updated"
 msgid "Need update"
 msgstr "Tessera socio aggiornata"
+
+msgid "Part of Galette now, can be removed"
+msgstr ""
 
 msgid "Explicitly disabled"
 msgstr "Disabilitati esplicitamente"
@@ -7165,44 +7747,11 @@ msgstr ""
 "Inserire l'URL completo nel feed RSS. Verrà visualizzato sul desktop di "
 "Galette."
 
-#, fuzzy
-#| msgid "Can members create child?"
-msgid "Can members create child members?"
-msgstr "Possono i soci creare soci minorenni collegati?"
-
-msgid "Can group managers edit their groups?"
-msgstr "I gestori dei gruppi possono modificare i propri gruppi?"
-
-msgid "Can group managers create members?"
-msgstr "I gestori dei gruppi possono creare membri?"
-
-msgid "Can group managers edit members?"
-msgstr "I gestori dei gruppi possono modificare i membri?"
-
-msgid "Can group managers send mailings?"
-msgstr "I gestori dei gruppi possono inviare email?"
-
-msgid "Can group managers do exports?"
-msgstr "I gestori dei gruppi fare esportazioni?"
-
-msgid ""
-"Groups managers will be allowed to export members as csv, pdf cards, "
-"attendence sheetss and groups pdf"
+msgid "Rights are managed with roles."
 msgstr ""
-"I gestori dei gruppi potranno esportare i membri come CSV, schede pdf, fogli "
-"presenza e gruppi pdf"
 
-msgid "Can group managers see contributions?"
-msgstr "I gestori dei gruppi possono vedere i contributi?"
-
-msgid "Can group managers create contributions?"
-msgstr "I gestori dei gruppi possono creare contributi?"
-
-msgid "Can group managers see transactions?"
-msgstr "I gestori dei gruppi possono vedere le transazioni?"
-
-msgid "Can group managers create transactions?"
-msgstr "I gestori dei gruppi possono creare transazioni?"
+msgid "Manage roles"
+msgstr ""
 
 msgid "Sender name:"
 msgstr "Nome mittente:"
@@ -7597,6 +8146,118 @@ msgstr "Nessun promemoria selezionato"
 msgid "Please make sure to select at least one reminder."
 msgstr "Assicurarsi di selezionare almeno un promemoria."
 
+msgid "Given to every logged in member."
+msgstr ""
+
+msgid ""
+"Given to members whose account is active and whose membership is up to date."
+msgstr ""
+
+msgid ""
+"Given to members with a staff status; change their status to give or take it "
+"back."
+msgstr ""
+
+msgid ""
+"Given to members marked as administrators; change it with the Galette Admin "
+"field, when editing them."
+msgstr ""
+
+msgid ""
+"Given to managers of a group, on that group only; choose managers from the "
+"group page."
+msgstr ""
+
+msgid "Only its permissions can be changed."
+msgstr ""
+
+msgid "System"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s permissions"
+msgstr ""
+
+msgid "Rename role"
+msgstr ""
+
+msgid "Change parent role"
+msgstr ""
+
+msgid "Inherits from"
+msgstr ""
+
+msgid "permissions granted"
+msgstr ""
+
+msgid "Granted"
+msgstr ""
+
+msgid "Permission"
+msgstr ""
+
+#, php-format
+msgid "Inherited from %1$s"
+msgstr ""
+
+msgid ""
+"Members are always granted on what they own, and what their children own."
+msgstr ""
+
+msgid "Always on own"
+msgstr ""
+
+msgid ""
+"This permission does not apply to members: it is not granted when the role "
+"is given for a group."
+msgstr ""
+
+msgid "Not on a group"
+msgstr ""
+
+msgid "No member has this role."
+msgstr ""
+
+#, php-format
+msgid "%1$s member has this role."
+msgid_plural "%1$s members have this role."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Nearly every member has it, they are not listed."
+msgstr ""
+
+msgid "Take role back"
+msgstr ""
+
+#, php-format
+msgid "Take role back from %1$s"
+msgstr ""
+
+msgid "This role has not been given to anyone yet."
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s from %3$s"
+msgstr ""
+
+msgid "No parent role"
+msgstr ""
+
+msgid ""
+"System roles are given from members data: any logged-in member, members up "
+"to date, groups managers (on the groups they manage), staff members and "
+"administrators. Other roles are given explicitly, for all groups or for one."
+msgstr ""
+
+#, php-format
+msgid "Edit role '%1$s'"
+msgstr ""
+
+#, php-format
+msgid "Delete role '%1$s'"
+msgstr ""
+
 msgid "Replace parameters with the current advanced search"
 msgstr ""
 
@@ -7894,6 +8555,50 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Contenuti della pagina pubblica"
+
+#, fuzzy, php-format
+#~| msgid "Remove group %1$s"
+#~ msgid "Keep group %1$s"
+#~ msgstr "Rimuovi il gruppo %1$s"
+
+#, fuzzy
+#~| msgid "Can members create child?"
+#~ msgid "Can members create child members?"
+#~ msgstr "Possono i soci creare soci minorenni collegati?"
+
+#~ msgid "Can group managers edit their groups?"
+#~ msgstr "I gestori dei gruppi possono modificare i propri gruppi?"
+
+#~ msgid "Can group managers create members?"
+#~ msgstr "I gestori dei gruppi possono creare membri?"
+
+#~ msgid "Can group managers edit members?"
+#~ msgstr "I gestori dei gruppi possono modificare i membri?"
+
+#~ msgid "Can group managers send mailings?"
+#~ msgstr "I gestori dei gruppi possono inviare email?"
+
+#~ msgid "Can group managers do exports?"
+#~ msgstr "I gestori dei gruppi fare esportazioni?"
+
+#~ msgid ""
+#~ "Groups managers will be allowed to export members as csv, pdf cards, "
+#~ "attendence sheetss and groups pdf"
+#~ msgstr ""
+#~ "I gestori dei gruppi potranno esportare i membri come CSV, schede pdf, "
+#~ "fogli presenza e gruppi pdf"
+
+#~ msgid "Can group managers see contributions?"
+#~ msgstr "I gestori dei gruppi possono vedere i contributi?"
+
+#~ msgid "Can group managers create contributions?"
+#~ msgstr "I gestori dei gruppi possono creare contributi?"
+
+#~ msgid "Can group managers see transactions?"
+#~ msgstr "I gestori dei gruppi possono vedere le transazioni?"
+
+#~ msgid "Can group managers create transactions?"
+#~ msgstr "I gestori dei gruppi possono creare transazioni?"
 
 #~ msgid "no member"
 #~ msgstr "non socio"
@@ -8286,9 +8991,6 @@ msgstr "Contenuti della pagina pubblica"
 #~| msgid "Staff member"
 #~ msgid "Saff member"
 #~ msgstr "Membri dello staff"
-
-#~ msgid "Security"
-#~ msgstr "Sicurezza"
 
 #~ msgid ""
 #~ "Please update your browser or use an alternative one, like Mozilla "

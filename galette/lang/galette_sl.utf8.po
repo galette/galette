@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-02 13:04+0100\n"
+"POT-Creation-Date: 2026-11-13 19:32+0100\n"
 "PO-Revision-Date: 2026-11-10 07:27+0000\n"
-"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
-"\n"
+"Last-Translator: Jože Felicijan "
+"<felicijan@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -21,6 +21,192 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3;\n"
 "X-Generator: Weblate 2026.11.2.dev0\n"
+
+msgid "Members"
+msgstr "Člani"
+
+msgid "Contributions"
+msgstr "Prispevki"
+
+msgid "Transactions"
+msgstr "Transakcije"
+
+msgid "Groups"
+msgstr "Skupine"
+
+msgid "Mailings"
+msgstr "Sporočila"
+
+msgid "Documents"
+msgstr "Dokumenti"
+
+msgid "Configuration"
+msgstr "Konfiguracija"
+
+msgid "Exports"
+msgstr "Izvoz"
+
+msgid "Logs"
+msgstr "Dnevniki"
+
+msgid "System information"
+msgstr "Informacije o sistemu"
+
+msgid "Security"
+msgstr ""
+
+msgid "Plugins"
+msgstr "Vtičniki"
+
+msgid "Roles"
+msgstr ""
+
+msgid "Create members"
+msgstr ""
+
+msgid "Create child members"
+msgstr ""
+
+msgid "Display members"
+msgstr ""
+
+msgid "Edit members"
+msgstr ""
+
+msgid "Delete members"
+msgstr ""
+
+msgid ""
+"Manage members administrative information (status, exemption, account, "
+"parent)"
+msgstr ""
+
+msgid "Grant administrator rights to members"
+msgstr ""
+
+msgid "Change or delete members in mass"
+msgstr ""
+
+msgid "Send members new password links, reset their two-factor authentication"
+msgstr ""
+
+msgid "Import members"
+msgstr ""
+
+msgid "Export members as CSV"
+msgstr ""
+
+msgid "Print members cards, labels and attendance sheets"
+msgstr ""
+
+msgid "Create contributions"
+msgstr ""
+
+msgid "Display contributions"
+msgstr ""
+
+msgid "Add contributions in mass"
+msgstr ""
+
+msgid "Edit contributions"
+msgstr ""
+
+msgid "Delete contributions"
+msgstr ""
+
+msgid "Export contributions as CSV"
+msgstr ""
+
+msgid "Manage scheduled payments"
+msgstr ""
+
+msgid "Send reminders to late members"
+msgstr "Pošlji opomnike zamujajočim članom"
+
+msgid "Create transactions"
+msgstr ""
+
+msgid "Display transactions"
+msgstr ""
+
+msgid "Edit transactions"
+msgstr ""
+
+msgid "Delete transactions"
+msgstr ""
+
+msgid "Attach contributions to transactions"
+msgstr ""
+
+msgid "Display groups"
+msgstr ""
+
+msgid "Create groups"
+msgstr ""
+
+msgid "Delete groups"
+msgstr ""
+
+msgid "Edit groups"
+msgstr ""
+
+msgid "Export groups as PDF"
+msgstr ""
+
+msgid "Send mailings"
+msgstr ""
+
+msgid "Browse and delete sent mailings"
+msgstr ""
+
+msgid "Manage documents"
+msgstr ""
+
+msgid ""
+"Manage statuses, titles, contributions and payment types, labels translations"
+msgstr ""
+
+msgid "Manage emails contents and PDF models"
+msgstr ""
+
+msgid "Change settings"
+msgstr ""
+
+msgid "Configure core and dynamic fields, and lists"
+msgstr ""
+
+msgid "Export data"
+msgstr ""
+
+msgid "Browse and flush logs"
+msgstr ""
+
+msgid "Display system information and charts"
+msgstr ""
+
+msgid "Lift authentication restrictions"
+msgstr ""
+
+msgid "Manage plugins"
+msgstr ""
+
+msgid "Manage roles and their permissions"
+msgstr ""
+
+msgid "Member"
+msgstr "Član"
+
+msgid "Up to date member"
+msgstr ""
+
+msgid "Group manager"
+msgstr "Vodja skupine"
+
+msgid "Staff member"
+msgstr "Član osebja"
+
+msgid "Administrator"
+msgstr "Skrbnik"
 
 msgid "Feature turned on"
 msgid_plural "Features turned on"
@@ -319,6 +505,9 @@ msgstr "- Neznana vrsta plačila!"
 msgid "- Unknown contribution type!"
 msgstr "- Neznana vrsta prispevka!"
 
+msgid "You do not have permission for requested URL."
+msgstr "Nimate dovoljenja za zahtevani URL."
+
 msgid "No contribution was selected, please check at least one."
 msgstr "Izbran ni bil noben prispevek, prosimo, označite vsaj enega."
 
@@ -427,12 +616,6 @@ msgstr "Odstrani vrsto prispevka '%1$s'"
 msgid "New document"
 msgstr "Nov dokument"
 
-msgid "Documents"
-msgstr "Dokumenti"
-
-msgid "You do not have permission for requested URL."
-msgstr "Nimate dovoljenja za zahtevani URL."
-
 msgid "The file does not exists or cannot be read :("
 msgstr "Datoteka ne obstaja ali je ni mogoče prebrati :("
 
@@ -490,9 +673,6 @@ msgstr "Ime skupine že obstaja!"
 
 msgid "Group added"
 msgstr "Skupina je bila dodana"
-
-msgid "Groups"
-msgstr "Skupine"
 
 #, php-format
 msgid "New parent is %1$s"
@@ -566,9 +746,6 @@ msgstr "Pošiljka je bila uspešno poslana!"
 msgid "Mailing has been successfully saved."
 msgstr "Pošiljanje je bilo uspešno shranjeno."
 
-msgid "Mailings"
-msgstr "Sporočila"
-
 #, php-format
 msgid "Remove mailing #%1$s"
 msgstr "Odstrani poštni naslov št. %1$s"
@@ -602,9 +779,6 @@ msgstr "Samonaročnina zavrnjena"
 
 msgid "Profile"
 msgstr "Profil"
-
-msgid "Members"
-msgstr "Člani"
 
 msgid "Gallery"
 msgstr "Galerija"
@@ -676,6 +850,11 @@ msgstr "Nov član je bil uspešno dodan."
 msgid "Member account has been modified."
 msgstr "Račun člana je bil spremenjen."
 
+#. TRANS: %1$d is the number of roles given, %2$d the number taken back, %3$d the member identifier
+#, php-format
+msgid "%1$d role(s) given, %2$d taken back for member #%3$d"
+msgstr ""
+
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
 "Pri dodajanju člana v njegove skupine kot upravitelja je prišlo do napake."
@@ -724,6 +903,71 @@ msgstr "Vrsta plačila »%1$s« je bila uspešno spremenjena."
 #, php-format
 msgid "Remove payment type %1$s"
 msgstr "Odstrani vrsto plačila %1$s"
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has not been added; is its name missing or already used?"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been added; choose its permissions."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s'"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has not been modified!"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' modified"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been successfully modified."
+msgstr ""
+
+msgid "System roles are given from members data."
+msgstr ""
+
+msgid "Please choose a member."
+msgstr ""
+
+msgid "Requested group does not exist."
+msgstr ""
+
+msgid "Member already has this role."
+msgstr ""
+
+#. TRANS: %1$s is the role name, %2$d the member identifier
+#, php-format
+msgid "Role '%1$s' given to member #%2$d"
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been given."
+msgstr ""
+
+msgid "This role was not given."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Role '%1$s' has been taken back."
+msgstr ""
+
+#. TRANS: %1$s is the role name
+#, php-format
+msgid "Remove role %1$s"
+msgstr ""
 
 msgid "This search is already saved."
 msgstr "To iskanje je že shranjeno."
@@ -893,9 +1137,6 @@ msgstr "Uspešno izbrisano!"
 msgid "An error occurred trying to delete :("
 msgstr "Pri poskusu brisanja je prišlo do napake :("
 
-msgid "Exports"
-msgstr "Izvoz"
-
 #. TRANS: parameter is the table name
 #, php-format
 msgid "Table %1$s is empty, and has not been exported."
@@ -917,6 +1158,11 @@ msgstr "Pri izvajanju parametriziranega izvoza '%1$s' je prišlo do napake."
 
 msgid "Imports"
 msgstr "Uvozi"
+
+msgid ""
+"You are not allowed to import groups managers; remove that column from the "
+"import model."
+msgstr ""
 
 msgid "An error occurred importing the file :("
 msgstr "Pri uvozu datoteke je prišlo do napake :("
@@ -991,9 +1237,6 @@ msgstr "Pri shranjevanju oznake »%1$s« za jezik »%2$s« je prišlo do napake"
 
 msgid "Labels has been successfully translated!"
 msgstr "Oznake so bile uspešno prevedene!"
-
-msgid "System information"
-msgstr "Informacije o sistemu"
 
 msgid "Dashboard"
 msgstr "Nadzorna plošča"
@@ -1095,9 +1338,6 @@ msgstr "Poslani opomniki:"
 msgid "Download document"
 msgstr "Prenesi dokument"
 
-msgid "Logs"
-msgstr "Dnevniki"
-
 msgid "Logs have been flushed!"
 msgstr "Dnevniki so bili sprani!"
 
@@ -1106,6 +1346,68 @@ msgstr "Pri poskusu brisanja dnevnikov je prišlo do napake :("
 
 msgid "Flush the logs"
 msgstr "Izbriši dnevnike"
+
+msgid "Maps are not enabled."
+msgstr ""
+
+msgid "Maps"
+msgstr "Zemljevidi"
+
+msgid "Coordinates have not been loaded."
+msgstr ""
+
+msgid "Superadmin cannot be localized."
+msgstr "Superadministratorja ni mogoče lokalizirati."
+
+msgid ""
+"Town search is not available for now, you can still search or click on the "
+"map."
+msgstr ""
+"Iskanje mest trenutno ni na voljo; še vedno pa lahko iščete ali kliknete na "
+"zemljevid."
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s geographic position"
+msgstr "Geografski položaj %1$s"
+
+msgid "Maps settings"
+msgstr "Nastavitve zemljevidov"
+
+msgid "Unknown position precision."
+msgstr "Natančnost položaja ni znana."
+
+msgid ""
+"Maps center needs both a latitude, between -90 and 90, and a longitude, "
+"between -180 and 180."
+msgstr ""
+
+msgid "An address is required to use your own background map."
+msgstr "Za uporabo lastnega zemljevida ozadja je potreben naslov."
+
+msgid "Maps settings have been saved."
+msgstr "Nastavitve zemljevidov so shranjene."
+
+msgid "Town search is not available for now, you can still enter coordinates."
+msgstr ""
+
+msgid "Coordinates have been removed!"
+msgstr "Koordinate so bile odstranjene!"
+
+msgid "Coordinates have not been removed :("
+msgstr "Koordinate niso bile odstranjene :("
+
+msgid "Invalid coordinates."
+msgstr "Neveljavne koordinate."
+
+msgid "New coordinates have been stored!"
+msgstr "Nove koordinate so shranjene!"
+
+msgid "Coordinates have not been stored :("
+msgstr "Koordinate niso shranjene :("
+
+msgid "Unable to generate PDF file."
+msgstr ""
 
 msgid "Unable to get members list."
 msgstr "Seznama članov ni mogoče pridobiti."
@@ -1136,9 +1438,6 @@ msgstr "Model ni bil shranjen :("
 
 msgid "Invalid link!"
 msgstr "Neveljavna povezava!"
-
-msgid "Plugins"
-msgstr "Vtičniki"
 
 #, php-format
 msgid "Plugin %1$s has been enabled"
@@ -1295,236 +1594,6 @@ msgstr "V redu"
 #, php-format
 msgid "Minimum version for %1$s engine is %2$s, %1$s %3$s found!"
 msgstr "Najmanjša različica za iskalnik %1$s je %2$s, najdenih je %1$s %3$s!"
-
-msgid "My Account"
-msgstr "Moj račun"
-
-msgid "View my member card"
-msgstr "Ogled moje članske izkaznice"
-
-msgid "My contributions"
-msgstr "Moji prispevki"
-
-msgid "View and filter all my contributions"
-msgstr "Ogled in filtriranje vseh mojih prispevkov"
-
-msgid "My scheduled payments"
-msgstr "Moja načrtovana plačila"
-
-msgid "View and filter all my scheduled payments"
-msgstr "Ogled in filtriranje vseh mojih načrtovanih plačil"
-
-msgid "My transactions"
-msgstr "Pokaži moje transakcije"
-
-msgid "View and filter all my transactions"
-msgstr "Ogled in filtriranje vseh mojih transakcij"
-
-msgid "Modify my login and password"
-msgstr "Spremeni moje uporabniško ime in geslo"
-
-msgid "Add a child member"
-msgstr "Dodaj podrejenega člana"
-
-msgid "Add new child member in database"
-msgstr "Dodaj novega podrejenega člana v bazo podatkov"
-
-msgid "Manage my two-factor authentication"
-msgstr "Upravljaj mojo dvostopenjsko avtentikacijo"
-
-msgid "View, search into and filter member's list"
-msgstr "Ogled, iskanje in filtriranje seznama članov"
-
-msgid "Perform advanced search into members list"
-msgstr "Izvedite napredno iskanje po seznamu članov"
-
-msgid "Add a member"
-msgstr "Dodaj člana"
-
-msgid "Add new member in database"
-msgstr "Dodaj novega člana v bazo podatkov"
-
-msgid "Empty adhesion form"
-msgstr "Prazen obrazec za adhezijo"
-
-msgid "Download empty adhesion form"
-msgstr "Prenesite prazen obrazec za adhezijo"
-
-msgid "Contributions"
-msgstr "Prispevki"
-
-msgid "View and filter contributions"
-msgstr "Ogled in filtriranje prispevkov"
-
-msgid "View and filter scheduled payments"
-msgstr "Ogled in filtriranje načrtovanih plačil"
-
-msgid "View and filter transactions"
-msgstr "Ogled in filtriranje transakcij"
-
-msgid "Add a membership fee"
-msgstr "Dodajte članarino"
-
-msgid "Add new membership fee in database"
-msgstr "Dodaj novo članarino v bazo podatkov"
-
-msgid "Add a donation"
-msgstr "Dodaj donacijo"
-
-msgid "Add new donation in database"
-msgstr "Dodaj novo donacijo v bazo podatkov"
-
-msgid "Add a transaction"
-msgstr "Dodaj transakcijo"
-
-msgid "Add new transaction in database"
-msgstr "Dodaj novo transakcijo v bazo podatkov"
-
-msgid "Send reminders to late members"
-msgstr "Pošlji opomnike zamujajočim članom"
-
-msgid "Management"
-msgstr "Upravljanje"
-
-msgid "View and manage groups"
-msgstr "Ogled in upravljanje skupin"
-
-msgid ""
-"Add documents to share related to your association (status, rules of "
-"procedure, ...)"
-msgstr ""
-"Dodajte dokumente za skupno rabo, povezane z vašim združenjem (status, "
-"poslovnik, ...)"
-
-msgid "Manage mailings that has been sent"
-msgstr "Upravljanje poslanih poštnih sporočil"
-
-msgid "Various charts"
-msgstr "Različni grafikoni"
-
-msgid "Export some data in various formats"
-msgstr "Izvozite nekatere podatke v različnih oblikah"
-
-msgid "Import members from CSV files"
-msgstr "Uvozi člane iz datotek CSV"
-
-msgid "See what is being refused after repeated failures, and lift it"
-msgstr "Poglejte, kaj je zavrnjeno po ponavljajočih se napakah, in to dvignite"
-
-msgid "View application's logs"
-msgstr "Ogled dnevnikov aplikacije"
-
-msgid "Configuration"
-msgstr "Konfiguracija"
-
-msgid ""
-"Set applications preferences (address, website, member's cards "
-"configuration, ...)"
-msgstr ""
-"Nastavitev aplikacij (naslov, spletna stran, konfiguracija članskih "
-"kartic, ...)"
-
-msgid "Information about available plugins"
-msgstr "Informacije o razpoložljivih vtičnikih"
-
-msgid "Customize lists fields and order"
-msgstr "Prilagodite polja seznamov in vrstni red"
-
-msgid ""
-"Customize fields order, set which are required, and for who they're visibles"
-msgstr ""
-"Prilagodite vrstni red polj, nastavite, katera so obvezna in komu so vidna"
-
-msgid "Manage additional fields for various forms"
-msgstr "Upravljajte dodatna polja za različne obrazce"
-
-msgid "Manage contributions types"
-msgstr "Upravljanje vrst prispevkov"
-
-msgid "Manage payment types"
-msgstr "Upravljanje vrst plačil"
-
-msgid "Manage titles"
-msgstr "Upravljanje naslovov"
-
-msgid "Manage PDF models"
-msgstr "Upravljanje modelov PDF"
-
-msgid "Manage emails texts and subjects"
-msgstr "Upravljanje besedil in zadev e-poštnih sporočil"
-
-msgid "Manage translatable labels"
-msgstr "Upravljanje prevedljivih oznak"
-
-msgid "Various administrative tools"
-msgstr "Različna skrbniška orodja"
-
-msgid "Edit every setting, including those the settings form does not show"
-msgstr ""
-"Uredite vse nastavitve, vključno s tistimi, ki jih obrazec za nastavitve ne "
-"prikaže"
-
-msgid "Directories"
-msgstr "Imeniki"
-
-msgid "Galleries"
-msgstr "Galerije"
-
-msgid "View documents related to your association"
-msgstr "Oglejte si dokumente, povezane z vašim združenjem"
-
-msgid "Public pages"
-msgstr "Javne strani"
-
-msgid "Transactions"
-msgstr "Transakcije"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "%1$s: edit information"
-msgstr "%1$s: uredi podatke"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "%1$s: contributions"
-msgstr "%1$s: prispevki"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "%1$s: remove from database"
-msgstr "%1$s: odstrani iz zbirke podatkov"
-
-#. TRANS: parameter is the member name
-#, php-format
-msgid "Log in as %1$s"
-msgstr "Prijavi se kot %1$s"
-
-msgid "Mass change"
-msgstr "Sprememba mase"
-
-msgid "Mass add contributions"
-msgstr "Prispevki za množično dodajanje"
-
-msgid "Delete"
-msgstr "Izbriši"
-
-msgid "Mail"
-msgstr "Pošta"
-
-msgid "Generate labels"
-msgstr "Ustvari oznake"
-
-msgid "Generate Member Cards"
-msgstr "Ustvari članske kartice"
-
-msgid "Export as CSV"
-msgstr "Izvozi kot CSV"
-
-msgid "Galette news"
-msgstr "Novice iz Galette"
-
-msgid "Association news"
-msgstr "Novice iz društva"
 
 msgid "Emailing has been disabled in the preferences."
 msgstr "Pošiljanje e-pošte je v nastavitvah onemogočeno."
@@ -1716,6 +1785,9 @@ msgstr "Takšnega modula ni."
 
 msgid "Cannot deactivate plugin."
 msgstr "Vtičnika ni mogoče deaktivirati."
+
+msgid "Plugin features are part of Galette now, it cannot be enabled."
+msgstr ""
 
 msgid "Cannot activate plugin."
 msgstr "Vtičnika ni mogoče aktivirati."
@@ -2092,11 +2164,19 @@ msgstr "- Izberite člana iz skupine, ki jo upravljate."
 msgid "- The amount must be an integer!"
 msgstr "- Znesek mora biti celo število!"
 
+msgid "- You are not allowed to attach a contribution to this transaction!"
+msgstr ""
+
 msgid "- The duration must be a positive integer!"
 msgstr "- Trajanje mora biti pozitivno celo število!"
 
 msgid "- The end date must be after the start date!"
 msgstr "- Končni datum mora biti po začetnem datumu!"
+
+msgid ""
+"- You are not allowed to change the amount of a contribution attached to a "
+"transaction you cannot access!"
+msgstr ""
 
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr "- Vsota vseh prispevkov presega ustrezni znesek transakcije."
@@ -2496,7 +2576,6 @@ msgstr "Datoteka je prevelika. Največja dovoljena velikost je %1$s"
 msgid "Unable to add dynamic translation for %1$s :("
 msgstr "Dinamičnega prevajanja za %1$s ni mogoče dodati :("
 
-#. TRANS: paramter is a field name
 #. TRANS: parameter is a field name
 #, php-format
 msgid "Unable to update dynamic translation for %1$s :("
@@ -2515,15 +2594,6 @@ msgstr "Uporabnik, samo za branje"
 
 msgid "User, read/write"
 msgstr "Uporabnik, branje/pisanje"
-
-msgid "Group manager"
-msgstr "Vodja skupine"
-
-msgid "Staff member"
-msgstr "Član osebja"
-
-msgid "Administrator"
-msgstr "Skrbnik"
 
 #, php-format
 msgid "Label for dynamic field \"%s\""
@@ -2966,9 +3036,6 @@ msgstr "Članske izkaznice"
 msgid "Cards"
 msgstr "Izkaznice"
 
-msgid "Member"
-msgstr "Član"
-
 msgid "labels_print_filename"
 msgstr "ime_datoteke_za_tiskanje_nalepk"
 
@@ -2977,6 +3044,63 @@ msgstr "Oznake članov"
 
 msgid "Labels"
 msgstr "Oznake"
+
+msgid "About 100 km"
+msgstr "Približno 100 km"
+
+msgid "About 50 km"
+msgstr "Približno 50 km"
+
+msgid "About 5 km"
+msgstr "Približno 5 km"
+
+msgid "About 500 m"
+msgstr "Približno 500 m"
+
+msgid "About 50 m"
+msgstr "Približno 50 m"
+
+msgid "Exact position"
+msgstr "Natančen položaj"
+
+msgid "OpenFreeMap, light grey"
+msgstr "OpenFreeMap, svetlo siva"
+
+msgid "OpenFreeMap, colours"
+msgstr "OpenFreeMap, barve"
+
+msgid "VersaTiles, colours"
+msgstr ""
+
+msgid "VersaTiles, grey"
+msgstr ""
+
+msgid "Plan IGN, France only"
+msgstr ""
+
+msgid "OpenStreetMap"
+msgstr "Open Street Map"
+
+msgid "OpenStreetMap France"
+msgstr "OpenStreetMap Francija"
+
+msgid "Humanitarian OSM Team"
+msgstr "Humanitarna ekipa OSM"
+
+msgid "OpenStreetMap Germany"
+msgstr "OpenStreetMap Nemčija"
+
+msgid "CyclOSM, for cycling"
+msgstr ""
+
+msgid "OpenTopoMap, topographic"
+msgstr ""
+
+msgid "Esri, light grey"
+msgstr "Esri, svetlo siva"
+
+msgid "Your own values"
+msgstr "Vaše lastne vrednote"
 
 msgid ""
 "Two-factor authentication is required. Please enable it to keep using your "
@@ -3018,6 +3142,252 @@ msgstr "Vaša baza podatkov Galette ni prisotna ali ni posodobljena."
 
 msgid "Please run install or upgrade procedure (check the documentation)"
 msgstr "Zaženite postopek namestitve ali nadgradnje (preverite dokumentacijo)"
+
+msgid "View my member card"
+msgstr "Ogled moje članske izkaznice"
+
+msgid "My contributions"
+msgstr "Moji prispevki"
+
+msgid "View and filter all my contributions"
+msgstr "Ogled in filtriranje vseh mojih prispevkov"
+
+msgid "My transactions"
+msgstr "Pokaži moje transakcije"
+
+msgid "View and filter all my transactions"
+msgstr "Ogled in filtriranje vseh mojih transakcij"
+
+msgid "My localization"
+msgstr "Moja lokalizacija"
+
+msgid "Set my position on the members map"
+msgstr ""
+
+msgid "View, search into and filter member's list"
+msgstr "Ogled, iskanje in filtriranje seznama članov"
+
+msgid "View and manage groups"
+msgstr "Ogled in upravljanje skupin"
+
+msgid "Manage mailings that has been sent"
+msgstr "Upravljanje poslanih poštnih sporočil"
+
+msgid "View and filter contributions"
+msgstr "Ogled in filtriranje prispevkov"
+
+msgid "View and filter transactions"
+msgstr "Ogled in filtriranje transakcij"
+
+msgid "View documents related to your association"
+msgstr "Oglejte si dokumente, povezane z vašim združenjem"
+
+msgid ""
+"Set applications preferences (address, website, member's cards "
+"configuration, ...)"
+msgstr ""
+"Nastavitev aplikacij (naslov, spletna stran, konfiguracija članskih "
+"kartic, ...)"
+
+msgid "Information about available plugins"
+msgstr "Informacije o razpoložljivih vtičnikih"
+
+msgid "My scheduled payments"
+msgstr "Moja načrtovana plačila"
+
+msgid "View and filter all my scheduled payments"
+msgstr "Ogled in filtriranje vseh mojih načrtovanih plačil"
+
+msgid "Modify my login and password"
+msgstr "Spremeni moje uporabniško ime in geslo"
+
+msgid "Add a child member"
+msgstr "Dodaj podrejenega člana"
+
+msgid "Add new child member in database"
+msgstr "Dodaj novega podrejenega člana v bazo podatkov"
+
+msgid "Manage my two-factor authentication"
+msgstr "Upravljaj mojo dvostopenjsko avtentikacijo"
+
+msgid "My Account"
+msgstr "Moj račun"
+
+msgid "Perform advanced search into members list"
+msgstr "Izvedite napredno iskanje po seznamu članov"
+
+msgid "Add a member"
+msgstr "Dodaj člana"
+
+msgid "Add new member in database"
+msgstr "Dodaj novega člana v bazo podatkov"
+
+msgid "Empty adhesion form"
+msgstr "Prazen obrazec za adhezijo"
+
+msgid "Download empty adhesion form"
+msgstr "Prenesite prazen obrazec za adhezijo"
+
+msgid "View and filter scheduled payments"
+msgstr "Ogled in filtriranje načrtovanih plačil"
+
+msgid "Add a membership fee"
+msgstr "Dodajte članarino"
+
+msgid "Add new membership fee in database"
+msgstr "Dodaj novo članarino v bazo podatkov"
+
+msgid "Add a donation"
+msgstr "Dodaj donacijo"
+
+msgid "Add new donation in database"
+msgstr "Dodaj novo donacijo v bazo podatkov"
+
+msgid "Add a transaction"
+msgstr "Dodaj transakcijo"
+
+msgid "Add new transaction in database"
+msgstr "Dodaj novo transakcijo v bazo podatkov"
+
+msgid "Management"
+msgstr "Upravljanje"
+
+msgid ""
+"Add documents to share related to your association (status, rules of "
+"procedure, ...)"
+msgstr ""
+"Dodajte dokumente za skupno rabo, povezane z vašim združenjem (status, "
+"poslovnik, ...)"
+
+msgid "Various charts"
+msgstr "Različni grafikoni"
+
+msgid "Export some data in various formats"
+msgstr "Izvozite nekatere podatke v različnih oblikah"
+
+msgid "Import members from CSV files"
+msgstr "Uvozi člane iz datotek CSV"
+
+msgid "See what is being refused after repeated failures, and lift it"
+msgstr "Poglejte, kaj je zavrnjeno po ponavljajočih se napakah, in to dvignite"
+
+msgid "View application's logs"
+msgstr "Ogled dnevnikov aplikacije"
+
+msgid "Display members positions on maps, and choose the background map"
+msgstr ""
+
+msgid "Customize lists fields and order"
+msgstr "Prilagodite polja seznamov in vrstni red"
+
+msgid ""
+"Customize fields order, set which are required, and for who they're visibles"
+msgstr ""
+"Prilagodite vrstni red polj, nastavite, katera so obvezna in komu so vidna"
+
+msgid "Manage additional fields for various forms"
+msgstr "Upravljajte dodatna polja za različne obrazce"
+
+msgid "Manage contributions types"
+msgstr "Upravljanje vrst prispevkov"
+
+msgid "Manage payment types"
+msgstr "Upravljanje vrst plačil"
+
+msgid "Manage titles"
+msgstr "Upravljanje naslovov"
+
+msgid "Manage PDF models"
+msgstr "Upravljanje modelov PDF"
+
+msgid "Manage emails texts and subjects"
+msgstr "Upravljanje besedil in zadev e-poštnih sporočil"
+
+msgid "Manage translatable labels"
+msgstr "Upravljanje prevedljivih oznak"
+
+msgid "Various administrative tools"
+msgstr "Različna skrbniška orodja"
+
+msgid "Edit every setting, including those the settings form does not show"
+msgstr ""
+"Uredite vse nastavitve, vključno s tistimi, ki jih obrazec za nastavitve ne "
+"prikaže"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: edit information"
+msgstr "%1$s: uredi podatke"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: contributions"
+msgstr "%1$s: prispevki"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "%1$s: remove from database"
+msgstr "%1$s: odstrani iz zbirke podatkov"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Log in as %1$s"
+msgstr "Prijavi se kot %1$s"
+
+msgid "Geolocalize"
+msgstr "Geolokaliziraj"
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Geolocalize %1$s"
+msgstr "Geolokaliziraj %1$s"
+
+msgid "Show on map"
+msgstr ""
+
+#. TRANS: parameter is the member name
+#, php-format
+msgid "Show %1$s on map"
+msgstr ""
+
+msgid "Mass change"
+msgstr "Sprememba mase"
+
+msgid "Mass add contributions"
+msgstr "Prispevki za množično dodajanje"
+
+msgid "Delete"
+msgstr "Izbriši"
+
+msgid "Mail"
+msgstr "Pošta"
+
+msgid "Generate labels"
+msgstr "Ustvari oznake"
+
+msgid "Generate Member Cards"
+msgstr "Ustvari članske kartice"
+
+msgid "Export as CSV"
+msgstr "Izvozi kot CSV"
+
+msgid "Galette news"
+msgstr "Novice iz Galette"
+
+msgid "Association news"
+msgstr "Novice iz društva"
+
+msgid "Directories"
+msgstr "Imeniki"
+
+msgid "Galleries"
+msgstr "Galerije"
+
+msgid "See where members live"
+msgstr ""
+
+msgid "Public pages"
+msgstr "Javne strani"
 
 msgid "Galette error"
 msgstr "Galettejeva napaka"
@@ -3067,6 +3437,10 @@ msgstr "Izbrisana iskanja (%1$s)"
 #, php-format
 msgid "Scheduled payments deleted (%1$s)"
 msgstr "Načrtovana plačila izbrisana (%1$s)"
+
+#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
+msgid "YYYY-MM-DD"
+msgstr "DD.MM.YYYY"
 
 #, php-format
 msgid "Table %1$s has been converted to InnoDB/utf8mb4."
@@ -3270,10 +3644,6 @@ msgstr "Namestitev baze podatkov"
 
 msgid "Documentation"
 msgstr "Dokumentacija"
-
-#. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
-msgid "YYYY-MM-DD"
-msgstr "DD.MM.YYYY"
 
 msgid "Member id:"
 msgstr "ID člana:"
@@ -3816,6 +4186,14 @@ msgstr "Izbire za polje %d so bile preseljene."
 msgid "Unable to migrate choices for field %d: %s"
 msgstr "Izbir za polje %d ni mogoče preseliti: %s"
 
+msgid "System roles have been created."
+msgstr ""
+
+msgid ""
+"Members positions from the maps plugin have been taken over, the plugin can "
+"be removed."
+msgstr ""
+
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Prosimo, izberite parametre skrbniškega računa na Galette"
 
@@ -4309,8 +4687,8 @@ msgid "Remove from group %1$s"
 msgstr "Odstrani iz skupine %1$s"
 
 #, php-format
-msgid "Keep group %1$s"
-msgstr "Obdrži skupino %1$s"
+msgid "Cancel removal from group %1$s"
+msgstr ""
 
 msgid "no group"
 msgstr "brez skupine"
@@ -4389,6 +4767,53 @@ msgstr "Levo"
 
 msgid "Right"
 msgstr "Desno"
+
+msgid "Role"
+msgstr ""
+
+msgid "Every logged in member"
+msgstr ""
+
+msgid "Active account, up to date membership"
+msgstr ""
+
+#, php-format
+msgid "From their status: %1$s"
+msgstr ""
+
+msgid "Marked as administrator"
+msgstr ""
+
+msgid "Manager of the group, see groups above"
+msgstr ""
+
+msgid "Computed from member's information"
+msgstr ""
+
+msgid "All groups"
+msgstr "Vse skupine"
+
+msgctxt "member roles"
+msgid "will be removed"
+msgstr ""
+
+#, php-format
+msgid "Take role %1$s back"
+msgstr ""
+
+#, php-format
+msgid "Cancel removal of role %1$s"
+msgstr ""
+
+msgctxt "member roles"
+msgid "added"
+msgstr ""
+
+msgid "Give role"
+msgstr ""
+
+msgid "Choose a role"
+msgstr ""
 
 msgid "Not supplied"
 msgstr "Ni dobavljeno"
@@ -4701,6 +5126,12 @@ msgstr "Onemogoči temni način"
 msgid "Enable dark mode"
 msgstr "Omogoči temni način"
 
+msgid "Disable debug bar"
+msgstr ""
+
+msgid "Enable debug bar"
+msgstr ""
+
 msgid "Unimpersonate"
 msgstr "Lažna predstavitev"
 
@@ -4765,6 +5196,73 @@ msgstr ""
 
 msgid "Recipients"
 msgstr "Prejemniki"
+
+msgid "Legend"
+msgstr "Legenda"
+
+msgid "Display map in full screen"
+msgstr "Prikaži zemljevid v celozaslonskem načinu"
+
+msgid "Exit full screen"
+msgstr "Izhod iz celozaslonskega načina"
+
+msgid "Search your town..."
+msgstr "Poiščite svoje mesto ..."
+
+msgid "Search a town..."
+msgstr "Iskanje mesta ..."
+
+msgid "Sorry, that town could not be found."
+msgstr "Žal tega mesta ni bilo mogoče najti."
+
+msgid "Search"
+msgstr "Iskanje"
+
+msgid "Show me where I am"
+msgstr "Pokaži mi, kje sem"
+
+msgid "You seem located outside the boundaries of the map"
+msgstr "Zdi se, da se nahajaš zunaj meja zemljevida"
+
+msgid "aka"
+msgstr "oz."
+
+#, php-format
+msgid "You clicked at %1$s"
+msgstr "Kliknili ste ob %1$s"
+
+msgid "I live here!"
+msgstr "Živim tukaj!"
+
+msgid "Member lives here!"
+msgstr "Član živi tukaj!"
+
+msgid "Remove my coordinates"
+msgstr "Odstrani moje koordinate"
+
+msgid "Remove member coordinates"
+msgstr "Odstrani koordinate člana"
+
+msgid "Are you sure you want to remove coordinates from the database?"
+msgstr "Ali ste prepričani, da želite odstraniti koordinate iz baze podatkov?"
+
+msgid "An error occurred during 'I live here' process :("
+msgstr "Med postopkom »Živim tukaj« je prišlo do napake :("
+
+msgid "An error occurred removing coordinates :("
+msgstr "Pri odstranjevanju koordinat je prišlo do napake :("
+
+msgid "Member (company)"
+msgstr "Član (podjetje)"
+
+msgid "Search result"
+msgstr "Rezultat iskanja"
+
+msgid "The map could not be loaded."
+msgstr ""
+
+msgid "No geographic position yet."
+msgstr ""
 
 msgid "See member profile"
 msgstr "Oglejte si profil člana"
@@ -5268,9 +5766,6 @@ msgstr "definiran"
 #, php-format
 msgid "Go to %s"
 msgstr "Pojdi na %s"
-
-msgid "Legend"
-msgstr "Legenda"
 
 msgid "Statuses"
 msgstr "Statusi"
@@ -6311,6 +6806,82 @@ msgstr "Neposlano"
 msgid "Follow the sending"
 msgstr "Sledite pošiljanju"
 
+msgid "Display members positions on maps"
+msgstr ""
+
+msgid ""
+"Members can then set their position, and a map is added to public pages."
+msgstr ""
+
+msgid "Members positions precision"
+msgstr "Natančnost položajev elementov"
+
+msgid ""
+"How far from their stored position members may appear on the map. Staff, "
+"administrators and members themselves always see the exact position."
+msgstr ""
+"Kako daleč od svoje shranjene lokacije se lahko člani prikažejo na "
+"zemljevidu. Osebje, skrbniki in člani sami vedno vidijo točno lokacijo."
+
+msgid "Background map provider"
+msgstr "Ponudnik zemljevidov v ozadju"
+
+msgid "Vector tiles"
+msgstr "Vektorske ploščice"
+
+msgid "Tick for a MapLibre style, leave unticked for classic raster tiles."
+msgstr ""
+"Označite za slog MapLibre, pustite neoznačeno za klasične rastrske ploščice."
+
+msgid "Style address for vector tiles, tiles address for raster ones, such as:"
+msgstr ""
+"Naslov sloga za vektorske ploščice, naslov ploščic za rastrske, kot so:"
+
+msgid "Attribution"
+msgstr "Pripisovanje"
+
+msgid ""
+"Credit the provider requires, HTML allowed. Data licences make it mandatory."
+msgstr "Kredit ponudnik zahteva, HTML dovoljen. Podatkovne licence so obvezne."
+
+msgid "Maximum zoom"
+msgstr "Največja povečava"
+
+msgid "Subdomains"
+msgstr "Poddomene"
+
+msgid ""
+"Letters the {s} token in the address is replaced with, such as abc. Raster "
+"tiles only."
+msgstr ""
+"Črke, s katerimi je zamenjan žeton {s} v naslovu, na primer abc. Samo "
+"rastrske ploščice."
+
+msgid "Maps center"
+msgstr ""
+
+msgid ""
+"Where maps open when they have nothing else to show, such as the association "
+"town. Left empty, maps show the whole of France."
+msgstr ""
+
+msgid "Search coordinates"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid ""
+"Public map as the form sets it, with sample positions: where they are "
+"stored, and where visitors see them."
+msgstr ""
+
+msgid "No town found."
+msgstr ""
+
 msgid "Attached to:"
 msgstr "Priloženo:"
 
@@ -6367,8 +6938,25 @@ msgid ""
 msgstr ""
 "Član bo uporabniško ime in geslo prejel po elektronski pošti, če ima naslov."
 
+msgid "Choose your location"
+msgstr "Izberite svojo lokacijo"
+
+#, php-format
+msgid "Choose %1$s location"
+msgstr "Izberite lokacijo %1$s"
+
+msgid "Select your town."
+msgstr "Izberite svoje mesto."
+
+#, php-format
+msgid "In the database, town is set to: '%1$s'"
+msgstr "V podatkovni bazi je mesto nastavljeno na: '%1$s'"
+
 msgid "Family"
 msgstr "Družina"
+
+msgid "Roles:"
+msgstr ""
 
 msgid "Not managed group"
 msgstr "Ni upravljana skupina"
@@ -6394,9 +6982,6 @@ msgstr[3] "%1$s člani"
 
 msgid "among:"
 msgstr "med:"
-
-msgid "All groups"
-msgstr "Vse skupine"
 
 msgid "Members that have an email address:"
 msgstr "Člani, ki imajo e-poštni naslov:"
@@ -6582,6 +7167,9 @@ msgstr "Manjka zahtevana datoteka"
 msgid "Incompatible with current version"
 msgstr "Nezdružljivo s trenutno različico"
 
+msgid "Invalid plugin definition"
+msgstr ""
+
 msgid "Database version missing"
 msgstr "Manjka različica baze podatkov"
 
@@ -6590,6 +7178,9 @@ msgstr "Ni nameščeno"
 
 msgid "Need update"
 msgstr "Potrebna je posodobitev"
+
+msgid "Part of Galette now, can be removed"
+msgstr ""
 
 msgid "Explicitly disabled"
 msgstr "Izrecno onemogočeno"
@@ -6883,42 +7474,11 @@ msgid ""
 "Enter the full URL to the RSS feed. It will be displayed on Galette desktop."
 msgstr "Vnesite celoten URL vira RSS. Prikazan bo na namizju Galette."
 
-msgid "Can members create child members?"
-msgstr "Ali lahko člani ustvarijo podrejene člane?"
-
-msgid "Can group managers edit their groups?"
-msgstr "Ali lahko upravitelji skupin urejajo svoje skupine?"
-
-msgid "Can group managers create members?"
-msgstr "Ali lahko upravitelji skupin ustvarjajo člane?"
-
-msgid "Can group managers edit members?"
-msgstr "Ali lahko upravitelji skupin urejajo člane?"
-
-msgid "Can group managers send mailings?"
-msgstr "Ali lahko upravitelji skupin pošiljajo poštna sporočila?"
-
-msgid "Can group managers do exports?"
-msgstr "Ali lahko vodje skupin izvajajo izvoz?"
-
-msgid ""
-"Groups managers will be allowed to export members as csv, pdf cards, "
-"attendence sheetss and groups pdf"
+msgid "Rights are managed with roles."
 msgstr ""
-"Upravitelji skupin bodo lahko izvozili člane v obliki csv, pdf kartic, list "
-"prisotnosti in pdf skupin"
 
-msgid "Can group managers see contributions?"
-msgstr "Ali lahko upravitelji skupin vidijo prispevke?"
-
-msgid "Can group managers create contributions?"
-msgstr "Ali lahko upravitelji skupine vidijo prispevke?"
-
-msgid "Can group managers see transactions?"
-msgstr "Ali lahko upravitelji skupin vidijo transakcije?"
-
-msgid "Can group managers create transactions?"
-msgstr "Ali lahko upravitelji skupin ustvarjajo transakcije?"
+msgid "Manage roles"
+msgstr ""
 
 msgid "Sender name:"
 msgstr "Ime pošiljatelja:"
@@ -7300,6 +7860,120 @@ msgstr "Ni izbranega opomnika"
 msgid "Please make sure to select at least one reminder."
 msgstr "Prosimo, izberite vsaj en opomnik."
 
+msgid "Given to every logged in member."
+msgstr ""
+
+msgid ""
+"Given to members whose account is active and whose membership is up to date."
+msgstr ""
+
+msgid ""
+"Given to members with a staff status; change their status to give or take it "
+"back."
+msgstr ""
+
+msgid ""
+"Given to members marked as administrators; change it with the Galette Admin "
+"field, when editing them."
+msgstr ""
+
+msgid ""
+"Given to managers of a group, on that group only; choose managers from the "
+"group page."
+msgstr ""
+
+msgid "Only its permissions can be changed."
+msgstr ""
+
+msgid "System"
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s permissions"
+msgstr ""
+
+msgid "Rename role"
+msgstr ""
+
+msgid "Change parent role"
+msgstr ""
+
+msgid "Inherits from"
+msgstr ""
+
+msgid "permissions granted"
+msgstr ""
+
+msgid "Granted"
+msgstr ""
+
+msgid "Permission"
+msgstr ""
+
+#, php-format
+msgid "Inherited from %1$s"
+msgstr ""
+
+msgid ""
+"Members are always granted on what they own, and what their children own."
+msgstr ""
+
+msgid "Always on own"
+msgstr ""
+
+msgid ""
+"This permission does not apply to members: it is not granted when the role "
+"is given for a group."
+msgstr ""
+
+msgid "Not on a group"
+msgstr ""
+
+msgid "No member has this role."
+msgstr ""
+
+#, php-format
+msgid "%1$s member has this role."
+msgid_plural "%1$s members have this role."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+msgid "Nearly every member has it, they are not listed."
+msgstr ""
+
+msgid "Take role back"
+msgstr ""
+
+#, php-format
+msgid "Take role back from %1$s"
+msgstr ""
+
+msgid "This role has not been given to anyone yet."
+msgstr ""
+
+#, php-format
+msgid "%1$s / %2$s from %3$s"
+msgstr ""
+
+msgid "No parent role"
+msgstr ""
+
+msgid ""
+"System roles are given from members data: any logged-in member, members up "
+"to date, groups managers (on the groups they manage), staff members and "
+"administrators. Other roles are given explicitly, for all groups or for one."
+msgstr ""
+
+#, php-format
+msgid "Edit role '%1$s'"
+msgstr ""
+
+#, php-format
+msgid "Delete role '%1$s'"
+msgstr ""
+
 msgid "Replace parameters with the current advanced search"
 msgstr "Zamenjajte parametre s trenutnim naprednim iskanjem"
 
@@ -7610,6 +8284,47 @@ msgstr ""
 
 msgid "Public page content"
 msgstr "Vsebina javne strani"
+
+#, php-format
+#~ msgid "Keep group %1$s"
+#~ msgstr "Obdrži skupino %1$s"
+
+#~ msgid "Can members create child members?"
+#~ msgstr "Ali lahko člani ustvarijo podrejene člane?"
+
+#~ msgid "Can group managers edit their groups?"
+#~ msgstr "Ali lahko upravitelji skupin urejajo svoje skupine?"
+
+#~ msgid "Can group managers create members?"
+#~ msgstr "Ali lahko upravitelji skupin ustvarjajo člane?"
+
+#~ msgid "Can group managers edit members?"
+#~ msgstr "Ali lahko upravitelji skupin urejajo člane?"
+
+#~ msgid "Can group managers send mailings?"
+#~ msgstr "Ali lahko upravitelji skupin pošiljajo poštna sporočila?"
+
+#~ msgid "Can group managers do exports?"
+#~ msgstr "Ali lahko vodje skupin izvajajo izvoz?"
+
+#~ msgid ""
+#~ "Groups managers will be allowed to export members as csv, pdf cards, "
+#~ "attendence sheetss and groups pdf"
+#~ msgstr ""
+#~ "Upravitelji skupin bodo lahko izvozili člane v obliki csv, pdf kartic, "
+#~ "list prisotnosti in pdf skupin"
+
+#~ msgid "Can group managers see contributions?"
+#~ msgstr "Ali lahko upravitelji skupin vidijo prispevke?"
+
+#~ msgid "Can group managers create contributions?"
+#~ msgstr "Ali lahko upravitelji skupine vidijo prispevke?"
+
+#~ msgid "Can group managers see transactions?"
+#~ msgstr "Ali lahko upravitelji skupin vidijo transakcije?"
+
+#~ msgid "Can group managers create transactions?"
+#~ msgstr "Ali lahko upravitelji skupin ustvarjajo transakcije?"
 
 #~ msgid "no member"
 #~ msgstr "brez člana"
