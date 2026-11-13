@@ -82,51 +82,55 @@ msgid "Edit members"
 msgstr "Modifier les adhérents"
 
 msgid "Delete members"
-msgstr ""
+msgstr "Supprimer des adhérents"
 
 msgid ""
 "Manage members administrative information (status, exemption, account, "
 "parent)"
 msgstr ""
+"Gérer les informations administratives des adhérents (statut, exonération, "
+"compte, parent)"
 
 msgid "Grant administrator rights to members"
-msgstr ""
+msgstr "Donner les droits d’administrateur à des adhérents"
 
 msgid "Change or delete members in mass"
-msgstr ""
+msgstr "Modifier ou supprimer des adhérents en masse"
 
 msgid "Send members new password links, reset their two-factor authentication"
 msgstr ""
+"Envoyer aux adhérents des liens de nouveau mot de passe, réinitialiser leur "
+"authentification à deux facteurs"
 
 msgid "Import members"
-msgstr ""
+msgstr "Importer des adhérents"
 
 msgid "Export members as CSV"
-msgstr ""
+msgstr "Exporter les adhérents en CSV"
 
 msgid "Print members cards, labels and attendance sheets"
-msgstr ""
+msgstr "Imprimer les cartes, étiquettes et listes d’émargement des adhérents"
 
 msgid "Create contributions"
-msgstr ""
+msgstr "Créer des contributions"
 
 msgid "Display contributions"
-msgstr ""
+msgstr "Afficher les contributions"
 
 msgid "Add contributions in mass"
-msgstr ""
+msgstr "Ajouter des contributions en masse"
 
 msgid "Edit contributions"
-msgstr ""
+msgstr "Modifier les contributions"
 
 msgid "Delete contributions"
-msgstr ""
+msgstr "Supprimer des contributions"
 
 msgid "Export contributions as CSV"
-msgstr ""
+msgstr "Exporter les contributions en CSV"
 
 msgid "Manage scheduled payments"
-msgstr ""
+msgstr "Gérer les paiements planifiés"
 
 msgid "Send reminders to late members"
 msgstr "Envoyer un rappel aux adhérents retardataires"
@@ -138,74 +142,76 @@ msgid "Display transactions"
 msgstr "Afficher les transactions"
 
 msgid "Edit transactions"
-msgstr ""
+msgstr "Modifier les transactions"
 
 msgid "Delete transactions"
-msgstr ""
+msgstr "Supprimer des transactions"
 
 msgid "Attach contributions to transactions"
-msgstr ""
+msgstr "Rattacher des contributions aux transactions"
 
 msgid "Display groups"
-msgstr ""
+msgstr "Afficher les groupes"
 
 msgid "Create groups"
-msgstr ""
+msgstr "Créer des groupes"
 
 msgid "Delete groups"
-msgstr ""
+msgstr "Supprimer des groupes"
 
 msgid "Edit groups"
 msgstr "Modifier les groupes"
 
 msgid "Export groups as PDF"
-msgstr ""
+msgstr "Exporter les groupes en PDF"
 
 msgid "Send mailings"
 msgstr "Envoyer des mailings"
 
 msgid "Browse and delete sent mailings"
-msgstr ""
+msgstr "Consulter et supprimer les envois effectués"
 
 msgid "Manage documents"
-msgstr ""
+msgstr "Gérer les documents"
 
 msgid ""
 "Manage statuses, titles, contributions and payment types, labels translations"
 msgstr ""
+"Gérer les statuts, titres, types de contributions et de paiement, "
+"traductions des libellés"
 
 msgid "Manage emails contents and PDF models"
-msgstr ""
+msgstr "Gérer le contenu des courriels et les modèles PDF"
 
 msgid "Change settings"
 msgstr "Modifier les préférences"
 
 msgid "Configure core and dynamic fields, and lists"
-msgstr ""
+msgstr "Configurer les champs du cœur et dynamiques, et les listes"
 
 msgid "Export data"
-msgstr ""
+msgstr "Exporter les données"
 
 msgid "Browse and flush logs"
-msgstr ""
+msgstr "Consulter et nettoyer l’historique"
 
 msgid "Display system information and charts"
-msgstr ""
+msgstr "Afficher les informations système et les graphiques"
 
 msgid "Lift authentication restrictions"
-msgstr ""
+msgstr "Lever les restrictions d’authentification"
 
 msgid "Manage plugins"
-msgstr ""
+msgstr "Gérer les plugins"
 
 msgid "Manage roles and their permissions"
-msgstr ""
+msgstr "Gérer les rôles et leurs permissions"
 
 msgid "Member"
 msgstr "Adhérent"
 
 msgid "Up to date member"
-msgstr ""
+msgstr "Adhérent à jour"
 
 msgid "Group manager"
 msgstr "Responsable de groupe"
@@ -857,7 +863,7 @@ msgstr "Le compte de l’adhérent a été modifié avec succès."
 #. TRANS: %1$d is the number of roles given, %2$d the number taken back, %3$d the member identifier
 #, php-format
 msgid "%1$d role(s) given, %2$d taken back for member #%3$d"
-msgstr ""
+msgstr "%1$d rôle(s) donné(s), %2$d retiré(s) pour l’adhérent #%3$d"
 
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
@@ -912,66 +918,68 @@ msgstr "Supprimer le type de paiement %1$s"
 #, php-format
 msgid "Role '%1$s' has not been added; is its name missing or already used?"
 msgstr ""
+"Le rôle « %1$s » n’a pas été ajouté ; son nom est-il manquant ou déjà "
+"utilisé ?"
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' has been added; choose its permissions."
-msgstr ""
+msgstr "Le rôle « %1$s » a été ajouté ; choisissez ses permissions."
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s'"
-msgstr ""
+msgstr "Rôle « %1$s »"
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' has not been modified!"
-msgstr ""
+msgstr "Le rôle « %1$s » n’a pas été modifié !"
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' modified"
-msgstr ""
+msgstr "Rôle « %1$s » modifié"
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' has been successfully modified."
-msgstr ""
+msgstr "Le rôle « %1$s » a été modifié avec succès."
 
 msgid "System roles are given from members data."
-msgstr ""
+msgstr "Les rôles système sont donnés d’après les données des adhérents."
 
 msgid "Please choose a member."
-msgstr ""
+msgstr "Veuillez choisir un adhérent."
 
 msgid "Requested group does not exist."
-msgstr ""
+msgstr "Le groupe demandé n’existe pas."
 
 msgid "Member already has this role."
-msgstr ""
+msgstr "L’adhérent a déjà ce rôle."
 
 #. TRANS: %1$s is the role name, %2$d the member identifier
 #, php-format
 msgid "Role '%1$s' given to member #%2$d"
-msgstr ""
+msgstr "Rôle « %1$s » donné à l’adhérent #%2$d"
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' has been given."
-msgstr ""
+msgstr "Le rôle « %1$s » a été donné."
 
 msgid "This role was not given."
-msgstr ""
+msgstr "Ce rôle n’était pas donné."
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' has been taken back."
-msgstr ""
+msgstr "Le rôle « %1$s » a été retiré."
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Remove role %1$s"
-msgstr ""
+msgstr "Retirer le rôle %1$s"
 
 msgid "This search is already saved."
 msgstr "Cette recherche est déjà enregistrée."
@@ -1167,6 +1175,8 @@ msgid ""
 "You are not allowed to import groups managers; remove that column from the "
 "import model."
 msgstr ""
+"Vous n’êtes pas autorisé à importer des responsables de groupes ; retirez "
+"cette colonne du modèle d’import."
 
 msgid "An error occurred importing the file :("
 msgstr "Une erreur est survenue lors de l'import du fichier :("
@@ -1423,7 +1433,7 @@ msgid "Coordinates have not been stored :("
 msgstr "Les coordonnées n'ont pas été enregistrées :("
 
 msgid "Unable to generate PDF file."
-msgstr ""
+msgstr "Impossible de générer le fichier PDF."
 
 msgid "Unable to get members list."
 msgstr "Impossible d’obtenir la liste des membres."
@@ -2208,6 +2218,7 @@ msgstr "- Le montant doit être un nombre entier !"
 
 msgid "- You are not allowed to attach a contribution to this transaction!"
 msgstr ""
+"- Vous n’êtes pas autorisé à rattacher une contribution à cette transaction !"
 
 msgid "- The duration must be a positive integer!"
 msgstr "- La durée doit être un entier positif !"
@@ -2219,6 +2230,8 @@ msgid ""
 "- You are not allowed to change the amount of a contribution attached to a "
 "transaction you cannot access!"
 msgstr ""
+"- Vous n’êtes pas autorisé à modifier le montant d’une contribution "
+"rattachée à une transaction à laquelle vous n’avez pas accès !"
 
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr ""
@@ -4254,7 +4267,7 @@ msgid "Unable to migrate choices for field %d: %s"
 msgstr "Impossible de migrer les choix du champ %d : %s"
 
 msgid "System roles have been created."
-msgstr ""
+msgstr "Les rôles système ont été créés."
 
 msgid ""
 "Members positions from the maps plugin have been taken over, the plugin can "
@@ -4768,7 +4781,7 @@ msgstr "Retirer du groupe %1$s"
 
 #, php-format
 msgid "Cancel removal from group %1$s"
-msgstr ""
+msgstr "Annuler le retrait du groupe %1$s"
 
 msgid "no group"
 msgstr "pas de groupe"
@@ -4853,23 +4866,23 @@ msgid "Role"
 msgstr "Rôle"
 
 msgid "Every logged in member"
-msgstr ""
+msgstr "Tout adhérent connecté"
 
 msgid "Active account, up to date membership"
-msgstr ""
+msgstr "Compte actif, adhésion à jour"
 
 #, php-format
 msgid "From their status: %1$s"
-msgstr ""
+msgstr "D’après son statut : %1$s"
 
 msgid "Marked as administrator"
-msgstr ""
+msgstr "Marqué comme administrateur"
 
 msgid "Manager of the group, see groups above"
-msgstr ""
+msgstr "Responsable du groupe, voir les groupes ci-dessus"
 
 msgid "Computed from member's information"
-msgstr ""
+msgstr "Calculé d’après les informations de l’adhérent"
 
 msgid "All groups"
 msgstr "Tous les groupes"
@@ -4880,21 +4893,21 @@ msgstr "sera retiré"
 
 #, php-format
 msgid "Take role %1$s back"
-msgstr ""
+msgstr "Retirer le rôle %1$s"
 
 #, php-format
 msgid "Cancel removal of role %1$s"
-msgstr ""
+msgstr "Annuler le retrait du rôle %1$s"
 
 msgctxt "member roles"
 msgid "added"
 msgstr "ajouté"
 
 msgid "Give role"
-msgstr ""
+msgstr "Donner le rôle"
 
 msgid "Choose a role"
-msgstr ""
+msgstr "Choisissez un rôle"
 
 msgid "Not supplied"
 msgstr "Non renseigné"
@@ -5211,10 +5224,10 @@ msgid "Enable dark mode"
 msgstr "Activer le mode sombre"
 
 msgid "Disable debug bar"
-msgstr ""
+msgstr "Désactiver la barre de débogage"
 
 msgid "Enable debug bar"
-msgstr ""
+msgstr "Activer la barre de débogage"
 
 msgid "Unimpersonate"
 msgstr "Quitter l'imposture"
@@ -7077,7 +7090,7 @@ msgid "Family"
 msgstr "Famille"
 
 msgid "Roles:"
-msgstr ""
+msgstr "Rôles :"
 
 msgid "Not managed group"
 msgstr "Groupe non géré"
@@ -7291,7 +7304,7 @@ msgid "Incompatible with current version"
 msgstr "Incompatible avec la version courante"
 
 msgid "Invalid plugin definition"
-msgstr ""
+msgstr "Définition de plugin invalide"
 
 msgid "Database version missing"
 msgstr "Version de base de données manquante"
@@ -7601,10 +7614,10 @@ msgstr ""
 "Entrez l’URL complète du flux RSS. Il sera affiché sur le bureau de Galette."
 
 msgid "Rights are managed with roles."
-msgstr ""
+msgstr "Les droits sont gérés par les rôles."
 
 msgid "Manage roles"
-msgstr ""
+msgstr "Gérer les rôles"
 
 msgid "Sender name:"
 msgstr "Nom expéditeur :"
@@ -7996,116 +8009,130 @@ msgid "Please make sure to select at least one reminder."
 msgstr "Assurez-vous de sélectionner au moins un rappel."
 
 msgid "Given to every logged in member."
-msgstr ""
+msgstr "Donné à tout adhérent connecté."
 
 msgid ""
 "Given to members whose account is active and whose membership is up to date."
-msgstr ""
+msgstr "Donné aux adhérents dont le compte est actif et l’adhésion à jour."
 
 msgid ""
 "Given to members with a staff status; change their status to give or take it "
 "back."
 msgstr ""
+"Donné aux adhérents ayant un statut du bureau ; changez leur statut pour le "
+"donner ou le retirer."
 
 msgid ""
 "Given to members marked as administrators; change it with the Galette Admin "
 "field, when editing them."
 msgstr ""
+"Donné aux adhérents marqués comme administrateurs ; modifiez-le avec le "
+"champ Administrateur Galette, en les éditant."
 
 msgid ""
 "Given to managers of a group, on that group only; choose managers from the "
 "group page."
 msgstr ""
+"Donné aux responsables d’un groupe, sur ce groupe uniquement ; choisissez "
+"les responsables depuis la page du groupe."
 
 msgid "Only its permissions can be changed."
-msgstr ""
+msgstr "Seules ses permissions peuvent être modifiées."
 
 msgid "System"
-msgstr ""
+msgstr "Système"
 
 #, php-format
 msgid "%1$s / %2$s permissions"
-msgstr ""
+msgstr "%1$s / %2$s permissions"
 
 msgid "Rename role"
-msgstr ""
+msgstr "Renommer le rôle"
 
 msgid "Change parent role"
-msgstr ""
+msgstr "Changer le rôle parent"
 
 msgid "Inherits from"
 msgstr "Hérite de"
 
 msgid "permissions granted"
-msgstr ""
+msgstr "permissions accordées"
 
 msgid "Granted"
-msgstr ""
+msgstr "Accordée"
 
 msgid "Permission"
-msgstr ""
+msgstr "Permission"
 
 #, php-format
 msgid "Inherited from %1$s"
-msgstr ""
+msgstr "Héritée de %1$s"
 
 msgid ""
 "Members are always granted on what they own, and what their children own."
 msgstr ""
+"Les adhérents ont toujours accès à ce qui leur appartient, et à ce qui "
+"appartient à leurs enfants."
 
 msgid "Always on own"
-msgstr ""
+msgstr "Toujours sur ses données"
 
 msgid ""
 "This permission does not apply to members: it is not granted when the role "
 "is given for a group."
 msgstr ""
+"Cette permission ne s’applique pas aux adhérents : elle n’est pas accordée "
+"quand le rôle est donné pour un groupe."
 
 msgid "Not on a group"
-msgstr ""
+msgstr "Pas sur un groupe"
 
 msgid "No member has this role."
-msgstr ""
+msgstr "Aucun adhérent n’a ce rôle."
 
 #, php-format
 msgid "%1$s member has this role."
 msgid_plural "%1$s members have this role."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1$s adhérent a ce rôle."
+msgstr[1] "%1$s adhérents ont ce rôle."
 
 msgid "Nearly every member has it, they are not listed."
-msgstr ""
+msgstr "Presque tous les adhérents l’ont, ils ne sont pas listés."
 
 msgid "Take role back"
-msgstr ""
+msgstr "Retirer le rôle"
 
 #, php-format
 msgid "Take role back from %1$s"
-msgstr ""
+msgstr "Retirer le rôle à %1$s"
 
 msgid "This role has not been given to anyone yet."
-msgstr ""
+msgstr "Ce rôle n’a encore été donné à personne."
 
 #, php-format
 msgid "%1$s / %2$s from %3$s"
-msgstr ""
+msgstr "%1$s / %2$s depuis %3$s"
 
 msgid "No parent role"
-msgstr ""
+msgstr "Aucun rôle parent"
 
 msgid ""
 "System roles are given from members data: any logged-in member, members up "
 "to date, groups managers (on the groups they manage), staff members and "
 "administrators. Other roles are given explicitly, for all groups or for one."
 msgstr ""
+"Les rôles système sont donnés d’après les données des adhérents : tout "
+"adhérent connecté, adhérents à jour, responsables de groupes (sur les "
+"groupes qu’ils gèrent), membres du bureau et administrateurs. Les autres "
+"rôles sont donnés explicitement, pour tous les groupes ou pour un seul."
 
 #, php-format
 msgid "Edit role '%1$s'"
-msgstr ""
+msgstr "Modifier le rôle « %1$s »"
 
 #, php-format
 msgid "Delete role '%1$s'"
-msgstr ""
+msgstr "Supprimer le rôle « %1$s »"
 
 msgid "Replace parameters with the current advanced search"
 msgstr "Remplacer les paramètres par ceux de la recherche avancée en cours"
