@@ -299,6 +299,7 @@ abstract class BaseGaletteTestCase extends TestCase
             'WARNING - Plugin "Galette Db Plugin" database needs to be updated.',
             'ERROR - Plugin "plugin-invalid" definition is invalid | ',
             'ERROR - Plugin "plugin-noreturn" _define.php file does not return a PluginDefinition.',
+            'WARNING - Plugin "Galette Integrated Plugin" features are part of Galette since',
             // Expected logs from the install-db test plugins
             'WARNING - Plugin "Galette Db Install Plugin" has not been installed.',
             'WARNING - Plugin "Galette Db Upgrade Plugin" database needs to be updated.',

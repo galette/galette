@@ -19,6 +19,8 @@ Profiles of `loggedInAs()`, in `fixtures/auth.fixture.ts`:
 
 Specs changing permissions of the roles, `specs/roles-changes.spec.ts`, run in
 the `roles` project, on their own: `npx playwright test --project roles`.
+Likewise, `specs/maps.spec.ts` enables maps for the whole instance and runs in
+the `maps` project: `npx playwright test --project maps`.
 
 ## Seeding / Cleaning
 

@@ -514,6 +514,9 @@
 {% block javascripts %}
     {% set batch_selection = ['masschange', 'masscontributions', 'sendmail', 'attendance_sheet_details'] %}
     {{ parent() }}
+    {% if require_maps %}
+        {% include 'elements/maps/libraries.html.twig' with {lazy_gl: true} %}
+    {% endif %}
     <script type="text/javascript">
         {# Use of Javascript to draw specific elements that are not relevant is JS is inactive #}
         $(function(){

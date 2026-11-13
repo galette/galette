@@ -24,7 +24,7 @@ use function Safe\unlink;
  */
 class Plugins extends GaletteTestCase
 {
-    private int $count_modules = 11;
+    private int $count_modules = 12;
     private int $active_modules = 3;
 
     /** @var array<string, mixed> */
@@ -85,6 +85,7 @@ class Plugins extends GaletteTestCase
                 'plugin-db-noversion',
                 'plugin-db',
                 'plugin-disabled',
+                'plugin-integrated',
                 'plugin-news',
                 'plugin-noclass',
                 'plugin-oldversion',
@@ -218,6 +219,10 @@ class Plugins extends GaletteTestCase
             [
                 'module' => 'plugin-noreturn',
                 'cause' => \Galette\Core\Plugins::DISABLED_INVALID
+            ],
+            [
+                'module' => 'plugin-integrated',
+                'cause' => \Galette\Core\Plugins::DISABLED_INTEGRATED
             ]
         ];
     }
@@ -282,6 +287,16 @@ class Plugins extends GaletteTestCase
         $plugins = $this->getPlugins();
         $this->expectExceptionMessage(_T('No such module.'));
         $plugins->activateModule('nonexistant');
+    }
+
+    /**
+     * Test a module now part of Galette cannot be activated
+     */
+    public function testIntegratedModuleActivation(): void
+    {
+        $plugins = $this->getPlugins();
+        $this->expectExceptionMessage(_T('Plugin features are part of Galette now, it cannot be enabled.'));
+        $plugins->activateModule('plugin-integrated');
     }
 
     /**

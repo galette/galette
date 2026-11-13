@@ -39,3 +39,12 @@ CREATE TABLE galette_known_permissions (
   permission varchar(100) NOT NULL,
   PRIMARY KEY (permission)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- table for members geographic positions
+CREATE TABLE galette_maps_coordinates (
+  id_adh int unsigned NOT NULL,
+  latitude decimal(9,6) NOT NULL,
+  longitude decimal(9,6) NOT NULL,
+  PRIMARY KEY (id_adh),
+  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;

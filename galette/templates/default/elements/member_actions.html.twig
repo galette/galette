@@ -142,7 +142,7 @@
         {% if login.isAdmin() or login.isStaff() %}
             {% set actions = member_detailed_actions(member) %}
             {% for action in actions %}
-                {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon) }}
+                {{ macros.drawDetailedAction(action.label, action.title ?? '', action.route, action.icon, action.extraClass) }}
             {% endfor %}
         {% endif %}
         </div>

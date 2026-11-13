@@ -130,6 +130,22 @@ Content-Type: application/json
 - `pref_bool_publicpages` = `true`
 - All visibility settings = `1` (RESTRICTED)
 
+#### Maps
+
+```http
+POST /test/preferences
+Content-Type: application/json
+
+{ "action": "enable_maps" }
+{ "action": "disable_maps" }
+{ "action": "remove_position", "member": 42 }
+```
+
+- `enable_maps` enables maps on a raster background (OpenStreetMap), so tests
+  do not depend on WebGL, and with no maps center
+- `disable_maps` disables them, and restores the default background
+- `remove_position` removes the position of a member, given by its id
+
 #### Get Current Configuration
 
 **Request:**

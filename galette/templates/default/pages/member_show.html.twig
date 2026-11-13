@@ -25,6 +25,7 @@
                 </div>
 
             {% include "elements/member_card.html.twig" %}
+            {% include "elements/maps/member_minimap.html.twig" %}
 
         {% if member.hasParent() or member.hasChildren() %}
                 <div class="ui basic fitted segment">
@@ -194,6 +195,9 @@
 {% endblock %}
 
 {% block javascripts %}
+    {% if require_maps %}
+        {% include 'elements/maps/libraries.html.twig' with {lazy_gl: true} %}
+    {% endif %}
     {% if login.isAdmin() or login.isStaff() or login.login == member.login %}
     <script type="text/javascript">
         $(function() {

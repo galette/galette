@@ -14,6 +14,7 @@ use Galette\Access\AccessControl;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\Plugins;
+use Galette\Core\Preferences;
 use Galette\Repository\Documents;
 
 /**
@@ -26,18 +27,20 @@ class Dashboards
     /**
      * Constructor
      *
-     * @param Db             $zdb      Database instance
-     * @param Login          $login    Login instance
-     * @param Plugins        $plugins  Plugins instance
-     * @param AccessControl  $access   Access control
-     * @param ReleaseNotices $releases New releases
+     * @param Db             $zdb         Database instance
+     * @param Login          $login       Login instance
+     * @param Plugins        $plugins     Plugins instance
+     * @param AccessControl  $access      Access control
+     * @param ReleaseNotices $releases    New releases
+     * @param Preferences    $preferences Preferences instance
      */
     public function __construct(
         private readonly Db $zdb,
         private readonly Login $login,
         private readonly Plugins $plugins,
         private readonly AccessControl $access,
-        private readonly ReleaseNotices $releases
+        private readonly ReleaseNotices $releases,
+        private readonly Preferences $preferences
     ) {
     }
 
@@ -71,6 +74,15 @@ class Dashboards
                     icon: 'book'
                 )
             ];
+
+            if ($this->preferences->pref_maps_enabled) {
+                $dashboards[] = new MenuEntry(
+                    label: _T("My localization"),
+                    route: new RouteTarget('mapsLocalizeMe'),
+                    title: _T('Set my position on the members map'),
+                    icon: 'round_pushpin'
+                );
+            }
         }
 
         foreach ($this->plugins->getProviders(Plugins\DashboardProviderInterface::class) as $plugin) {

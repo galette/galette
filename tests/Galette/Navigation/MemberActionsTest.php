@@ -35,7 +35,8 @@ class MemberActionsTest extends GaletteTestCase
             login: $login,
             preferences: $preferences,
             plugins: $plugins,
-            access: $this->container->get(\Galette\Access\AccessControl::class)
+            access: $this->container->get(\Galette\Access\AccessControl::class),
+            coordinates: $this->container->get(\Galette\Maps\Coordinates::class)
         );
     }
 

@@ -1,0 +1,165 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+<div class="ui stackable two column grid">
+    <div class="column">
+    <form id="maps_settings" action="{{ url_for("doMapsSettings") }}" method="post" class="ui form">
+        <div class="ui segment">
+            {% include "components/forms/checkbox.html.twig" with {
+                id: 'pref_maps_enabled',
+                value: '1',
+                checked: enabled,
+                label: _T("Display members positions on maps"),
+                tip: _T("Members can then set their position, and a map is added to public pages.")
+            } %}
+        </div>
+
+        <div class="ui segment">
+            {% include "components/forms/select.html.twig" with {
+                id: 'pref_maps_public_precision',
+                value: precision,
+                values: precisions,
+                label: _T("Members positions precision"),
+                description: _T("How far from their stored position members may appear on the map. Staff, administrators and members themselves always see the exact position.")|e,
+                required: true
+            } %}
+        </div>
+
+        <div class="ui segment">
+            {% include "components/forms/select.html.twig" with {
+                id: 'pref_maps_tiles_provider',
+                value: provider,
+                values: providers,
+                label: _T("Background map provider"),
+                required: true
+            } %}
+        </div>
+
+        <div class="ui segment{% if provider != custom %} displaynone{% endif %}" id="maps_custom_tiles" data-custom="{{ custom }}">
+            <h3 class="ui header">{{ _T("Your own values") }}</h3>
+
+            {% include "components/forms/checkbox.html.twig" with {
+                id: 'pref_maps_tiles_vector',
+                value: '1',
+                checked: vector,
+                label: _T("Vector tiles"),
+                tip: _T("Tick for a MapLibre style, leave unticked for classic raster tiles.")
+            } %}
+
+            {# the example is kept out of the translatable string, as gettext advises #}
+            {% include "components/forms/text.html.twig" with {
+                id: 'pref_maps_tiles_url',
+                value: url,
+                label: _T("Address"),
+                tip: _T("Style address for vector tiles, tiles address for raster ones, such as:") ~ ' https://tile.openstreetmap.org/{z}/{x}/{y}.png'
+            } %}
+
+            {% include "components/forms/text.html.twig" with {
+                id: 'pref_maps_tiles_attribution',
+                value: attribution,
+                label: _T("Attribution"),
+                tip: _T("Credit the provider requires, HTML allowed. Data licences make it mandatory.")
+            } %}
+
+            {% include "components/forms/number.html.twig" with {
+                id: 'pref_maps_tiles_maxzoom',
+                value: maxzoom,
+                label: _T("Maximum zoom"),
+                min: 0,
+                max: 22
+            } %}
+
+            {% include "components/forms/text.html.twig" with {
+                id: 'pref_maps_tiles_subdomains',
+                value: subdomains,
+                label: _T("Subdomains"),
+                tip: _T("Letters the {s} token in the address is replaced with, such as abc. Raster tiles only.")
+            } %}
+        </div>
+
+        <div class="ui segment" id="maps_center" data-url="{{ url_for("mapsSearchTowns") }}">
+            <h3 class="ui header">
+                {{ _T("Maps center") }}
+                <div class="sub header">{{ _T("Where maps open when they have nothing else to show, such as the association town. Left empty, maps show the whole of France.") }}</div>
+            </h3>
+
+            <div class="two fields">
+                {% include "components/forms/text.html.twig" with {
+                    id: 'maps_center_town',
+                    value: center_town,
+                    label: _T("Town")
+                } %}
+                {% include "components/forms/text.html.twig" with {
+                    id: 'maps_center_country',
+                    value: center_country,
+                    label: _T("Country")
+                } %}
+            </div>
+            <div class="field">
+                <button type="button" class="ui labeled icon button" id="maps_center_search">
+                    <i class="search icon" aria-hidden="true"></i>
+                    {{ _T("Search coordinates") }}
+                </button>
+            </div>
+            <div id="maps_center_towns" class="field" aria-live="polite"></div>
+
+            <div class="two fields">
+                {% include "components/forms/text.html.twig" with {
+                    id: 'pref_maps_center_latitude',
+                    value: center_latitude,
+                    label: _T("Latitude")
+                } %}
+                {% include "components/forms/text.html.twig" with {
+                    id: 'pref_maps_center_longitude',
+                    value: center_longitude,
+                    label: _T("Longitude")
+                } %}
+            </div>
+        </div>
+
+        <div class="ui basic center aligned segment">
+            <button type="submit" class="ui labeled icon primary button action">
+                <i class="save icon"></i>
+                {{ _T("Save") }}
+            </button>
+        </div>
+    </form>
+    </div>
+    <div class="column">
+        <div class="ui segment position-sticky">
+            <h3 class="ui header">
+                {{ _T("Preview") }}
+                <div class="sub header">{{ _T("Public map as the form sets it, with sample positions: where they are stored, and where visitors see them.") }}</div>
+            </h3>
+            <div id="maps_preview" class="maps-preview" data-form="#maps_settings" aria-hidden="true"></div>
+        </div>
+    </div>
+</div>
+{# HEX flags keep a closing script tag and friends harmless inside the script element #}
+<script type="application/json" id="maps-preview-config">{{ (preview|merge({
+    icon: base_path() ~ "/assets/images/maps/marker-galette.png",
+    strings: {
+        no_town: _T("No town found."),
+        search_error: _T("Town search is not available for now, you can still enter coordinates.")
+    },
+    gl_script: base_path() ~ "/assets/js/maps-gl.min.js"
+}))|json_encode(constant('JSON_HEX_TAG') b-or constant('JSON_HEX_AMP') b-or constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT'))|raw }}</script>
+{% endblock %}
+
+{% block javascripts %}
+    {% include 'elements/maps/libraries.html.twig' with {lazy_gl: true} %}
+    <script type="text/javascript">
+        $(function () {
+            const custom = $('#maps_custom_tiles');
+            $('#pref_maps_tiles_provider').on('change', function () {
+                custom.toggleClass('displaynone', this.value !== custom.data('custom'));
+            });
+        });
+    </script>
+{% endblock %}

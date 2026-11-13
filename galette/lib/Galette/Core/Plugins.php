@@ -62,6 +62,17 @@ class Plugins
     public const int DISABLED_NOT_INSTALLED = 4;
     public const int DISABLED_NOT_UP2DATE = 5;
     public const int DISABLED_INVALID = 6;
+    public const int DISABLED_INTEGRATED = 7;
+
+    /**
+     * Plugins whose features are now part of Galette, by route => Galette version
+     *
+     * Such a plugin is never loaded: it would declare the same routes and
+     * preferences as the core.
+     */
+    public const array INTEGRATED = [
+        'maps' => '1.4.0',
+    ];
 
     /** @var array<string> */
     protected array $path;
@@ -508,6 +519,21 @@ class Plugins
             'dbversion'     => $definition->dbver,
             'repository'    => $this->checkRepository($name, $definition->repository)
         ];
+
+        $route = $definition->route;
+        if ($route !== null && isset(self::INTEGRATED[$route])) {
+            Analog::log(
+                sprintf(
+                    'Plugin "%s" features are part of Galette since %s, it will not be loaded. You can remove it.',
+                    $name,
+                    self::INTEGRATED[$route]
+                ),
+                Analog::WARNING
+            );
+            $this->setDisabled(self::DISABLED_INTEGRATED);
+            return;
+        }
+
         if ($definition->csrf_exclusions !== null) {
             $this->setCsrfExclusions($definition->csrf_exclusions);
         }
@@ -740,6 +766,11 @@ class Plugins
     {
         if (!isset($this->disabled[$id])) {
             throw new Exception(_T("No such module."));
+        }
+
+        if ($this->disabled[$id] === self::DISABLED_INTEGRATED) {
+            //nothing to remove: it would be refused again on next load
+            throw new Exception(_T("Plugin features are part of Galette now, it cannot be enabled."));
         }
 
         try {

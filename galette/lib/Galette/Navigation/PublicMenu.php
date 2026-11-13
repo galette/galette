@@ -105,6 +105,18 @@ class PublicMenu
             );
         }
 
+        if (
+            $this->preferences->pref_maps_enabled
+            && $this->preferences->showPublicPage($this->login, 'pref_publicpages_visibility_maps')
+        ) {
+            $items[] = new MenuEntry(
+                label: _T("Maps"),
+                route: new RouteTarget('maps'),
+                title: _T("See where members live"),
+                icon: 'map'
+            );
+        }
+
         foreach ($this->plugins->getProviders(Plugins\MenuProviderInterface::class) as $plugin) {
             array_push($items, ...MenuEntry::listFromArray($plugin->getPublicMenuItems()));
         }

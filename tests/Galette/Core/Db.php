@@ -538,7 +538,8 @@ class Db extends BaseGaletteTestCase
             'galette_roles',
             'galette_roles_permissions',
             'galette_members_roles',
-            'galette_known_permissions'
+            'galette_known_permissions',
+            'galette_maps_coordinates'
         ];
 
         $tables = $this->zdb->getTables();
