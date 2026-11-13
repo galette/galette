@@ -153,7 +153,7 @@
 {% set _legend_block = block('legend') %}
 
 {% block javascripts %}
-    <script type="text/javascript">
+    <script nonce="{{ csp_nonce() }}" type="text/javascript">
     {% if batch is defined and batch_actions is defined and batch_actions|length > 0 %}
         var _checkselection = function() {
             var _checked = $('#listform').find('input[type=checkbox]:checked').length;

@@ -130,3 +130,29 @@
  * Now stored as pref_session_timeout.
  */
 //define('GALETTE_TIMEOUT', 0);
+
+/**
+ * Sites allowed to display Galette in a frame, separated by spaces:
+ * 'self', 'none', or origins such as https://example.org or https://*.example.org
+ *
+ * Now stored as pref_csp_frame_ancestors.
+ */
+//define('GALETTE_CSP_FRAME_ANCESTORS', "'self'");
+
+/**
+ * External sites pages may load scripts, styles, fonts and frames from, or
+ * send data to - such as the statistics service of the theme tracking.js -,
+ * separated by spaces: https://stats.example.org https://*.example.net
+ *
+ * Now stored as pref_csp_external_sources.
+ */
+//define('GALETTE_CSP_EXTERNAL_SOURCES', '');
+
+/**
+ * Enforce the complete Content Security Policy: scripts without the nonce,
+ * from core or plugins, are not run. When off, violations are only reported,
+ * and injected scripts run: only turn it off while fixing a broken page.
+ *
+ * Now stored as pref_csp_enforce.
+ */
+//define('GALETTE_CSP_ENFORCE', true);

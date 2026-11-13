@@ -104,7 +104,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
+    <script nonce="{{ csp_nonce() }}">
         $(function() {
 {% if has_news %}
             $.ajax({

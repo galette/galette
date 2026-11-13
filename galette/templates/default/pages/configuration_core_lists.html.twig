@@ -104,7 +104,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="module">
+    <script nonce="{{ csp_nonce() }}" type="module">
         //labels come from data attributes: they must be escaped again to build markup
         function _escape(value) {
             var _div = document.createElement('div');

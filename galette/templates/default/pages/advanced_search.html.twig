@@ -619,7 +619,7 @@
 {% endblock %}
 
 {% block javascripts %}
-        <script type="text/javascript">
+        <script nonce="{{ csp_nonce() }}" type="text/javascript">
             var _operators = {
                 op_equals: {
                     id: {{ constant("Galette\\Filters\\AdvancedMembersList::OP_EQUALS") }},

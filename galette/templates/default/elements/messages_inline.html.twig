@@ -97,7 +97,7 @@
     {% endfor %}
     </div>
     {% if not standalone %}
-    <script>
+    <script nonce="{{ csp_nonce() }}">
         (function () {
             var _messages = document.getElementById('messages');
 

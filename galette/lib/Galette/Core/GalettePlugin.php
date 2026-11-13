@@ -23,6 +23,7 @@ use Analog\Analog;
  * - MemberActionProviderInterface: if the plugin provides extra member actions
  * - NewsProviderInterface: if the plugin provides news to be displayed in the dashboard
  * - PreferencesProviderInterface: if the plugin stores settings in Galette preferences
+ * - ContentSecurityPolicyProviderInterface: if the plugin pages need external origins (frames, APIs, ...)
  *
  * Note: a plugin can implement one or more of these interfaces, but it is not mandatory to implement all of them.
  */

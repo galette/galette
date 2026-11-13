@@ -312,6 +312,83 @@ foreach ($plugins->getProviders(MenuProviderInterface::class) as $plugin) {
 }
 ```
 
+## Content Security Policy
+
+Galette sends and enforces a [Content Security Policy](https://developer.mozilla.org/docs/Web/HTTP/Guides/CSP)
+with its pages: a script that does not follow the rules below is not run.
+Violations show up in the browser console and in Galette logs.
+
+Administrators can turn `pref_csp_enforce` off from the advanced configuration
+while a page is broken: framing, plugins (`object-src`) and `base-uri` remain
+enforced, the complete policy is then sent as `Content-Security-Policy-Report-Only`.
+
+### Scripts
+
+Every `<script>` tag, inline or not, must carry the nonce of the request:
+
+```twig
+<script nonce="{{ csp_nonce() }}">
+    $('#my_button').on('click', function () { /* ... */ });
+</script>
+<script nonce="{{ csp_nonce() }}" src="{{ url_for('plugin_res', {'plugin': module_id, 'path': 'myplugin.js'}) }}"></script>
+```
+
+Scripts loaded by a script carrying the nonce are allowed as well
+(`'strict-dynamic'`): a payment library that loads its own files works as
+long as the first one carries it.
+
+What cannot be allowed:
+
+- inline event handlers (`onclick="..."`, `onchange="..."`): use
+  `addEventListener()` or jQuery `on()` from a script carrying the nonce;
+- `javascript:` URLs: use a `<button type="button">` and an event listener;
+- `eval()`, `new Function()`, `setTimeout()` with a string.
+
+### External origins
+
+Images can come from any `https:` origin. Anything else outside of Galette
+must be declared: frames of a payment provider, APIs called from the
+browser, a checkout page a form posts or redirects to... Implement
+`Galette\Core\Plugins\ContentSecurityPolicyProviderInterface` on the plugin
+class:
+
+```php
+use Galette\Core\GalettePlugin;
+use Galette\Core\Plugins\ContentSecurityPolicyProviderInterface;
+
+class PluginGaletteMyplugin extends GalettePlugin implements ContentSecurityPolicyProviderInterface
+{
+    public function getCspSources(): array
+    {
+        return [
+            'frame-src' => ['https://js.stripe.com', 'https://hooks.stripe.com'],
+            'connect-src' => ['https://api.stripe.com'],
+            'form-action' => ['https://checkout.example.org'],
+        ];
+    }
+}
+```
+
+Directives plugins may add to are listed in `Galette\Core\Csp::PLUGIN_DIRECTIVES`:
+`connect-src`, `font-src`, `form-action`, `frame-src`, `img-src`,
+`media-src`, `script-src`, `style-src` and `worker-src`. Sources are
+`https://` or `wss://` origins, with an optional wildcard on the first label
+(`https://*.example.org`) and an optional path, or `data:` and `blob:`
+(except for `script-src`). Keywords (`'unsafe-inline'`, `'unsafe-eval'`...)
+and wildcards alone are refused: invalid sources are logged and ignored.
+
+Declared sources are added on all pages.
+
+### Checking a plugin
+
+Open the browser console on the plugin pages: each violation is reported
+there, and the blocked script or request is the cause of a broken page.
+Galette logs them too, as warnings:
+
+```
+CSP violation: frame-src blocked https://js.stripe.com/v3/ on https://galette.example.org/plugins/stripe/form
+```
+
 ## PDF
 
 TCPDF is replaced by [tc-lib-pdf](https://github.com/tecnickcom/tc-lib-pdf).
