@@ -200,6 +200,20 @@ class ExternalScriptTest extends GaletteTestCase
     }
 
     /**
+     * A local script may not read its parameters, and exit before they are written
+     *
+     * Parameters larger than a pipe buffer cannot be written before the script
+     * reads them: writing fails each time, instead of when the script is fast enough.
+     */
+    public function testFileIgnoringParameters(): void
+    {
+        $script = $this->getScript('file://' . $this->writeScript("echo 'Some output'"));
+
+        $this->assertFalse($script->send(['id' => 42, 'data' => str_repeat('x', 256 * 1024)]));
+        $this->assertStringContainsString("StdOut:\nSome output", $script->getOutput());
+    }
+
+    /**
      * Unreachable remote scripts
      *
      * @return array<string, array{string}>

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use Analog\Analog;
+use Galette\Core\Logs;
 use Galette\Core\Preferences;
 use Safe\Exceptions\CurlException;
 
@@ -177,7 +178,13 @@ class ExternalScript
                     $descriptors,
                     $pipes
                 );
-                fwrite($pipes[0], $params);
+                try {
+                    fwrite($pipes[0], $params);
+                } catch (\Throwable $e) {
+                    //a script that does not read its parameters may exit before
+                    //they are written: what it said still tells how it went
+                    Logs::exception($e, 'Parameters have not been sent to script ' . $uri, Analog::INFO);
+                }
                 fclose($pipes[0]);
 
                 //get stdout, if any
