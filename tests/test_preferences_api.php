@@ -25,11 +25,17 @@ declare(strict_types=1);
  * - set_two_factor_mode: Set the second factor policy
  * - reset_two_factor: Clear every second factor, so a run starts from a known
  *   state even after a previous one failed halfway through
+ * - enable_maps: Enable maps, on a raster background and with no center set
+ * - disable_maps: Disable maps and restore their default background
+ * - remove_position: Remove the position of a member (member: its id)
  */
 
 use Galette\Core\Db;
 use Galette\Core\GaletteMail;
 use Galette\Core\Preferences;
+use Galette\Maps\Center;
+use Galette\Maps\Coordinates;
+use Galette\Maps\TileProviders;
 
 use function Safe\file_get_contents;
 use function Safe\json_decode;
@@ -170,6 +176,30 @@ try {
                 $preferences->pref_mail_daily_limit = 0;
                 $preferences->store();
                 echo json_encode(['success' => true, 'message' => 'Mail reset']);
+                break;
+
+            case 'enable_maps':
+                //raster: tests do not depend on WebGL being available
+                $preferences->pref_maps_enabled = true;
+                $preferences->{TileProviders::PREF_PROVIDER} = 'osm';
+                $preferences->{Center::PREF_LATITUDE} = '';
+                $preferences->{Center::PREF_LONGITUDE} = '';
+                $preferences->store();
+                echo json_encode(['success' => true, 'message' => 'Maps enabled']);
+                break;
+
+            case 'disable_maps':
+                $preferences->pref_maps_enabled = false;
+                $preferences->{TileProviders::PREF_PROVIDER} = TileProviders::DEFAULT;
+                $preferences->store();
+                echo json_encode(['success' => true, 'message' => 'Maps disabled']);
+                break;
+
+            case 'remove_position':
+                $delete = $zdb->delete(Coordinates::TABLE);
+                $delete->where([Coordinates::PK => (int)($input['member'] ?? 0)]);
+                $zdb->execute($delete);
+                echo json_encode(['success' => true, 'message' => 'Position removed']);
                 break;
 
             default:

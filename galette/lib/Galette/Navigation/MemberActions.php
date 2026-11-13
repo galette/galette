@@ -16,6 +16,7 @@ use Galette\Core\Login;
 use Galette\Core\Plugins;
 use Galette\Core\Preferences;
 use Galette\Entity\Adherent;
+use Galette\Maps\Coordinates;
 
 /**
  * Actions on members, from lists and member pages
@@ -24,6 +25,9 @@ use Galette\Entity\Adherent;
  */
 class MemberActions
 {
+    /** @var array<int, true>|null members who have a position, once loaded */
+    private ?array $located = null;
+
     /**
      * Constructor
      *
@@ -31,12 +35,14 @@ class MemberActions
      * @param Preferences   $preferences Preferences instance
      * @param Plugins       $plugins     Plugins instance
      * @param AccessControl $access      Access control
+     * @param Coordinates   $coordinates Members positions
      */
     public function __construct(
         private readonly Login $login,
         private readonly Preferences $preferences,
         private readonly Plugins $plugins,
-        private readonly AccessControl $access
+        private readonly AccessControl $access,
+        private readonly Coordinates $coordinates
     ) {
     }
 
@@ -95,6 +101,8 @@ class MemberActions
             );
         }
 
+        array_push($actions, ...$this->getLocalizeActions($member));
+
         if ($this->login->isSuperAdmin()) {
             $label = sprintf(
                 //TRANS: parameter is the member name
@@ -124,12 +132,70 @@ class MemberActions
      */
     public function getDetailedActions(Adherent $member): array
     {
-        //core detailed actions are in elements/member_actions.html.twig
-        $actions = [];
+        //other core detailed actions are in elements/member_actions.html.twig
+        $actions = $this->getLocalizeActions($member);
         foreach ($this->plugins->getProviders(Plugins\MemberActionProviderInterface::class) as $plugin) {
             array_push($actions, ...MenuEntry::listFromArray($plugin->getDetailedActions($member)));
         }
         return $actions;
+    }
+
+    /**
+     * Get member position action, when maps are enabled
+     *
+     * Those who can edit the member set its position. Others can only look
+     * at an existing one: the page checks it again.
+     *
+     * @param Adherent $member Current member
+     *
+     * @return list<MenuEntry>
+     */
+    private function getLocalizeActions(Adherent $member): array
+    {
+        if (!$this->preferences->pref_maps_enabled) {
+            return [];
+        }
+
+        $route = new RouteTarget('mapsLocalizeMember', ['id' => $member->id]);
+        if ($member->canEdit($this->login)) {
+            $label = _T("Geolocalize");
+            $title = sprintf(
+                //TRANS: parameter is the member name
+                _T('Geolocalize %1$s'),
+                $member->sname
+            );
+        } elseif (isset($this->getLocatedIds()[(int)$member->id])) {
+            $label = _T("Show on map");
+            $title = sprintf(
+                //TRANS: parameter is the member name
+                _T('Show %1$s on map'),
+                $member->sname
+            );
+        } else {
+            //nothing to show, nothing to set
+            return [];
+        }
+
+        return [
+            new MenuEntry(
+                label: $label,
+                route: $route,
+                title: $title,
+                icon: 'map marker alternate grey',
+                //pages loading maps libraries open it in a modal
+                extraClass: 'maps-localize'
+            )
+        ];
+    }
+
+    /**
+     * Get ids of members who have a position, loaded once for a whole list
+     *
+     * @return array<int, true>
+     */
+    private function getLocatedIds(): array
+    {
+        return $this->located ??= $this->coordinates->getLocatedIds();
     }
 
     /**

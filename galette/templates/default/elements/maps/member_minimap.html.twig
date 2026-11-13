@@ -1,0 +1,47 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{#
+ # Member position, next to the member card: a map that only illustrates,
+ # the link below it opens the full one. Both blocks are there when the
+ # position can be changed: the modal switches them without reloading.
+ #}
+{% if member_position is defined and (member_position is not null or can_edit_position) %}
+    {% set raster = tiles.vector ? tiles.fallback : tiles %}
+<div
+    class="ui basic fitted segment maps-member"
+    data-member="{{ member.id }}"
+    data-minimap="{{ {
+        tiles: raster,
+        icon: base_path() ~ "/assets/images/maps/marker-galette.png"
+    }|json_encode }}"
+>
+    <div
+        class="maps-member-position{% if member_position is null %} displaynone{% endif %}"
+    {% if member_position is not null %}
+        data-lat="{{ member_position.latitude }}"
+        data-lng="{{ member_position.longitude }}"
+    {% endif %}
+    >
+        <div class="maps-minimap" aria-hidden="true"></div>
+        <a href="{{ url_for("mapsLocalizeMember", {"id": member.id}) }}" class="maps-localize">
+            <i class="map marker alternate icon" aria-hidden="true"></i>
+            {{ _T("Show on map") }}
+        </a>
+    </div>
+    {% if can_edit_position %}
+    <div class="ui placeholder segment maps-member-none{% if member_position is not null %} displaynone{% endif %}">
+        <div class="ui icon header">
+            <i class="map marker alternate grey icon" aria-hidden="true"></i>
+            {{ _T("No geographic position yet.") }}
+        </div>
+        <a href="{{ url_for("mapsLocalizeMember", {"id": member.id}) }}" class="ui button maps-localize">
+            {{ _T("Geolocalize") }}
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endif %}

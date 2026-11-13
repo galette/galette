@@ -130,6 +130,14 @@ class MainMenu
             ];
         }
 
+        if (!$this->login->isSuperAdmin() && $this->preferences->pref_maps_enabled) {
+            $items[] = new MenuEntry(
+                label: _T('My localization'),
+                route: new RouteTarget('mapsLocalizeMe'),
+                title: _T('Set my position on the members map')
+            );
+        }
+
         if (!$this->login->isSuperAdmin() && $this->access->can('member:create-child', login: $this->login)) {
             $items[] = new MenuEntry(
                 label: _T('Add a child member'),
@@ -319,6 +327,12 @@ class MainMenu
                 label: _T("Settings"),
                 route: new RouteTarget('preferences'),
                 title: _T("Set applications preferences (address, website, member's cards configuration, ...)")
+            )],
+            //listed even when maps are disabled: they are enabled from there
+            ['config:preferences', new MenuEntry(
+                label: _T("Maps settings"),
+                route: new RouteTarget('mapsSettings'),
+                title: _T("Display members positions on maps, and choose the background map")
             )],
             ['plugin:manage', new MenuEntry(
                 label: _T("Plugins"),

@@ -40,13 +40,14 @@ class DashboardsTest extends GaletteTestCase
      */
     private function dashboards(): \Galette\Navigation\Dashboards
     {
-        global $zdb, $login, $plugins;
+        global $zdb, $login, $plugins, $preferences;
         return new \Galette\Navigation\Dashboards(
             zdb: $zdb,
             login: $login,
             plugins: $plugins,
             access: $this->container->get(\Galette\Access\AccessControl::class),
-            releases: $this->releases()
+            releases: $this->releases(),
+            preferences: $preferences
         );
     }
 

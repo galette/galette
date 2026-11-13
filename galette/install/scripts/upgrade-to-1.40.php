@@ -15,6 +15,7 @@ use Galette\Access\Roles;
 use Galette\Core\L10n;
 use Galette\Core\Preferences;
 use Galette\Updater\AbstractUpdater;
+use Laminas\Db\Adapter\Adapter;
 
 /**
  * Galette 1.4.0 upgrade script
@@ -23,7 +24,14 @@ use Galette\Updater\AbstractUpdater;
  */
 class UpgradeTo140 extends AbstractUpdater
 {
+    /** Members positions, created by the maps plugin before it became part of Galette */
+    private const string MAPS_TABLE = 'maps_coordinates';
+    private const string MAPS_BACKUP = 'maps_coordinates_old';
+
     protected ?string $db_version = '1.40';
+
+    /** Whether positions stored by the maps plugin have to be taken over */
+    private bool $maps_existing = false;
 
     /**
      * Main constructor
@@ -32,6 +40,42 @@ class UpgradeTo140 extends AbstractUpdater
     {
         parent::__construct();
         $this->setSqlScripts($this->db_version);
+    }
+
+    /**
+     * Pre stuff, if any.
+     * Will be executed first.
+     */
+    protected function preUpdate(): bool
+    {
+        if ($this->zdb->tableExists(self::MAPS_BACKUP)) {
+            //left by an interrupted upgrade: it holds the plugin rows, while
+            //the table next to it may already be the new, empty, one
+            $this->maps_existing = true;
+            $this->zdb->drop(self::MAPS_TABLE, maymiss: true);
+            return true;
+        }
+
+        if (!$this->zdb->tableExists(self::MAPS_TABLE)) {
+            return true;
+        }
+
+        //Plugin versions left the table with various foreign keys names and
+        //column types: keep its rows aside, the SQL script creates it anew.
+        //A plain copy has no constraint, whose names would collide on PostgreSQL.
+        //The copy is removed only once its rows are taken over.
+        $this->maps_existing = true;
+        $this->zdb->db->query(
+            sprintf(
+                'CREATE TABLE %1$s AS SELECT id_adh, latitude, longitude FROM %2$s',
+                PREFIX_DB . self::MAPS_BACKUP,
+                PREFIX_DB . self::MAPS_TABLE
+            ),
+            Adapter::QUERY_MODE_EXECUTE
+        );
+        $this->zdb->drop(self::MAPS_TABLE);
+
+        return true;
     }
 
     /**
@@ -74,6 +118,9 @@ class UpgradeTo140 extends AbstractUpdater
      */
     protected function postUpdate(): bool
     {
+        //first: should roles fail, positions are not left in the backup table
+        $this->takeOverMapsPositions();
+
         //system roles get what rights settings allowed; settings are then removed
         $rights = Roles::LEGACY_RIGHTS;
         $select = $this->zdb->select(Preferences::TABLE);
@@ -90,6 +137,47 @@ class UpgradeTo140 extends AbstractUpdater
         $this->zdb->execute($delete);
 
         $this->addReportEntry(_T('System roles have been created.'), self::REPORT_SUCCESS);
+
         return true;
+    }
+
+    /**
+     * Take over positions the maps plugin stored
+     */
+    private function takeOverMapsPositions(): void
+    {
+        if (!$this->maps_existing) {
+            return;
+        }
+
+        //positions of members that no longer exist are not taken over
+        $this->zdb->db->query(
+            sprintf(
+                'INSERT INTO %1$s (id_adh, latitude, longitude)'
+                . ' SELECT o.id_adh, o.latitude, o.longitude FROM %2$s o'
+                . ' INNER JOIN %3$s a ON a.id_adh = o.id_adh',
+                PREFIX_DB . self::MAPS_TABLE,
+                PREFIX_DB . self::MAPS_BACKUP,
+                PREFIX_DB . 'adherents'
+            ),
+            Adapter::QUERY_MODE_EXECUTE
+        );
+        $this->zdb->drop(self::MAPS_BACKUP);
+
+        //maps were in use: keep them displayed
+        $delete = $this->zdb->delete(Preferences::TABLE);
+        $delete->where(['nom_pref' => 'pref_maps_enabled']);
+        $this->zdb->execute($delete);
+        $insert = $this->zdb->insert(Preferences::TABLE);
+        $insert->values([
+            'nom_pref' => 'pref_maps_enabled',
+            'val_pref' => '1'
+        ]);
+        $this->zdb->execute($insert);
+
+        $this->addReportEntry(
+            _T('Members positions from the maps plugin have been taken over, the plugin can be removed.'),
+            self::REPORT_SUCCESS
+        );
     }
 }

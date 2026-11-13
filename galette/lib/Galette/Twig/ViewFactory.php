@@ -104,6 +104,7 @@ class ViewFactory
         $env->addGlobal('html_editor', value: false);
         $env->addGlobal('require_charts', value: false);
         $env->addGlobal('require_mass', value: false);
+        $env->addGlobal('require_maps', value: false);
         $env->addGlobal('autocomplete', value: false);
         $env->addGlobal('debugbar_available', DebugBar::isEnabled());
         $env->addGlobal('debugbar_active', DebugBar::isActive($c->get(Session::class), $login));

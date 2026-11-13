@@ -18,6 +18,9 @@ use Galette\Entity\Status;
 use Galette\Enums\PublicPageVisibility;
 use Galette\IO\File;
 use Galette\IO\PdfMembersCards;
+use Galette\Maps\Center;
+use Galette\Maps\Precision;
+use Galette\Maps\TileProviders;
 use Galette\Repository\Members;
 
 use function Safe\preg_match;
@@ -687,6 +690,9 @@ final class PreferencesSchema
             'pref_publicpages_visibility_staffgallery' => [
                 'default' => Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED,
             ] + $visibility,
+            'pref_publicpages_visibility_maps' => [
+                'default' => PublicPageVisibility::Inherit->value,
+            ] + $visibility,
             'pref_bool_groupsmanagers_are_staff' => ['type' => self::TYPE_BOOL, 'default' => false],
             'pref_mail_sign' => [
                 //a signature may carry a link, and getMailSignature() hands
@@ -938,7 +944,26 @@ final class PreferencesSchema
                 'error' => self::ERR_POSITIVE_NUMBER,
                 'advanced' => true,
             ],
-        ];
+        ] + self::getMapsSchema();
+    }
+
+    /**
+     * Members positions on a map
+     *
+     * Maintained from the maps settings page: the settings form never
+     * carries them, so they are advanced ones to be kept when it is saved.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private static function getMapsSchema(): array
+    {
+        return array_map(
+            static fn(array $entry): array => $entry + ['advanced' => true],
+            ['pref_maps_enabled' => ['type' => self::TYPE_BOOL, 'default' => false]]
+                + TileProviders::getSchema()
+                + Precision::getSchema()
+                + Center::getSchema()
+        );
     }
 
     /**

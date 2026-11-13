@@ -113,6 +113,7 @@ class MainMenuTest extends GaletteTestCase
         $this->assertSame(
             [
                 'preferences',
+                'mapsSettings',
                 'plugins',
                 'configureListFields',
                 'configureCoreFields',

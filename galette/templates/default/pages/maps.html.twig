@@ -1,0 +1,23 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends not login.isLogged() ? "public_page.html.twig" : "page.html.twig" %}
+
+{% block content %}
+<section class="map-container">
+    <div id="map"></div>
+</section>
+    {% include 'elements/maps/legend.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    {% include 'elements/maps/scripts.html.twig' with {
+        page_config: {
+            markers: list|map(l => {lat: l.lat, lng: l.lng, name: l.name, nickname: l.nickname, company: l.company ?? null}),
+            max_zoom: max_zoom
+        }
+    } %}
+{% endblock %}

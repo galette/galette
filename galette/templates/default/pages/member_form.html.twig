@@ -25,6 +25,7 @@
                     </div>
                 </div>
                 {% include "elements/member_card.html.twig" %}
+                {% include "elements/maps/member_minimap.html.twig" %}
         {% endif %}
     {% endif %}
 
@@ -218,6 +219,9 @@
 {% endblock %}
 
 {% block javascripts %}
+    {% if require_maps %}
+        {% include 'elements/maps/libraries.html.twig' with {lazy_gl: true} %}
+    {% endif %}
         <script type="text/javascript">
             {% include "elements/js/choose_adh.js.twig" with {"js_chosen_id": "#parent_id"} %}
             {% include "elements/js/choose_social.js.twig" %}

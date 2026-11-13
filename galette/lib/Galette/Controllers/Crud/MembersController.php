@@ -34,6 +34,8 @@ use Galette\Entity\Social;
 use Galette\Filters\AdvancedMembersList;
 use Galette\Util\RelativeDate;
 use Galette\Filters\MembersList;
+use Galette\Maps\Coordinates;
+use Galette\Maps\TileProviders;
 use Galette\Middleware\PublicPages;
 use Galette\Repository\DynamicFieldsSet;
 use Galette\Repository\Groups;
@@ -79,6 +81,9 @@ class MembersController extends CrudController
 
     #[Inject]
     protected Roles $roles;
+
+    #[Inject]
+    protected Coordinates $coordinates;
 
     // CRUD - Create
 
@@ -350,11 +355,19 @@ class MembersController extends CrudController
         $display_elements = $fc->getDisplayElements($this->login);
         $can_manage_roles = $this->accessControl->can('role:manage');
 
+        $maps = [];
+        if ($this->preferences->pref_maps_enabled) {
+            $maps = $this->getMapsParams() + [
+                'member_position'   => $this->coordinates->get($member->id),
+                'can_edit_position' => $member->canEdit($this->login)
+            ];
+        }
+
         // display page
         $this->view->render(
             $response,
             'pages/member_show.html.twig',
-            [
+            $maps + [
                 'page_title'        => sprintf('%s - %s', $member->sfullname, _T("Profile")),
                 'member'            => $member,
                 'pref_lang'         => $this->i18n->getNameFromId($member->language),
@@ -794,7 +807,7 @@ class MembersController extends CrudController
         $this->view->render(
             $response,
             'pages/members_list.html.twig',
-            [
+            ($this->preferences->pref_maps_enabled ? $this->getMapsParams() : []) + [
                 'page_title'            => _T("List of members"),
                 'require_mass'          => true,
                 'members'               => $members_list,
@@ -1268,6 +1281,13 @@ class MembersController extends CrudController
 
         if ($action === 'edit') {
             $route_params['navigate'] = $this->handleNavigationLinks($member->id);
+        }
+
+        if ($member->id && $this->preferences->pref_maps_enabled) {
+            $route_params += $this->getMapsParams() + [
+                'member_position'   => $this->coordinates->get($member->id),
+                'can_edit_position' => $member->canEdit($this->login)
+            ];
         }
 
         if ($member->id && $this->accessControl->can('role:manage')) {
@@ -2238,5 +2258,19 @@ class MembersController extends CrudController
             )],
             redirect_url: $this->routeparser->urlFor('slash')
         );
+    }
+
+    /**
+     * Parameters of pages opening a member position in a modal
+     *
+     * @return array<string, mixed>
+     */
+    private function getMapsParams(): array
+    {
+        return [
+            'require_maps'  => true,
+            'maps_locate'   => true,
+            'tiles'         => TileProviders::resolve($this->preferences)
+        ];
     }
 }

@@ -128,11 +128,11 @@
     </a>
 {% endmacro %}
 
-{% macro drawDetailedAction(label, title, route, icon) %}
+{% macro drawDetailedAction(label, title, route, icon, extra_class) %}
     <a
         href="{{ url_for(route.name, route.args|default([])) }}"
         title="{{ title }}"
-        class="ui item"
+        class="ui item{% if extra_class %} {{ extra_class }}{% endif %}"
     >
         <i class="{{ icon }} icon" aria-hidden="true"></i>
         {{ label }}
