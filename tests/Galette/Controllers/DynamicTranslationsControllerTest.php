@@ -30,7 +30,7 @@ class DynamicTranslationsControllerTest extends GaletteRoutingTestCase
     private function countStored(string $text): int
     {
         $select = $this->zdb->select(L10n::TABLE);
-        $select->where(['text_orig_sum' => md5($text)]);
+        $select->where(['text_orig_sum' => \Galette\Core\L10n::sum($text)]);
         return $this->zdb->execute($select)->count();
     }
 

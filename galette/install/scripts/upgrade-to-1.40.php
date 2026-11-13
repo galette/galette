@@ -12,6 +12,7 @@ namespace Galette\Updates;
 
 use Galette\Access\Permissions;
 use Galette\Access\Roles;
+use Galette\Core\L10n;
 use Galette\Core\Preferences;
 use Galette\Updater\AbstractUpdater;
 
@@ -38,7 +39,33 @@ class UpgradeTo140 extends AbstractUpdater
      */
     protected function update(): bool
     {
+        $this->rehashL10nKeys();
         return true;
+    }
+
+    /**
+     * Labels translations are stored under a hash of their text: md5 gave way
+     * to a non cryptographic one, as fast and not reported as a weak hash
+     */
+    private function rehashL10nKeys(): void
+    {
+        $select = $this->zdb->select(L10n::TABLE);
+        $select->columns(['text_orig_sum', 'text_locale', 'text_orig']);
+        //read at once: rows are changed while going through them
+        $rows = $this->zdb->execute($select)->toArray();
+
+        foreach ($rows as $row) {
+            $sum = L10n::sum($row['text_orig']);
+            if ($sum === $row['text_orig_sum']) {
+                continue;
+            }
+            $update = $this->zdb->update(L10n::TABLE);
+            $update->set(['text_orig_sum' => $sum])->where([
+                'text_orig_sum' => $row['text_orig_sum'],
+                'text_locale'   => $row['text_locale']
+            ]);
+            $this->zdb->execute($update);
+        }
     }
 
     /**

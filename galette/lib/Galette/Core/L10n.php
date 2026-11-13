@@ -39,6 +39,19 @@ class L10n
     }
 
     /**
+     * Get the key a text is stored with
+     *
+     * A short key for any text; not a security matter, a fast non cryptographic
+     * hash is enough.
+     *
+     * @param string $text Original text
+     */
+    public static function sum(string $text): string
+    {
+        return hash('xxh128', $text);
+    }
+
+    /**
      * Is text translated by Galette itself (gettext)?
      *
      * Such a text will never use dynamic translations.
@@ -106,7 +119,7 @@ class L10n
                 $select->columns(['text_nref'])
                     ->where(
                         [
-                            'text_orig_sum' => md5($text_orig),
+                            'text_orig_sum' => self::sum($text_orig),
                             'text_locale'   => $lang->getLongID()
                         ]
                     );
@@ -143,7 +156,7 @@ class L10n
                     }
                     $values = [
                         'text_orig' => $text_orig,
-                        'text_orig_sum' => md5($text_orig),
+                        'text_orig_sum' => self::sum($text_orig),
                         'text_locale' => $lang->getLongID(),
                         'text_trans' => $text_trans
                     ];
@@ -174,7 +187,7 @@ class L10n
         try {
             $select = $this->zdb->select(self::TABLE);
             $select->columns(['text_locale', 'text_trans'])
-                ->where(['text_orig_sum' => md5($text_orig)]);
+                ->where(['text_orig_sum' => self::sum($text_orig)]);
             $old_translations = [];
             foreach ($this->zdb->execute($select) as $row) {
                 $old_translations[$row->text_locale] = $row->text_trans;
@@ -224,13 +237,13 @@ class L10n
         try {
             $update = $this->zdb->update(self::TABLE);
             $update->set(['text_nref' => new Expression('text_nref-1')])
-                ->where(['text_orig_sum' => md5($text_orig)]);
+                ->where(['text_orig_sum' => self::sum($text_orig)]);
             $this->zdb->execute($update);
 
             //rows may have been added later for new languages, with a lower count
             $select = $this->zdb->select(self::TABLE);
             $select->columns(['text_nref']);
-            $select->where->equalTo('text_orig_sum', md5($text_orig))
+            $select->where->equalTo('text_orig_sum', self::sum($text_orig))
                 ->greaterThan('text_nref', 0);
             if ($this->zdb->execute($select)->count() > 0) {
                 Analog::log(
@@ -243,7 +256,7 @@ class L10n
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
                 [
-                    'text_orig_sum' => md5($text_orig),
+                    'text_orig_sum' => self::sum($text_orig),
                 ]
             );
             $this->zdb->execute($delete);
@@ -272,7 +285,7 @@ class L10n
             $select = $this->zdb->select(self::TABLE);
             $select->columns(['text_nref'])->where(
                 [
-                    'text_orig_sum' => md5($text_orig),
+                    'text_orig_sum' => self::sum($text_orig),
                     'text_locale'   => $text_locale
                 ]
             );
@@ -298,7 +311,7 @@ class L10n
                 $this->zdb->execute($update);
             } else {
                 $values['text_orig'] = $text_orig;
-                $values['text_orig_sum'] = md5($text_orig);
+                $values['text_orig_sum'] = self::sum($text_orig);
                 $values['text_locale'] = $text_locale;
 
                 $insert = $this->zdb->insert(self::TABLE);
@@ -330,7 +343,7 @@ class L10n
                 ['text_trans']
             )->where(
                 [
-                    'text_orig_sum' => md5($text_orig),
+                    'text_orig_sum' => self::sum($text_orig),
                     'text_locale'   => $text_locale
                 ]
             );

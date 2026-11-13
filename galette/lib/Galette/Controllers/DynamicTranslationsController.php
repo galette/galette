@@ -15,6 +15,7 @@ use Galette\Controllers\Attributes\Route;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Analog\Analog;
+use Galette\Core\L10n;
 use Galette\Core\Logs;
 
 /**
@@ -47,7 +48,7 @@ class DynamicTranslationsController extends AbstractController
     /**
      * Dynamic fields translations
      *
-     * @param string $text_orig_sum Original text MD5 sum
+     * @param string $text_orig_sum Original text key, or the text itself
      */
     #[Route(
         name: 'dynamicTranslation',
@@ -77,8 +78,8 @@ class DynamicTranslationsController extends AbstractController
                 //nothing to translate yet
                 $text_trans = [];
                 $text_orig = '';
-            } elseif (isset($orig[$text_orig_sum]) || isset($orig[md5((string)$text_orig_sum)])) {
-                $sum = isset($orig[$text_orig_sum]) ? $text_orig_sum : md5((string)$text_orig_sum);
+            } elseif (isset($orig[$text_orig_sum]) || isset($orig[L10n::sum($text_orig_sum)])) {
+                $sum = isset($orig[$text_orig_sum]) ? $text_orig_sum : L10n::sum($text_orig_sum);
                 $text_exists = true;
                 $text_trans = $this->l10n->getDynamicTranslations($sum);
                 $text_orig = $orig[$sum];
@@ -87,7 +88,7 @@ class DynamicTranslationsController extends AbstractController
                 $is_core = $this->l10n->isCoreString($text_orig);
                 $text_trans = $is_core
                     ? $this->l10n->getCoreTranslations($text_orig)
-                    : $this->l10n->getDynamicTranslations(md5($text_orig));
+                    : $this->l10n->getDynamicTranslations(L10n::sum($text_orig));
             }
 
             if ($requested && $text_orig !== '') {
