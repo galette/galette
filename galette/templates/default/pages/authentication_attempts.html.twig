@@ -47,6 +47,8 @@
                         {{ _T("Password recovery requests from one address") }}
             {% elseif lock.scope == constant('Galette\\Core\\AuthThrottle::SCOPE_SUBSCRIBE_IP') %}
                         {{ _T("Self registrations from one address") }}
+            {% elseif lock.scope == constant('Galette\\Core\\AuthThrottle::SCOPE_CSP_REPORT_IP') %}
+                        {{ _T("Security policy violation reports from one address") }}
             {% else %}
                         {# a scope of its own, from a plugin: its name is all we know of it #}
                         {{ lock.scope|escape }}

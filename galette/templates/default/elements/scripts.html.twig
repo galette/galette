@@ -4,17 +4,17 @@
  # SPDX-License-Identifier: GPL-3.0-or-later
  #}
 
-        <script type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/galette-main.bundle.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}ui/semantic.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/galette-main.bundle.min.js"></script>
     {% set darkcssfile = constant('GALETTE_CACHE_DIR') ~ "dark.css" %}
     {% set darkcss_missing = not file_exists(darkcssfile) %}
     {# The generated stylesheet is served to every visitor: only staff may store it #}
     {% set darkcss_writer = login.isSuperAdmin() or login.isAdmin() or login.isStaff() %}
     {% if login.isDarkModeEnabled() and darkcss_missing %}
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/darkreader.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/darkreader.min.js"></script>
     {% endif %}
 
-        <script type="text/javascript">
+        <script nonce="{{ csp_nonce() }}" type="text/javascript">
             $(function(){
                 function _darkModeLoader() {
                     $('body').append('<div class="ui active page dimmer darkmode-loader"><div class="ui text loader">{{ _T("Generating dark theme...")|e('js') }}</div></div>');
@@ -231,21 +231,21 @@
             });
         </script>
     {% if login.isLogged() and ext_aut is not defined %}
-        <script type="module" src="{{ base_path() }}/assets/js/sortable.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="module" src="{{ base_path() }}/assets/js/sortable.min.js"></script>
     {% endif %}
     {% if require_charts %}
-        <script type="module" src="{{ base_path() }}/assets/js/chartjs.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="module" src="{{ base_path() }}/assets/js/chartjs.min.js"></script>
     {% endif %}
     {% if require_mass %}
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/masschanges.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/masschanges.min.js"></script>
     {% endif %}
     {% if html_editor %}
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/codemirror.js"></script>
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/xml.js"></script>
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/formatting.js"></script>
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/summernote.min.js"></script>
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/lang/summernote-{{ i18n.getWebID() }}.min.js"></script>
-        <script type="text/javascript">
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/codemirror.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/xml.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/formatting.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/summernote.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/lang/summernote-{{ i18n.getWebID() }}.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript">
             function activateHtmlEditor(elt, basic, styletags, insert) {
                 var _styletags = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
                 var _insert = ['link', 'picture'];
@@ -293,15 +293,21 @@
 
                 $('input#html_editor_active').attr('value', '1');
                 $('#activate_editor').remove();
-                $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:deactivateMailingEditor();" id="deactivate_editor">{{ _T("Deactivate HTML editor") }}</a>');
+                $('#summernote_toggler').html('<button type="button" class="ui blue tertiary button" id="deactivate_editor">{{ _T("Deactivate HTML editor") }}</button>');
 
                 activateHtmlEditor($('#mailing_corps'));
             }
             function deactivateMailingEditor() {
                 deactivateHtmlEditor($('#mailing_corps'));
                 $('#deactivate_editor').remove();
-                $('#summernote_toggler').html('<a class="ui blue tertiary button" href="javascript:activateMailingEditor();" id="activate_editor">{{ _T("Activate HTML editor") }}</a>');
+                $('#summernote_toggler').html('<button type="button" class="ui blue tertiary button" id="activate_editor">{{ _T("Activate HTML editor") }}</button>');
             }
+            $(document).on('click', '#activate_editor', function() {
+                activateMailingEditor();
+            });
+            $(document).on('click', '#deactivate_editor', function() {
+                deactivateMailingEditor();
+            });
         {% if html_editor_active is defined and html_editor_active == 1 %}
             $(function(){
                 activateMailingEditor();
@@ -311,5 +317,5 @@
     {% endif %}
     {% set localjstracking = constant('_CURRENT_THEME_PATH') ~ "tracking.js" %}
     {% if file_exists(localjstracking) %}
-        <script type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}tracking.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/{{ constant('GALETTE_THEME') }}tracking.js"></script>
     {% endif %}

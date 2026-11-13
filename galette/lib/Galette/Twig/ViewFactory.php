@@ -72,6 +72,7 @@ class ViewFactory
         $view->addExtension($c->get(GettextExtension::class));
         $view->addExtension($c->get(StaticExtension::class));
         $view->addExtension($c->get(FeatureFlagExtension::class));
+        $view->addExtension($c->get(CspExtension::class));
         $view->addExtension($c->get(AccessControlExtension::class));
         $view->addExtension($c->get(NavigationExtension::class));
         $view->addExtension(new StringExtension());

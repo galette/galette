@@ -37,7 +37,7 @@
         <link rel="icon" type="image/png" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}images/favicon.png" />
         <link rel="apple-touch-icon" type="image/png" href="{{ base_path() }}/{{ constant('GALETTE_THEME') }}images/favicon.png">
 
-        <script type="text/javascript" src="{{ base_path() }}/assets/js/jquery.min.js"></script>
+        <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/jquery.min.js"></script>
 
 {# If some additional headers should be added from plugins, we load the relevant template file
    We have to use a template file, so Twig will do its work (like replacing variables). #}

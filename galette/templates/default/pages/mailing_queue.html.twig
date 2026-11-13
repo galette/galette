@@ -70,7 +70,7 @@
 {% endblock %}
 
 {% block javascripts %}
-        <script type="text/javascript">
+        <script nonce="{{ csp_nonce() }}" type="text/javascript">
             $(function() {
                 var mailingId = {{ mailing_id is null ? 'null' : mailing_id }};
                 var processUrl = '{{ process_url }}';

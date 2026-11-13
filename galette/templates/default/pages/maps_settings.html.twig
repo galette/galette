@@ -142,7 +142,7 @@
     </div>
 </div>
 {# HEX flags keep a closing script tag and friends harmless inside the script element #}
-<script type="application/json" id="maps-preview-config">{{ (preview|merge({
+<script nonce="{{ csp_nonce() }}" type="application/json" id="maps-preview-config">{{ (preview|merge({
     icon: base_path() ~ "/assets/images/maps/marker-galette.png",
     strings: {
         no_town: _T("No town found."),
@@ -154,7 +154,7 @@
 
 {% block javascripts %}
     {% include 'elements/maps/libraries.html.twig' with {lazy_gl: true} %}
-    <script type="text/javascript">
+    <script nonce="{{ csp_nonce() }}" type="text/javascript">
         $(function () {
             const custom = $('#maps_custom_tiles');
             $('#pref_maps_tiles_provider').on('change', function () {

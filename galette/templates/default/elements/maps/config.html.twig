@@ -35,4 +35,4 @@
     }
 }|merge(page_config ?? {}) %}
 {# HEX flags keep a closing script tag and friends harmless inside the script element #}
-<script type="application/json" id="maps-config">{{ maps_config|json_encode(constant('JSON_HEX_TAG') b-or constant('JSON_HEX_AMP') b-or constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT'))|raw }}</script>
+<script nonce="{{ csp_nonce() }}" type="application/json" id="maps-config">{{ maps_config|json_encode(constant('JSON_HEX_TAG') b-or constant('JSON_HEX_AMP') b-or constant('JSON_HEX_APOS') b-or constant('JSON_HEX_QUOT'))|raw }}</script>
