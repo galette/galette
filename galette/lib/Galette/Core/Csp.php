@@ -15,6 +15,8 @@ use Galette\Maps\TileProviders;
 use Throwable;
 
 use function Safe\preg_match;
+use function Safe\preg_replace;
+use function Safe\preg_replace_callback;
 use function Safe\preg_split;
 
 /**
@@ -296,7 +298,7 @@ class Csp
         $sources = is_string($value) ? self::parseExternalSources($value) : null;
         if ($sources === null) {
             Analog::log(
-                sprintf('Invalid external sources "%1$s", ignored.', print_r($value, return: true)),
+                sprintf('Invalid external sources "%1$s", ignored.', self::redact($value)),
                 Analog::WARNING
             );
             $sources = [];
@@ -350,7 +352,7 @@ class Csp
                     Analog::log(
                         sprintf(
                             'Invalid CSP source "%1$s" for directive "%2$s" from %3$s, ignored.',
-                            print_r($source, return: true),
+                            self::redact($source),
                             $directive,
                             $plugin
                         ),
@@ -386,7 +388,7 @@ class Csp
         $sources = is_string($value) ? self::parseFrameAncestors($value) : null;
         if ($sources === null) {
             Analog::log(
-                sprintf('Invalid frame ancestors "%1$s", falling back to default.', print_r($value, return: true)),
+                sprintf('Invalid frame ancestors "%1$s", falling back to default.', self::redact($value)),
                 Analog::WARNING
             );
             $sources = $default;
@@ -415,7 +417,7 @@ class Csp
         $enforced = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         if ($enforced === null) {
             Analog::log(
-                sprintf('Invalid CSP enforcement "%1$s", policy is report-only.', print_r($value, return: true)),
+                sprintf('Invalid CSP enforcement "%1$s", policy is report-only.', self::redact($value)),
                 Analog::WARNING
             );
             $enforced = false;
@@ -508,12 +510,38 @@ class Csp
         $origin = self::getOrigin((string)$tiles['url']);
         if ($origin === null) {
             Analog::log(
-                sprintf('Invalid maps tiles URL "%1$s", not allowed.', $tiles['url']),
+                sprintf('Invalid maps tiles URL "%1$s", not allowed.', self::redact($tiles['url'])),
                 Analog::WARNING
             );
             return;
         }
         $this->addSource($tiles['vector'] ? 'connect-src' : 'img-src', $origin);
+    }
+
+    /**
+     * Make a value safe to log
+     *
+     * URLs may carry credentials or tokens: user information, query strings
+     * and fragments are dropped, path segments looking like a token are
+     * masked, as the hash of a password recovery link.
+     *
+     * @param mixed $value Value, a string may hold several URLs
+     */
+    public static function redact(mixed $value): string
+    {
+        if (!is_string($value)) {
+            return print_r($value, return: true);
+        }
+
+        return preg_replace_callback(
+            '/\S+/',
+            fn(array $url): string => preg_replace(
+                ['~^([a-z][a-z0-9+.-]*://)[^/@?#]*@~i', '/[?#].*$/s', '~(?<=/)[A-Za-z0-9_=+-]{20,}(?=/|$)~'],
+                ['$1', '', '…'],
+                $url[0]
+            ),
+            $value
+        );
     }
 
     /**

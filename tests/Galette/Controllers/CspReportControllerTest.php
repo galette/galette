@@ -163,6 +163,15 @@ class CspReportControllerTest extends GaletteTestCase
         $this->assertSame('', $reports[0]['line']);
         //query strings and fragments may carry tokens
         $this->assertSame('https://galette.example.org/members', $reports[0]['document']);
+
+        //as well as credentials, and paths of links sent by mail
+        $token = str_repeat('0123456789abcdef', 4);
+        $reports = $controller->parse($this->legacyReport([
+            'document-uri' => 'https://galette.example.org/password-recovery/' . $token,
+            'blocked-uri' => 'https://user:SECRET@evil.example.org/collect',
+        ]));
+        $this->assertSame('https://galette.example.org/password-recovery/…', $reports[0]['document']);
+        $this->assertSame('https://evil.example.org/collect', $reports[0]['blocked']);
     }
 
     /**

@@ -440,6 +440,53 @@ class CspTest extends BaseGaletteTestCase
     }
 
     /**
+     * Values to redact provider
+     *
+     * @return array<string, array{mixed, string}>
+     */
+    public static function redactProvider(): array
+    {
+        return [
+            'keyword' => ["'unsafe-inline'", "'unsafe-inline'"],
+            'origin' => ['https://stats.example.org', 'https://stats.example.org'],
+            'query' => ['https://stats.example.org/api?token=SECRET#top', 'https://stats.example.org/api'],
+            'credentials' => ['https://user:SECRET@stats.example.org/', 'https://stats.example.org/'],
+            'token in path' => [
+                'https://galette.example.org/password-recovery/' . str_repeat('0123456789abcdef', 4),
+                'https://galette.example.org/password-recovery/…'
+            ],
+            'token then path' => [
+                'https://galette.example.org/document/download/' . str_repeat('a1', 16) . '/file',
+                'https://galette.example.org/document/download/…/file'
+            ],
+            'short segments kept' => ['https://galette.example.org/member/edit/42', 'https://galette.example.org/member/edit/42'],
+            'several' => ["'self' https://a.example.org?k=SECRET https://b.example.org", "'self' https://a.example.org https://b.example.org"],
+            'not a string' => [42, '42'],
+        ];
+    }
+
+    /**
+     * Test values are redacted before being logged
+     *
+     * @param mixed  $value    Value
+     * @param string $expected Expected redacted value
+     */
+    #[DataProvider('redactProvider')]
+    public function testRedact(mixed $value, string $expected): void
+    {
+        $this->assertSame($expected, Csp::redact($value));
+    }
+
+    /**
+     * Test rejected preferences do not leak tokens to the logs
+     */
+    public function testRejectedValuesAreRedacted(): void
+    {
+        $this->assertSame([], $this->csp(external_sources: 'https://stats.example.org/api?token=SECRET')->getExternalSources());
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Invalid external sources "https://stats.example.org/api", ignored.');
+    }
+
+    /**
      * Test nonce is stable for a request, and different for another one
      */
     public function testNonce(): void

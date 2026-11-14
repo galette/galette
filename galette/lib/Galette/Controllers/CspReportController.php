@@ -13,6 +13,7 @@ namespace Galette\Controllers;
 use Analog\Analog;
 use Galette\Controllers\Attributes\Route;
 use Galette\Core\AuthThrottle;
+use Galette\Core\Csp;
 use Galette\Core\History;
 use Galette\Core\Preferences;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -205,23 +206,13 @@ class CspReportController
         foreach ($report as $key => $value) {
             $value = is_scalar($value) ? (string)$value : '';
             if (in_array($key, ['document', 'blocked', 'source'], strict: true)) {
-                $value = $this->stripQuery($value);
+                $value = Csp::redact($value);
             }
             //no control characters: a forged report must not be able to fake log lines
             $value = preg_replace('/[\x00-\x1F\x7F]+/u', ' ', $value);
             $normalized[$key] = mb_substr($value, 0, self::MAX_FIELD);
         }
         return $normalized;
-    }
-
-    /**
-     * Drop query string and fragment of an URL: they may carry tokens
-     *
-     * @param string $url URL
-     */
-    private function stripQuery(string $url): string
-    {
-        return preg_replace('/[?#].*$/s', '', $url);
     }
 
     /**
