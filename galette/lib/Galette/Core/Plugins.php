@@ -28,6 +28,7 @@ use Throwable;
 use function Safe\dir;
 use function Safe\file_put_contents;
 use function Safe\preg_match;
+use function Safe\preg_replace;
 use function Safe\realpath;
 
 /**
@@ -517,7 +518,7 @@ class Plugins
             'priority'      => $definition->priority ?? 1000,
             'route'         => $definition->route,
             'dbversion'     => $definition->dbver,
-            'repository'    => $this->checkRepository($name, $definition->repository)
+            'repository'    => $this->checkRepository($name, $definition->version, $definition->repository)
         ];
 
         $route = $definition->route;
@@ -571,11 +572,12 @@ class Plugins
      * Get repository to check for new releases, falling back to the official plugins organization
      *
      * @param string  $name       Module name
+     * @param string  $version    Module version
      * @param ?string $repository Repository declared by the module
      */
-    private function checkRepository(string $name, ?string $repository): string
+    private function checkRepository(string $name, string $version, ?string $repository): string
     {
-        $default = 'galette-plugins/' . $this->id;
+        $default = 'galette-plugins/' . $this->getDefaultRepositoryName($version);
         if ($repository === null) {
             return $default;
         }
@@ -594,6 +596,24 @@ class Plugins
         }
 
         return $repository;
+    }
+
+    /**
+     * Get default repository name from plugin directory
+     *
+     * Official archives extract to galette-plugin-<name>-<version> (or galette-plugin-<name>-dev
+     * for nightly builds), while repositories are named plugin-<name>.
+     *
+     * @param string $version Module version
+     */
+    private function getDefaultRepositoryName(string $version): string
+    {
+        $name = preg_replace('/^galette-(?=plugin-)/', '', $this->id);
+        $suffixes = ['dev'];
+        if ($version !== '') {
+            $suffixes[] = 'v?' . preg_quote($version, '/');
+        }
+        return preg_replace('/(?<=.)-(?:' . implode('|', $suffixes) . ')$/', '', $name);
     }
 
     /**
