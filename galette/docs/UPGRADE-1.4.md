@@ -314,12 +314,13 @@ foreach ($plugins->getProviders(MenuProviderInterface::class) as $plugin) {
 
 ## Content Security Policy
 
-Galette sends a [Content Security Policy](https://developer.mozilla.org/docs/Web/HTTP/Guides/CSP)
-with its pages. For now, only framing, plugins (`object-src`) and `base-uri`
-are enforced; the complete policy is sent as `Content-Security-Policy-Report-Only`,
-so violations show up in the browser console and in Galette logs without
-blocking anything. It will be enforced in a later release: plugins must be
-ready for it.
+Galette sends and enforces a [Content Security Policy](https://developer.mozilla.org/docs/Web/HTTP/Guides/CSP)
+with its pages: a script that does not follow the rules below is not run.
+Violations show up in the browser console and in Galette logs.
+
+Administrators can turn `pref_csp_enforce` off from the advanced configuration
+while a page is broken: framing, plugins (`object-src`) and `base-uri` remain
+enforced, the complete policy is then sent as `Content-Security-Policy-Report-Only`.
 
 ### Scripts
 
@@ -381,16 +382,13 @@ policy for now.
 
 ### Checking a plugin
 
-Open the browser console on the plugin pages: each violation is reported as
-`[Report Only]`. Galette logs them too, as warnings:
+Open the browser console on the plugin pages: each violation is reported
+there, and the blocked script or request is the cause of a broken page.
+Galette logs them too, as warnings:
 
 ```
-CSP violation (report only): frame-src blocked https://js.stripe.com/v3/ on https://galette.example.org/plugins/stripe/form
+CSP violation: frame-src blocked https://js.stripe.com/v3/ on https://galette.example.org/plugins/stripe/form
 ```
-
-To see the plugin as it will behave once the policy is enforced, turn
-`pref_csp_enforce` on, from the advanced configuration page (or define
-`GALETTE_CSP_ENFORCE` in `behavior.inc.php`): violations are then blocked.
 
 ## PDF
 

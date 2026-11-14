@@ -25,17 +25,16 @@ use function Safe\preg_split;
  * Holds the per-request nonce that inline and external scripts must carry,
  * and builds the policies sent by the SecurityHeaders middleware.
  *
- * Two policies are sent:
- * - an enforced one, limited to directives that cannot break pages
- *   (framing, plugins, base URI); sites allowed to frame Galette come from
- *   the pref_csp_frame_ancestors preference;
- * - a report-only one, with the complete policy, so violations show up in
- *   browsers consoles without blocking anything; external sites come from
- *   plugins and from the pref_csp_external_sources preference; servers of maps
- *   backgrounds and address search are allowed as well.
+ * The complete policy is enforced; sites allowed to frame Galette come from
+ * the pref_csp_frame_ancestors preference, external sites from plugins and
+ * from the pref_csp_external_sources preference; servers of maps backgrounds
+ * and address search are allowed as well.
  *
- * Once the pref_csp_enforce preference is on, the complete policy alone is
- * sent, and enforced.
+ * Once the pref_csp_enforce preference is turned off, two policies are sent:
+ * - an enforced one, limited to directives that cannot break pages
+ *   (framing, plugins, base URI);
+ * - a report-only one, with the complete policy, so violations show up in
+ *   browsers consoles without blocking anything.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */

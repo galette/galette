@@ -87,45 +87,58 @@ class SecurityHeadersTest extends GaletteTestCase
     #[DataProvider('htmlTypesProvider')]
     public function testHtmlResponse(?string $type): void
     {
-        $csp = $this->container->get(Csp::class);
+        $csp = new Csp($this->preferences, $this->plugins);
+        $this->assertTrue($csp->isEnforced());
         $response = $this->process($csp, $type);
 
         $this->assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'));
         $this->assertSame('same-origin', $response->getHeaderLine('Referrer-Policy'));
-        $this->assertSame($csp->getEnforcedPolicy(), $response->getHeaderLine('Content-Security-Policy'));
-        $this->assertSame(
-            $csp->getFullPolicy(),
-            $response->getHeaderLine('Content-Security-Policy-Report-Only')
+        $this->assertSame($csp->getFullPolicy(), $response->getHeaderLine('Content-Security-Policy'));
+        $this->assertStringContainsString(
+            "'nonce-" . $csp->getNonce() . "'",
+            $response->getHeaderLine('Content-Security-Policy')
         );
+        $this->assertFalse($response->hasHeader('Content-Security-Policy-Report-Only'));
 
         //violations are reported to Galette
         $uri = $this->routeparser->urlFor('cspReport');
         $this->assertSame('csp-endpoint="' . $uri . '"', $response->getHeaderLine('Reporting-Endpoints'));
-        foreach (['Content-Security-Policy', 'Content-Security-Policy-Report-Only'] as $header) {
-            $this->assertStringEndsWith(
-                '; report-uri ' . $uri . '; report-to csp-endpoint',
-                $response->getHeaderLine($header)
-            );
-        }
+        $this->assertStringEndsWith(
+            '; report-uri ' . $uri . '; report-to csp-endpoint',
+            $response->getHeaderLine('Content-Security-Policy')
+        );
     }
 
     /**
-     * Test the complete policy alone is sent once enforced
+     * Test the complete policy is report-only once enforcement is turned off
      */
-    public function testEnforcedResponse(): void
+    public function testReportOnlyResponse(): void
     {
         $this->logSuperAdmin();
         try {
-            $this->assertTrue($this->preferences->setValue('pref_csp_enforce', value: true, login: $this->login));
+            $this->assertTrue($this->preferences->setValue('pref_csp_enforce', value: false, login: $this->login));
             $csp = new Csp($this->preferences, $this->plugins);
             $response = $this->process($csp, 'text/html');
 
-            $this->assertSame($csp->getFullPolicy(), $response->getHeaderLine('Content-Security-Policy'));
-            $this->assertStringContainsString("'nonce-" . $csp->getNonce() . "'", $response->getHeaderLine('Content-Security-Policy'));
-            $this->assertFalse($response->hasHeader('Content-Security-Policy-Report-Only'));
-            $this->assertTrue($response->hasHeader('Reporting-Endpoints'));
+            $this->assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'));
+            $this->assertSame('same-origin', $response->getHeaderLine('Referrer-Policy'));
+            $this->assertSame($csp->getEnforcedPolicy(), $response->getHeaderLine('Content-Security-Policy'));
+            $this->assertSame(
+                $csp->getFullPolicy(),
+                $response->getHeaderLine('Content-Security-Policy-Report-Only')
+            );
+
+            //violations are reported to Galette
+            $uri = $this->routeparser->urlFor('cspReport');
+            $this->assertSame('csp-endpoint="' . $uri . '"', $response->getHeaderLine('Reporting-Endpoints'));
+            foreach (['Content-Security-Policy', 'Content-Security-Policy-Report-Only'] as $header) {
+                $this->assertStringEndsWith(
+                    '; report-uri ' . $uri . '; report-to csp-endpoint',
+                    $response->getHeaderLine($header)
+                );
+            }
         } finally {
-            $this->preferences->setValue('pref_csp_enforce', value: false, login: $this->login);
+            $this->preferences->setValue('pref_csp_enforce', value: true, login: $this->login);
         }
     }
 

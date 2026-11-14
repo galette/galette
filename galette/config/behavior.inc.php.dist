@@ -140,9 +140,9 @@
 
 /**
  * Enforce the complete Content Security Policy: scripts without the nonce,
- * from core or plugins, are not run anymore. When off, violations are only
- * reported.
+ * from core or plugins, are not run. When off, violations are only reported,
+ * and injected scripts run: only turn it off while fixing a broken page.
  *
  * Now stored as pref_csp_enforce.
  */
-//define('GALETTE_CSP_ENFORCE', false);
+//define('GALETTE_CSP_ENFORCE', true);

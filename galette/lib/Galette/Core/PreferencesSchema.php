@@ -927,12 +927,11 @@ final class PreferencesSchema
                 'constant' => 'GALETTE_CSP_EXTERNAL_SOURCES',
                 'advanced' => true,
             ],
-            /* Enforce the complete Content Security Policy, instead of only
-               reporting violations; a script without the nonce, from core or
-               a plugin, is then not run */
+            /* Enforce the complete Content Security Policy; when off, violations
+               are only reported, which leaves injected scripts free to run */
             'pref_csp_enforce' => [
                 'type' => self::TYPE_BOOL,
-                'default' => false,
+                'default' => true,
                 'constant' => 'GALETTE_CSP_ENFORCE',
                 'advanced' => true,
             ],
