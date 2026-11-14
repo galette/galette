@@ -14,6 +14,7 @@
 import { type Locator, type Page } from '@playwright/test';
 import { test, expect } from '../fixtures/auth.fixture';
 import { AclHelper } from '../helpers/acl';
+import { expectNoViolation, format, listenViolations, violations } from '../fixtures/csp.fixture';
 
 //his town is not a real one: no town is proposed when the map opens
 const MEMBER_NAME = 'PENDRAGON Arthur';
@@ -164,5 +165,33 @@ test.describe.serial('Member position', () => {
     await mapModal(page);
     await expect(page.locator('.maps-modal')).toHaveCount(1);
     expect(requests).toBe(1);
+  });
+
+  test('maps break no Content Security Policy', async ({ loggedInAs }) => {
+    const page = await loggedInAs('admin');
+    await listenViolations(page);
+    //background tiles and address search are not what is tested: no network for them
+    await page.route(/^https:\/\/[^/]*tile[^/]*\//, route => route.fulfill({ status: 204 }));
+    await page.route(/^https:\/\/nominatim\.openstreetmap\.org\//, route => route.fulfill({ json: [] }));
+
+    await expectNoViolation(page, ['/public/maps', '/maps/settings']);
+
+    //address search, from browsers
+    await page.goto('/public/maps');
+    const search = page.locator('.leaflet-control-geocoder input');
+    await search.fill('Rennes');
+    await Promise.all([
+      page.waitForRequest(/^https:\/\/nominatim\.openstreetmap\.org\//),
+      search.press('Enter'),
+    ]);
+    let found = await violations(page);
+    expect(found, format(found)).toEqual([]);
+
+    //position modal of the member form
+    await page.goto(`/member/edit/${memberId}`);
+    await page.locator('.maps-member-none a.maps-localize').click();
+    await mapModal(page);
+    found = await violations(page);
+    expect(found, format(found)).toEqual([]);
   });
 });

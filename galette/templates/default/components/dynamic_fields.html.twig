@@ -212,7 +212,7 @@
         </div>
         {% endif %}
         {% if not masschange %}
-            <script type="text/javascript">
+            <script nonce="{{ csp_nonce() }}" type="text/javascript">
                 $(function() {
                     {# only used to (re)initialize calendars on added occurrences #}
                     {% include "elements/js/calendar.js.twig" with {selector: '.repeat_no_calendar'} %}

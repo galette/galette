@@ -300,7 +300,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
+    <script nonce="{{ csp_nonce() }}" type="text/javascript">
         {% include "elements/js/removal.js.twig" with {
             single_action: "true"
         } %}

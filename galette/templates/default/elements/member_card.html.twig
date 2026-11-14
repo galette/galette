@@ -97,7 +97,7 @@
     </div>
 {% endfor %}
 
-<script type="text/javascript">
+<script nonce="{{ csp_nonce() }}" type="text/javascript">
     $('.qrcode').on('click', function(e) {
         e.preventDefault();
         $('#' + this.dataset.modal).modal({context: 'body'}).modal('show');
