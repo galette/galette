@@ -96,6 +96,62 @@ class Galette
     }
 
     /**
+     * Accounts offered on the login page of a demonstration instance
+     *
+     * Read from GALETTE_DEMO_ACCOUNTS, only in demonstration mode: the
+     * super administrator password is only stored hashed, the instance
+     * owner is the only one who can give it.
+     *
+     * @return array<int, array{login: string, password: string, label: string}>
+     */
+    public static function getDemoAccounts(): array
+    {
+        if (!static::isDemo() || !defined('GALETTE_DEMO_ACCOUNTS')) {
+            return [];
+        }
+
+        return static::filterDemoAccounts(constant('GALETTE_DEMO_ACCOUNTS'));
+    }
+
+    /**
+     * Keep well-formed demonstration accounts only
+     *
+     * Each one needs a login and a password; its label falls back to the login.
+     *
+     * @param mixed $accounts Declared accounts
+     *
+     * @return array<int, array{login: string, password: string, label: string}>
+     */
+    public static function filterDemoAccounts(mixed $accounts): array
+    {
+        if (!is_array($accounts)) {
+            return [];
+        }
+
+        $filtered = [];
+        foreach ($accounts as $account) {
+            if (
+                !is_array($account)
+                || !is_string($account['login'] ?? null)
+                || trim($account['login']) === ''
+                || !is_string($account['password'] ?? null)
+                || $account['password'] === ''
+            ) {
+                continue;
+            }
+
+            $label = $account['label'] ?? null;
+            $filtered[] = [
+                'login' => $account['login'],
+                'password' => $account['password'],
+                'label' => is_string($label) && trim($label) !== '' ? $label : $account['login'],
+            ];
+        }
+
+        return $filtered;
+    }
+
+    /**
      * Is maintenance mode enabled
      */
     public static function isUnderMaintenance(): bool

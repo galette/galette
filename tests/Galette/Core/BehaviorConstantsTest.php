@@ -130,6 +130,25 @@ class BehaviorConstantsTest extends GaletteTestCase
     }
 
     /**
+     * Demonstration accounts are listed by their logins, never their passwords
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testDemoAccountsHidePasswords(): void
+    {
+        define('GALETTE_DEMO_ACCOUNTS', [
+            ['login' => 'admin', 'password' => 'admin-secret', 'label' => 'Super administrator'],
+            ['login' => 'member', 'password' => 'member-secret'],
+            ['password' => 'orphan-secret'],
+        ]);
+
+        $listed = array_column(BehaviorConstants::getStatus(), column_key: null, index_key: 'name');
+        $this->assertTrue($listed['GALETTE_DEMO_ACCOUNTS']['defined']);
+        $this->assertSame('admin, member', $listed['GALETTE_DEMO_ACCOUNTS']['value']);
+        $this->assertStringNotContainsString('secret', $listed['GALETTE_DEMO_ACCOUNTS']['value']);
+    }
+
+    /**
      * Every constant Galette reads is documented in the shipped example
      *
      * Covers the deprecated ones too, which the page only lists once declared

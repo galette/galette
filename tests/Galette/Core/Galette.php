@@ -159,6 +159,48 @@ class Galette extends GaletteTestCase
     }
 
     /**
+     * Only well-formed demonstration accounts are kept
+     */
+    public function testFilterDemoAccounts(): void
+    {
+        $this->assertSame([], \Galette\Core\Galette::filterDemoAccounts(accounts: null));
+        $this->assertSame([], \Galette\Core\Galette::filterDemoAccounts('admin'));
+
+        $this->assertSame(
+            [
+                ['login' => 'admin', 'password' => 'secret', 'label' => 'Super administrator'],
+                ['login' => 'member', 'password' => 'secret', 'label' => 'member'],
+                ['login' => 'staff', 'password' => 'secret', 'label' => 'staff'],
+            ],
+            \Galette\Core\Galette::filterDemoAccounts([
+                ['login' => 'admin', 'password' => 'secret', 'label' => 'Super administrator'],
+                ['login' => 'member', 'password' => 'secret'],
+                ['login' => 'staff', 'password' => 'secret', 'label' => ' '],
+                ['login' => 'nopassword'],
+                ['login' => 'emptypassword', 'password' => ''],
+                ['login' => ' ', 'password' => 'secret'],
+                ['password' => 'secret'],
+                ['login' => 42, 'password' => 'secret'],
+                'admin',
+            ])
+        );
+    }
+
+    /**
+     * Declared accounts are not offered out of demonstration mode
+     */
+    #[RunInSeparateProcess]
+    #[PreserveGlobalState(false)]
+    public function testDemoAccountsOnlyInDemoMode(): void
+    {
+        $this->assertSame([], \Galette\Core\Galette::getDemoAccounts());
+
+        define('GALETTE_DEMO_ACCOUNTS', [['login' => 'admin', 'password' => 'admin']]);
+        $this->assertFalse(\Galette\Core\Galette::isDemo());
+        $this->assertSame([], \Galette\Core\Galette::getDemoAccounts());
+    }
+
+    /**
      * Test jsonDecode
      */
     public function testJsonDecode(): void
