@@ -31,6 +31,11 @@ Plugins and development
 - Deprecated container aliases, LightSlimApp, GalettePlugin static contents fallbacks, the adaptative cards class and unused methods have been removed
 - Plugins can store geographic positions of their own objects
 
+1.3.3 -> 1.3.4
+
+- New plugin releases were not checked for plugins extracted from the official archives, whose directory was not renamed
+- Plugins information page links to the official plugins website
+
 1.3.2 -> 1.3.3
 
 - Mass change checkboxes stayed checked when a field was set back to its initial value
