@@ -185,7 +185,7 @@ class Menus extends GaletteTestCase
             $this->assertSame(sprintf(_T('Show %1$s on map'), $member_one->sname), $actions[0]->title);
             $this->assertSame('maps-localize', $actions[0]->extraClass);
         } finally {
-            $this->zdb->execute($this->zdb->delete(\Galette\Maps\Coordinates::TABLE));
+            $this->zdb->execute($this->zdb->delete(\Galette\Maps\Positions::TABLE));
         }
     }
 }

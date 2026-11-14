@@ -348,3 +348,23 @@ TCPDF `@` prefixed sources are not supported. Tables are not mirrored for
 right-to-left languages, `Pdf::getHTMLTable()` builds a table that is.
 
 The `fullcard` plugin is deprecated and has not been ported.
+
+## Geographic positions
+
+The maps plugin is now part of Galette: it is disabled, and its members
+positions are taken over by the upgrade script.
+
+Positions are stored for any kind of object, given by a type and an
+identifier, with `Galette\Maps\Positions`; members positions use the `member`
+type, through `Galette\Maps\Coordinates`. A plugin can store the positions of
+its own objects, under a type of its own prefixed with its name, such as
+`events_event`:
+
+```php
+$positions = new \Galette\Maps\Positions($zdb);
+$positions->set('events_event', $event->getId(), $latitude, $longitude);
+$position = $positions->get('events_event', $event->getId()); //null, or latitude and longitude
+```
+
+Nothing removes a position when its object is removed: the plugin calls
+``$positions->remove('events_event', $ids)`` when it removes its objects.

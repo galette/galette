@@ -35,6 +35,7 @@ use Galette\Core\GaletteMail;
 use Galette\Core\Preferences;
 use Galette\Maps\Center;
 use Galette\Maps\Coordinates;
+use Galette\Maps\Positions;
 use Galette\Maps\TileProviders;
 
 use function Safe\file_get_contents;
@@ -196,9 +197,7 @@ try {
                 break;
 
             case 'remove_position':
-                $delete = $zdb->delete(Coordinates::TABLE);
-                $delete->where([Coordinates::PK => (int)($input['member'] ?? 0)]);
-                $zdb->execute($delete);
+                (new Positions($zdb))->remove(Coordinates::TYPE, (int)($input['member'] ?? 0));
                 echo json_encode(['success' => true, 'message' => 'Position removed']);
                 break;
 
