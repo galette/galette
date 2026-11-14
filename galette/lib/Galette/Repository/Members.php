@@ -43,6 +43,8 @@ use Galette\Core\Picture;
 use Galette\Entity\Group;
 use Galette\Entity\Status;
 use Galette\Core\Db;
+use Galette\Maps\Coordinates;
+use Galette\Maps\Positions;
 use Safe\DateTime;
 use ArrayObject;
 
@@ -430,6 +432,9 @@ class Members
             $del_qry->where(['field_form' => 'adh']);
             $del_qry->where->in('item_id', $list);
             $zdb->execute($del_qry);
+
+            //delete geographic positions
+            (new Positions($zdb))->remove(Coordinates::TYPE, $list);
 
             //delete members
             $del_qry = $zdb->delete(self::TABLE);

@@ -29,6 +29,7 @@ Plugins and development
 - Plugins routes can be declared from their controllers attributes; _routes.php becomes optional
 - Galette is configured from SlimApp and declarative container definitions; menus, dashboards, actions and news come from navigation services
 - Deprecated container aliases, LightSlimApp, GalettePlugin static contents fallbacks, the adaptative cards class and unused methods have been removed
+- Plugins can store geographic positions of their own objects
 
 1.3.2 -> 1.3.3
 

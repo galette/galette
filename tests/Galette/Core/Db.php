@@ -539,7 +539,7 @@ class Db extends BaseGaletteTestCase
             'galette_roles_permissions',
             'galette_members_roles',
             'galette_known_permissions',
-            'galette_maps_coordinates'
+            'galette_positions'
         ];
 
         $tables = $this->zdb->getTables();
@@ -577,7 +577,28 @@ class Db extends BaseGaletteTestCase
     public function testConvertToUtf(): void
     {
         $db = new \Galette\Core\Db();
-        $db->convertToUTF();
+        if ($db->isPostgres()) {
+            //encoding cannot be changed: nothing is done but the log entry
+            $db->convertToUTF();
+        } else {
+            //converting Galette tables would drop collations of their own columns for next tests
+            $table = PREFIX_DB . 'utf_conversion';
+            $db->db->query(
+                'CREATE TABLE ' . $table . ' (label varchar(20)) DEFAULT CHARSET=latin1',
+                \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE
+            );
+            try {
+                $db->convertToUTF($table);
+                $collation = $db->db->query(
+                    'SELECT TABLE_COLLATION FROM information_schema.TABLES'
+                    . ' WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ?',
+                    [$table]
+                )->current();
+                $this->assertSame('utf8mb3_unicode_ci', str_replace('utf8_', 'utf8mb3_', $collation['TABLE_COLLATION']));
+            } finally {
+                $db->db->query('DROP TABLE ' . $table, \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
+            }
+        }
         $this->expectLogEntry(
             \Analog\Analog::WARNING,
             'Upgrading from 0.6 will soon be discontinued.'

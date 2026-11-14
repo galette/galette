@@ -355,8 +355,9 @@ class SeedFixtures extends GaletteTestCase
         $this->runSeed();
 
         $member_ids = $this->getFixtureMemberIds();
-        $select = $this->zdb->select(Coordinates::TABLE);
-        $select->where->in(Coordinates::PK, $member_ids);
+        $select = $this->zdb->select(\Galette\Maps\Positions::TABLE);
+        $select->where([\Galette\Maps\Positions::TYPE => Coordinates::TYPE]);
+        $select->where->in(\Galette\Maps\Positions::ID, $member_ids);
         $rows = $this->zdb->execute($select)->toArray();
 
         $this->assertCount(count($member_ids) - intdiv(count($member_ids), 3), $rows);
@@ -399,8 +400,9 @@ class SeedFixtures extends GaletteTestCase
         $select = $this->zdb->select(MailingHistory::TABLE);
         $select->where->in('mailing_sender', $member_ids);
         $this->assertSame(0, $this->zdb->execute($select)->count());
-        $select = $this->zdb->select(Coordinates::TABLE);
-        $select->where->in(Coordinates::PK, $member_ids);
+        $select = $this->zdb->select(\Galette\Maps\Positions::TABLE);
+        $select->where([\Galette\Maps\Positions::TYPE => Coordinates::TYPE]);
+        $select->where->in(\Galette\Maps\Positions::ID, $member_ids);
         $this->assertSame(0, $this->zdb->execute($select)->count());
 
         // Verify fixture roles are gone, system roles are kept

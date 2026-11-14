@@ -31,6 +31,7 @@ use Galette\Entity\Group;
 use Galette\Entity\Title;
 use Galette\Entity\Transaction;
 use Galette\Maps\Coordinates;
+use Galette\Maps\Positions;
 use Laminas\Db\Adapter\Driver\StatementInterface;
 use Safe\DateTime;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -246,9 +247,7 @@ class SeedFixtures extends AbstractCommand
             $this->zdb->execute($delete);
 
             // Delete positions
-            $delete = $this->zdb->delete(Coordinates::TABLE);
-            $delete->where->in(Coordinates::PK, $member_ids);
-            $this->zdb->execute($delete);
+            (new Positions($this->zdb))->remove(Coordinates::TYPE, $member_ids);
 
             // Delete pictures
             $delete = $this->zdb->delete(Picture::TABLE);

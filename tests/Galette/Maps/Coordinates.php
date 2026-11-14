@@ -28,7 +28,7 @@ class Coordinates extends GaletteTestCase
      */
     public function tearDown(): void
     {
-        $delete = $this->zdb->delete(\Galette\Maps\Coordinates::TABLE);
+        $delete = $this->zdb->delete(\Galette\Maps\Positions::TABLE);
         $this->zdb->execute($delete);
         parent::tearDown();
     }
@@ -150,27 +150,6 @@ class Coordinates extends GaletteTestCase
         $this->setVisibility(id_adh: $member_two->id, active: false, public: true, uptodate: true);
         $this->assertSame([], $this->listedIds());
         $this->login->logout();
-    }
-
-    /**
-     * Storing coordinates of a member that does not exist raises
-     */
-    public function testSetMissingMember(): void
-    {
-        $coords = new \Galette\Maps\Coordinates($this->zdb, $this->login);
-        //a failing query aborts the whole transaction on PostgreSQL
-        $this->zdb->db->query('SAVEPOINT maps_set', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        try {
-            $coords->set(999999, 50.36, 3.47);
-            $this->fail('An exception was expected');
-        } catch (\Throwable $e) {
-            $this->assertNotInstanceOf(\PHPUnit\Framework\AssertionFailedError::class, $e);
-        } finally {
-            $this->zdb->db->query('ROLLBACK TO SAVEPOINT maps_set', \Laminas\Db\Adapter\Adapter::QUERY_MODE_EXECUTE);
-        }
-        $this->assertNull($coords->get(999999));
-        //logged by Db
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Query error: INSERT INTO');
     }
 
     /**

@@ -10,12 +10,11 @@ declare(strict_types=1);
 
 namespace Galette\Tests\Updates;
 
-use Galette\Core\Install;
 use Galette\Core\Preferences;
+use Galette\Maps\Coordinates;
+use Galette\Maps\Positions;
 use Galette\Tests\GaletteTestCase;
 use Laminas\Db\Adapter\Adapter;
-
-use function Safe\file_get_contents;
 
 /**
  * 1.40 upgrade script tests: maps plugin positions are taken over
@@ -27,10 +26,11 @@ use function Safe\file_get_contents;
  */
 class MapsPositionsTakeOver extends GaletteTestCase
 {
-    //tables are dropped and created, which implicitly commits transactions on MySQL
+    //the plugin table is created and dropped, which implicitly commits transactions on MySQL
     protected bool $db_transactions = false;
 
-    private const string TABLE = 'maps_coordinates';
+    /** Members positions table of the maps plugin */
+    private const string PLUGIN_TABLE = 'maps_coordinates';
 
     /**
      * Set up tests
@@ -40,6 +40,7 @@ class MapsPositionsTakeOver extends GaletteTestCase
         parent::setUp();
         $this->seed = 20261015;
         include_once GALETTE_BASE_PATH . '/install/scripts/upgrade-to-1.40.php';
+        $this->zdb->execute($this->zdb->delete(Positions::TABLE));
         $this->deleteEnabledPreference();
     }
 
@@ -49,33 +50,13 @@ class MapsPositionsTakeOver extends GaletteTestCase
     public function tearDown(): void
     {
         if (isset($this->zdb)) {
-            //restore the table as the installer creates it, even if test has failed
-            $this->zdb->drop(self::TABLE . '_old', maymiss: true);
-            $this->zdb->drop(self::TABLE, maymiss: true);
-            $this->createCoreTable();
+            //even if test has failed
+            $this->zdb->drop(self::PLUGIN_TABLE, maymiss: true);
+            $this->zdb->execute($this->zdb->delete(Positions::TABLE));
             $this->deleteEnabledPreference();
             $this->cleanMembers();
         }
         parent::tearDown();
-    }
-
-    /**
-     * Create positions table as the 1.40 SQL script of current database engine does
-     */
-    private function createCoreTable(): void
-    {
-        $script = file_get_contents(
-            GALETTE_BASE_PATH . '/install/scripts/sql/upgrade-to-1.40-' . $this->zdb->type_db . '.sql'
-        );
-        $start = strpos($script, '-- table for members geographic positions');
-        $this->assertNotFalse($start);
-        $end = strpos($script, ';', $start);
-        $this->assertNotFalse($end);
-
-        $install = new Install();
-        $install->setTablesPrefix(PREFIX_DB);
-        $install->reinitReport();
-        $this->assertTrue($install->executeSql($this->zdb, substr($script, $start, $end - $start + 1)));
     }
 
     /**
@@ -100,15 +81,45 @@ class MapsPositionsTakeOver extends GaletteTestCase
     }
 
     /**
-     * Run maps steps of the upgrade script, around the table creation
+     * Create a plugin table, as old plugin versions did: other column types, and no foreign key to keep orphans
+     *
+     * @param array<int, array{string, string}> $positions Latitude and longitude, by member id
+     */
+    private function createPluginTable(array $positions): void
+    {
+        $table = PREFIX_DB . self::PLUGIN_TABLE;
+        $this->zdb->db->query(
+            $this->zdb->isPostgres()
+                ? 'CREATE TABLE ' . $table . ' (id_adh integer NOT NULL, latitude decimal(10,8) NOT NULL,'
+                    . ' longitude decimal(11,8) NOT NULL, PRIMARY KEY (id_adh))'
+                : 'CREATE TABLE ' . $table . ' (id_adh int(10) unsigned NOT NULL, latitude varchar(20) NOT NULL,'
+                    . ' longitude varchar(20) NOT NULL, PRIMARY KEY (id_adh))',
+            Adapter::QUERY_MODE_EXECUTE
+        );
+        foreach ($positions as $id => $coords) {
+            $insert = $this->zdb->insert(self::PLUGIN_TABLE);
+            $insert->values(['id_adh' => $id, 'latitude' => $coords[0], 'longitude' => $coords[1]]);
+            $this->zdb->execute($insert);
+        }
+    }
+
+    /**
+     * Get stored positions
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function getPositions(): array
+    {
+        return $this->zdb->execute($this->zdb->select(Positions::TABLE))->toArray();
+    }
+
+    /**
+     * Run maps step of the upgrade script
      */
     private function runUpgrade(): \Galette\Updates\UpgradeTo140
     {
         $updater = new \Galette\Updates\UpgradeTo140();
         (new \ReflectionProperty($updater, 'zdb'))->setValue($updater, $this->zdb);
-
-        $this->assertTrue((new \ReflectionMethod($updater, 'preUpdate'))->invoke($updater));
-        $this->createCoreTable();
         (new \ReflectionMethod($updater, 'takeOverMapsPositions'))->invoke($updater);
 
         $this->assertFalse($updater->hasErrors());
@@ -121,73 +132,55 @@ class MapsPositionsTakeOver extends GaletteTestCase
     public function testTakeOverPluginPositions(): void
     {
         $member = $this->getMemberOne();
-
-        //an old plugin table: other column types, and no foreign key to keep orphans
-        $this->zdb->drop(self::TABLE);
-        $table = PREFIX_DB . self::TABLE;
-        $this->zdb->db->query(
-            $this->zdb->isPostgres()
-                ? 'CREATE TABLE ' . $table . ' (id_adh integer NOT NULL, latitude decimal(10,8) NOT NULL,'
-                    . ' longitude decimal(11,8) NOT NULL, PRIMARY KEY (id_adh))'
-                : 'CREATE TABLE ' . $table . ' (id_adh int(10) unsigned NOT NULL, latitude varchar(20) NOT NULL,'
-                    . ' longitude varchar(20) NOT NULL, PRIMARY KEY (id_adh))',
-            Adapter::QUERY_MODE_EXECUTE
-        );
-        foreach ([$member->id => ['48.856614', '2.352222'], 999999 => ['45.764043', '4.835659']] as $id => $coords) {
-            $insert = $this->zdb->insert(self::TABLE);
-            $insert->values(['id_adh' => $id, 'latitude' => $coords[0], 'longitude' => $coords[1]]);
-            $this->zdb->execute($insert);
-        }
+        $this->createPluginTable([$member->id => ['48.856614', '2.352222'], 999999 => ['45.764043', '4.835659']]);
 
         $updater = $this->runUpgrade();
 
-        $rows = $this->zdb->execute($this->zdb->select(self::TABLE))->toArray();
+        //positions of members that no longer exist are left behind
+        $rows = $this->getPositions();
         $this->assertCount(1, $rows);
-        $this->assertSame($member->id, (int)$rows[0]['id_adh']);
+        $this->assertSame(Coordinates::TYPE, $rows[0][Positions::TYPE]);
+        $this->assertSame($member->id, (int)$rows[0][Positions::ID]);
         $this->assertSame(48.856614, (float)$rows[0]['latitude']);
         $this->assertSame(2.352222, (float)$rows[0]['longitude']);
 
-        $this->assertFalse($this->zdb->tableExists(self::TABLE . '_old'));
+        $this->assertFalse($this->zdb->tableExists(self::PLUGIN_TABLE));
         $this->assertSame('1', $this->getEnabledPreference());
         $this->assertSame(
             'Members positions from the maps plugin have been taken over, the plugin can be removed.',
             $updater->getReport()[0]['message']
         );
-
-        //table is the core one again: positions follow members removal
-        $delete = $this->zdb->delete(\Galette\Entity\Adherent::TABLE);
-        $delete->where([\Galette\Entity\Adherent::PK => $member->id]);
-        $this->zdb->execute($delete);
-        $this->assertSame(0, $this->zdb->execute($this->zdb->select(self::TABLE))->count());
     }
 
     /**
-     * Test positions kept aside by an interrupted upgrade are taken over when it is run again
+     * Test positions are taken over again when an interrupted upgrade is run again
      */
     public function testRetryAfterInterruptedUpgrade(): void
     {
         $member = $this->getMemberOne();
-
-        //what an upgrade stopped after the table creation leaves: plugin rows
-        //aside, and a new empty table
-        $this->zdb->drop(self::TABLE . '_old', maymiss: true);
-        $this->zdb->db->query(
-            'CREATE TABLE ' . PREFIX_DB . self::TABLE . '_old (id_adh integer NOT NULL,'
-                . ' latitude decimal(10,8) NOT NULL, longitude decimal(11,8) NOT NULL)',
-            Adapter::QUERY_MODE_EXECUTE
+        $this->createPluginTable([$member->id => ['48.856614', '2.352222']]);
+        //what an upgrade stopped before removing the plugin table leaves
+        (new Positions($this->zdb))->set(
+            type: Coordinates::TYPE,
+            id: $member->id,
+            latitude: 48.856614,
+            longitude: 2.352222
         );
-        $insert = $this->zdb->insert(self::TABLE . '_old');
-        $insert->values(['id_adh' => $member->id, 'latitude' => '48.856614', 'longitude' => '2.352222']);
-        $this->zdb->execute($insert);
-        $this->assertSame(0, $this->zdb->execute($this->zdb->select(self::TABLE))->count());
+        //positions of other objects are not concerned
+        (new Positions($this->zdb))->set(
+            type: 'plugin_object',
+            id: $member->id,
+            latitude: 1.0,
+            longitude: 2.0
+        );
 
         $this->runUpgrade();
 
-        $rows = $this->zdb->execute($this->zdb->select(self::TABLE))->toArray();
-        $this->assertCount(1, $rows);
-        $this->assertSame($member->id, (int)$rows[0]['id_adh']);
-        $this->assertSame(48.856614, (float)$rows[0]['latitude']);
-        $this->assertFalse($this->zdb->tableExists(self::TABLE . '_old'));
+        $rows = $this->getPositions();
+        $this->assertCount(2, $rows);
+        $this->assertSame(['48.856614', '2.352222'], array_values((new Positions($this->zdb))->get(Coordinates::TYPE, $member->id)));
+        $this->assertNotNull((new Positions($this->zdb))->get('plugin_object', $member->id));
+        $this->assertFalse($this->zdb->tableExists(self::PLUGIN_TABLE));
         $this->assertSame('1', $this->getEnabledPreference());
     }
 
@@ -197,14 +190,10 @@ class MapsPositionsTakeOver extends GaletteTestCase
     public function testTakeOverBeforeRoles(): void
     {
         $member = $this->getMemberOne();
-        $insert = $this->zdb->insert(self::TABLE);
-        $insert->values(['id_adh' => $member->id, 'latitude' => '48.856614', 'longitude' => '2.352222']);
-        $this->zdb->execute($insert);
+        $this->createPluginTable([$member->id => ['48.856614', '2.352222']]);
 
         $updater = new \Galette\Updates\UpgradeTo140();
         (new \ReflectionProperty($updater, 'zdb'))->setValue($updater, $this->zdb);
-        $this->assertTrue((new \ReflectionMethod($updater, 'preUpdate'))->invoke($updater));
-        $this->createCoreTable();
 
         //roles cannot be stored: their table is missing
         $roles = PREFIX_DB . \Galette\Access\Roles::TABLE;
@@ -227,22 +216,18 @@ class MapsPositionsTakeOver extends GaletteTestCase
         $this->expectLogEntry(\Analog\Analog::ERROR, 'Query error: DELETE FROM');
         $this->expectLogEntry(\Analog\Analog::WARNING, 'Unable to initialize system roles');
 
-        $rows = $this->zdb->execute($this->zdb->select(self::TABLE))->toArray();
-        $this->assertCount(1, $rows);
-        $this->assertSame($member->id, (int)$rows[0]['id_adh']);
-        $this->assertFalse($this->zdb->tableExists(self::TABLE . '_old'));
+        $this->assertNotNull((new Positions($this->zdb))->get(Coordinates::TYPE, $member->id));
+        $this->assertFalse($this->zdb->tableExists(self::PLUGIN_TABLE));
     }
 
     /**
-     * Test the table is created when the plugin was not installed, maps staying disabled
+     * Test nothing happens when the plugin was not installed, maps staying disabled
      */
     public function testWithoutPlugin(): void
     {
-        $this->zdb->drop(self::TABLE);
-
         $updater = $this->runUpgrade();
 
-        $this->assertTrue($this->zdb->tableExists(self::TABLE));
+        $this->assertSame([], $this->getPositions());
         $this->assertNull($this->getEnabledPreference());
         $this->assertSame([], $updater->getReport());
     }

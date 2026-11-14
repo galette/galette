@@ -70,7 +70,7 @@ class MapsController extends GaletteRoutingTestCase
         $this->preferences->pref_bool_publicpages = true;
         $this->preferences->pref_publicpages_visibility_generic = \Galette\Core\Preferences::PUBLIC_PAGES_VISIBILITY_RESTRICTED;
         $this->preferences->pref_publicpages_visibility_maps = \Galette\Enums\PublicPageVisibility::Inherit->value;
-        $this->zdb->execute($this->zdb->delete(Coordinates::TABLE));
+        $this->zdb->execute($this->zdb->delete(\Galette\Maps\Positions::TABLE));
         parent::tearDown();
     }
 

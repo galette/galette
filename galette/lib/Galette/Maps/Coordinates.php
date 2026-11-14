@@ -20,6 +20,8 @@ use Laminas\Db\Sql\Where;
 /**
  * Members GPS coordinates
  *
+ * Stored along with other objects positions, see Positions.
+ *
  * Errors are not caught here: callers know what the user was trying to do,
  * and log it along with the database message.
  *
@@ -29,8 +31,10 @@ class Coordinates
 {
     use AccessControlled;
 
-    public const string TABLE = 'maps_coordinates';
-    public const string PK = 'id_adh';
+    /** Positions type of members */
+    public const string TYPE = 'member';
+
+    private readonly Positions $positions;
 
     /**
      * Constructor
@@ -42,6 +46,7 @@ class Coordinates
         private readonly Db $zdb,
         private readonly Login $login
     ) {
+        $this->positions = new Positions($zdb);
     }
 
     /**
@@ -53,18 +58,7 @@ class Coordinates
      */
     public function get(int $id): ?array
     {
-        $select = $this->zdb->select($this->getTableName());
-        $select->columns(['latitude', 'longitude'])->where([self::PK => $id]);
-        $row = $this->zdb->execute($select)->current();
-
-        if ($row === null) {
-            return null;
-        }
-
-        return [
-            'latitude'  => (string)$row['latitude'],
-            'longitude' => (string)$row['longitude']
-        ];
+        return $this->positions->get(self::TYPE, $id);
     }
 
     /**
@@ -74,13 +68,7 @@ class Coordinates
      */
     public function getLocatedIds(): array
     {
-        $select = $this->zdb->select($this->getTableName());
-        $select->columns([self::PK]);
-        $ids = [];
-        foreach ($this->zdb->execute($select) as $row) {
-            $ids[(int)$row[self::PK]] = true;
-        }
-        return $ids;
+        return $this->positions->getIds(self::TYPE);
     }
 
     /**
@@ -98,16 +86,17 @@ class Coordinates
      */
     public function listVisible(?float $step = null): array
     {
-        $select = $this->zdb->select($this->getTableName(), 'c');
+        $select = $this->zdb->select(Positions::TABLE, 'c');
         $select->join(
             [
                 'a' => PREFIX_DB . Adherent::TABLE
             ],
-            'a.' . self::PK . '=' . 'c.' . self::PK,
+            'a.' . Adherent::PK . '=' . 'c.' . Positions::ID,
             //only what the map displays, and what access is checked on
             ['nom_adh', 'prenom_adh', 'pseudo_adh', 'societe_adh', 'parent_id']
         );
         $where = $select->where;
+        $where->equalTo('c.' . Positions::TYPE, self::TYPE);
         $where->equalTo('a.activite_adh', right: true);
 
         $scope = $this->login->isLogged() ? $this->getGroupScope('member:read', $this->login) : [];
@@ -115,7 +104,7 @@ class Coordinates
 
         $res = [];
         foreach ($this->zdb->execute($select) as $r) {
-            $id_adh = (int)$r[self::PK];
+            $id_adh = (int)$r[Positions::ID];
             $exact = $scope === null
                 || isset($readable[$id_adh])
                 || $this->isOwnOrChild($id_adh, (int)$r['parent_id']);
@@ -194,21 +183,7 @@ class Coordinates
      */
     public function set(int $id, float $latitude, float $longitude): void
     {
-        $values = [
-            'latitude'  => $latitude,
-            'longitude' => $longitude
-        ];
-
-        if ($this->get($id) === null) {
-            $insert = $this->zdb->insert($this->getTableName());
-            $insert->values([self::PK => $id] + $values);
-            $this->zdb->execute($insert);
-        } else {
-            //no row is affected when the position does not change: not an error
-            $update = $this->zdb->update($this->getTableName());
-            $update->set($values)->where([self::PK => $id]);
-            $this->zdb->execute($update);
-        }
+        $this->positions->set(type: self::TYPE, id: $id, latitude: $latitude, longitude: $longitude);
     }
 
     /**
@@ -218,16 +193,6 @@ class Coordinates
      */
     public function remove(int $id): void
     {
-        $delete = $this->zdb->delete($this->getTableName());
-        $delete->where([self::PK => $id]);
-        $this->zdb->execute($delete);
-    }
-
-    /**
-     * Get table's name
-     */
-    protected function getTableName(): string
-    {
-        return self::TABLE;
+        $this->positions->remove(self::TYPE, $id);
     }
 }
