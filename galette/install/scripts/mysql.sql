@@ -500,14 +500,14 @@ CREATE TABLE galette_auth_attempts (
   UNIQUE KEY galette_auth_attempts_scope (scope, identifier)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
--- table for members geographic positions
-DROP TABLE IF EXISTS galette_maps_coordinates;
-CREATE TABLE galette_maps_coordinates (
-  id_adh int unsigned NOT NULL,
+-- table for geographic positions, of members and of plugins objects
+DROP TABLE IF EXISTS galette_positions;
+CREATE TABLE galette_positions (
+  object_type varchar(50) NOT NULL,
+  object_id int unsigned NOT NULL,
   latitude decimal(9,6) NOT NULL,
   longitude decimal(9,6) NOT NULL,
-  PRIMARY KEY (id_adh),
-  FOREIGN KEY (id_adh) REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (object_type, object_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- table for database version

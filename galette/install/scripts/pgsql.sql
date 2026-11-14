@@ -470,13 +470,14 @@ CREATE TABLE galette_auth_attempts (
   UNIQUE (scope, identifier)
 );
 
--- table for members geographic positions
-DROP TABLE IF EXISTS galette_maps_coordinates CASCADE;
-CREATE TABLE galette_maps_coordinates (
-  id_adh integer REFERENCES galette_adherents (id_adh) ON DELETE CASCADE ON UPDATE CASCADE,
+-- table for geographic positions, of members and of plugins objects
+DROP TABLE IF EXISTS galette_positions CASCADE;
+CREATE TABLE galette_positions (
+  object_type character varying(50) NOT NULL,
+  object_id integer NOT NULL,
   latitude decimal(9,6) NOT NULL,
   longitude decimal(9,6) NOT NULL,
-  PRIMARY KEY (id_adh)
+  PRIMARY KEY (object_type, object_id)
 );
 
 -- table for database version
