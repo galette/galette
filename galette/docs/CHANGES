@@ -8,14 +8,17 @@ New features
 - Access is managed through roles made of permissions, instead of a few hardcoded access levels: roles are managed from the configuration menu, granted globally or for some groups only, and given or taken back from the member card and form
 - Roles granted for some groups never reach beyond these groups; administrator rights, reminders and staff statuses stay global
 - A debug bar is available to the super administrator in debug mode, when development dependencies are installed
+- Members maps are part of Galette, replacing the maps plugin: members set their position, shown next to their card and on a public map; positions precision, background map and maps center are chosen from the maps settings, with a preview
 
 Improvements
 
 - Plugins with an invalid definition file are disabled and reported as such, instead of stopping Galette or being reported as incompatible
+- PDF are generated with tc-lib-pdf instead of TCPDF; default PDF models use standard HTML
 
 Removals and requirements
 
-- Database version is now 1.400; new tables have been added for roles and permissions
+- Database version is now 1.400
+- The maps plugin cannot be enabled anymore; members positions it stored are taken over on update
 - Rights settings from the preferences - members creation, and groups managers rights on members, groups, mailings, exports, contributions and transactions - become system roles on update, and are removed from the preferences
 
 Plugins and development
