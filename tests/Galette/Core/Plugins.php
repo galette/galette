@@ -125,17 +125,50 @@ class Plugins extends GaletteTestCase
         $id = new \ReflectionProperty($this->plugins, 'id');
         $id->setValue($this->plugins, 'plugin-renamed');
         $check = new \ReflectionMethod($this->plugins, 'checkRepository');
-        $this->assertSame('galette-plugins/plugin-renamed', $check->invoke($this->plugins, 'Renamed', null));
-        $this->assertSame('someone/plugin', $check->invoke($this->plugins, 'Renamed', 'someone/plugin'));
+        $this->assertSame('galette-plugins/plugin-renamed', $check->invoke($this->plugins, 'Renamed', '1.0', null));
+        $this->assertSame('someone/plugin', $check->invoke($this->plugins, 'Renamed', '1.0', 'someone/plugin'));
         $this->assertSame(
             'galette-plugins/plugin-renamed',
-            $check->invoke($this->plugins, 'Renamed', 'https://github.com/someone/plugin')
+            $check->invoke($this->plugins, 'Renamed', '1.0', 'https://github.com/someone/plugin')
         );
         $this->expectLogEntry(
             \Analog\Analog::WARNING,
             'Plugin "Renamed" declares an invalid repository "https://github.com/someone/plugin", '
             . '"galette-plugins/plugin-renamed" will be used instead.'
         );
+    }
+
+    /**
+     * Test default repository from directory names official archives extract to
+     *
+     * @return array<string, array{string, string, string}>
+     */
+    public static function defaultRepositoryProvider(): array
+    {
+        return [
+            'renamed directory' => ['plugin-events', '2.3.0', 'galette-plugins/plugin-events'],
+            'release archive' => ['galette-plugin-events-2.3.0', '2.3.0', 'galette-plugins/plugin-events'],
+            'prefixed version' => ['plugin-events-v2.3.0', '2.3.0', 'galette-plugins/plugin-events'],
+            'nightly archive' => ['galette-plugin-events-dev', '2.4.0-dev', 'galette-plugins/plugin-events'],
+            'other version' => ['galette-plugin-events-2.3.0', '2.3.1', 'galette-plugins/plugin-events-2.3.0'],
+            'not a plugin prefix' => ['galette-events', '2.3.0', 'galette-plugins/galette-events'],
+        ];
+    }
+
+    /**
+     * Test default repository from plugin directory
+     *
+     * @param string $directory Plugin directory
+     * @param string $version   Plugin version
+     * @param string $expected  Expected repository
+     */
+    #[DataProvider('defaultRepositoryProvider')]
+    public function testDefaultRepository(string $directory, string $version, string $expected): void
+    {
+        $id = new \ReflectionProperty($this->plugins, 'id');
+        $id->setValue($this->plugins, $directory);
+        $check = new \ReflectionMethod($this->plugins, 'checkRepository');
+        $this->assertSame($expected, $check->invoke($this->plugins, 'Events', $version, null));
     }
 
     /**
