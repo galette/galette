@@ -543,15 +543,15 @@ class CspTest extends BaseGaletteTestCase
     }
 
     /**
-     * Test policy is report-only when enforcement cannot be read
+     * Test policy is enforced when enforcement value is invalid, report-only when it cannot be read
      */
     public function testEnforceFallback(): void
     {
-        foreach (['yes please', [true]] as $value) {
-            $this->assertFalse($this->csp(enforce: $value)->isEnforced());
+        foreach (['yes please', [false]] as $value) {
+            $this->assertTrue($this->csp(enforce: $value)->isEnforced());
             $this->expectLogEntry(
                 \Analog\Analog::WARNING,
-                sprintf('Invalid CSP enforcement "%1$s", policy is report-only.', print_r($value, return: true))
+                sprintf('Invalid CSP enforcement "%1$s", policy is enforced.', print_r($value, return: true))
             );
         }
 

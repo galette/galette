@@ -416,10 +416,10 @@ class Csp
         $enforced = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         if ($enforced === null) {
             Analog::log(
-                sprintf('Invalid CSP enforcement "%1$s", policy is report-only.', self::redact($value)),
+                sprintf('Invalid CSP enforcement "%1$s", policy is enforced.', self::redact($value)),
                 Analog::WARNING
             );
-            $enforced = false;
+            $enforced = true;
         }
 
         return $this->enforced = $enforced;
