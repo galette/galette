@@ -30,6 +30,8 @@ final class BehaviorConstants
     public const string TYPE_VALUE = 'value';
     /** Value is an array */
     public const string TYPE_LIST = 'list';
+    /** Value is a list of accounts, only their logins are shown */
+    public const string TYPE_ACCOUNTS = 'accounts';
 
     /**
      * Get every supported constant, with what it is currently set to
@@ -131,6 +133,10 @@ final class BehaviorConstants
                 self::TYPE_LIST,
                 _T("Features to activate, among those declared in the feature flags registry. Takes precedence over the features turned on from this page."),
             ],
+            'GALETTE_DEMO_ACCOUNTS' => [
+                self::TYPE_ACCOUNTS,
+                _T("Accounts offered on the login page in DEMO mode, each with its login, password and label."),
+            ],
         ];
     }
 
@@ -157,6 +163,11 @@ final class BehaviorConstants
      */
     private static function stringify(mixed $value, string $type): string
     {
+        if ($type === self::TYPE_ACCOUNTS) {
+            //passwords have nothing to do on this page
+            return implode(', ', array_column(Galette::filterDemoAccounts($value), 'login'));
+        }
+
         if ($type === self::TYPE_LIST) {
             return is_array($value) ? implode(', ', $value) : (string)$value;
         }

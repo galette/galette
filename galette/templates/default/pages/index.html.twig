@@ -44,4 +44,37 @@
                     </div>
     {% endif %}
                 </form>
+    {% set demo_accounts = callstatic('\\Galette\\Core\\Galette', 'getDemoAccounts') %}
+    {% if demo_accounts is not empty %}
+                <div class="ui segment demo-accounts">
+                    <h2 class="ui small header">
+                        <i class="gamepad icon" aria-hidden="true"></i>
+                        <div class="content">
+                            {{ _T("Demonstration accounts") }}
+                            <div class="sub header">{{ _T("Log in with one of them to discover Galette.") }}</div>
+                        </div>
+                    </h2>
+                    <div class="ui middle aligned divided relaxed list">
+        {% for account in demo_accounts %}
+                        <div class="item">
+                            <form action="{{ url_for('dologin') }}" method="post" class="right floated content">
+                                <input type="hidden" name="login" value="{{ account.login }}"/>
+                                <input type="hidden" name="password" value="{{ account.password }}"/>
+                                <input type="hidden" name="ident" value="1"/>
+                                <button type="submit" class="ui small primary button" aria-label="{{ _T("Log in as %s")|replace({'%s': account.label}) }}">
+                                    <i class="sign in alternate icon" aria-hidden="true"></i>
+                                    {{ _T("Login") }}
+                                </button>
+                            </form>
+                            <div class="content">
+                                <div class="header">{{ account.label }}</div>
+                                <div class="description">
+                                    <code>{{ account.login }}</code> / <code>{{ account.password }}</code>
+                                </div>
+                            </div>
+                        </div>
+        {% endfor %}
+                    </div>
+                </div>
+    {% endif %}
 {% endblock %}

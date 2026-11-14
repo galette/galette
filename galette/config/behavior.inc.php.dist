@@ -73,6 +73,16 @@
  */
 //define('GALETTE_FEATURE_FLAGS', ['acls', 'oauth2']);
 
+/**
+ * Accounts offered on the login page, in DEMO mode only
+ *
+ * Each one gets a button logging in with it. The label is optional, and
+ * falls back to the login.
+ */
+//define('GALETTE_DEMO_ACCOUNTS', [
+//    ['login' => 'admin', 'password' => 'admin', 'label' => 'Super administrator'],
+//]);
+
 /*
  * Settings moved to the advanced configuration page
  *
