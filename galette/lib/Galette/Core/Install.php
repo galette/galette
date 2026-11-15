@@ -24,6 +24,7 @@ use function Safe\fopen;
 use function Safe\fwrite;
 use function Safe\opendir;
 use function Safe\preg_match;
+use function Safe\preg_split;
 use function Safe\realpath;
 use function Safe\unlink;
 
@@ -728,7 +729,19 @@ class Install
                     'res'       => false
                 ];
 
+                //errors on DROP or RENAME are not fatal
+                $tolerated = in_array(
+                    strtolower(preg_split('/\s+/', $query, 2)[0]),
+                    ['drop', 'rename'],
+                    strict: true
+                );
+                //PostgreSQL aborts the transaction on error, unless it is rolled back to a savepoint
+                $savepoint = $tolerated && $zdb->isPostgres() && $zdb->inTransaction();
+
                 try {
+                    if ($savepoint) {
+                        $zdb->db->query('SAVEPOINT galette_sql_query', Adapter::QUERY_MODE_EXECUTE);
+                    }
                     if ($zdb->willMysqlImplicitCommit($query)) {
                         //commit will be done, whether I like it or not...
                         $zdb->commit();
@@ -738,22 +751,26 @@ class Install
                     } else {
                         $zdb->db->query($query, Adapter::QUERY_MODE_EXECUTE);
                     }
+                    if ($savepoint) {
+                        $zdb->db->query('RELEASE SAVEPOINT galette_sql_query', Adapter::QUERY_MODE_EXECUTE);
+                    }
                     $ret['res'] = true;
                 } catch (Throwable $e) {
                     $log_lvl = Analog::WARNING;
-                    //if error are on drop, DROP, rename or RENAME we can continue
-                    $parts = explode(' ', $query, 1);
-                    if (
-                        (strcasecmp(trim($parts[0]), 'drop') != 0)
-                        && (strcasecmp(trim($parts[0]), 'rename') != 0)
-                    ) {
+                    if ($tolerated) {
+                        if ($savepoint) {
+                            $zdb->db->query('ROLLBACK TO SAVEPOINT galette_sql_query', Adapter::QUERY_MODE_EXECUTE);
+                        } elseif (!$zdb->inTransaction()) {
+                            //failed before the transaction has been restarted
+                            $zdb->beginTransaction();
+                        }
+                        $ret['res'] = true;
+                    } else {
                         $log_lvl = Analog::ERROR;
                         $ret['debug'] = $e->getMessage();
                         $ret['query'] = $query;
                         $ret['res'] = false;
                         $fatal_error = true;
-                    } else {
-                        $ret['res'] = true;
                     }
                     Logs::exception($e, 'Error executing query: ' . $query, $log_lvl);
                 }
