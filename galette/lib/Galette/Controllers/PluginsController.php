@@ -205,6 +205,7 @@ class PluginsController extends AbstractController
             $install = new PluginInstall();
         }
         $install->reinitReport();
+        $install->setPlugin($this->plugins, $plugid, $this->i18n);
 
         $post = $request->getParsedBody();
 
@@ -282,7 +283,9 @@ class PluginsController extends AbstractController
                 $install->setDbType(TYPE_DB, $error_detected);
                 $install->setTablesPrefix(PREFIX_DB);
                 $install->setInstalledVersion($post['previous_version'] ?? null);
-                $install->executeScripts($this->zdb, $plugin['root']);
+                if ($install->executeScripts($this->zdb, $plugin['root'])) {
+                    $install->initPlugin($this->plugins, $this->zdb);
+                }
                 break;
             case 'i5':
             case 'u5':

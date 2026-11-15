@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Console\Command\Plugins;
 
+use Galette\Core\I18n;
 use Galette\Core\Plugins;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -30,6 +31,18 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class PluginInstallDb extends AbstractPlugins
 {
     /**
+     * Constructor
+     *
+     * @param string  $basepath Base path to Galette installation
+     * @param Plugins $plugins  Plugins manager
+     * @param I18n    $i18n     Current language, plugin default data is created with
+     */
+    public function __construct(string $basepath, Plugins $plugins, private readonly I18n $i18n)
+    {
+        parent::__construct($basepath, $plugins);
+    }
+
+    /**
      * Command execution
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -44,6 +57,7 @@ class PluginInstallDb extends AbstractPlugins
         $selected = $selected === [self::ALL] ? $this->getRelevantPlugins($io) : $this->getSelectedModules($io, $selected);
 
         $errors = [];
+        $failed = [];
 
         foreach ($selected as $module_id => $module) {
             $install = new \Galette\Core\PluginInstall();
@@ -59,6 +73,8 @@ class PluginInstallDb extends AbstractPlugins
                 ->setTablesPrefix(PREFIX_DB)
             ;
 
+            $install->setPlugin($this->plugins, $module_id, $this->i18n);
+
             $disabled_cause = $this->plugins->getDisabledCause($module_id);
 
             if ($disabled_cause === Plugins::DISABLED_NOT_UP2DATE) {
@@ -67,18 +83,31 @@ class PluginInstallDb extends AbstractPlugins
                     ->setMode($install::UPDATE)
                     ->setInstalledVersion($installed_version)
                 ;
-                $install->executeScripts($zdb, $module['root']);
+                if (!$install->executeScripts($zdb, $module['root'])) {
+                    $failed[] = $module_id;
+                    $io->error(sprintf('Unable to upgrade database for plugin "%s"', $module_id));
+                    continue;
+                }
                 $install->setPluginInstalled($zdb, $this->plugins, $module_id);
                 $io->success(sprintf('Database for plugin "%s" upgraded', $module_id));
             } else {
                 $install->setMode($install::INSTALL);
-                $install->executeScripts($zdb, $module['root']);
+                if (!$install->executeScripts($zdb, $module['root'])) {
+                    $failed[] = $module_id;
+                    $io->error(sprintf('Unable to install database for plugin "%s"', $module_id));
+                    continue;
+                }
+                if (!$install->initPlugin($this->plugins, $zdb)) {
+                    //tables are there: the plugin is usable, without its default data
+                    $failed[] = $module_id;
+                    $io->warning(sprintf('Unable to create default data for plugin "%s"', $module_id));
+                }
                 $install->setPluginInstalled($zdb, $this->plugins, $module_id);
                 $io->success(sprintf('Database for plugin "%s" installed', $module_id));
             }
         }
 
-        return Command::SUCCESS;
+        return $failed === [] ? Command::SUCCESS : Command::FAILURE;
     }
 
     /**

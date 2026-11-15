@@ -312,6 +312,22 @@ foreach ($plugins->getProviders(MenuProviderInterface::class) as $plugin) {
 }
 ```
 
+## Database scripts
+
+`scripts/upgrade-to-<version>.php` update classes now work for plugins
+(they used to overwrite Galette database version). The class is
+`<PluginNamespace>\Updates\UpgradeTo<version without dots>`, and its SQL
+scripts live in the `scripts/sql/` directory of the plugin.
+
+A plugin can create default data on install by implementing
+`Galette\Core\Plugins\InstallInitInterface`.
+
+`Install::updateDbVersion()` and `Install::getSqlScriptsPath()` are new;
+`AbstractUpdater::setSqlScripts()` no longer checks the scripts exist: a
+missing one makes the update fail when it runs.
+
+See [Database](@ref plugins_database).
+
 ## PDF
 
 TCPDF is replaced by [tc-lib-pdf](https://github.com/tecnickcom/tc-lib-pdf).

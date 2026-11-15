@@ -38,6 +38,8 @@ abstract class AbstractUpdater
      * @var array<string,string>
      */
     protected ?array $sql_scripts = null;
+    /** Version of the SQL scripts to run, if any */
+    private ?string $sql_version = null;
     protected ?string $db_version = null;
     /**
      * Supported SQL engines
@@ -97,6 +99,11 @@ abstract class AbstractUpdater
     {
         $this->zdb = $zdb;
         $this->installer = $installer;
+
+        if ($this->sql_version !== null) {
+            //scripts are looked for next to the update class: Galette, or a plugin
+            $this->loadSqlScripts($installer->getSqlScriptsPath());
+        }
 
         $res = $this->preUpdate();
         if ($res !== true) {
@@ -180,54 +187,60 @@ abstract class AbstractUpdater
     /**
      * Set SQL files instructions for all supported databases
      *
+     * Scripts are named upgrade-to-<version>-<engine>.sql, and live in the scripts/sql
+     * directory, next to the update class.
+     *
      * @param string $version Version for scripts
      */
     protected function setSqlScripts(string $version): bool
     {
-        $scripts = $this->getSqlScripts($version);
-        if (
-            count($scripts) === count($this->engines)
-            && count(array_diff(array_keys($scripts), $this->engines)) == 0
-        ) {
-            $checked = false;
-            foreach ($scripts as $file) {
-                if (file_exists($file)) {
-                    $checked = true;
-                } else {
-                    $checked = false;
-                    break;
-                }
-            }
+        $this->sql_version = $version;
+        return true;
+    }
 
-            if ($checked === true) {
-                $this->sql_scripts = $scripts;
-            }
-            return $checked;
-        } else {
+    /**
+     * Load SQL scripts, for all supported databases
+     *
+     * @param string $path Scripts directory
+     *
+     * @throws \RuntimeException when a script is missing for one engine
+     */
+    private function loadSqlScripts(string $path): void
+    {
+        $scripts = $this->getSqlScripts($path, (string)$this->sql_version);
+        if (
+            count($scripts) !== count($this->engines)
+            || array_diff(array_keys($scripts), $this->engines) !== []
+        ) {
             Analog::log(
                 'Unable to see SQL scripts. Please check that scripts exists '
-                . 'in scripts/sql directory, for all supported SQL engines.',
+                . 'in ' . $path . ' directory, for all supported SQL engines.',
                 Analog::ERROR
             );
-            return false;
+            throw new \RuntimeException(
+                sprintf('Missing SQL scripts for version %1$s', $this->sql_version)
+            );
         }
+
+        $this->sql_scripts = $scripts;
     }
 
     /**
      * Get SQL scripts for specified version
      *
+     * @param string $path    Scripts directory
      * @param string $version Scripts version
      *
      * @return array<string,string>
      */
-    private function getSqlScripts(string $version): array
+    private function getSqlScripts(string $path, string $version): array
     {
         $scripts = [];
         try {
-            $dh = opendir(GALETTE_ROOT . '/install/scripts/sql');
+            $dh = opendir($path);
             while (($file = readdir($dh)) !== false) {
                 if (preg_match('/upgrade-to-(.*)-(.+)\.sql/', $file, $ver) && $ver[1] == $version) {
-                    $scripts[$ver[2]] = GALETTE_ROOT . '/install/scripts/sql/' . $file;
+                    $scripts[$ver[2]] = $path . '/' . $file;
                 }
             }
             closedir($dh);
@@ -295,10 +308,7 @@ abstract class AbstractUpdater
      */
     private function updateDbVersion(): void
     {
-        $update = $this->zdb->update('database');
-        $update->set(
-            ['version' => $this->db_version]
-        );
-        $this->zdb->execute($update);
+        //a plugin version is stored once all its scripts have run
+        $this->installer->updateDbVersion($this->zdb, (string)$this->db_version);
     }
 }

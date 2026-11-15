@@ -80,6 +80,9 @@ class Install
 
     private bool $error;
 
+    /** Directory holding the scripts directory, set when scripts are executed */
+    private ?string $scripts_root = null;
+
     /**
      * Main constructor
      */
@@ -622,7 +625,8 @@ class Install
         $fatal_error = false;
         $update_scripts = $this->getScripts($spath);
         $this->report = [];
-        $scripts_path = ($spath ?? GALETTE_ROOT . '/install') . '/scripts/';
+        $this->scripts_root = $spath ?? GALETTE_ROOT . '/install';
+        $scripts_path = $this->scripts_root . '/scripts/';
 
         foreach ($update_scripts as $key => $val) {
             if (str_ends_with($val, '.sql')) {
@@ -649,8 +653,7 @@ class Install
             } else {
                 //we got an update class
                 include_once $scripts_path . $val;
-                $className = '\Galette\Updates\UpgradeTo'
-                    . str_replace('.', '', $key);
+                $className = $this->getUpdaterClass($key);
                 $ret = [
                     'message'   => null,
                     'res'       => false
@@ -695,6 +698,39 @@ class Install
         }
 
         return !$fatal_error;
+    }
+
+    /**
+     * Get the class name of the update script for a version
+     *
+     * @param string $version Update script version
+     */
+    protected function getUpdaterClass(string $version): string
+    {
+        return '\\Galette\\Updates\\UpgradeTo' . str_replace('.', '', $version);
+    }
+
+    /**
+     * Get the directory of the SQL scripts update classes run
+     */
+    public function getSqlScriptsPath(): string
+    {
+        return ($this->scripts_root ?? GALETTE_ROOT . '/install') . '/scripts/sql';
+    }
+
+    /**
+     * Store the database version an update script brought
+     *
+     * @param Db     $zdb     Database instance
+     * @param string $version Database version
+     */
+    public function updateDbVersion(Db $zdb, string $version): void
+    {
+        $update = $zdb->update('database');
+        $update->set(
+            ['version' => $version]
+        );
+        $zdb->execute($update);
     }
 
     /**
@@ -1291,14 +1327,14 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
      * @param string         $msg Report message title
      * @param bool|Throwable $res Initialization result
      */
-    private function proceedReport(string $msg, bool|Throwable $res): void
+    protected function proceedReport(string $msg, bool|Throwable $res): void
     {
         $ret = [
             'message'   => $msg,
             'res'       => false
         ];
 
-        if ($res instanceof \Exception) {
+        if ($res instanceof Throwable) {
             $ret['debug'] = $res->getMessage();
             $this->error = true;
         } else {

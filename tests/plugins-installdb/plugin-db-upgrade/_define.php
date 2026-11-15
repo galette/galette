@@ -19,5 +19,5 @@ return new PluginDefinition(
     route: 'plugdbupgrade',
     date: '2026-01-01',
     acls: [],
-    dbver: 0.2
+    dbver: 0.3
 );
