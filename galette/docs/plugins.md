@@ -43,7 +43,9 @@ plugin-myplugin/
 │   ├── mysql.sql
 │   ├── pgsql.sql
 │   ├── upgrade-to-1.1-mysql.sql
-│   └── upgrade-to-1.1-pgsql.sql
+│   ├── upgrade-to-1.1-pgsql.sql
+│   ├── upgrade-to-1.2.php   # Update class
+│   └── sql/                 # SQL scripts of update classes
 ├── lang/                    # Translations
 ├── webroot/                 # Public assets (CSS, JS, images)
 └── tests/
@@ -604,7 +606,7 @@ Static files of `webroot/` are served by the `plugin_res` route:
 <script src="{{ url_for('plugin_res', {'plugin': module_id, 'path': 'myplugin.js'}) }}"></script>
 ```
 
-## Database
+## Database {#plugins_database}
 
 ### Scripts
 
@@ -616,6 +618,77 @@ Upgrades are `scripts/upgrade-to-<version>-mysql.sql` and
 `scripts/upgrade-to-<version>-pgsql.sql` (or `upgrade-to-<version>.php`);
 scripts with a version greater than the installed one are run, in order.
 Bump `dbver` in `_define.php` accordingly.
+
+### Update classes
+
+When SQL is not enough (translated values, data depending on the instance…),
+`scripts/upgrade-to-<version>.php` declares an update class, in the
+`Updates` sub-namespace of the plugin, named after the version without dots:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace GaletteMyPlugin\Updates;
+
+use Galette\Updater\AbstractUpdater;
+
+class UpgradeTo12 extends AbstractUpdater
+{
+    protected ?string $db_version = '1.2';
+
+    public function __construct()
+    {
+        parent::__construct();
+        //runs scripts/sql/upgrade-to-1.2-mysql.sql or scripts/sql/upgrade-to-1.2-pgsql.sql
+        $this->setSqlScripts($this->db_version);
+    }
+
+    protected function update(): bool
+    {
+        return true;
+    }
+
+    protected function postUpdate(): bool
+    {
+        $insert = $this->zdb->insert('myplugin_kinds');
+        $insert->values(['label' => _T('Default kind', 'myplugin')]);
+        $this->zdb->execute($insert);
+        return true;
+    }
+}
+```
+
+`preUpdate()`, `update()`, the SQL scripts (if any) and `postUpdate()` run in
+that order. SQL scripts of an update class live in `scripts/sql/`: a
+`scripts/upgrade-to-<version>-<engine>.sql` file would be taken for a script
+of its own, and replaced by the update class of the same version.
+
+Plugin translations are loaded, in the language of the user running the update.
+The plugin version is stored once all scripts have run.
+
+### Default data
+
+A plugin creating data on install implements
+`Galette\Core\Plugins\InstallInitInterface`; its `installInit()` runs once
+`scripts/mysql.sql` or `scripts/pgsql.sql` has created the tables, with plugin
+translations loaded:
+
+```php
+class PluginGaletteMyPlugin extends GalettePlugin implements InstallInitInterface
+{
+    public function installInit(Db $zdb): void
+    {
+        $insert = $zdb->insert('myplugin_kinds');
+        $insert->values(['label' => _T('Default kind', 'myplugin')]);
+        $zdb->execute($insert);
+    }
+}
+```
+
+An exception is reported; the plugin is installed all the same, without
+its default data.
 
 ### Laminas-Db
 

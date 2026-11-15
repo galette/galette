@@ -507,4 +507,39 @@ class Install extends BaseGaletteTestCase
         //Galette root parent directory is not displayed empty
         $this->assertSame(dirname($root) . '/', $this->install->getDisplayPath(dirname($root)));
     }
+
+    /**
+     * Update classes fail when their SQL scripts are missing
+     */
+    public function testUpdaterMissingSqlScripts(): void
+    {
+        $updater = new class extends \Galette\Updater\AbstractUpdater {
+            protected ?string $db_version = '0.9';
+
+            /**
+             * Main constructor
+             */
+            public function __construct()
+            {
+                parent::__construct();
+                $this->setSqlScripts((string)$this->db_version);
+            }
+
+            /**
+             * Update instructions
+             */
+            protected function update(): bool
+            {
+                return true;
+            }
+        };
+
+        try {
+            $updater->run($this->zdb, $this->install);
+            $this->fail('Missing SQL scripts must throw');
+        } catch (\RuntimeException $e) {
+            $this->assertSame('Missing SQL scripts for version 0.9', $e->getMessage());
+        }
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to see SQL scripts.');
+    }
 }

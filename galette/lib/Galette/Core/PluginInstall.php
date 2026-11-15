@@ -10,6 +10,10 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
+use Galette\Core\Plugins\InstallInitInterface;
+use RuntimeException;
+use Throwable;
+
 /**
  * Galette plugin installation
  *
@@ -17,6 +21,11 @@ namespace Galette\Core;
  */
 class PluginInstall extends Install
 {
+    /** Identifier of the plugin being installed or updated */
+    private ?string $plugin_id = null;
+    /** Namespace of the plugin being installed or updated */
+    private ?string $plugin_namespace = null;
+
     /**
      * Main constructor
      */
@@ -44,8 +53,83 @@ class PluginInstall extends Install
      */
     public function initObjects(I18n $i18n, Db $zdb, Login $login): bool
     {
-        //TODO: plugins should be able to add objects to initialize
+        //plugins create their default data from initPlugin()
         return false;
+    }
+
+    /**
+     * Set the plugin to install or update
+     *
+     * Its translations are loaded, so update scripts and default data
+     * can use them.
+     *
+     * @param Plugins $plugins Plugins manager
+     * @param string  $id      Plugin ID
+     * @param I18n    $i18n    Current language
+     */
+    public function setPlugin(Plugins $plugins, string $id, I18n $i18n): self
+    {
+        $this->plugin_id = $id;
+        $this->plugin_namespace = $plugins->getNamespace($id);
+        $plugins->loadModuleL10N($id, $i18n->getLongID());
+        return $this;
+    }
+
+    /**
+     * Get the class name of the update script for a version
+     *
+     * Plugins update classes live in their own namespace:
+     * <PluginNamespace>\Updates\UpgradeTo<version without dots>.
+     *
+     * @param string $version Update script version
+     */
+    protected function getUpdaterClass(string $version): string
+    {
+        if ($this->plugin_namespace === null) {
+            throw new RuntimeException('Plugin must be set to run its update classes.');
+        }
+        return '\\' . $this->plugin_namespace . '\\Updates\\UpgradeTo' . str_replace('.', '', $version);
+    }
+
+    /**
+     * Store the database version an update script brought
+     *
+     * Plugin version is stored once all its scripts have run, see setPluginInstalled().
+     *
+     * @param Db     $zdb     Database instance
+     * @param string $version Database version
+     */
+    public function updateDbVersion(Db $zdb, string $version): void
+    {
+        //Galette database version must not change
+    }
+
+    /**
+     * Create plugin default data, on install only
+     *
+     * @param Plugins $plugins Plugins manager
+     * @param Db      $zdb     Database instance
+     */
+    public function initPlugin(Plugins $plugins, Db $zdb): bool
+    {
+        if (!$this->isInstall() || $this->plugin_id === null) {
+            return true;
+        }
+
+        $plugin = $plugins->getPlugin($this->plugin_id);
+        if (!$plugin instanceof InstallInitInterface) {
+            return true;
+        }
+
+        $res = true;
+        try {
+            $plugin->installInit($zdb);
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to create default data for plugin ' . $this->plugin_id, \Analog\Analog::ERROR);
+            $res = $e;
+        }
+        $this->proceedReport(_T('Default data'), $res);
+        return $res === true;
     }
 
     /**

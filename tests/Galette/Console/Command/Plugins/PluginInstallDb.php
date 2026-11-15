@@ -45,6 +45,8 @@ class PluginInstallDb extends GaletteTestCase
 
     /** Tables created by test SQL scripts that must be dropped during tear-down. */
     private const array TABLES_TO_DROP = [
+        //references plugin_db_install_test, must be dropped first
+        'plugin_db_install_ref_test',
         'plugin_db_install_test',
         'plugin_db_upgrade_test',
         'plugin_db_upgrade_detail_test',
@@ -68,6 +70,8 @@ class PluginInstallDb extends GaletteTestCase
         $delete->where->in('plugin_id', [self::PLUGIN_INSTALL_ID, self::PLUGIN_UPGRADE_ID]);
         $this->zdb->execute($delete);
         \GaletteDbUpgradePlugin\PluginGalettePlugdbupgrade::$legacy_version = null;
+        \GaletteDbUpgradePlugin\PluginGalettePlugdbupgrade::$upgrade_fails = false;
+        \GaletteDbInstallPlugin\PluginGalettePlugdbinstall::$init_error = null;
 
         parent::tearDown();
     }
@@ -104,6 +108,30 @@ class PluginInstallDb extends GaletteTestCase
         }
         $row = $results->current();
         return $row['version'] !== null ? (string)(float)$row['version'] : null;
+    }
+
+    /**
+     * Get labels stored in a test table
+     *
+     * @param string $table Table name, without prefix
+     *
+     * @return array<int, string>
+     */
+    private function fetchLabels(string $table): array
+    {
+        $labels = [];
+        foreach ($this->zdb->execute($this->zdb->select($table)) as $row) {
+            $labels[] = $row['label'];
+        }
+        return $labels;
+    }
+
+    /**
+     * Get Galette database version
+     */
+    private function fetchGaletteVersion(): string
+    {
+        return (string)$this->zdb->execute($this->zdb->select('database'))->current()['version'];
     }
 
     /**
@@ -182,19 +210,137 @@ class PluginInstallDb extends GaletteTestCase
         $tester = new CommandTester($command);
         $tester->execute(['plugins' => [self::PLUGIN_INSTALL_ID]]);
 
-        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode(), $tester->getDisplay());
         $output = $tester->getDisplay();
         $this->assertStringContainsString('installed', $output);
         $this->assertStringNotContainsString('upgraded', $output);
 
         // galette_plugins must now contain the plugin at version 0.1
         $this->assertSame('0.1', $this->fetchStoredVersion(self::PLUGIN_INSTALL_ID));
+
+        //default data has been created
+        $this->assertSame(['Default label'], $this->fetchLabels('plugin_db_install_test'));
+    }
+
+    /**
+     * A plugin whose install script fails is not marked as installed,
+     * and its default data are not created
+     */
+    public function testInstallFailure(): void
+    {
+        //a table referencing the plugin one prevents the install script to drop it;
+        //MySQL ignores REFERENCES in a column definition, the constraint must be on the table
+        $id = $this->zdb->isPostgres() ? 'id serial PRIMARY KEY' : 'id int NOT NULL AUTO_INCREMENT PRIMARY KEY';
+        $table = PREFIX_DB . 'plugin_db_install_test';
+        $this->zdb->db->query("CREATE TABLE $table ($id, label varchar(255) NOT NULL)", Adapter::QUERY_MODE_EXECUTE);
+        $this->zdb->db->query(
+            'CREATE TABLE ' . PREFIX_DB . "plugin_db_install_ref_test ($id, test_id int NOT NULL, FOREIGN KEY (test_id) REFERENCES $table (id))",
+            Adapter::QUERY_MODE_EXECUTE
+        );
+        $this->loadTestPlugins();
+
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginInstallDb::class, ['basepath' => GALETTE_ROOT]);
+        $tester = new CommandTester($command);
+        $tester->execute(['plugins' => [self::PLUGIN_INSTALL_ID]]);
+
+        $this->assertSame(Command::FAILURE, $tester->getStatusCode());
+        $this->assertStringContainsString('Unable to install database for plugin "plugin-db-install"', $tester->getDisplay());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Error executing query');
+
+        $this->assertNull($this->fetchStoredVersion(self::PLUGIN_INSTALL_ID));
+        $this->assertSame([], $this->fetchLabels('plugin_db_install_test'));
+    }
+
+    /**
+     * Default data are created on install only, by plugins that can create them
+     */
+    public function testInstallInitSkipped(): void
+    {
+        $this->loadTestPlugins();
+
+        //update mode
+        $install = new \Galette\Core\PluginInstall();
+        $install->setMode(\Galette\Core\PluginInstall::UPDATE);
+        $install->reinitReport();
+        $install->setPlugin($this->plugins, self::PLUGIN_INSTALL_ID, $this->i18n);
+        $this->assertTrue($install->initPlugin($this->plugins, $this->zdb));
+        $this->assertSame([], $install->getInitializationReport());
+
+        //plugin without default data
+        $install = new \Galette\Core\PluginInstall();
+        $install->setMode(\Galette\Core\PluginInstall::INSTALL);
+        $install->reinitReport();
+        $install->setPlugin($this->plugins, self::PLUGIN_UPGRADE_ID, $this->i18n);
+        $this->assertTrue($install->initPlugin($this->plugins, $this->zdb));
+        $this->assertSame([], $install->getInitializationReport());
+    }
+
+    /**
+     * A plugin whose default data cannot be created is installed all the same,
+     * the command reports the failure
+     */
+    public function testInstallInitFailure(): void
+    {
+        $this->loadTestPlugins();
+        \GaletteDbInstallPlugin\PluginGalettePlugdbinstall::$init_error = new \RuntimeException('Default data creation failed');
+
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginInstallDb::class, ['basepath' => GALETTE_ROOT]);
+        $tester = new CommandTester($command);
+        $tester->execute(['plugins' => [self::PLUGIN_INSTALL_ID]]);
+
+        $this->assertSame(Command::FAILURE, $tester->getStatusCode());
+        $this->assertStringContainsString('Unable to create default data for plugin "plugin-db-install"', $tester->getDisplay());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to create default data for plugin plugin-db-install');
+
+        $this->assertSame('0.1', $this->fetchStoredVersion(self::PLUGIN_INSTALL_ID));
+        $this->assertSame([], $this->fetchLabels('plugin_db_install_test'));
+    }
+
+    /**
+     * Errors that make default data creation fail
+     *
+     * @return array<string, array{0: \Throwable}>
+     */
+    public static function initErrorsProvider(): array
+    {
+        return [
+            'exception' => [new \RuntimeException('Default data creation failed')],
+            'error' => [new \TypeError('Default data creation failed')],
+        ];
+    }
+
+    /**
+     * Default data creation failure is reported as such, whatever has been thrown
+     */
+    #[DataProvider('initErrorsProvider')]
+    public function testInstallInitFailureReport(\Throwable $error): void
+    {
+        $this->loadTestPlugins();
+        \GaletteDbInstallPlugin\PluginGalettePlugdbinstall::$init_error = $error;
+
+        $install = new \Galette\Core\PluginInstall();
+        $install->setMode(\Galette\Core\PluginInstall::INSTALL);
+        $install->setPlugin($this->plugins, self::PLUGIN_INSTALL_ID, $this->i18n);
+
+        $this->assertFalse($install->initPlugin($this->plugins, $this->zdb));
+        $this->assertSame(
+            [
+                [
+                    'message' => 'Default data',
+                    'res' => false,
+                    'debug' => 'Default data creation failed'
+                ]
+            ],
+            $install->getInitializationReport()
+        );
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to create default data for plugin plugin-db-install');
     }
 
     /**
      * A DISABLED_NOT_UP2DATE plugin must be handled in UPDATE mode:
-     * only the versioned upgrade script (upgrade-to-0.2) is executed —
-     * NOT the full install script — and galette_plugins is updated to 0.2.
+     * only the versioned upgrade scripts (upgrade-to-0.2 SQL script, then
+     * upgrade-to-0.3 update class) are executed — NOT the full install script —
+     * and galette_plugins is updated to 0.3.
      */
     public function testUpgradeOutdatedPlugin(): void
     {
@@ -209,18 +355,64 @@ class PluginInstallDb extends GaletteTestCase
             $this->plugins->getDisabledCause(self::PLUGIN_UPGRADE_ID)
         );
         $this->assertSame('0.1', $this->plugins->getInstalledDbVersion(self::PLUGIN_UPGRADE_ID));
+        $galette_version = $this->fetchGaletteVersion();
 
         $command = $this->container->make(\Galette\Console\Command\Plugins\PluginInstallDb::class, ['basepath' => GALETTE_ROOT]);
         $tester = new CommandTester($command);
         $tester->execute(['plugins' => [self::PLUGIN_UPGRADE_ID]]);
 
-        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode(), $tester->getDisplay());
         $output = $tester->getDisplay();
         $this->assertStringContainsString('upgraded', $output);
         $this->assertStringNotContainsString('installed', $output);
 
-        // galette_plugins must now reflect version 0.2
-        $this->assertSame('0.2', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
+        // galette_plugins must now reflect version 0.3
+        $this->assertSame('0.3', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
+
+        //update class ran its SQL script from the plugin directory, then its data
+        $rows = $this->zdb->execute($this->zdb->select('plugin_db_upgrade_detail_test'))->toArray();
+        $this->assertCount(1, $rows);
+        $this->assertSame('Upgraded note', $rows[0]['note']);
+        $this->assertSame('upgrade', $rows[0]['kind']);
+
+        //Galette database version is left alone
+        $this->assertSame($galette_version, $this->fetchGaletteVersion());
+    }
+
+    /**
+     * A plugin whose update class fails keeps its previous version
+     */
+    public function testUpgradeFailure(): void
+    {
+        $this->seedUpgradePluginOldVersion();
+        $this->loadTestPlugins();
+        \GaletteDbUpgradePlugin\PluginGalettePlugdbupgrade::$upgrade_fails = true;
+
+        $command = $this->container->make(\Galette\Console\Command\Plugins\PluginInstallDb::class, ['basepath' => GALETTE_ROOT]);
+        $tester = new CommandTester($command);
+        $tester->execute(['plugins' => [self::PLUGIN_UPGRADE_ID]]);
+
+        $this->assertSame(Command::FAILURE, $tester->getStatusCode());
+        $this->assertStringContainsString('Unable to upgrade database for plugin "plugin-db-upgrade"', $tester->getDisplay());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to run 0.3 update script');
+
+        $this->assertSame('0.1', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
+    }
+
+    /**
+     * Update classes cannot be found without knowing the plugin they belong to
+     */
+    public function testUpgradeWithoutPlugin(): void
+    {
+        $install = new \Galette\Core\PluginInstall();
+        $install->setMode(\Galette\Core\PluginInstall::UPDATE);
+        $error = [];
+        $install->setDbType(TYPE_DB, $error);
+        $install->setInstalledVersion('0.2');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Plugin must be set to run its update classes.');
+        $install->executeScripts($this->zdb, self::PLUGINS_PATH . self::PLUGIN_UPGRADE_ID);
     }
 
     /**
@@ -272,7 +464,7 @@ class PluginInstallDb extends GaletteTestCase
         $tester = new CommandTester($command);
         $tester->execute(['plugins' => [self::PLUGIN_INSTALL_ID]]);
 
-        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode(), $tester->getDisplay());
         //the tracking row is preserved and updated to the module's declared dbver
         $this->assertSame('0.1', $this->fetchStoredVersion(self::PLUGIN_INSTALL_ID));
     }
@@ -288,7 +480,7 @@ class PluginInstallDb extends GaletteTestCase
 
         //after loadModules, plugin-db-upgrade is active and has a tracking row
         $this->assertFalse($this->plugins->isDisabled(self::PLUGIN_UPGRADE_ID));
-        $this->assertSame('0.2', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
+        $this->assertSame('0.3', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
 
         //simulate a missing tracking row (e.g. autoMigratePluginVersion silently
         //swallowed a missing-table error in a previous run)
@@ -302,7 +494,7 @@ class PluginInstallDb extends GaletteTestCase
         $install->setPluginInstalled($this->zdb, $this->plugins, self::PLUGIN_UPGRADE_ID);
 
         //the row must now exist with the module's declared dbver
-        $this->assertSame('0.2', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
+        $this->assertSame('0.3', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
     }
 
     /**
@@ -336,14 +528,14 @@ class PluginInstallDb extends GaletteTestCase
         // including when interact() is never called.
         $tester->execute(['--all' => true], ['interactive' => $interactive]);
 
-        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode(), $tester->getDisplay());
         $output = $tester->getDisplay();
 
         $this->assertStringContainsString('installed', $output);
         $this->assertStringContainsString('upgraded', $output);
 
         $this->assertSame('0.1', $this->fetchStoredVersion(self::PLUGIN_INSTALL_ID));
-        $this->assertSame('0.2', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
+        $this->assertSame('0.3', $this->fetchStoredVersion(self::PLUGIN_UPGRADE_ID));
     }
 
     /**
