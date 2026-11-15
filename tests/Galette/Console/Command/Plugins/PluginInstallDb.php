@@ -228,7 +228,7 @@ class PluginInstallDb extends GaletteTestCase
      */
     public function testInstallFailure(): void
     {
-        //a table referencing the plugin one prevents the install script to drop it;
+        //a table referencing the plugin one prevents the install script to drop it, so creating it fails;
         //MySQL ignores REFERENCES in a column definition, the constraint must be on the table
         $id = $this->zdb->isPostgres() ? 'id serial PRIMARY KEY' : 'id int NOT NULL AUTO_INCREMENT PRIMARY KEY';
         $table = PREFIX_DB . 'plugin_db_install_test';
@@ -245,7 +245,9 @@ class PluginInstallDb extends GaletteTestCase
 
         $this->assertSame(Command::FAILURE, $tester->getStatusCode());
         $this->assertStringContainsString('Unable to install database for plugin "plugin-db-install"', $tester->getDisplay());
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Error executing query');
+        //a failing DROP is tolerated, a failing CREATE is not
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'Error executing query: DROP TABLE');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Error executing query: CREATE TABLE');
 
         $this->assertNull($this->fetchStoredVersion(self::PLUGIN_INSTALL_ID));
         $this->assertSame([], $this->fetchLabels('plugin_db_install_test'));
