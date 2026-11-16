@@ -161,16 +161,35 @@ class GaletteController extends GaletteRoutingTestCase
             $this->container->set(\Galette\Core\Csp::class, new \Galette\Core\Csp($this->preferences, $this->plugins));
             $test_response = $this->app->handle($this->createRequest('dashboard'));
             $this->expectOK($test_response);
-            $this->assertStringContainsString($warning, (string)$test_response->getBody());
+            $body = (string)$test_response->getBody();
+            $this->assertStringContainsString($warning, $body);
+            $this->assertStringContainsString('Turn it back on from the advanced configuration', $body);
 
-            //nothing other users could act on
-            $this->getMemberOne();
+            //members are not told
+            $member = $this->getMemberOne();
             $mdata = $this->dataAdherentOne();
             $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
             $test_response = $this->app->handle($this->createRequest('dashboard'));
             $this->expectOK($test_response);
             $this->assertStringNotContainsString($warning, (string)$test_response->getBody());
+
+            //administrators are, even if they cannot turn it back on
+            $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+            $update->set(['bool_admin_adh' => true])->where([\Galette\Entity\Adherent::PK => $member->id]);
+            $this->zdb->execute($update);
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $this->assertTrue($this->login->isAdmin());
+            $test_response = $this->app->handle($this->createRequest('dashboard'));
+            $this->expectOK($test_response);
+            $body = (string)$test_response->getBody();
+            $this->assertStringContainsString($warning, $body);
+            $this->assertStringContainsString('Only the super administrator can turn it back on', $body);
         } finally {
+            if (isset($member)) {
+                $update = $this->zdb->update(\Galette\Entity\Adherent::TABLE);
+                $update->set(['bool_admin_adh' => false])->where([\Galette\Entity\Adherent::PK => $member->id]);
+                $this->zdb->execute($update);
+            }
             $this->logSuperAdmin();
             $this->preferences->setValue('pref_csp_enforce', value: true, login: $this->login);
         }
