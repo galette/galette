@@ -11,7 +11,9 @@ declare(strict_types=1);
 namespace Galette\IO;
 
 use Galette\Core\I18n;
+use Galette\Core\Logo;
 use Galette\Core\Preferences;
+use Galette\Core\PrintLogo;
 use Galette\Entity\PdfModel;
 use Analog\Analog;
 use Slim\Flash\Messages;
@@ -297,8 +299,10 @@ abstract class Pdf extends TCPDF
      */
     protected function standardPageHeader(?string $title = null): void
     {
-        //default header
-        $print_logo = new \Galette\Core\PrintLogo();
+        global $container;
+
+        //default header; the shared print logo is not used, getPath() changes it
+        $print_logo = new PrintLogo($container->get(Logo::class));
         $logofile = $print_logo->getPath();
 
         // Set logo size to max width 30 mm or max height 25 mm

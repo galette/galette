@@ -1255,7 +1255,7 @@ class Preferences
         if (count($s_patterns)) {
             $legend['socials'] = [
                 'title' => _T('Social networks'),
-                'patterns' => $this->getSignaturePatterns(legacy: false)
+                'patterns' => $s_patterns
             ];
         }
 

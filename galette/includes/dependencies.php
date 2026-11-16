@@ -158,7 +158,10 @@ $container->set(\Galette\Core\Login::class, function (ContainerInterface $c) {
 
 $container->set(\Galette\Core\Logo::class, DI\autowire());
 
-$container->set(\Galette\Core\PrintLogo::class, DI\autowire());
+$container->set(
+    \Galette\Core\PrintLogo::class,
+    DI\autowire()->constructorParameter('logo', DI\get(\Galette\Core\Logo::class))
+);
 
 $container->set(\Galette\Core\History::class, \DI\autowire());
 

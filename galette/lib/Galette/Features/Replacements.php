@@ -566,7 +566,7 @@ trait Replacements
             $logo->getOptimalHeight()
         );
 
-        $print_logo = new PrintLogo();
+        $print_logo = new PrintLogo($logo);
         if ($this->mail !== null) {
             $print_logo_content = $this->preferences->getURL() . $this->routeparser->urlFor('printLogo');
         } else {
@@ -575,8 +575,8 @@ trait Replacements
         $print_logo_elt = sprintf(
             '<img src="%1$s" width="%2$s" height="%3$s" alt="" />',
             $print_logo_content,
-            $logo->getOptimalWidth(),
-            $logo->getOptimalHeight()
+            $print_logo->getOptimalWidth(),
+            $print_logo->getOptimalHeight()
         );
 
         $this->setReplacements(

@@ -1083,7 +1083,17 @@ class Preferences extends GaletteTestCase
      */
     public function testGetLegend(): void
     {
-        $legend = $this->preferences->getLegend();
+        $legend = [];
+        $this->assertSame(
+            //social networks are looked up once
+            1,
+            $this->countQueries(
+                function () use (&$legend): void {
+                    $legend = $this->preferences->getLegend();
+                },
+                PREFIX_DB . \Galette\Entity\Social::TABLE
+            )
+        );
         $this->assertCount(3, $legend);
         $this->assertCount(12, $legend['main']['patterns']);
         $this->assertCount(6, $legend['documents']['patterns']);

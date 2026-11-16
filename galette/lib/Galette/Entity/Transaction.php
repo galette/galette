@@ -84,7 +84,10 @@ class Transaction implements AccessManagementInterface
             $this->loadFromRS($args);
         }
 
-        $this->loadDynamicFields();
+        //loading from database already loaded dynamic fields
+        if (!isset($this->dynamics)) {
+            $this->loadDynamicFields();
+        }
     }
 
 

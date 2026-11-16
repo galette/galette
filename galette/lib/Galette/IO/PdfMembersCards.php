@@ -57,6 +57,7 @@ class PdfMembersCards extends Pdf
     protected float $wlogo;
     protected float $hlogo;
     protected string $logofile;
+    private ?PrintLogo $print_logo = null;
 
     //Adaptative properties
     protected float $ratio;
@@ -144,7 +145,7 @@ class PdfMembersCards extends Pdf
         $this->an_cot = $this->preferences->pref_card_year;
         $this->abrev = $this->preferences->pref_card_abrev;
 
-        $print_logo = new PrintLogo();
+        $print_logo = $this->getPrintLogo();
         $this->logofile = $print_logo->getPath();
 
         // Set logo size to max width 30mm (113px) or max height 17mm (64px)
@@ -171,6 +172,14 @@ class PdfMembersCards extends Pdf
     }
 
     /**
+     * Print logo, looked up once for both initializations
+     */
+    private function getPrintLogo(): PrintLogo
+    {
+        return $this->print_logo ??= new PrintLogo();
+    }
+
+    /**
      * Initialize adaptative cards
      */
     protected function adaptativeInit(): void
@@ -184,7 +193,7 @@ class PdfMembersCards extends Pdf
         // Number of rows
         $this->nbrow = self::getRows();
 
-        $print_logo = new PrintLogo();
+        $print_logo = $this->getPrintLogo();
 
         // Set logo size to max 33% width  or max 42% height
         $this->ratio = $print_logo->getWidth() / $print_logo->getHeight();

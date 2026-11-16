@@ -1210,6 +1210,37 @@ class Contribution extends GaletteTestCase
     }
 
     /**
+     * Test dynamic fields are looked up once when loading a contribution
+     */
+    public function testLoadDynamicFieldsOnce(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->createContribution();
+        $id = (int)$this->contrib->id;
+
+        $field_types = PREFIX_DB . \Galette\DynamicFields\DynamicField::TABLE;
+        $this->assertSame(
+            1,
+            $this->countQueries(
+                fn() => new \Galette\Entity\Contribution($this->zdb, $this->login, $id),
+                $field_types
+            )
+        );
+
+        $select = $this->zdb->select(\Galette\Entity\Contribution::TABLE);
+        $select->where([\Galette\Entity\Contribution::PK => $id]);
+        $row = $this->zdb->execute($select)->current();
+        $this->assertSame(
+            1,
+            $this->countQueries(
+                fn() => new \Galette\Entity\Contribution($this->zdb, $this->login, $row),
+                $field_types
+            )
+        );
+    }
+
+    /**
      * Test contribution removal
      */
     public function testRemove(): void
