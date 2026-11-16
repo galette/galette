@@ -974,6 +974,34 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * Test association social networks are read once for signatures and legend
+     */
+    public function testSocialsReadOnce(): void
+    {
+        $social = new \Galette\Entity\Social($this->zdb);
+        $this->assertTrue(
+            $social
+                ->setType(\Galette\Entity\Social::MASTODON)
+                ->setUrl('https://mastodon.social/@galette')
+                ->setLinkedMember(id: null)
+                ->store()
+        );
+        $mail = new PHPMailer();
+        $this->preferences->getMailSignature($mail);
+
+        $this->assertSame(
+            0,
+            $this->countQueries(
+                function () use ($mail): void {
+                    $this->preferences->getMailSignature($mail);
+                    $this->preferences->getLegend();
+                },
+                PREFIX_DB . \Galette\Entity\Social::TABLE
+            )
+        );
+    }
+
+    /**
      * Test email signature
      */
     public function testGetMailSignature(): void

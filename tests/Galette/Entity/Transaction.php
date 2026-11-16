@@ -246,6 +246,7 @@ class Transaction extends GaletteTestCase
         $id = (int)$this->transaction->id;
 
         $field_types = PREFIX_DB . \Galette\DynamicFields\DynamicField::TABLE;
+        \Galette\Core\RowsCache::clear();
         $this->assertSame(
             1,
             $this->countQueries(
@@ -257,6 +258,7 @@ class Transaction extends GaletteTestCase
         $select = $this->zdb->select(\Galette\Entity\Transaction::TABLE);
         $select->where([\Galette\Entity\Transaction::PK => $id]);
         $row = $this->zdb->execute($select)->current();
+        \Galette\Core\RowsCache::clear();
         $this->assertSame(
             1,
             $this->countQueries(

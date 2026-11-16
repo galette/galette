@@ -112,6 +112,34 @@ class L10n extends GaletteTestCase
     }
 
     /**
+     * Test translations of a locale are read once, misses included
+     */
+    public function testDynamicTranslationsReadOnce(): void
+    {
+        $this->assertTrue($this->l10n->addDynamicTranslation('A text read once'));
+        $this->assertTrue($this->l10n->updateDynamicTranslation('A text read once', 'fr_FR.utf8', 'Un texte lu une fois'));
+
+        $l10n_table = PREFIX_DB . \Galette\Core\L10n::TABLE;
+        $found = [];
+        $this->assertSame(
+            1,
+            $this->countQueries(
+                function () use (&$found): void {
+                    $found[] = $this->l10n->getDynamicTranslation('A text read once', 'fr_FR.utf8');
+                    $found[] = $this->l10n->getDynamicTranslation('A text nobody stored', 'fr_FR.utf8');
+                    $found[] = $this->l10n->getDynamicTranslation('A text nobody stored', 'fr_FR.utf8');
+                },
+                $l10n_table
+            )
+        );
+        $this->assertSame(['Un texte lu une fois', '', ''], $found);
+
+        //a changed translation is seen at once
+        $this->assertTrue($this->l10n->updateDynamicTranslation('A text read once', 'fr_FR.utf8', 'Un texte relu'));
+        $this->assertSame('Un texte relu', $this->l10n->getDynamicTranslation('A text read once', 'fr_FR.utf8'));
+    }
+
+    /**
      * Test contextualized plurals are looked up once in dynamic translations
      */
     public function testContextualizedPluralLookup(): void

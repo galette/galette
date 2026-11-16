@@ -33,8 +33,9 @@ use Laminas\Db\Sql\Update;
 use Laminas\Db\Sql\Select;
 use Laminas\Db\Sql\Delete;
 use Laminas\Db\ResultSet\ResultSet;
-use Laminas\Db\Sql\Sql;
+use Galette\Core\Db\Sql;
 use Laminas\Db\Sql\SqlInterface;
+use Laminas\Db\Sql\TableIdentifier;
 
 use function Safe\file_put_contents;
 use function Safe\preg_match;
@@ -665,6 +666,8 @@ class Db
     public function rollback(): void
     {
         $this->db->getDriver()->getConnection()->rollback();
+        //rows read during the transaction may not exist anymore
+        RowsCache::clear();
     }
 
     /**
@@ -689,6 +692,10 @@ class Db
             $query_string = $this->sql->buildSqlString($sql);
             $this->last_query = $query_string;
             $this->log($query_string);
+            if ($sql instanceof Insert || $sql instanceof Update || $sql instanceof Delete) {
+                $table = $sql->getRawState('table');
+                RowsCache::forget($table instanceof TableIdentifier ? $table->getTable() : (string)$table);
+            }
             return $this->db->query(
                 $query_string,
                 Adapter::QUERY_MODE_EXECUTE

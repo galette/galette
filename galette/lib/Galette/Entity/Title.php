@@ -12,6 +12,7 @@ namespace Galette\Entity;
 
 use ArrayObject;
 use Galette\Core\Db;
+use Galette\Core\RowsCache;
 use Galette\Entity\Attributes\Column;
 use Throwable;
 use Analog\Analog;
@@ -58,6 +59,21 @@ class Title extends AbstractEntity
         } elseif ($args instanceof ArrayObject) {
             $this->loadFromRS($args);
         }
+    }
+
+    /**
+     * Load a title from its identifier
+     *
+     * @param int $id Identifier
+     */
+    public function load(int $id): static
+    {
+        $row = RowsCache::get(zdb: $this->getDB(), table: self::TABLE, pk: self::PK, id: $id);
+        if ($row === null) {
+            //let the parent report the missing title
+            return parent::load($id);
+        }
+        return $this->loadFromRS($row);
     }
 
     /**

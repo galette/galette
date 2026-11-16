@@ -16,6 +16,7 @@ use Throwable;
 use Analog\Analog;
 use Galette\Core\Logs;
 use Galette\Core\Db;
+use Galette\Core\RowsCache;
 use Galette\Core\Login;
 use Galette\Core\Authentication;
 
@@ -149,12 +150,18 @@ class FieldsConfig
     public function load(): bool
     {
         try {
-            $select = $this->zdb->select(self::TABLE);
-            $select
-                ->where(['table_name' => $this->table])
-                ->order([FieldsCategories::PK, 'position ASC']);
-
-            $results = $this->zdb->execute($select);
+            //fields and lists configurations read the same rows
+            $results = RowsCache::query(
+                self::TABLE,
+                'table_name=' . $this->table,
+                function (): iterable {
+                    $select = $this->zdb->select(self::TABLE);
+                    $select
+                        ->where(['table_name' => $this->table])
+                        ->order([FieldsCategories::PK, 'position ASC']);
+                    return $this->zdb->execute($select);
+                }
+            );
             $this->core_db_fields = [];
 
             foreach ($results as $k) {

@@ -16,6 +16,7 @@ use Galette\Features\I18n;
 use Laminas\Db\Sql\Expression;
 use Throwable;
 use Galette\Core\Db;
+use Galette\Core\RowsCache;
 use Analog\Analog;
 use Galette\Core\Logs;
 
@@ -107,21 +108,30 @@ class Social
         global $zdb;
 
         try {
-            $select = $zdb->select(self::TABLE);
-
             if ($id_adh === null) {
-                $select->where(Adherent::PK . ' IS NULL');
+                //association networks are read by preferences, signatures and replacements: read them once
+                $results = RowsCache::query(
+                    self::TABLE,
+                    'association',
+                    function () use ($zdb): iterable {
+                        $select = $zdb->select(self::TABLE);
+                        $select->where(Adherent::PK . ' IS NULL')->order(self::PK);
+                        return $zdb->execute($select);
+                    }
+                );
+                if ($type !== null) {
+                    $results = array_filter($results, fn(ArrayObject $r): bool => $r->type === $type);
+                }
             } else {
+                $select = $zdb->select(self::TABLE);
                 $select->where([Adherent::PK => $id_adh]);
+                if ($type !== null) {
+                    $select->where(['type' => $type]);
+                }
+                $select->order(self::PK);
+                $results = $zdb->execute($select);
             }
 
-            if ($type !== null) {
-                $select->where(['type' => $type]);
-            }
-
-            $select->order(self::PK);
-
-            $results = $zdb->execute($select);
             $socials = [];
             foreach ($results as $r) {
                 $socials[$r->{self::PK}] = new Social($zdb, $r);
