@@ -328,6 +328,33 @@ missing one makes the update fail when it runs.
 
 See [Database](@ref plugins_database).
 
+## Reference data read once per request
+
+Statuses, titles, contribution and payment types, dynamic field types, fields
+configuration, association social networks and dynamic translations are read
+once per request by `Galette\Core\RowsCache`. Writes run with `Db::execute()`,
+or prepared from `$zdb->sql`, forget the cached rows of their table; `Db::rollback()`
+forgets everything. A rollback run directly on `$zdb->connection` forgets
+nothing: call `\Galette\Core\RowsCache::clear()` after it.
+
+A plugin writing to one of these tables with a raw SQL string through
+`$zdb->db->query()` forgets them itself:
+
+```php
+\Galette\Core\RowsCache::forget(PREFIX_DB . \Galette\Entity\Status::TABLE);
+```
+
+Its own small tables can be read the same way, with `RowsCache::get()`,
+`RowsCache::all()`, `RowsCache::query()` or `RowsCache::remember()`.
+
+A plugin listing members calls `Members::setListData()` on the list, so that
+`Adherent::isSponsor()` and `Adherent::managesGroups()` do not run queries for
+each member. `Adherent::getSNames()` returns names of several members at once.
+
+`AbstractController::$print_logo` is no longer injected: it is built the first
+time it is read. A plugin controller defining its own constructor must call
+the parent one.
+
 ## Content Security Policy
 
 Galette sends and enforces a [Content Security Policy](https://developer.mozilla.org/docs/Web/HTTP/Guides/CSP)
