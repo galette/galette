@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-13 19:32+0100\n"
+"POT-Creation-Date: 2026-11-16 07:05+0100\n"
 "PO-Revision-Date: 2026-11-13 15:51+0000\n"
 "Last-Translator: Nelson JESUS <nels-j@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/galette/"
@@ -1225,6 +1225,11 @@ msgstr "Os rótulos foram traduzidos com sucesso!"
 msgid "Dashboard"
 msgstr "Painel"
 
+msgid ""
+"Script protection is turned off: a script injected in a page would run. Turn "
+"it back on from the advanced configuration as soon as the cause is fixed."
+msgstr ""
+
 msgid "Settings"
 msgstr "Definições"
 
@@ -1550,6 +1555,11 @@ msgid ""
 "Takes precedence over the features turned on from this page."
 msgstr ""
 
+msgid ""
+"Accounts offered on the login page in DEMO mode, each with its login, "
+"password and label."
+msgstr ""
+
 msgid "Yes"
 msgstr "Sim"
 
@@ -1755,6 +1765,9 @@ msgstr "Todos"
 msgid "An SQL error has occurred."
 msgstr "Um erro de SQL ocorreu."
 
+msgid "Default data"
+msgstr ""
+
 msgid "No such module."
 msgstr "Módulo inexistente."
 
@@ -1921,6 +1934,20 @@ msgstr ""
 #, php-format
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "- Visibilidade desconhecida para '%1$s'!"
+
+#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
+"example.org separated by spaces!"
+msgstr ""
+
+#. TRANS: parameter is the setting name; the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be web addresses such as https://example.org "
+"separated by spaces!"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr ""
@@ -5797,6 +5824,9 @@ msgstr ""
 msgid "Self registrations from one address"
 msgstr ""
 
+msgid "Security policy violation reports from one address"
+msgstr ""
+
 msgid "Lift"
 msgstr ""
 
@@ -6425,6 +6455,19 @@ msgstr ""
 msgid "Lost your password?"
 msgstr ""
 
+#, fuzzy
+#| msgid "Inactive accounts"
+msgid "Demonstration accounts"
+msgstr "Contas inativas"
+
+msgid "Log in with one of them to discover Galette."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Log in as %1$s"
+msgid "Log in as %s"
+msgstr "Faça login como %1$s"
+
 msgid "Mailing information"
 msgstr ""
 
@@ -6862,6 +6905,9 @@ msgstr "Nova versão: %1$s"
 msgid "Unable to check for new releases: no release found in %1$s repository."
 msgstr ""
 
+msgid "Website:"
+msgstr ""
+
 msgid "ACLs"
 msgstr ""
 
@@ -7015,9 +7061,6 @@ msgid "mobile phone from a staff user"
 msgstr ""
 
 msgid "Staff member whose phone number needs to be retrieved"
-msgstr ""
-
-msgid "Website:"
 msgstr ""
 
 msgid ""

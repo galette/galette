@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-13 19:32+0100\n"
+"POT-Creation-Date: 2026-11-16 07:05+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -1313,6 +1313,11 @@ msgstr "Beschreibungen erfolgreich übersetzt!"
 msgid "Dashboard"
 msgstr "Dashboard"
 
+msgid ""
+"Script protection is turned off: a script injected in a page would run. Turn "
+"it back on from the advanced configuration as soon as the cause is fixed."
+msgstr ""
+
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1646,6 +1651,11 @@ msgid ""
 "Takes precedence over the features turned on from this page."
 msgstr ""
 
+msgid ""
+"Accounts offered on the login page in DEMO mode, each with its login, "
+"password and label."
+msgstr ""
+
 msgid "Yes"
 msgstr "Ja"
 
@@ -1861,6 +1871,11 @@ msgstr "Alle"
 msgid "An SQL error has occurred."
 msgstr "Ein SQL-Fehler ist aufgetreten."
 
+#, fuzzy
+#| msgid "Default"
+msgid "Default data"
+msgstr "Standard"
+
 msgid "No such module."
 msgstr "Modul existiert nicht."
 
@@ -2035,6 +2050,20 @@ msgstr ""
 #| msgid "Unknown form %1$s!"
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "Unbekanntes Formular %1$s!"
+
+#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
+"example.org separated by spaces!"
+msgstr ""
+
+#. TRANS: parameter is the setting name; the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be web addresses such as https://example.org "
+"separated by spaces!"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "Erforderlicher Feldname fehlt!"
@@ -6226,6 +6255,11 @@ msgstr ""
 msgid "Self registrations from one address"
 msgstr "Selbstabonnement aktiviert?"
 
+#, fuzzy
+#| msgid "Self subscription enabled?"
+msgid "Security policy violation reports from one address"
+msgstr "Selbstabonnement aktiviert?"
+
 msgid "Lift"
 msgstr ""
 
@@ -6886,6 +6920,19 @@ msgstr "Bitte wählen Sie mindestens ein Feld aus der Liste für diese Aktion."
 msgid "Lost your password?"
 msgstr "Passwort vergessen?"
 
+#, fuzzy
+#| msgid "Demonstration"
+msgid "Demonstration accounts"
+msgstr "Vorführung"
+
+msgid "Log in with one of them to discover Galette."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Log in as %1$s"
+msgid "Log in as %s"
+msgstr "Als %1$s anmelden"
+
 msgid "Mailing information"
 msgstr "Informationen zur Mailkampagne"
 
@@ -7351,6 +7398,9 @@ msgstr "Entferne Transaktion #%1$s"
 msgid "Unable to check for new releases: no release found in %1$s repository."
 msgstr ""
 
+msgid "Website:"
+msgstr "Website:"
+
 msgid "ACLs"
 msgstr "ACL"
 
@@ -7513,9 +7563,6 @@ msgstr "Mobiltelefon eines Mitarbeiters"
 
 msgid "Staff member whose phone number needs to be retrieved"
 msgstr "Mitarbeiter, dessen Telefonnummer abgerufen werden muss"
-
-msgid "Website:"
-msgstr "Website:"
 
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "

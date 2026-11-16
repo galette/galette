@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-13 19:32+0100\n"
+"POT-Creation-Date: 2026-11-16 07:05+0100\n"
 "PO-Revision-Date: 2026-11-10 07:27+0000\n"
 "Last-Translator: Jože Felicijan "
 "<felicijan@users.noreply.hosted.weblate.org>\n"
@@ -1241,6 +1241,11 @@ msgstr "Oznake so bile uspešno prevedene!"
 msgid "Dashboard"
 msgstr "Nadzorna plošča"
 
+msgid ""
+"Script protection is turned off: a script injected in a page would run. Turn "
+"it back on from the advanced configuration as soon as the cause is fixed."
+msgstr ""
+
 msgid "Settings"
 msgstr "Nastavitve"
 
@@ -1572,6 +1577,11 @@ msgstr ""
 "Funkcije za aktiviranje med tistimi, ki so navedene v registru zastavic "
 "funkcij. Ima prednost pred funkcijami, vklopljenimi na tej strani."
 
+msgid ""
+"Accounts offered on the login page in DEMO mode, each with its login, "
+"password and label."
+msgstr ""
+
 msgid "Yes"
 msgstr "Da"
 
@@ -1780,6 +1790,11 @@ msgstr "Vse"
 msgid "An SQL error has occurred."
 msgstr "Prišlo je do napake SQL."
 
+#, fuzzy
+#| msgid "Default"
+msgid "Default data"
+msgstr "Privzeto"
+
 msgid "No such module."
 msgstr "Takšnega modula ni."
 
@@ -1946,6 +1961,20 @@ msgstr "- Vrednost za '%1$s' mora biti %2$s sekund ali več!"
 #, php-format
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "- Neznana vidljivost za »%1$s«!"
+
+#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
+"example.org separated by spaces!"
+msgstr ""
+
+#. TRANS: parameter is the setting name; the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be web addresses such as https://example.org "
+"separated by spaces!"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "Manjka ime obveznega polja!"
@@ -5994,6 +6023,11 @@ msgstr "Zahteve za obnovitev gesla z enega naslova"
 msgid "Self registrations from one address"
 msgstr "Samonaročnine z enega naslova"
 
+#, fuzzy
+#| msgid "Self registrations from one address"
+msgid "Security policy violation reports from one address"
+msgstr "Samonaročnine z enega naslova"
+
 msgid "Lift"
 msgstr "Dvigalo"
 
@@ -6649,6 +6683,19 @@ msgstr "Za izvedbo tega dejanja izberite vsaj eno polje s seznama."
 msgid "Lost your password?"
 msgstr "Ste pozabili geslo?"
 
+#, fuzzy
+#| msgid "Demonstration"
+msgid "Demonstration accounts"
+msgstr "Demonstracija"
+
+msgid "Log in with one of them to discover Galette."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Log in as %1$s"
+msgid "Log in as %s"
+msgstr "Prijavi se kot %1$s"
+
 msgid "Mailing information"
 msgstr "Podatki o pošiljanju"
 
@@ -7112,6 +7159,9 @@ msgstr ""
 "Preverjanje novih izdaj ni mogoče: v repozitoriju %1$s ni bila najdena "
 "nobena izdaja."
 
+msgid "Website:"
+msgstr "Spletna stran:"
+
 msgid "ACLs"
 msgstr "ACL-ji"
 
@@ -7274,9 +7324,6 @@ msgstr "mobilni telefon od uporabnika zaposlenega"
 
 msgid "Staff member whose phone number needs to be retrieved"
 msgstr "Zaposleni, čigar telefonsko številko je treba pridobiti"
-
-msgid "Website:"
-msgstr "Spletna stran:"
 
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "
