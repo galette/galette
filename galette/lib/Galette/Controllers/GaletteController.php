@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Controllers;
 
 use Galette\Core\AuthThrottle;
+use Galette\Core\Csp;
 use DI\Attribute\Inject;
 use Galette\Controllers\Attributes\Route;
 use Galette\Entity\FieldsConfig;
@@ -109,8 +110,13 @@ class GaletteController extends AbstractController
         pattern: '/dashboard',
         methods: ['GET']
     )]
-    public function dashboard(Request $request, Response $response, Telemetry $telemetry, NewsFeed $news): Response
-    {
+    public function dashboard(
+        Request $request,
+        Response $response,
+        Telemetry $telemetry,
+        NewsFeed $news,
+        Csp $csp
+    ): Response {
         $params = [
             'page_title'        => _T("Dashboard"),
             'contentcls'        => 'desktop',
@@ -130,6 +136,13 @@ class GaletteController extends AbstractController
                 || isset($_COOKIE['hide_galette_telemetry']) && $_COOKIE['hide_galette_telemetry'];
         }
         $params['hide_telemetry'] = $hide_telemetry;
+
+        //only the super administrator can turn it back on, from the advanced configuration
+        if ($this->login->isSuperAdmin() && !$csp->isEnforced()) {
+            $params['warning_detected'] = [
+                _T("Script protection is turned off: a script injected in a page would run. Turn it back on from the advanced configuration as soon as the cause is fixed.")
+            ];
+        }
 
         // display page
         $this->view->render(

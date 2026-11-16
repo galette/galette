@@ -520,7 +520,7 @@
     {% set batch_selection = ['masschange'] %}
     {{ parent() }}
 {% if batch is defined %}
-    <script type="text/javascript">
+    <script nonce="{{ csp_nonce() }}" type="text/javascript">
         {% include 'elements/js/mass_change.js.twig' with {batch_url: url_for('batch-contributionslist', {type: 'contributions'})} %}
     </script>
 {% endif %}

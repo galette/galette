@@ -9,17 +9,17 @@
  # bundle is then loaded only when a vector background is displayed.
  #}
 {% set locate = maps_locate ?? false %}
-    <script type="text/javascript" src="{{ base_path() }}/assets/js/maps.min.js"></script>
+    <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/maps.min.js"></script>
 {% if tiles.vector and not (lazy_gl ?? false) %}
     {# a megabyte of MapLibre, only worth loading for a vector background #}
-    <script type="text/javascript" src="{{ base_path() }}/assets/js/maps-gl.min.js"></script>
+    <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/maps-gl.min.js"></script>
 {% endif %}
 {% if locate %}
-    <script type="text/javascript" src="{{ base_path() }}/assets/js/maps-locate.min.js"></script>
+    <script nonce="{{ csp_nonce() }}" type="text/javascript" src="{{ base_path() }}/assets/js/maps-locate.min.js"></script>
 {% endif %}
 {% if lazy_gl ?? false %}
     {# pages opening maps in a modal: texts needed before any map is loaded #}
-    <script type="application/json" id="maps-page-strings">{{ {
+    <script nonce="{{ csp_nonce() }}" type="application/json" id="maps-page-strings">{{ {
         open_error: _T("The map could not be loaded."),
         retry: _T("Retry"),
         close: _T("Close")

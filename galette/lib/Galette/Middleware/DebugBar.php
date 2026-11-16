@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Middleware;
 
+use Galette\Core\Csp;
 use Galette\Core\Login;
 use Galette\Core\Logs;
 use Galette\Debug\DebugBar as GaletteDebugBar;
@@ -38,11 +39,13 @@ class DebugBar
      * @param RouteParser $routeparser Route parser instance
      * @param Session     $session     Session instance
      * @param Login       $login       Login instance
+     * @param Csp         $csp         Content Security Policy of the request
      */
     public function __construct(
         private readonly RouteParser $routeparser,
         private readonly Session $session,
-        private readonly Login $login
+        private readonly Login $login,
+        private readonly Csp $csp
     ) {
     }
 
@@ -129,6 +132,7 @@ class DebugBar
         $renderer->setOpenHandlerUrl($this->routeparser->urlFor('debugbarOpen'));
         $renderer->setTheme('auto');
         $renderer->setHideEmptyTabs(hide: true);
+        $renderer->setCspNonce($this->csp->getNonce());
 
         $html = (string)$response->getBody();
         $widget = $renderer->renderHead() . $renderer->render();

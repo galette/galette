@@ -40,7 +40,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="module">
+    <script nonce="{{ csp_nonce() }}" type="module">
         $(function() {
             $('.pointing.menu .item').tab();
         });

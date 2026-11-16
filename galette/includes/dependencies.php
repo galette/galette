@@ -146,7 +146,9 @@ return [
     // -------------------------------------------------------------------------
     'acls' => factory([AclsFactory::class, 'create']),
     'CsrfExclusions' => factory(fn(Plugins $plugins): array => $plugins->getCsrfExclusions()),
-    Csrf::class => factory(fn(ContainerInterface $c): Csrf => new Csrf($c->get('CsrfExclusions'))),
+    Csrf::class => factory(
+        fn(ContainerInterface $c): Csrf => new Csrf([...Csrf::CORE_EXCLUSIONS, ...$c->get('CsrfExclusions')])
+    ),
 
     // -------------------------------------------------------------------------
     // Fields definitions

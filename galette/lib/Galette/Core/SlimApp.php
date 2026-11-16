@@ -18,6 +18,7 @@ use Galette\Handlers\ErrorHandler;
 use Galette\Middleware\Csrf;
 use Galette\Middleware\Language;
 use Galette\Middleware\RouteGlobals;
+use Galette\Middleware\SecurityHeaders;
 use Galette\Middleware\Telemetry;
 use Galette\Middleware\UpdateAndMaintenance;
 use Galette\Renderers\Html;
@@ -84,6 +85,12 @@ class SlimApp
     {
         return [
             'galette.mode' => $this->mode,
+            //preferences and plugins cannot be read before the database is up to date
+            Csp::class => factory(
+                fn(ContainerInterface $c): Csp => $this->isFullyBooted()
+                    ? new Csp($c->get(Preferences::class), $c->get(Plugins::class))
+                    : new Csp()
+            ),
             Plugins::class => factory(function (ContainerInterface $c): Plugins {
                 if ($this->isFullyBooted()) {
                     $this->plugins
@@ -161,6 +168,7 @@ class SlimApp
                 UpdateAndMaintenance::class,
                 ['callback' => UpdateAndMaintenance::NEED_UPDATE]
             ));
+            $this->app->add(SecurityHeaders::class);
             return;
         }
 
@@ -187,6 +195,9 @@ class SlimApp
         if (DebugBar::isEnabled()) {
             $this->app->add(\Galette\Middleware\DebugBar::class);
         }
+
+        //outermost, so error pages and debug bar get the headers too
+        $this->app->add(SecurityHeaders::class);
     }
 
     /**

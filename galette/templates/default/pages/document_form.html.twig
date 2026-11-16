@@ -76,7 +76,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
+    <script nonce="{{ csp_nonce() }}">
         $(function() {
             activateHtmlEditor($('#comment'), true);
             $('.documents-dropdown').dropdown({

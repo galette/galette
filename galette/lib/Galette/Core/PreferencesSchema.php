@@ -91,6 +91,8 @@ final class PreferencesSchema
     public const string TYPE_LOGIN = 'login';
     public const string TYPE_DATE_MD = 'date_md';
     public const string TYPE_YEAR = 'year';
+    public const string TYPE_CSP_SOURCES = 'csp_sources';
+    public const string TYPE_CSP_ORIGINS = 'csp_origins';
 
     public const string ACL_ADMIN = 'admin';
     public const string ACL_SUPERADMIN = 'superadmin';
@@ -112,6 +114,8 @@ final class PreferencesSchema
     public const string ERR_THROTTLE_ATTEMPTS = 'throttle_attempts';
     public const string ERR_THROTTLE_SECONDS = 'throttle_seconds';
     public const string ERR_PUBLIC_PAGE_VISIBILITY = 'public_page_visibility';
+    public const string ERR_CSP_SOURCES = 'csp_sources';
+    public const string ERR_CSP_ORIGINS = 'csp_origins';
 
     /** @var array<int, string> Every type an entry may declare */
     private const array TYPES = [
@@ -127,6 +131,8 @@ final class PreferencesSchema
         self::TYPE_LOGIN,
         self::TYPE_DATE_MD,
         self::TYPE_YEAR,
+        self::TYPE_CSP_SOURCES,
+        self::TYPE_CSP_ORIGINS,
     ];
 
     /** @var array<string, Entry>|null Core and plugin entries, merged */
@@ -905,6 +911,30 @@ final class PreferencesSchema
                 'constant' => 'GALETTE_TIMEOUT',
                 'advanced' => true,
             ],
+            /* Sites allowed to display Galette in a frame, space separated */
+            'pref_csp_frame_ancestors' => [
+                'type' => self::TYPE_CSP_SOURCES,
+                'default' => Csp::DEFAULT_FRAME_ANCESTORS,
+                'constant' => 'GALETTE_CSP_FRAME_ANCESTORS',
+                'advanced' => true,
+            ],
+            /* External sites pages may load scripts, styles, fonts and frames
+               from, or send data to - such as the statistics service of the
+               theme tracking.js - space separated */
+            'pref_csp_external_sources' => [
+                'type' => self::TYPE_CSP_ORIGINS,
+                'default' => '',
+                'constant' => 'GALETTE_CSP_EXTERNAL_SOURCES',
+                'advanced' => true,
+            ],
+            /* Enforce the complete Content Security Policy; when off, violations
+               are only reported, which leaves injected scripts free to run */
+            'pref_csp_enforce' => [
+                'type' => self::TYPE_BOOL,
+                'default' => true,
+                'constant' => 'GALETTE_CSP_ENFORCE',
+                'advanced' => true,
+            ],
             /* Maximum size of an upload, in Ko, one setting per kind of upload.
                PHP caps them all: whatever is set here, a file bigger than
                upload_max_filesize or a request bigger than post_max_size never
@@ -1206,6 +1236,10 @@ final class PreferencesSchema
             self::ERR_THROTTLE_SECONDS => _T('- Value for \'%1$s\' must be %2$s seconds or more!'),
             //TRANS: parameter is the setting name
             self::ERR_PUBLIC_PAGE_VISIBILITY => _T('- Unknown visibility for \'%1$s\'!'),
+            //TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+            self::ERR_CSP_SOURCES => _T("- Value for '%1\$s' must be 'self', 'none', or web addresses such as https://example.org separated by spaces!"),
+            //TRANS: parameter is the setting name; the URL must not be translated
+            self::ERR_CSP_ORIGINS => _T("- Value for '%1\$s' must be web addresses such as https://example.org separated by spaces!"),
             default => throw new \InvalidArgumentException(sprintf('Unknown error identifier "%s".', $id)),
         };
 

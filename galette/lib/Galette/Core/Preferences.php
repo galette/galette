@@ -154,6 +154,9 @@ use function Safe\preg_replace;
  * @property      bool     $pref_noindex
  * @property      int      $pref_x_forwarded_for_index
  * @property      int      $pref_session_timeout
+ * @property      string   $pref_csp_frame_ancestors
+ * @property      string   $pref_csp_external_sources
+ * @property      bool     $pref_csp_enforce
  * @property      int      $pref_upload_size_images
  * @property      int      $pref_upload_size_attachments
  * @property      int      $pref_upload_size_documents

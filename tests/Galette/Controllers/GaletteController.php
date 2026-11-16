@@ -145,6 +145,38 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test the super administrator is warned while script protection is turned off
+     */
+    public function testDashboardCspWarning(): void
+    {
+        $warning = 'Script protection is turned off';
+        $this->logSuperAdmin();
+        try {
+            $this->container->set(\Galette\Core\Csp::class, new \Galette\Core\Csp($this->preferences, $this->plugins));
+            $test_response = $this->app->handle($this->createRequest('dashboard'));
+            $this->expectOK($test_response);
+            $this->assertStringNotContainsString($warning, (string)$test_response->getBody());
+
+            $this->assertTrue($this->preferences->setValue('pref_csp_enforce', value: false, login: $this->login));
+            $this->container->set(\Galette\Core\Csp::class, new \Galette\Core\Csp($this->preferences, $this->plugins));
+            $test_response = $this->app->handle($this->createRequest('dashboard'));
+            $this->expectOK($test_response);
+            $this->assertStringContainsString($warning, (string)$test_response->getBody());
+
+            //nothing other users could act on
+            $this->getMemberOne();
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $test_response = $this->app->handle($this->createRequest('dashboard'));
+            $this->expectOK($test_response);
+            $this->assertStringNotContainsString($warning, (string)$test_response->getBody());
+        } finally {
+            $this->logSuperAdmin();
+            $this->preferences->setValue('pref_csp_enforce', value: true, login: $this->login);
+        }
+    }
+
+    /**
      * Test dashboard route when the browser does not send the display cookie
      */
     public function testDashboardWithoutCookie(): void

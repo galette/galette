@@ -83,7 +83,7 @@
 {% endblock %}
 
 {% block javascripts %}
-        <script type="text/javascript">
+        <script nonce="{{ csp_nonce() }}" type="text/javascript">
             $(function() {
                 {% set modal_onapprove = "
                     $('.modal-form form #redirect_uri').val(window.location.href);

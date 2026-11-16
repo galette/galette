@@ -199,7 +199,7 @@
         {% include 'elements/maps/libraries.html.twig' with {lazy_gl: true} %}
     {% endif %}
     {% if login.isAdmin() or login.isStaff() or login.login == member.login %}
-    <script type="text/javascript">
+    <script nonce="{{ csp_nonce() }}" type="text/javascript">
         $(function() {
             $('.notmanaged').click(function(){
                 {% include "elements/js/modal.js.twig" with {

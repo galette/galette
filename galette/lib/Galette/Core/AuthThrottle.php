@@ -83,6 +83,8 @@ class AuthThrottle
     public const string SCOPE_RECOVERY_IP = 'recovery-ip';
     /** Self subscriptions from one client address */
     public const string SCOPE_SUBSCRIBE_IP = 'subscribe-ip';
+    /** Content Security Policy violation reports from one client address */
+    public const string SCOPE_CSP_REPORT_IP = 'csp-report-ip';
 
     /**
      * Fewest attempts a counter can be set to trip on.
@@ -355,6 +357,7 @@ class AuthThrottle
                     $scope === self::SCOPE_IP
                     || $scope === self::SCOPE_RECOVERY_IP
                     || $scope === self::SCOPE_SUBSCRIBE_IP
+                    || $scope === self::SCOPE_CSP_REPORT_IP
                 ) {
                     $address = $identifier;
                 } elseif (self::isNormalizedAddress($identifier)) {

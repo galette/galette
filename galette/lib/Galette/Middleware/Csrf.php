@@ -38,6 +38,12 @@ class Csrf
 {
     public const array BODYLESS_METHODS = ['GET', 'HEAD', 'OPTIONS', 'TRACE'];
 
+    /**
+     * Core routes excluded from CSRF checks: posted by browsers themselves,
+     * they change nothing but the logs
+     */
+    public const array CORE_EXCLUSIONS = ['/^cspReport$/'];
+
     private const array TRUSTED_FETCH_SITES = [
         //request comes from Galette itself
         'same-origin',

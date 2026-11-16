@@ -109,7 +109,7 @@ class MapsController extends GaletteRoutingTestCase
     {
         $this->assertSame(
             1,
-            preg_match('@<script type="application/json" id="maps-config">(.*?)</script>@s', $body, $matches)
+            preg_match('@<script [^>]*id="maps-config">(.*?)</script>@s', $body, $matches)
         );
         $config = json_decode($matches[1], associative: true, flags: JSON_THROW_ON_ERROR);
         $this->assertIsArray($config);
@@ -609,7 +609,7 @@ class MapsController extends GaletteRoutingTestCase
         $this->assertStringNotContainsString('maps-member', $body);
         //libraries opening the modal from the actions, and texts for its failures
         $this->assertStringContainsString('assets/js/maps.min.js', $body);
-        $this->assertStringContainsString('<script type="application/json" id="maps-page-strings">', $body);
+        $this->assertMatchesRegularExpression('@<script [^>]*type="application/json" id="maps-page-strings">@', $body);
         $this->assertStringNotContainsString('assets/js/maps-gl.min.js', $body);
 
         $this->grantToRole(\Galette\Access\Roles::MANAGER, 'member:edit');
@@ -714,7 +714,7 @@ class MapsController extends GaletteRoutingTestCase
         //preview knows every provider and precision the form may select
         $this->assertSame(
             1,
-            preg_match('@<script type="application/json" id="maps-preview-config">(.*?)</script>@s', $body, $matches)
+            preg_match('@<script [^>]*id="maps-preview-config">(.*?)</script>@s', $body, $matches)
         );
         $preview = json_decode($matches[1], associative: true, flags: JSON_THROW_ON_ERROR);
         $this->assertIsArray($preview);

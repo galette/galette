@@ -126,7 +126,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="module">
+    <script nonce="{{ csp_nonce() }}" type="module">
         {% if can_edit %}
             // Selecting necessary DOM elements
             const listForm = document.getElementById('listform');
