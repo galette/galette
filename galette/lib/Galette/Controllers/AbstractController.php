@@ -57,7 +57,7 @@ abstract class AbstractController
     protected Twig $view;
     #[Inject]
     protected Logo $logo;
-    #[Inject]
+    //only a few controllers use it: built when first read, see __get()
     protected PrintLogo $print_logo;
     #[Inject]
     protected Plugins $plugins;
@@ -98,6 +98,23 @@ abstract class AbstractController
      */
     public function __construct(private readonly ContainerInterface $container)
     {
+        //looking the print logo up costs a query; reading the property then goes through __get()
+        unset($this->print_logo);
+    }
+
+    /**
+     * Build lazy properties when first read
+     *
+     * @param string $name Property name
+     */
+    public function __get(string $name): mixed
+    {
+        if ($name === 'print_logo') {
+            return $this->print_logo = $this->container->get(PrintLogo::class);
+        }
+
+        trigger_error(sprintf('Undefined property: %s::$%s', static::class, $name), E_USER_WARNING);
+        return null;
     }
 
     /**

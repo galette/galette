@@ -25,7 +25,9 @@ require_once __DIR__ . '/../includes/galette.inc.php';
 session_start();
 $gapp = new SlimApp(
     plugins: $plugins,
-    mode: SlimApp::MODE_CRON
+    mode: SlimApp::MODE_CRON,
+    zdb: $zdb ?? null,
+    preferences: $preferences ?? null
 );
 $app = $gapp->getApp();
 
