@@ -66,4 +66,27 @@ class Pdf extends BaseGaletteTestCase
     {
         $this->assertSame($expected, \Galette\IO\Pdf::normalizeHtml($html));
     }
+
+    /**
+     * Test standard page header reuses the logo
+     */
+    public function testStandardPageHeaderReusesLogo(): void
+    {
+        global $container;
+
+        //logo is already built when a PDF is generated
+        $container->get(\Galette\Core\Logo::class);
+        $pdf = new class ($container->get(\Galette\Core\Preferences::class)) extends \Galette\IO\Pdf {
+        };
+        $pdf->newPage();
+
+        $this->assertSame(
+            //only the print logo itself is looked up
+            1,
+            $this->countQueries(
+                fn() => $pdf->PageHeader('Header test'),
+                PREFIX_DB . \Galette\Core\Picture::TABLE
+            )
+        );
+    }
 }

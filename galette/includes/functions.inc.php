@@ -183,49 +183,35 @@ function _Tx(string $context, string $string, string $domain = 'galette', bool $
  */
 function _Tnx(string $context, string $singular, string $plural, int $count, string $domain = 'galette', bool $nt = true): string
 {
-    /**
-     * @var string $language
-     * @var bool $installer
-     * @var \Galette\Core\L10n $l10n
-     */
-    global $language, $installer, $l10n;
-
     $csingular = contextualizedString($singular, $context);
     $cplural = contextualizedString($plural, $context);
+    //_Tn() already looks for a dynamic translation
     $ret = _Tn(
         singular: $csingular,
         plural: $cplural,
         count: $count,
-        domain: $domain
+        domain: $domain,
+        nt: false
     );
 
+    $translated = true;
     if ($ret == $csingular) {
         // No translation
         $ret = $singular;
+        $translated = false;
     }
 
     if ($ret == $cplural) {
         // No translation
         $ret = $plural;
+        $translated = false;
     }
 
-    $trans = false;
-    if ($installer !== true) {
-        $trans = $l10n->getDynamicTranslation(
-            ($count > 1 ? $cplural : $csingular),
-            $language
-        );
+    if (!$translated && Galette::isDebugEnabled() && $nt === true) {
+        $ret .= NOT_TRANSLATED;
     }
 
-    if (!$trans) {
-        $trans = $ret;
-
-        if (Galette::isDebugEnabled() && $nt === true) {
-            $trans .= NOT_TRANSLATED;
-        }
-    }
-
-    return $trans;
+    return $ret;
 }
 
 /**

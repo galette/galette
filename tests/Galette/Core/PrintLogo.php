@@ -41,6 +41,34 @@ class PrintLogo extends BaseGaletteTestCase
     }
 
     /**
+     * Test the logo given to the print logo is reused
+     */
+    public function testReuseLogo(): void
+    {
+        global $zdb;
+        $zdb = $this->zdb;
+
+        $logo = new \Galette\Core\Logo();
+        $pictures = PREFIX_DB . \Galette\Core\Picture::TABLE;
+        $this->assertSame(
+            //only the print logo itself is looked up
+            1,
+            $this->countQueries(
+                fn() => new \Galette\Core\PrintLogo($logo),
+                $pictures
+            )
+        );
+        $this->assertSame(
+            //print logo, then logo
+            2,
+            $this->countQueries(
+                fn() => new \Galette\Core\PrintLogo(),
+                $pictures
+            )
+        );
+    }
+
+    /**
      * Test a missing logo is only reported when the print logo is used.
      *
      * Print logos build upon Logo, whose path cannot be asked for while

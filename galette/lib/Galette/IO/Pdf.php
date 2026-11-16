@@ -12,6 +12,7 @@ namespace Galette\IO;
 
 use Com\Tecnick\Pdf\Tcpdf;
 use Galette\Core\I18n;
+use Galette\Core\Logo;
 use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
 use Galette\Entity\PdfModel;
@@ -890,8 +891,10 @@ abstract class Pdf extends Tcpdf
      */
     protected function standardPageHeader(?string $title = null): void
     {
-        //default header
-        $print_logo = new PrintLogo();
+        global $container;
+
+        //default header; the shared print logo is not used, getPath() changes it
+        $print_logo = new PrintLogo($container->get(Logo::class));
         $logofile = $print_logo->getPath();
 
         // Set logo size to max width 30 mm or max height 25 mm

@@ -112,6 +112,37 @@ class L10n extends GaletteTestCase
     }
 
     /**
+     * Test contextualized plurals are looked up once in dynamic translations
+     */
+    public function testContextualizedPluralLookup(): void
+    {
+        $l10n_table = PREFIX_DB . \Galette\Core\L10n::TABLE;
+        $trans = null;
+
+        $this->assertSame(
+            1,
+            $this->countQueries(
+                function () use (&$trans): void {
+                    $trans = _Tnx(
+                        context: 'test context',
+                        singular: 'An untranslated thing',
+                        plural: 'Untranslated things',
+                        count: 2
+                    );
+                },
+                $l10n_table
+            )
+        );
+        $this->assertSame('Untranslated things', $trans);
+        $this->assertSame('An untranslated thing', _Tnx(
+            context: 'test context',
+            singular: 'An untranslated thing',
+            plural: 'Untranslated things',
+            count: 1
+        ));
+    }
+
+    /**
      * Test core strings detection and translations
      */
     public function testCoreStrings(): void

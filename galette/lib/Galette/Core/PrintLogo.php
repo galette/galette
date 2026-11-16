@@ -28,6 +28,16 @@ class PrintLogo extends Logo
     protected int $db_id = 999999;
 
     /**
+     * Default constructor
+     *
+     * @param ?Logo $logo Logo to fall back on, to not look it up again; built when missing
+     */
+    public function __construct(private readonly ?Logo $logo = null)
+    {
+        parent::__construct();
+    }
+
+    /**
      * Gets the default picture to show, anyway
      *
      * @see Logo::getDefaultPicture()
@@ -49,7 +59,7 @@ class PrintLogo extends Logo
      */
     protected function getLogo(): Logo
     {
-        return new Logo();
+        return $this->logo ?? new Logo();
     }
 
     /**

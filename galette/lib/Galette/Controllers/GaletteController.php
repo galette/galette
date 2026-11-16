@@ -303,7 +303,7 @@ class GaletteController extends AbstractController
 
                     if (!count($error_detected)) {
                         $this->logo = new Logo();
-                        $this->print_logo = new PrintLogo();
+                        $this->print_logo = new PrintLogo($this->logo);
                     }
 
                     $res = $this->preferences->handleFiles($files);

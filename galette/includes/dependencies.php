@@ -73,7 +73,7 @@ return [
     Db::class => autowire(),
     Preferences::class => autowire(),
     Logo::class => autowire(),
-    PrintLogo::class => autowire(),
+    PrintLogo::class => autowire()->constructorParameter('logo', get(Logo::class)),
     History::class => autowire(),
     //code depending on "now" takes a clock rather than calling time() itself
     ClockInterface::class => autowire(SystemClock::class),

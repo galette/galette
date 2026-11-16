@@ -173,6 +173,24 @@ abstract class BaseGaletteTestCase extends TestCase
     }
 
     /**
+     * Count queries run by a callback that contain a string
+     *
+     * @param callable $callback Code to profile
+     * @param string   $needle   String queries must contain to be counted
+     */
+    protected function countQueries(callable $callback, string $needle): int
+    {
+        $profiler = new \Laminas\Db\Adapter\Profiler\Profiler();
+        $this->zdb->db->setProfiler($profiler);
+        $callback();
+
+        return count(array_filter(
+            $profiler->getProfiles(),
+            fn(array $profile): bool => str_contains((string)$profile['sql'], $needle)
+        ));
+    }
+
+    /**
      * Tear down tests
      */
     public function tearDown(): void

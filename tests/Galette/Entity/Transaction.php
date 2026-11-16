@@ -236,6 +236,37 @@ class Transaction extends GaletteTestCase
     }
 
     /**
+     * Test dynamic fields are looked up once when loading a transaction
+     */
+    public function testLoadDynamicFieldsOnce(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->createTransaction();
+        $id = (int)$this->transaction->id;
+
+        $field_types = PREFIX_DB . \Galette\DynamicFields\DynamicField::TABLE;
+        $this->assertSame(
+            1,
+            $this->countQueries(
+                fn() => new \Galette\Entity\Transaction($this->zdb, $this->login, $id),
+                $field_types
+            )
+        );
+
+        $select = $this->zdb->select(\Galette\Entity\Transaction::TABLE);
+        $select->where([\Galette\Entity\Transaction::PK => $id]);
+        $row = $this->zdb->execute($select)->current();
+        $this->assertSame(
+            1,
+            $this->countQueries(
+                fn() => new \Galette\Entity\Transaction($this->zdb, $this->login, $row),
+                $field_types
+            )
+        );
+    }
+
+    /**
      * Test transaction removal
      */
     public function testRemove(): void
