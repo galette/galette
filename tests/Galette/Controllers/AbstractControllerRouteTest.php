@@ -75,4 +75,38 @@ class AbstractControllerRouteTest extends GaletteRoutingTestCase
         $isRouteMethod = $reflection->getMethod('isRoute');
         $this->assertTrue($isRouteMethod->hasReturnType());
     }
+
+    /**
+     * Print logo is only looked up when a controller reads it
+     */
+    public function testLazyPrintLogo(): void
+    {
+        $controller = null;
+        $this->assertSame(
+            0,
+            $this->countQueries(
+                function () use (&$controller): void {
+                    $controller = $this->container->make(\Galette\Controllers\GaletteController::class);
+                },
+                PREFIX_DB . \Galette\Core\Picture::TABLE
+            )
+        );
+
+        $read = fn(string $name): mixed => $this->{$name};
+        $print_logo = \Closure::bind($read, $controller, AbstractController::class)('print_logo');
+        $this->assertInstanceOf(\Galette\Core\PrintLogo::class, $print_logo);
+        $this->assertSame($print_logo, \Closure::bind($read, $controller, AbstractController::class)('print_logo'));
+
+        $warning = null;
+        set_error_handler(function (int $errno, string $errstr) use (&$warning): bool {
+            $warning = $errstr;
+            return true;
+        }, E_USER_WARNING);
+        try {
+            $this->assertNull(\Closure::bind($read, $controller, AbstractController::class)('nonexistent'));
+        } finally {
+            restore_error_handler();
+        }
+        $this->assertSame('Undefined property: Galette\\Controllers\\GaletteController::$nonexistent', $warning);
+    }
 }

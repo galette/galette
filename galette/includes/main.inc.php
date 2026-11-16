@@ -74,9 +74,10 @@ if (session_status() === PHP_SESSION_NONE) {
 //Galette needs database update!
 if ($needs_update) { //@phpstan-ignore if.alwaysFalse (variable defined in galette.inc.php)
     define('GALETTE_THEME', 'themes/default/');
-    $gapp = new SlimApp(plugins: $plugins, mode: SlimApp::MODE_NEED_UPDATE);
+    $gapp = new SlimApp(plugins: $plugins, mode: SlimApp::MODE_NEED_UPDATE, zdb: $zdb ?? null);
 } else {
-    $gapp = new SlimApp(plugins: $plugins);
+    //database and preferences opened while booting are not opened again
+    $gapp = new SlimApp(plugins: $plugins, zdb: $zdb ?? null, preferences: $preferences ?? null);
 }
 /** @var \Analog\Logger $logger */
 $gapp->configure($session, $logger);

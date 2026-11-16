@@ -58,12 +58,16 @@ class SlimApp
     /**
      * Create a new Slim application
      *
-     * @param Plugins $plugins Plugins instance
-     * @param string  $mode    Application mode: one of Galette::MODE_* or self::MODE_*
+     * @param Plugins      $plugins     Plugins instance
+     * @param string       $mode        Application mode: one of Galette::MODE_* or self::MODE_*
+     * @param ?Db          $zdb         Database instance already opened while booting, not to connect twice
+     * @param ?Preferences $preferences Preferences already loaded while booting, not to load them twice
      */
     public function __construct(
         protected Plugins $plugins,
-        protected string $mode = GALETTE_MODE
+        protected string $mode = GALETTE_MODE,
+        private readonly ?Db $zdb = null,
+        private readonly ?Preferences $preferences = null
     ) {
         $builder = new ContainerBuilder();
         $builder->useAttributes(bool: true);
@@ -83,7 +87,23 @@ class SlimApp
      */
     protected function getContainerDefinitions(): array
     {
-        return [
+        $booted = [];
+        if ($this->zdb !== null) {
+            $booted[Db::class] = $this->zdb;
+        }
+        if ($this->preferences !== null && $this->isFullyBooted()) {
+            //built before the container, the booted instance lacks the properties autowiring
+            //injects; injectOn() cannot help, it would read this very factory definition
+            $preferences = $this->preferences;
+            $booted[Preferences::class] = factory(
+                fn(Container $c): Preferences => $preferences
+                    ->setLogin($c->get(Login::class))
+                    ->setI18n($c->get(I18n::class))
+                    ->setPreferences($preferences)
+            );
+        }
+
+        return $booted + [
             'galette.mode' => $this->mode,
             //preferences and plugins cannot be read before the database is up to date
             Csp::class => factory(
