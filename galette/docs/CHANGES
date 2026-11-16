@@ -14,6 +14,7 @@ Improvements
 
 - Plugins with an invalid definition file are disabled and reported as such, instead of stopping Galette or being reported as incompatible
 - PDF are generated with tc-lib-pdf instead of TCPDF; default PDF models use standard HTML
+- Fewer database queries: one connection per request, reference data (statuses, titles, contribution and payment types, fields configuration, dynamic translations) read once, members, contributions, transactions, scheduled payments and roles lists no longer query each of their rows
 
 Removals and requirements
 
@@ -30,6 +31,7 @@ Plugins and development
 - Galette is configured from SlimApp and declarative container definitions; menus, dashboards, actions and news come from navigation services
 - Deprecated container aliases, LightSlimApp, GalettePlugin static contents fallbacks, the adaptative cards class and unused methods have been removed
 - Plugins can store geographic positions of their own objects
+- Small reference tables can be read once per request with RowsCache; raw SQL writes to them must forget cached rows
 
 1.3.3 -> 1.3.4
 
