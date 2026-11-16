@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-13 19:32+0100\n"
+"POT-Creation-Date: 2026-11-16 07:05+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -1298,6 +1298,11 @@ msgstr "Мітки успішно перекладено!"
 msgid "Dashboard"
 msgstr "Дошка даних"
 
+msgid ""
+"Script protection is turned off: a script injected in a page would run. Turn "
+"it back on from the advanced configuration as soon as the cause is fixed."
+msgstr ""
+
 msgid "Settings"
 msgstr "Налаштування"
 
@@ -1630,6 +1635,11 @@ msgid ""
 "Takes precedence over the features turned on from this page."
 msgstr ""
 
+msgid ""
+"Accounts offered on the login page in DEMO mode, each with its login, "
+"password and label."
+msgstr ""
+
 msgid "Yes"
 msgstr "Так"
 
@@ -1843,6 +1853,11 @@ msgstr "Усе"
 msgid "An SQL error has occurred."
 msgstr "Сталася помилка SQL."
 
+#, fuzzy
+#| msgid "Default"
+msgid "Default data"
+msgstr "За замовчуванням"
+
 msgid "No such module."
 msgstr "Такого модуля немає."
 
@@ -2013,6 +2028,20 @@ msgstr ""
 #| msgid "Unknown form %1$s!"
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "Невідома форма %1$s!"
+
+#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
+"example.org separated by spaces!"
+msgstr ""
+
+#. TRANS: parameter is the setting name; the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be web addresses such as https://example.org "
+"separated by spaces!"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "Відсутня назва обов'язкового поля!"
@@ -6192,6 +6221,11 @@ msgstr ""
 msgid "Self registrations from one address"
 msgstr "Увімкнено самопідписку?"
 
+#, fuzzy
+#| msgid "Self subscription enabled?"
+msgid "Security policy violation reports from one address"
+msgstr "Увімкнено самопідписку?"
+
 msgid "Lift"
 msgstr ""
 
@@ -6851,6 +6885,19 @@ msgstr ""
 msgid "Lost your password?"
 msgstr "Забули пароль?"
 
+#, fuzzy
+#| msgid "Demonstration"
+msgid "Demonstration accounts"
+msgstr "Показ"
+
+msgid "Log in with one of them to discover Galette."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Log in as %1$s"
+msgid "Log in as %s"
+msgstr "Увійти як %1$s"
+
 msgid "Mailing information"
 msgstr "Відомості про розсилання"
 
@@ -7318,6 +7365,9 @@ msgstr "Видалити переказ #%1$s"
 msgid "Unable to check for new releases: no release found in %1$s repository."
 msgstr ""
 
+msgid "Website:"
+msgstr "Вебсайт:"
+
 msgid "ACLs"
 msgstr "Списки контролю доступу (ACL)"
 
@@ -7489,9 +7539,6 @@ msgstr "мобільний телефон від штатного користу
 
 msgid "Staff member whose phone number needs to be retrieved"
 msgstr "Співробітник, номер телефону якого потрібно відновити"
-
-msgid "Website:"
-msgstr "Вебсайт:"
 
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-13 19:32+0100\n"
+"POT-Creation-Date: 2026-11-16 07:05+0100\n"
 "PO-Revision-Date: 2026-10-18 05:50+0000\n"
 "Last-Translator: Johan Cwiklinski "
 "<trasher@users.noreply.hosted.weblate.org>\n"
@@ -1296,6 +1296,11 @@ msgstr "Leis etiquetas son estadas traduchas !"
 msgid "Dashboard"
 msgstr "Tablèu de bòrd"
 
+msgid ""
+"Script protection is turned off: a script injected in a page would run. Turn "
+"it back on from the advanced configuration as soon as the cause is fixed."
+msgstr ""
+
 msgid "Settings"
 msgstr "Paramètres"
 
@@ -1623,6 +1628,11 @@ msgid ""
 "Takes precedence over the features turned on from this page."
 msgstr ""
 
+msgid ""
+"Accounts offered on the login page in DEMO mode, each with its login, "
+"password and label."
+msgstr ""
+
 msgid "Yes"
 msgstr "Òc"
 
@@ -1837,6 +1847,11 @@ msgstr "Tot"
 msgid "An SQL error has occurred."
 msgstr ""
 
+#, fuzzy
+#| msgid "Default"
+msgid "Default data"
+msgstr "Per defaut"
+
 msgid "No such module."
 msgstr "Module inconegut."
 
@@ -2017,6 +2032,20 @@ msgstr ""
 #| msgid "Unknown form %1$s!"
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "Formulari %1$s inconegut !"
+
+#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
+"example.org separated by spaces!"
+msgstr ""
+
+#. TRANS: parameter is the setting name; the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be web addresses such as https://example.org "
+"separated by spaces!"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr "Lo nom dau camp manca !"
@@ -6218,6 +6247,11 @@ msgstr ""
 msgid "Self registrations from one address"
 msgstr "Enregistrament en linha :"
 
+#, fuzzy
+#| msgid "Self_subscription as a member: "
+msgid "Security policy violation reports from one address"
+msgstr "Enregistrament en linha :"
+
 msgid "Lift"
 msgstr ""
 
@@ -6878,6 +6912,19 @@ msgstr "Regardatz de chausir au mens un camp dins la lista avans de començar."
 msgid "Lost your password?"
 msgstr "Avètz oblidat lo senhau ?"
 
+#, fuzzy
+#| msgid "Demonstration"
+msgid "Demonstration accounts"
+msgstr "Demostracion"
+
+msgid "Log in with one of them to discover Galette."
+msgstr ""
+
+#, fuzzy, php-format
+#| msgid "Log in as %1$s"
+msgid "Log in as %s"
+msgstr "Se connectar per %1$s"
+
 msgid "Mailing information"
 msgstr "Informacions sus lo mandadís"
 
@@ -7338,6 +7385,9 @@ msgstr "Levar la transaccion #%1$s"
 msgid "Unable to check for new releases: no release found in %1$s repository."
 msgstr ""
 
+msgid "Website:"
+msgstr ""
+
 msgid "ACLs"
 msgstr "ACL"
 
@@ -7511,9 +7561,6 @@ msgid "mobile phone from a staff user"
 msgstr ""
 
 msgid "Staff member whose phone number needs to be retrieved"
-msgstr ""
-
-msgid "Website:"
 msgstr ""
 
 msgid ""

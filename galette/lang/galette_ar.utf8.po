@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-13 19:32+0100\n"
+"POT-Creation-Date: 2026-11-16 07:05+0100\n"
 "PO-Revision-Date: 2026-10-06 05:58+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@x-tnd.be>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/galette/galette/"
@@ -1370,6 +1370,11 @@ msgstr "تمت ترجمة الملصقات بنجاح!"
 msgid "Dashboard"
 msgstr "لوح المراقبة"
 
+msgid ""
+"Script protection is turned off: a script injected in a page would run. Turn "
+"it back on from the advanced configuration as soon as the cause is fixed."
+msgstr ""
+
 msgid "Settings"
 msgstr "الإعدادات"
 
@@ -1690,6 +1695,11 @@ msgid ""
 "Takes precedence over the features turned on from this page."
 msgstr ""
 
+msgid ""
+"Accounts offered on the login page in DEMO mode, each with its login, "
+"password and label."
+msgstr ""
+
 msgid "Yes"
 msgstr "نعم"
 
@@ -1901,6 +1911,11 @@ msgstr ""
 msgid "An SQL error has occurred."
 msgstr ""
 
+#, fuzzy
+#| msgid "Default language:"
+msgid "Default data"
+msgstr "اللغة الافتراضية:"
+
 msgid "No such module."
 msgstr ""
 
@@ -2069,6 +2084,20 @@ msgstr ""
 #| msgid "from preferences"
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "من الأفضليات"
+
+#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
+"example.org separated by spaces!"
+msgstr ""
+
+#. TRANS: parameter is the setting name; the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be web addresses such as https://example.org "
+"separated by spaces!"
+msgstr ""
 
 msgid "Missing required field name!"
 msgstr ""
@@ -6151,6 +6180,9 @@ msgstr ""
 msgid "Self registrations from one address"
 msgstr ""
 
+msgid "Security policy violation reports from one address"
+msgstr ""
+
 msgid "Lift"
 msgstr ""
 
@@ -6827,6 +6859,18 @@ msgstr ""
 msgid "Lost your password?"
 msgstr "هل فقدت كلمتك السرية؟"
 
+#, fuzzy
+#| msgid "Inactive accounts"
+msgid "Demonstration accounts"
+msgstr "الحسابات غير النشطة"
+
+msgid "Log in with one of them to discover Galette."
+msgstr ""
+
+#, php-format
+msgid "Log in as %s"
+msgstr ""
+
 msgid "Mailing information"
 msgstr ""
 
@@ -7286,6 +7330,9 @@ msgstr "إزالة نوع الدفع %1$s"
 msgid "Unable to check for new releases: no release found in %1$s repository."
 msgstr ""
 
+msgid "Website:"
+msgstr "موقع الويب:"
+
 msgid "ACLs"
 msgstr ""
 
@@ -7445,9 +7492,6 @@ msgstr ""
 
 msgid "Staff member whose phone number needs to be retrieved"
 msgstr ""
-
-msgid "Website:"
-msgstr "موقع الويب:"
 
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "
