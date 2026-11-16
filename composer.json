@@ -107,12 +107,17 @@
     },
     "scripts": {
         "post-install-cmd": [
+            "@apply-patches",
             "@tc-lib-pdf-fonts",
             "@compile-locales"
         ],
         "post-update-cmd": [
+            "@apply-patches",
             "@tc-lib-pdf-fonts",
             "@compile-locales"
+        ],
+        "apply-patches": [
+            "patch -d galette/vendor/thecodingmachine/safe/ -p1 -R --dry-run -s < patches/thecodingmachine-safe-php8.6.patch > /dev/null 2>&1 || patch -d galette/vendor/thecodingmachine/safe/ -p1 < patches/thecodingmachine-safe-php8.6.patch"
         ],
         "tc-lib-pdf-fonts": [
             "@php galette/vendor/tecnickcom/tc-lib-pdf-font/util/build_fonts.php"
