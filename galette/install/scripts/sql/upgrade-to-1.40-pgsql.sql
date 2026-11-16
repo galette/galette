@@ -43,3 +43,6 @@ CREATE TABLE galette_positions (
   longitude decimal(9,6) NOT NULL,
   PRIMARY KEY (object_type, object_id)
 );
+
+-- adhesion form sentence has been renamed in 1.3.0: models stored before are no longer translated
+UPDATE galette_pdfmodels SET model_body = REPLACE(model_body, 'in order to complete your subscription.")', 'in order to complete your membership.")');
