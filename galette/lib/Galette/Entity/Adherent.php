@@ -167,6 +167,9 @@ class Adherent implements AccessManagementInterface
     private array $groups = [];
     /** @var array<int, Group> */
     private array $managed_groups = [];
+    //known from the list the member belongs to
+    private ?bool $is_sponsor = null;
+    private ?bool $manages_groups = null;
     private int|Adherent|null $parent = null;
     /** @var array<int, Adherent>|null */
     private ?array $children = null;
@@ -376,6 +379,9 @@ class Adherent implements AccessManagementInterface
     private function loadFromRS(ArrayObject $r): void
     {
         $this->self_adh = false;
+        //list data belongs to the member loaded before
+        $this->is_sponsor = null;
+        $this->manages_groups = null;
         $this->id = (int)$r->id_adh;
         //Identity
         if ($r->titre_adh !== null) {
@@ -814,6 +820,23 @@ class Adherent implements AccessManagementInterface
      */
     public function isSponsor(): bool
     {
+        return $this->is_sponsor ?? in_array($this->id, self::getSponsors($this->zdb, [$this->id]), strict: true);
+    }
+
+    /**
+     * Get sponsors for current period among some members
+     *
+     * @param Db         $zdb Database instance
+     * @param array<int> $ids Members identifiers
+     *
+     * @return array<int> Sponsors identifiers
+     */
+    public static function getSponsors(Db $zdb, array $ids): array
+    {
+        if (count($ids) === 0) {
+            return [];
+        }
+
         global $preferences;
 
         $date_now = new DateTime();
@@ -832,11 +855,11 @@ class Adherent implements AccessManagementInterface
         }
 
         //date_debut_cotis because member can ask for his donation ot be recorded for next year
-        $select = $this->zdb->select(Contribution::TABLE, 'c');
+        $select = $zdb->select(Contribution::TABLE, 'c');
         $select
             ->columns(
                 [
-                    'count' => new Expression('COUNT(*)')
+                    Adherent::PK
                 ]
             )
             ->join(
@@ -847,7 +870,7 @@ class Adherent implements AccessManagementInterface
             )
             ->where(
                 [
-                    'id_adh' => $this->id,
+                    'id_adh' => $ids,
                     'cotis_extension' => 0 //donations only
                 ]
             )
@@ -856,10 +879,13 @@ class Adherent implements AccessManagementInterface
                 $sdate->format('Y-m-d')
             );
 
-        $results = $this->zdb->execute($select);
-        $result = $results->current();
+        $select->group(Adherent::PK);
 
-        return (int)$result->count > 0;
+        $sponsors = [];
+        foreach ($zdb->execute($select) as $row) {
+            $sponsors[] = (int)$row->{Adherent::PK};
+        }
+        return $sponsors;
     }
 
     /**
@@ -886,6 +912,33 @@ class Adherent implements AccessManagementInterface
             id: $wid === true ? (int)$row->id_adh : false,
             nick: $wnick === true ? $row->pseudo_adh : false
         );
+    }
+
+    /**
+     * Retrieve names of several members at once, formatted as getSName() does
+     *
+     * @param Db         $zdb Database instance
+     * @param array<int> $ids Members identifiers
+     *
+     * @return array<int, string> Names, by member identifier; unknown members are missing
+     */
+    public static function getSNames(Db $zdb, array $ids): array
+    {
+        $ids = array_values(array_unique($ids));
+        if (count($ids) === 0) {
+            return [];
+        }
+
+        $select = $zdb->select(self::TABLE);
+        $select->columns([self::PK, 'nom_adh', 'prenom_adh'])->where([self::PK => $ids]);
+        $names = [];
+        foreach ($zdb->execute($select) as $row) {
+            $names[(int)$row->{self::PK}] = self::getNameWithCase(
+                name: $row->nom_adh,
+                surname: $row->prenom_adh
+            );
+        }
+        return $names;
     }
 
     /**
@@ -2188,6 +2241,27 @@ class Adherent implements AccessManagementInterface
         }
         //non staff statuses are not checked
         return true;
+    }
+
+    /**
+     * Does member manage any group?
+     */
+    public function managesGroups(): bool
+    {
+        return $this->manages_groups ?? count($this->getManagedGroups()) > 0;
+    }
+
+    /**
+     * Set what a list already knows about the member
+     *
+     * @param ?bool $is_sponsor     Whether member is a sponsor for current period, null when unknown
+     * @param bool  $manages_groups Whether member manages any group
+     */
+    public function setListData(?bool $is_sponsor, bool $manages_groups): self
+    {
+        $this->is_sponsor = $is_sponsor;
+        $this->manages_groups = $manages_groups;
+        return $this;
     }
 
     /**

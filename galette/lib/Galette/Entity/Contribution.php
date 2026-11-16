@@ -112,6 +112,10 @@ class Contribution implements AccessManagementInterface
 
     private bool $sendmail = false;
     private bool $checklogin = true;
+    //known from the list the contribution belongs to
+    private ?bool $has_schedule = null;
+    private ?float $allocated = null;
+    private ?string $member_name = null;
 
     /** @var string[] */
     protected array $forbidden_fields = ['is_cotis'];
@@ -375,6 +379,10 @@ class Contribution implements AccessManagementInterface
     private function loadFromRS(ArrayObject $r): void
     {
         $pk = self::PK;
+        //list data belongs to the contribution loaded before
+        $this->has_schedule = null;
+        $this->allocated = null;
+        $this->member_name = null;
         $this->id = (int)$r->$pk;
         $this->date = $r->date_enreg;
         $this->amount = (float)$r->montant_cotis;
@@ -1520,8 +1528,34 @@ class Contribution implements AccessManagementInterface
      */
     public function hasSchedule(): bool
     {
-        $schedule = new ScheduledPayment($this->zdb);
-        return $schedule->isContributionHandled($this->id ?? 0);
+        //a schedule may be added later: only rely on what the list knew
+        return $this->has_schedule ?? (new ScheduledPayment($this->zdb))->isContributionHandled($this->id ?? 0);
+    }
+
+    /**
+     * Get member name
+     */
+    public function getMemberName(): string
+    {
+        if ($this->member === null) {
+            return '';
+        }
+        return $this->member_name ?? Adherent::getSName($this->zdb, $this->member);
+    }
+
+    /**
+     * Set what a list already knows about the contribution
+     *
+     * @param bool   $has_schedule Whether a scheduled payment handles the contribution
+     * @param float  $allocated    Amount allocated by scheduled payments
+     * @param string $member_name  Member name
+     */
+    public function setListData(bool $has_schedule, float $allocated, string $member_name): self
+    {
+        $this->has_schedule = $has_schedule;
+        $this->allocated = $allocated;
+        $this->member_name = $member_name;
+        return $this;
     }
 
     /**
@@ -1531,6 +1565,9 @@ class Contribution implements AccessManagementInterface
      */
     public function isScheduleFullyAllocated(): bool
     {
+        if ($this->allocated !== null) {
+            return $this->allocated >= $this->amount;
+        }
         $schedule = new ScheduledPayment($this->zdb);
         return $schedule->isFullyAllocated($this);
     }
@@ -1555,7 +1592,12 @@ class Contribution implements AccessManagementInterface
             $this->ptypes_list = $ptypes->getList();
         }
         if (isset($this->ptypes_list[$value])) {
-            if (isset($this->id) && $this->payment_type != $value && $this->hasSchedule()) {
+            //a listed contribution may be outdated: ask the database
+            if (
+                isset($this->id)
+                && $this->payment_type != $value
+                && (new ScheduledPayment($this->zdb))->isContributionHandled($this->id)
+            ) {
                 $this->errors[] = _T("Cannot change payment type if there is an attached scheduled payment");
             } else {
                 $this->payment_type = $value;

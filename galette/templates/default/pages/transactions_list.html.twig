@@ -178,7 +178,7 @@
         {% if member is defined %}
             {% set mname = member.sname %}
         {% else %}
-            {% set mname = memberName({id: mid}) %}
+            {% set mname = transaction.getMemberName() %}
         {% endif %}
 
         <tr class="{{ transaction.getRowClass() }}">

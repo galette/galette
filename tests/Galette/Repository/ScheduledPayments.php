@@ -23,6 +23,69 @@ class ScheduledPayments extends GaletteTestCase
     protected int $seed = 20240407181603;
 
     /**
+     * Test contributions of listed scheduled payments are loaded at once
+     */
+    public function testListData(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->createContribution();
+        $this->contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($this->contrib->store());
+        foreach ([10.0, 25.0] as $amount) {
+            $scheduledPayment = new \Galette\Entity\ScheduledPayment($this->zdb);
+            $this->assertTrue($scheduledPayment->check([
+                \Galette\Entity\Contribution::PK => $this->contrib->id,
+                'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+                'scheduled_date' => date('Y-m-d'),
+                'comment' => 'FAKER' . $this->seed,
+                'amount' => $amount
+            ]));
+            $this->assertTrue($scheduledPayment->store());
+        }
+
+        $scheduledPayments = new \Galette\Repository\ScheduledPayments($this->zdb, $this->login);
+        $list = [];
+        $this->assertSame(
+            //list, count and sum queries, then one for all listed contributions
+            4,
+            $this->countQueries(
+                function () use ($scheduledPayments, &$list): void {
+                    $list = $scheduledPayments->getList(as_object: true);
+                },
+                PREFIX_DB . \Galette\Entity\Contribution::TABLE
+            )
+        );
+        $this->assertCount(2, $list);
+
+        $listed = [];
+        $this->assertSame(
+            0,
+            $this->countQueries(
+                function () use ($list, &$listed): void {
+                    foreach ($list as $scheduled) {
+                        $contribution = $scheduled->getContribution();
+                        $listed[] = [$contribution->id, $contribution->getMemberName(), $contribution->hasSchedule(), $contribution->isScheduleFullyAllocated()];
+                    }
+                },
+                PREFIX_DB
+            )
+        );
+
+        $fresh = new \Galette\Entity\Contribution($this->zdb, $this->login, (int)$this->contrib->id);
+        $expected = [$fresh->id, \Galette\Entity\Adherent::getSName($this->zdb, (int)$this->adh->id), $fresh->hasSchedule(), $fresh->isScheduleFullyAllocated()];
+        $this->assertSame([$expected, $expected], $listed);
+
+        //reloading reads the contribution again
+        $update = $this->zdb->update(\Galette\Entity\Contribution::TABLE);
+        $update->set(['montant_cotis' => 35])->where([\Galette\Entity\Contribution::PK => $this->contrib->id]);
+        $this->zdb->execute($update);
+        $scheduled = reset($list);
+        $this->assertTrue($scheduled->load((int)$scheduled->getId()));
+        $this->assertSame(35.0, $scheduled->getContribution()->amount);
+    }
+
+    /**
      * Test getList
      */
     public function testGetList(): void

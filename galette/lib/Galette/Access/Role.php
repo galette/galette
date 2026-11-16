@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Access;
 
 use ArrayObject;
+use Closure;
 use Galette\Entity\AbstractEntity;
 use Galette\Entity\Attributes\Column;
 
@@ -39,6 +40,7 @@ class Role extends AbstractEntity
 
     /** @var ?array<string> */
     private ?array $permissions = null;
+    private ?Closure $permissions_loader = null;
 
     /**
      * Main constructor
@@ -66,6 +68,7 @@ class Role extends AbstractEntity
         $this->name = (string)$rs->name;
         $this->parent = $rs->id_parent === null ? null : (int)$rs->id_parent;
         $this->permissions = null;
+        $this->permissions_loader = null;
         return $this;
     }
 
@@ -157,7 +160,10 @@ class Role extends AbstractEntity
     {
         if ($this->permissions === null) {
             $this->permissions = [];
-            if ($this->isLoaded()) {
+            if ($this->isLoaded() && $this->permissions_loader !== null) {
+                $this->permissions = ($this->permissions_loader)()[$this->id] ?? [];
+                sort($this->permissions);
+            } elseif ($this->isLoaded()) {
                 $select = $this->getDB()->select(Roles::PERMISSIONS_TABLE);
                 $select->columns(['permission'])->where([self::PK => $this->id]);
                 foreach ($this->getDB()->execute($select) as $row) {
@@ -167,6 +173,17 @@ class Role extends AbstractEntity
             }
         }
         return $this->permissions;
+    }
+
+    /**
+     * Set how to read stored permissions along with other roles
+     *
+     * @param Closure(): array<int, array<string>> $loader Permissions names by role
+     */
+    public function setPermissionsLoader(Closure $loader): self
+    {
+        $this->permissions_loader = $loader;
+        return $this;
     }
 
     /**

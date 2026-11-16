@@ -242,7 +242,7 @@
         {% if member is defined %}
             {% set mname = member.sname %}
         {% else %}
-            {% set mname = memberName({id: mid}) %}
+            {% set mname = scheduled.getContribution().getMemberName() %}
         {% endif %}
 
         <tr class="{% if mode == 'ajax' %}schedule_row {% endif %}" id="row_{{ scheduled.getId() }}">
@@ -286,7 +286,7 @@
                         href="{{ url_for("member", {"id": mid}) }}"
                         title="{{ _T("Show '%1$s' card")|format(mname) }}"
                     >
-                        {{ memberName({id: scheduled.getContribution().member}) }}
+                        {{ mname }}
                     </a>
                 </td>
             {% endif %}

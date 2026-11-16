@@ -131,6 +131,59 @@ class Members extends GaletteTestCase
     }
 
     /**
+     * Test sponsoring and groups management of listed members are known without queries per row
+     */
+    public function testListData(): void
+    {
+        $this->logSuperAdmin();
+        $manager = $this->getMemberOne();
+        $group = new \Galette\Entity\Group();
+        $group->setName('Managed for list data');
+        $this->assertTrue($group->store());
+        $this->assertTrue($group->setManagers([$manager]));
+
+        $sponsor = $this->getMemberTwo();
+        $this->createContrib([
+            'id_adh' => $sponsor->id,
+            'id_type_cotis' => 5, //donation in money
+            'montant_cotis' => '10',
+            'type_paiement_cotis' => '6',
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => date('Y-m-d'),
+            'date_debut_cotis' => date('Y-m-d')
+        ]);
+
+        $ids = [(int)$manager->id, (int)$sponsor->id];
+        $expected = [];
+        foreach ($ids as $id) {
+            $member = new \Galette\Entity\Adherent($this->zdb, $id);
+            $expected[$id] = [$member->isSponsor(), $member->managesGroups()];
+        }
+        $this->assertSame([false, true], $expected[$manager->id]);
+        $this->assertTrue($expected[$sponsor->id][0]);
+
+        $members = array_map(fn(int $id) => new \Galette\Entity\Adherent($this->zdb, $id), $ids);
+        (new \Galette\Repository\Members())->setListData($members);
+        $listed = [];
+        $this->assertSame(
+            0,
+            $this->countQueries(
+                function () use ($members, &$listed): void {
+                    foreach ($members as $member) {
+                        $listed[$member->id] = [$member->isSponsor(), $member->managesGroups()];
+                    }
+                },
+                PREFIX_DB
+            )
+        );
+        $this->assertSame($expected, $listed);
+
+        //loading another member drops the list data
+        $this->assertTrue($members[1]->load((int)$manager->id));
+        $this->assertSame($expected[$manager->id], [$members[1]->isSponsor(), $members[1]->managesGroups()]);
+    }
+
+    /**
      * Test getList
      */
     #[AllowMockObjectsWithoutExpectations]

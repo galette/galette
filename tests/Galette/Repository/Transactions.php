@@ -67,6 +67,69 @@ class Transactions extends GaletteTestCase
     }
 
     /**
+     * Test dispatched amounts and member names of listed transactions are known without queries per row
+     */
+    public function testListData(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->createTransaction();
+        $this->createContrib(array_merge(
+            $this->getContribData(),
+            ['trans_id' => $this->transaction->id, 'montant_cotis' => 30]
+        ));
+
+        $transactions = new \Galette\Repository\Transactions($this->zdb, $this->login);
+        $list = $transactions->getList(as_trans: true);
+        $this->assertCount(1, $list);
+
+        $listed = [];
+        $this->assertSame(
+            0,
+            $this->countQueries(
+                function () use ($list, &$listed): void {
+                    foreach ($list as $transaction) {
+                        $listed[] = [$transaction->getDispatchedAmount(), $transaction->getMissingAmount(), $transaction->getMemberName()];
+                    }
+                },
+                PREFIX_DB
+            )
+        );
+
+        $fresh = new \Galette\Entity\Transaction($this->zdb, $this->login, (int)$this->transaction->id);
+        $this->assertSame(
+            [[30.0, 62.0, \Galette\Entity\Adherent::getSName($this->zdb, (int)$this->adh->id)]],
+            $listed
+        );
+        $this->assertSame([$fresh->getDispatchedAmount(), $fresh->getMissingAmount()], array_slice($listed[0], 0, 2));
+
+        //reloading drops the list data; a donation has no period to overlap
+        $this->createContrib(array_merge(
+            $this->getContribData(),
+            ['trans_id' => $this->transaction->id, 'montant_cotis' => 20, 'id_type_cotis' => 5]
+        ));
+        $transaction = reset($list);
+        $this->assertTrue($transaction->load((int)$this->transaction->id));
+        $this->assertSame(50.0, $transaction->getDispatchedAmount());
+
+        //outdated list data is not used to check the amount
+        $transaction->setListData(0, '');
+        $this->assertSame(
+            ['- Sum of all contributions exceed corresponding transaction amount.'],
+            $transaction->check(['trans_amount' => 10], [], [])
+        );
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a transaction');
+
+        //nor to remove attached contributions
+        $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login, (int)$this->transaction->id);
+        $transaction->setListData(0, '');
+        $this->assertTrue($transaction->remove($this->history));
+        $select = $this->zdb->select(\Galette\Entity\Contribution::TABLE);
+        $select->where(['trans_id' => $this->transaction->id]);
+        $this->assertCount(0, $this->zdb->execute($select));
+    }
+
+    /**
      * Test getList
      */
     #[AllowMockObjectsWithoutExpectations]

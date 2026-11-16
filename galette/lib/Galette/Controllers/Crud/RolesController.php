@@ -144,9 +144,10 @@ class RolesController extends CrudController
     {
         $roles = $this->getRoles();
 
+        $list = $roles->getList();
         //system roles are computed from members data
         $members_count = [];
-        foreach ($roles->getList() as $id => $role) {
+        foreach ($list as $id => $role) {
             $members_count[$id] = $role->isSystem()
                 ? $roles->countComputedMembersOf($role)
                 : count($roles->getMembersOf($id));
@@ -157,7 +158,7 @@ class RolesController extends CrudController
             'pages/roles_list.html.twig',
             [
                 'page_title'    => _T("Roles"),
-                'roles'         => $roles->getList(),
+                'roles'         => $list,
                 'members_count' => $members_count
             ]
         );

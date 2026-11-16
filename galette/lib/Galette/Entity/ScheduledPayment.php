@@ -48,12 +48,14 @@ class ScheduledPayment
     /**
      * Main constructor
      *
-     * @param Db                                      $zdb  Database instance
-     * @param ArrayObject<string,int|string>|int|null $args Arguments
+     * @param Db                                      $zdb          Database instance
+     * @param ArrayObject<string,int|string>|int|null $args         Arguments
+     * @param ?Contribution                           $contribution Contribution already loaded, from a list
      */
     public function __construct(
         private Db $zdb,
-        ArrayObject|int|null $args = null
+        ArrayObject|int|null $args = null,
+        ?Contribution $contribution = null
     ) {
         $now = new DateTime();
         $this->creation_date = $now->format('Y-m-d');
@@ -64,7 +66,7 @@ class ScheduledPayment
         if (is_int($args)) {
             $this->load($args);
         } elseif ($args instanceof ArrayObject) {
-            $this->loadFromRS($args);
+            $this->loadFromRS($args, $contribution);
         }
     }
 
@@ -97,15 +99,18 @@ class ScheduledPayment
     /**
      * Load scheduled payment from a db ResultSet
      *
-     * @param ArrayObject<string, int|string> $rs ResultSet
+     * @param ArrayObject<string, int|string> $rs           ResultSet
+     * @param ?Contribution                   $contribution Contribution already loaded, from a list
      */
-    private function loadFromRS(ArrayObject $rs): void
+    private function loadFromRS(ArrayObject $rs, ?Contribution $contribution = null): void
     {
         global $login;
 
         $pk = self::PK;
         $this->id = (int)$rs->$pk;
-        $this->contribution = new Contribution($this->zdb, $login, (int)$rs->{Contribution::PK});
+        $this->contribution = $contribution !== null && $contribution->id === (int)$rs->{Contribution::PK}
+            ? $contribution
+            : new Contribution($this->zdb, $login, (int)$rs->{Contribution::PK});
         $this->payment_type = new PaymentType($this->zdb, (int)$rs->id_paymenttype);
         $this->creation_date = $rs->creation_date;
         $this->scheduled_date = $rs->scheduled_date;
