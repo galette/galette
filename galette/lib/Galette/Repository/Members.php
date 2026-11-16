@@ -776,6 +776,42 @@ class Members
     }
 
     /**
+     * Set sponsoring and groups management of listed members, rather than queries per row
+     *
+     * @param array<int, Adherent> $members Listed members
+     */
+    public function setListData(array $members): void
+    {
+        global $zdb;
+
+        if (count($members) === 0) {
+            return;
+        }
+        $ids = array_map(fn(Adherent $member): int => (int)$member->id, $members);
+
+        $select = $zdb->select(Group::GROUPSMANAGERS_TABLE);
+        $select->columns([Adherent::PK])->where([Adherent::PK => $ids]);
+        $managers = [];
+        foreach ($zdb->execute($select) as $row) {
+            $managers[(int)$row->{Adherent::PK}] = true;
+        }
+
+        try {
+            $sponsors = array_flip(Adherent::getSponsors($zdb, $ids));
+        } catch (\RuntimeException) {
+            // no log: sponsoring period cannot be computed; isSponsor() reports it when asked
+            $sponsors = null;
+        }
+
+        foreach ($members as $member) {
+            $member->setListData(
+                $sponsors !== null ? isset($sponsors[(int)$member->id]) : null,
+                isset($managers[(int)$member->id])
+            );
+        }
+    }
+
+    /**
      * Builds the SELECT statement
      *
      * @param int            $mode   the current mode (see self::SHOW_*)

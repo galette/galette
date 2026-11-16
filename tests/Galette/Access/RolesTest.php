@@ -142,6 +142,34 @@ class RolesTest extends GaletteTestCase
     }
 
     /**
+     * Test permissions of listed roles are read at once
+     */
+    public function testListPermissions(): void
+    {
+        $roles = new Roles($this->zdb, new Permissions());
+        $this->assertTrue($roles->installInit());
+
+        $list = $roles->getList();
+        $this->assertGreaterThan(1, count($list));
+        $listed = [];
+        $this->assertSame(
+            1,
+            $this->countQueries(
+                function () use ($list, &$listed): void {
+                    foreach ($list as $id => $role) {
+                        $listed[$id] = $role->getPermissions();
+                    }
+                },
+                PREFIX_DB . Roles::PERMISSIONS_TABLE
+            )
+        );
+
+        foreach (array_keys($list) as $id) {
+            $this->assertSame($this->getStoredPermissions($id), $listed[$id]);
+        }
+    }
+
+    /**
      * Test roles of a member, computed and given
      */
     public function testGetRolesOf(): void

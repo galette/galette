@@ -24,6 +24,70 @@ class Contributions extends GaletteTestCase
     protected int $seed = 20230327215258;
 
     /**
+     * Test schedules and member names of listed contributions are known without a query per row
+     */
+    public function testListData(): void
+    {
+        $this->logSuperAdmin();
+        $this->getMemberOne();
+        $this->createContribution();
+        $scheduled_contrib = $this->contrib;
+        $scheduled_contrib->payment_type = \Galette\Entity\PaymentType::SCHEDULED;
+        $this->assertTrue($scheduled_contrib->store());
+        $scheduled = new \Galette\Entity\ScheduledPayment($this->zdb);
+        $this->assertTrue($scheduled->check([
+            \Galette\Entity\Contribution::PK => $scheduled_contrib->id,
+            'id_paymenttype' => \Galette\Entity\PaymentType::CASH,
+            'scheduled_date' => date('Y-m-d'),
+            'comment' => 'FAKER' . $this->seed
+        ]));
+        $this->assertTrue($scheduled->store());
+        $this->getMemberTwo();
+        $this->createContrib(array_merge($this->getContribData(), ['id_adh' => $this->adh->id]));
+
+        $contributions = new \Galette\Repository\Contributions($this->zdb, $this->login);
+        $list = $contributions->getList(as_contrib: true);
+        $this->assertCount(2, $list);
+
+        $expected = [];
+        $this->assertSame(
+            //nothing is looked up row by row
+            0,
+            $this->countQueries(
+                function () use ($list, &$expected): void {
+                    foreach ($list as $contribution) {
+                        $expected[$contribution->id] = [$contribution->hasSchedule(), $contribution->isScheduleFullyAllocated(), $contribution->getMemberName()];
+                    }
+                },
+                PREFIX_DB
+            )
+        );
+        foreach ($list as $contribution) {
+            $this->assertSame(
+                [
+                    $contribution->id === $scheduled_contrib->id,
+                    (new \Galette\Entity\Contribution($this->zdb, $this->login, (int)$contribution->id))->isScheduleFullyAllocated(),
+                    \Galette\Entity\Adherent::getSName($this->zdb, $contribution->member)
+                ],
+                $expected[$contribution->id]
+            );
+        }
+
+        //outdated list data does not allow changing the payment type of a scheduled contribution
+        $stale = new \Galette\Entity\Contribution($this->zdb, $this->login, (int)$scheduled_contrib->id);
+        $stale->setListData(has_schedule: false, allocated: 0, member_name: '');
+        $stale->setPaymentType(\Galette\Entity\PaymentType::CASH);
+        $this->assertSame(\Galette\Entity\PaymentType::SCHEDULED, $stale->payment_type);
+        $this->assertSame(['Cannot change payment type if there is an attached scheduled payment'], $stale->getErrors());
+
+        //loading another contribution drops the list data
+        $listed = array_values(array_filter($list, fn($contribution) => $contribution->id === $scheduled_contrib->id))[0];
+        $other = array_values(array_filter($list, fn($contribution) => $contribution->id !== $scheduled_contrib->id))[0];
+        $this->assertTrue($listed->load((int)$other->id));
+        $this->assertFalse($listed->hasSchedule());
+    }
+
+    /**
      * Test getList
      */
     #[AllowMockObjectsWithoutExpectations]

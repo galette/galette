@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Repository;
 
 use Galette\Access\MembersScope;
+use ArrayObject;
 use Galette\Entity\ScheduledPayment;
 use Galette\Features\AccessControlled;
 use Galette\Filters\ScheduledPaymentsList;
@@ -105,8 +106,14 @@ class ScheduledPayments
             $scheduleds = [];
             $results = $this->zdb->execute($select);
             if ($as_object) {
-                foreach ($results as $row) {
-                    $scheduleds[] = new ScheduledPayment($this->zdb, $row);
+                $rows = iterator_to_array($results, preserve_keys: false);
+                $contributions = $this->getListContributions($rows);
+                foreach ($rows as $row) {
+                    $scheduleds[] = new ScheduledPayment(
+                        $this->zdb,
+                        $row,
+                        $contributions[(int)$row->{Contribution::PK}] ?? null
+                    );
                 }
             } else {
                 $scheduleds = $results;
@@ -116,6 +123,31 @@ class ScheduledPayments
             Logs::exception($e, 'Cannot list scheduled payments', Analog::WARNING);
             throw $e;
         }
+    }
+
+    /**
+     * Load contributions of listed scheduled payments at once, rather than one query per row
+     *
+     * @param array<int, ArrayObject<string, int|string>> $rows Scheduled payments rows
+     *
+     * @return array<int, Contribution> Contributions, by identifier
+     */
+    private function getListContributions(array $rows): array
+    {
+        $ids = array_values(array_unique(array_map(fn(ArrayObject $row): int => (int)$row->{Contribution::PK}, $rows)));
+        if (count($ids) === 0) {
+            return [];
+        }
+
+        $select = $this->zdb->select(Contribution::TABLE);
+        $select->where([Contribution::PK => $ids]);
+        $contributions = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $contribution = new Contribution($this->zdb, $this->login, $row);
+            $contributions[(int)$contribution->id] = $contribution;
+        }
+        (new Contributions($this->zdb, $this->login))->setListData(array_values($contributions));
+        return $contributions;
     }
 
     /**

@@ -55,6 +55,9 @@ class Transaction implements AccessManagementInterface
     private ?string $description = null;
     private ?int $member = null;
     private ?int $payment_type = null;
+    //known from the list the transaction belongs to
+    private ?float $dispatched = null;
+    private ?string $member_name = null;
 
     /** @var array<string> */
     protected array $errors;
@@ -232,7 +235,8 @@ class Transaction implements AccessManagementInterface
             }
 
             //remove associated contributions if needed
-            if ($this->getDispatchedAmount() > 0) {
+            //a listed transaction may be outdated: ask the database
+            if ($this->queryDispatchedAmount() > 0) {
                 $c = new Contributions($this->zdb, $this->login);
                 $clist = $c->getListFromTransaction($this->id);
                 $cids = [];
@@ -279,6 +283,9 @@ class Transaction implements AccessManagementInterface
     private function loadFromRS(ArrayObject $r): void
     {
         $pk = self::PK;
+        //list data belongs to the transaction loaded before
+        $this->dispatched = null;
+        $this->member_name = null;
         $this->id = (int)$r->$pk;
         $this->date = $r->trans_date;
         $this->amount = (float)$r->trans_amount;
@@ -399,7 +406,8 @@ class Transaction implements AccessManagementInterface
         }
 
         if (isset($this->id)) {
-            $dispatched = $this->getDispatchedAmount();
+            //a listed transaction may be outdated: ask the database
+            $dispatched = $this->queryDispatchedAmount();
             if ($dispatched > $this->amount) {
                 $this->errors[] = _T("- Sum of all contributions exceed corresponding transaction amount.");
             }
@@ -504,6 +512,17 @@ class Transaction implements AccessManagementInterface
         if (empty($this->id)) {
             return (float)0;
         }
+        return $this->dispatched ?? $this->queryDispatchedAmount();
+    }
+
+    /**
+     * Read amount that has already been dispatched into contributions, ignoring list data
+     */
+    private function queryDispatchedAmount(): float
+    {
+        if (empty($this->id)) {
+            return (float)0;
+        }
 
         try {
             $select = $this->zdb->select(Contribution::TABLE);
@@ -524,12 +543,39 @@ class Transaction implements AccessManagementInterface
     }
 
     /**
+     * Get member name
+     */
+    public function getMemberName(): string
+    {
+        if ($this->member === null) {
+            return '';
+        }
+        return $this->member_name ?? Adherent::getSName($this->zdb, $this->member);
+    }
+
+    /**
+     * Set what a list already knows about the transaction
+     *
+     * @param float  $dispatched  Amount dispatched to contributions
+     * @param string $member_name Member name
+     */
+    public function setListData(float $dispatched, string $member_name): self
+    {
+        $this->dispatched = $dispatched;
+        $this->member_name = $member_name;
+        return $this;
+    }
+
+    /**
      * Retrieve amount that has not yet been dispatched into contributions
      */
     public function getMissingAmount(): float
     {
         if (empty($this->id)) {
             return $this->amount ?? 0;
+        }
+        if ($this->dispatched !== null) {
+            return (float)$this->amount - $this->dispatched;
         }
 
         try {

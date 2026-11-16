@@ -20,6 +20,7 @@ use Analog\Analog;
 use Galette\Core\Logs;
 use Laminas\Db\Sql\Expression;
 use Galette\Entity\Transaction;
+use Galette\Entity\Contribution;
 use Galette\Access\MembersScope;
 use Galette\Features\AccessControlled;
 use Galette\Entity\Adherent;
@@ -80,6 +81,7 @@ class Transactions
                     /** @var ArrayObject<string, int|string> $row */
                     $transactions[] = new Transaction($this->zdb, $this->login, $row);
                 }
+                $this->setListData($transactions);
             } else {
                 $transactions = $results;
             }
@@ -87,6 +89,45 @@ class Transactions
         } catch (Throwable $e) {
             Logs::exception($e, 'Cannot list transactions', Analog::WARNING);
             throw $e;
+        }
+    }
+
+    /**
+     * Set dispatched amounts and member names of listed transactions, rather than queries per row
+     *
+     * @param array<int, Transaction> $transactions Listed transactions
+     */
+    private function setListData(array $transactions): void
+    {
+        if (count($transactions) === 0) {
+            return;
+        }
+
+        $select = $this->zdb->select(Contribution::TABLE);
+        $select
+            ->columns([Transaction::PK, 'dispatched' => new Expression('SUM(montant_cotis)')])
+            ->where([Transaction::PK => array_map(fn(Transaction $t): int => (int)$t->id, $transactions)])
+            ->group(Transaction::PK);
+        $dispatched = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $dispatched[(int)$row[Transaction::PK]] = (float)$row['dispatched'];
+        }
+
+        $names = Adherent::getSNames(
+            $this->zdb,
+            array_filter(array_map(fn(Transaction $t): ?int => $t->member, $transactions))
+        );
+
+        foreach ($transactions as $transaction) {
+            $member = $transaction->member;
+            if ($member !== null && !isset($names[$member])) {
+                //member not found: let the transaction look it up as before
+                continue;
+            }
+            $transaction->setListData(
+                $dispatched[(int)$transaction->id] ?? 0.0,
+                $member !== null ? $names[$member] : ''
+            );
         }
     }
 

@@ -291,6 +291,23 @@ class Roles
             $role = new Role($row);
             $roles[$role->getId()] = $role;
         }
+
+        //permissions of all listed roles at once when one of them needs it, rather than one query per role
+        $permissions = null;
+        $loader = function () use (&$permissions): array {
+            if ($permissions === null) {
+                $permissions = [];
+                $select = $this->zdb->select(self::PERMISSIONS_TABLE);
+                $select->columns([Role::PK, 'permission']);
+                foreach ($this->zdb->execute($select) as $row) {
+                    $permissions[(int)$row->{Role::PK}][] = (string)$row->permission;
+                }
+            }
+            return $permissions;
+        };
+        foreach ($roles as $role) {
+            $role->setPermissionsLoader($loader);
+        }
         return $roles;
     }
 

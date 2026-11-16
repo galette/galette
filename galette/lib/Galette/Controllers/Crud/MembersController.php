@@ -790,6 +790,9 @@ class MembersController extends CrudController
         $members = new Members($filters);
 
         $members_list = $members->getVisibleMembersList(as_members: true);
+        if (is_array($members_list)) {
+            $members->setListData($members_list);
+        }
 
         $galette_list = $this->lists_config->getDisplayElements($this->login);
         $dynamic_values = is_array($members_list) ? $this->getListDynamicValues($galette_list, $members_list) : [];

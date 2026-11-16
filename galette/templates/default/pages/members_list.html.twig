@@ -372,7 +372,7 @@
                                 <i class="ui user tie orange icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Staff member') }}</span>
                             </span>
-            {% elseif member.getManagedGroups() %}
+            {% elseif member.managesGroups() %}
                             <span>
                                 <i class="ui users cog orange icon tooltip" aria-hidden="true"></i>
                                 <span class="ui special popup">{{ _T('Group manager') }}</span>
@@ -418,8 +418,6 @@
                 {% set value = member.sappears_in_list %}
             {% elseif column.field_id == 'activite_adh' %}
                 {% set value = member.sactive %}
-            {% elseif column.field_id == 'id_statut' %}
-                {% set value = member.sstatus %}
             {% elseif column.field_id == 'bool_admin_adh' %}
                 {% set value = member.sadmin %}
             {% elseif column.field_id == 'bool_exempt_adh' %}

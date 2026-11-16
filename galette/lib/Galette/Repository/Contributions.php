@@ -25,6 +25,7 @@ use Galette\Features\AccessControlled;
 use Galette\Entity\Adherent;
 use Galette\Entity\Transaction;
 use Galette\Entity\ContributionsTypes;
+use Galette\Entity\ScheduledPayment;
 use Galette\Filters\ContributionsList;
 use Laminas\Db\Sql\Select;
 use Safe\DateTime;
@@ -135,6 +136,7 @@ class Contributions
                 foreach ($results as $row) {
                     $contributions[] = new Contribution($this->zdb, $this->login, $row);
                 }
+                $this->setListData($contributions);
             } else {
                 $contributions = $results;
             }
@@ -142,6 +144,46 @@ class Contributions
         } catch (Throwable $e) {
             Logs::exception($e, 'Cannot list contributions', Analog::WARNING);
             throw $e;
+        }
+    }
+
+    /**
+     * Set schedules and member names of listed contributions, rather than queries per row
+     *
+     * @param array<int, Contribution> $contributions Listed contributions
+     */
+    public function setListData(array $contributions): void
+    {
+        if (count($contributions) === 0) {
+            return;
+        }
+
+        $select = $this->zdb->select(ScheduledPayment::TABLE);
+        $select
+            ->columns([Contribution::PK, 'allocated' => new Expression('SUM(amount)')])
+            ->where([Contribution::PK => array_map(fn(Contribution $c): int => (int)$c->id, $contributions)])
+            ->group(Contribution::PK);
+        $allocations = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $allocations[(int)$row[Contribution::PK]] = (float)$row['allocated'];
+        }
+
+        $names = Adherent::getSNames(
+            $this->zdb,
+            array_filter(array_map(fn(Contribution $c): ?int => $c->member, $contributions))
+        );
+
+        foreach ($contributions as $contribution) {
+            $member = $contribution->member;
+            if ($member !== null && !isset($names[$member])) {
+                //member not found: let the contribution look it up as before
+                continue;
+            }
+            $contribution->setListData(
+                isset($allocations[(int)$contribution->id]),
+                $allocations[(int)$contribution->id] ?? 0.0,
+                $member !== null ? $names[$member] : ''
+            );
         }
     }
 

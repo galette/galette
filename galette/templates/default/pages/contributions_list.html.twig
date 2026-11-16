@@ -360,7 +360,7 @@
                         {% set mname = member.sname %}
                     {% else %}
                         {# FIXME #}
-                        {% set mname = memberName({'id': mid}) %}
+                        {% set mname = contribution.getMemberName() %}
                     {% endif %}
                     {% if filters.filtre_cotis_adh == "" or filters.filtre_cotis_adh == null %}
                         <a
