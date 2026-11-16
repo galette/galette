@@ -1,7 +1,7 @@
 {
     "name": "galette/galette",
     "description": "Galette - Free your association management! / Libérez la gestion de votre association !",
-    "license": "GPLv3",
+    "license": "GPL-3.0-or-later",
     "type": "project",
     "keywords": [
         "membership",
