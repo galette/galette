@@ -63,6 +63,8 @@ parameters:
         - GALETTE_TESTS_PATH
         - GALETTE_TESTS
         - GALETTE_FEATURE_FLAGS
+        # set by the installer in config.inc.php, its .dist sample says pgsql
+        - TYPE_DB
     universalObjectCratesClasses:
         - RKA\Session
     ignoreErrors:
@@ -80,6 +82,12 @@ parameters:
                 - tests/config/*/config.inc.php
                 - tests/config/*/local_config.inc.php
                 - tests/TestsBootstrap.php
+        # phpstan 2.3.6 regression: $dyn_field is wrongly narrowed to false
+        # once the field branches merge (2.3.5 is fine); drop once fixed upstream
+        -
+            identifier: instanceof.alwaysFalse
+            path: galette/lib/Galette/Repository/Members.php
+            count: 1
 includes:
     - galette/vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
 

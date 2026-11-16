@@ -16,6 +16,7 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setParallelConfig(PhpCsFixer\Runner\Parallel\ParallelConfigFactory::detect())
     ->setCacheFile(sys_get_temp_dir() . '/php-cs-fixer.galette.cache')
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setRules([
         '@PSR12' => true,
         '@PER-CS' => true,

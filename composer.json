@@ -105,11 +105,16 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "patch -d galette/vendor/tecnickcom/tcpdf/ -p3 < patches/tcpdf-php81.patch",
+            "@apply-patches",
             "@compile-locales"
         ],
         "post-update-cmd": [
+            "@apply-patches",
             "@compile-locales"
+        ],
+        "apply-patches": [
+            "patch -d galette/vendor/tecnickcom/tcpdf/ -p3 -R --dry-run -s < patches/tcpdf-php81.patch > /dev/null 2>&1 || patch -d galette/vendor/tecnickcom/tcpdf/ -p3 < patches/tcpdf-php81.patch",
+            "patch -d galette/vendor/thecodingmachine/safe/ -p1 -R --dry-run -s < patches/thecodingmachine-safe-php8.6.patch > /dev/null 2>&1 || patch -d galette/vendor/thecodingmachine/safe/ -p1 < patches/thecodingmachine-safe-php8.6.patch"
         ],
         "compile-locales": [
             "bin/console galette:compile-locales || echo 'Translations have not been compiled, see above.'"
