@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Galette\Features;
 
+use Galette\Core\RowsCache;
 use Galette\Entity\Adherent;
 use Galette\Entity\Social;
 
@@ -112,20 +113,25 @@ trait Socials
      */
     protected function getRegisteredTypes(bool $core): array
     {
-        $select = $this->zdb->select(Social::TABLE, 's');
-        $select->quantifier('DISTINCT')->columns(['type']);
-        if ($core === true) {
-            $select->where(Adherent::PK . ' IS NULL');
-        } else {
-            $select->where(Adherent::PK . ' IS NOT NULL');
-        }
+        /** @var array<string,string> */
+        return RowsCache::remember(
+            Social::TABLE,
+            $core ? 'types:association' : 'types:members',
+            function () use ($core): array {
+                $select = $this->zdb->select(Social::TABLE, 's');
+                $select->quantifier('DISTINCT')->columns(['type']);
+                if ($core === true) {
+                    $select->where(Adherent::PK . ' IS NULL');
+                } else {
+                    $select->where(Adherent::PK . ' IS NOT NULL');
+                }
 
-        $results = $this->zdb->execute($select);
-        $types = [];
-        foreach ($results as $result) {
-            $types[$result->type] = $result->type;
-        }
-
-        return $types;
+                $types = [];
+                foreach ($this->zdb->execute($select) as $result) {
+                    $types[$result->type] = $result->type;
+                }
+                return $types;
+            }
+        );
     }
 }

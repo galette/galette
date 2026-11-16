@@ -13,6 +13,7 @@ namespace Galette\Entity;
 use ArrayObject;
 use Throwable;
 use Galette\Core\Db;
+use Galette\Core\RowsCache;
 use Analog\Analog;
 use Galette\Core\Logs;
 use Galette\Features\I18n;
@@ -72,11 +73,7 @@ class PaymentType implements \Stringable
     public function load(int $id): bool
     {
         try {
-            $select = $this->zdb->select(self::TABLE);
-            $select->limit(1)->where([self::PK => $id]);
-
-            $results = $this->zdb->execute($select);
-            $res = $results->current();
+            $res = RowsCache::get(zdb: $this->zdb, table: self::TABLE, pk: self::PK, id: $id);
 
             $this->id = $id;
             $this->name = $res->type_name;

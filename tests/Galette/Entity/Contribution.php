@@ -1220,6 +1220,7 @@ class Contribution extends GaletteTestCase
         $id = (int)$this->contrib->id;
 
         $field_types = PREFIX_DB . \Galette\DynamicFields\DynamicField::TABLE;
+        \Galette\Core\RowsCache::clear();
         $this->assertSame(
             1,
             $this->countQueries(
@@ -1231,6 +1232,7 @@ class Contribution extends GaletteTestCase
         $select = $this->zdb->select(\Galette\Entity\Contribution::TABLE);
         $select->where([\Galette\Entity\Contribution::PK => $id]);
         $row = $this->zdb->execute($select)->current();
+        \Galette\Core\RowsCache::clear();
         $this->assertSame(
             1,
             $this->countQueries(

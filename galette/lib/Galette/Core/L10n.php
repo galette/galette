@@ -338,22 +338,21 @@ class L10n
     public function getDynamicTranslation(string $text_orig, string $text_locale): string
     {
         try {
-            $select = $this->zdb->select(self::TABLE);
-            $select->limit(1)->columns(
-                ['text_trans']
-            )->where(
-                [
-                    'text_orig_sum' => self::sum($text_orig),
-                    'text_locale'   => $text_locale
-                ]
+            //every label of a page may be looked up: read translations of the locale once
+            $translations = RowsCache::remember(
+                self::TABLE,
+                'locale=' . $text_locale,
+                function () use ($text_locale): array {
+                    $select = $this->zdb->select(self::TABLE);
+                    $select->columns(['text_orig_sum', 'text_trans'])->where(['text_locale' => $text_locale]);
+                    $translations = [];
+                    foreach ($this->zdb->execute($select) as $row) {
+                        $translations[(string)$row->text_orig_sum] = (string)$row->text_trans;
+                    }
+                    return $translations;
+                }
             );
-            $results = $this->zdb->execute($select);
-            if ($results->count() > 0) {
-                $res = $results->current();
-                return $res->text_trans;
-            } else {
-                return '';
-            }
+            return $translations[self::sum($text_orig)] ?? '';
         } catch (Throwable $e) {
             Logs::exception(
                 $e,

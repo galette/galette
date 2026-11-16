@@ -14,6 +14,7 @@ use Analog\Analog;
 use Galette\Core\Logs;
 use DI\Attribute\Inject;
 use Galette\Core\Db;
+use Galette\Core\RowsCache;
 use ArrayObject;
 use Galette\Core\Login;
 use Galette\Features\I18n;
@@ -86,13 +87,9 @@ class Status
     public function load(int $id): bool
     {
         try {
-            $select = $this->zdb->select(self::TABLE);
-            $select->where([self::PK => $id]);
-
-            $results = $this->zdb->execute($select);
-            if ($results->count() > 0) {
-                /** @var ArrayObject<string, int|string> $result */
-                $result = $results->current();
+            /** @var ?ArrayObject<string, int|string> $result */
+            $result = RowsCache::get(zdb: $this->zdb, table: self::TABLE, pk: self::PK, id: $id);
+            if ($result !== null) {
                 $this->loadFromRS($result);
 
                 return true;
@@ -254,13 +251,10 @@ class Status
     public function get(int $id): ArrayObject|false
     {
         try {
-            $select = $this->zdb->select(self::TABLE);
-            $select->where([self::PK => $id]);
+            /** @var ?ArrayObject<string, int|string> $result */
+            $result = RowsCache::get(zdb: $this->zdb, table: self::TABLE, pk: self::PK, id: $id);
 
-            $results = $this->zdb->execute($select);
-            $result = $results->current();
-
-            if (!$result) {
+            if ($result === null) {
                 $this->errors[] = _T("Label does not exist");
                 return false;
             }

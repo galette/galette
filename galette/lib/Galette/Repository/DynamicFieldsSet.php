@@ -13,6 +13,7 @@ namespace Galette\Repository;
 use ArrayObject;
 use Galette\Core\Db;
 use Galette\Core\Login;
+use Galette\Core\RowsCache;
 use Galette\DynamicFields\Choice;
 use Galette\DynamicFields\DynamicField;
 use Galette\DynamicFields\Text;
@@ -62,18 +63,17 @@ class DynamicFieldsSet
      */
     public function getList(string $form_name, bool $inaccessible = false): array
     {
-        $select = $this->zdb->select(DynamicField::TABLE);
-        $where = ['field_form' => $form_name];
-
-        $select
-            ->where($where)
-            ->order('field_index');
-
-        $results = $this->zdb->execute($select);
+        //every form of a list item looks its fields up: read them once
+        $results = array_filter(
+            RowsCache::all($this->zdb, DynamicField::TABLE, DynamicField::PK),
+            fn(ArrayObject $r): bool => $r['field_form'] === $form_name
+        );
+        //rows come by primary key, keep it for fields at the same index
+        uasort($results, fn(ArrayObject $a, ArrayObject $b): int => (int)$a['field_index'] <=> (int)$b['field_index']);
         $access_level = $this->login->getAccessLevel();
 
         $fields = [];
-        if ($results->count() > 0) {
+        if (count($results) > 0) {
             foreach ($results as $r) {
                 /** @var ArrayObject<string, int|string> $r */
                 $df = DynamicField::getFieldType($this->zdb, (int)$r['field_type']);

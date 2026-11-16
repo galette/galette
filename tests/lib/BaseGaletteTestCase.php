@@ -150,6 +150,7 @@ abstract class BaseGaletteTestCase extends TestCase
         //produced it instead of cascading on every subsequent setUp()
         $this->assertCount(0, $leftovers, print_r($leftovers, return: true));
 
+        \Galette\Core\RowsCache::clear();
         $this->zdb = $container->get(\Galette\Core\Db::class);
         $container->get(\Galette\Core\I18n::class)->changeLanguage('en_US');
         if ($this->db_transactions) {
@@ -199,6 +200,8 @@ abstract class BaseGaletteTestCase extends TestCase
         //Plugin registrations would outlive the test that made them and turn
         //failures into order-dependent ones
         \Galette\Core\PreferencesSchema::reset();
+        //reference rows read by a test must not leak to the next one
+        \Galette\Core\RowsCache::clear();
         //a later test must not record mails instead of sending them
         \Galette\Core\GaletteMail::setMailerFactory(factory: null);
 
