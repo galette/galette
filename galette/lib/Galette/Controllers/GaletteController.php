@@ -142,6 +142,10 @@ class GaletteController extends AbstractController
             $params['warning_detected'] = [
                 _T("Script protection is turned off: a script injected in a page would run. Turn it back on from the advanced configuration as soon as the cause is fixed.")
             ];
+        } elseif ($this->login->isAdmin() && !$csp->isEnforced()) {
+            $params['warning_detected'] = [
+                _T("Script protection is turned off: a script injected in a page would run. Only the super administrator can turn it back on.")
+            ];
         }
 
         // display page
