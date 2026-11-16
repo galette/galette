@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-13 19:32+0100\n"
-"PO-Revision-Date: 2026-11-13 19:32+0100\n"
+"POT-Creation-Date: 2026-11-16 07:05+0100\n"
+"PO-Revision-Date: 2026-11-16 07:05+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
 "Language: en_US\n"
@@ -68,7 +68,7 @@ msgstr "Mailings"
 #: ../lib/Galette/Access/Permissions.php:116
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:178
 #: ../lib/Galette/Controllers/Crud/DocumentsController.php:216
-#: ../lib/Galette/Core/Preferences.php:1251
+#: ../lib/Galette/Core/Preferences.php:1254
 #: ../lib/Galette/Features/Replacements.php:971
 #: ../lib/Galette/Navigation/Dashboards.php:162
 #: ../lib/Galette/Navigation/MainMenu.php:279
@@ -95,7 +95,7 @@ msgid "Logs"
 msgstr "Logs"
 
 #: ../lib/Galette/Access/Permissions.php:120
-#: ../lib/Galette/Controllers/GaletteController.php:96
+#: ../lib/Galette/Controllers/GaletteController.php:97
 #: ../templates/default/elements/footer.html.twig:34
 msgid "System information"
 msgstr "System information"
@@ -113,7 +113,7 @@ msgstr "Plugins"
 
 #: ../lib/Galette/Access/Permissions.php:123
 #: ../lib/Galette/Controllers/Crud/RolesController.php:159
-#: ../lib/Galette/Core/Install.php:1224
+#: ../lib/Galette/Core/Install.php:1277
 #: ../lib/Galette/Navigation/MainMenu.php:398
 #: ../templates/default/components/forms/roles.html.twig:17
 #: ../templates/default/components/forms/roles.html.twig:22
@@ -367,7 +367,7 @@ msgstr[0] "Feature turned off"
 msgstr[1] "Features turned off"
 
 #: ../lib/Galette/Console/Command/ProcessMailingQueue.php:93
-#: ../lib/Galette/Core/Preferences.php:1158
+#: ../lib/Galette/Core/Preferences.php:1161
 msgid ""
 "Please set your instance URL from the advanced configuration, or define the "
 "\"GALETTE_URI\" constant."
@@ -485,9 +485,9 @@ msgstr "Set by the %s constant in behavior.inc.php, which takes precedence."
 #: ../templates/default/elements/js/modal_action.js.twig:98
 #: ../templates/default/elements/js/removal.js.twig:92
 #: ../templates/default/elements/js/removal.js.twig:118
-#: ../templates/default/elements/scripts.html.twig:158
-#: ../templates/default/elements/scripts.html.twig:180
-#: ../templates/default/elements/scripts.html.twig:202
+#: ../templates/default/elements/scripts.html.twig:166
+#: ../templates/default/elements/scripts.html.twig:188
+#: ../templates/default/elements/scripts.html.twig:210
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:70
 #: ../templates/default/pages/configuration_dynamic_fields.html.twig:144
 #: ../templates/default/pages/configuration_payment_types.html.twig:132
@@ -543,6 +543,7 @@ msgstr "Thank you for registering!"
 #: ../lib/Galette/Features/Replacements.php:359
 #: ../templates/default/elements/navigation/public_pages.html.twig:38
 #: ../templates/default/pages/index.html.twig:31
+#: ../templates/default/pages/index.html.twig:66
 msgid "Login"
 msgstr "Login"
 
@@ -975,7 +976,7 @@ msgid "transaction"
 msgstr "transaction"
 
 #: ../lib/Galette/Controllers/Crud/ContributionsTypesController.php:90
-#: ../lib/Galette/Core/Install.php:1215
+#: ../lib/Galette/Core/Install.php:1268
 #: ../lib/Galette/Navigation/MainMenu.php:364
 msgid "Contributions types"
 msgstr "Contributions types"
@@ -1243,7 +1244,7 @@ msgid "Sending reminders"
 msgstr "Sending reminders"
 
 #: ../lib/Galette/Controllers/Crud/MailingsController.php:1108
-#: ../lib/Galette/Controllers/GaletteController.php:782
+#: ../lib/Galette/Controllers/GaletteController.php:795
 #: ../lib/Galette/Navigation/Dashboards.php:151
 #: ../lib/Galette/Navigation/MainMenu.php:258
 msgid "Reminders"
@@ -1376,8 +1377,8 @@ msgid "An error occurred adding member to its groups as manager."
 msgstr "An error occurred adding member to its groups as manager."
 
 #: ../lib/Galette/Controllers/Crud/MembersController.php:1973
-#: ../lib/Galette/Controllers/GaletteController.php:273
-#: ../lib/Galette/Controllers/GaletteController.php:284
+#: ../lib/Galette/Controllers/GaletteController.php:286
+#: ../lib/Galette/Controllers/GaletteController.php:297
 msgid "Delete failed"
 msgstr "Delete failed"
 
@@ -1399,7 +1400,7 @@ msgid "No member #%1$s."
 msgstr "No member #%1$s."
 
 #: ../lib/Galette/Controllers/Crud/PaymentTypeController.php:92
-#: ../lib/Galette/Core/Install.php:1244 ../lib/Galette/Core/Install.php:1263
+#: ../lib/Galette/Core/Install.php:1297 ../lib/Galette/Core/Install.php:1316
 #: ../lib/Galette/Navigation/MainMenu.php:369
 msgid "Payment types"
 msgstr "Payment types"
@@ -1664,7 +1665,7 @@ msgid "Remove status '%1$s'"
 msgstr "Remove status '%1$s'"
 
 #: ../lib/Galette/Controllers/Crud/TitlesController.php:87
-#: ../lib/Galette/Core/Install.php:1236
+#: ../lib/Galette/Core/Install.php:1289
 #: ../lib/Galette/Navigation/MainMenu.php:378
 msgid "Titles"
 msgstr "Titles"
@@ -1896,14 +1897,22 @@ msgstr "An error occurred saving label `%1$s` for language `%2$s`"
 msgid "Labels has been successfully translated!"
 msgstr "Labels has been successfully translated!"
 
-#: ../lib/Galette/Controllers/GaletteController.php:115
+#: ../lib/Galette/Controllers/GaletteController.php:121
 #: ../templates/default/elements/navigation/navigation_items.html.twig:18
 #: ../templates/default/elements/navigation/navigation_items.html.twig:22
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: ../lib/Galette/Controllers/GaletteController.php:210
-#: ../lib/Galette/Core/Install.php:1211
+#: ../lib/Galette/Controllers/GaletteController.php:143
+msgid ""
+"Script protection is turned off: a script injected in a page would run. Turn "
+"it back on from the advanced configuration as soon as the cause is fixed."
+msgstr ""
+"Script protection is turned off: a script injected in a page would run. Turn "
+"it back on from the advanced configuration as soon as the cause is fixed."
+
+#: ../lib/Galette/Controllers/GaletteController.php:223
+#: ../lib/Galette/Core/Install.php:1264
 #: ../lib/Galette/DynamicFields/DynamicField.php:464
 #: ../lib/Galette/Navigation/Dashboards.php:171
 #: ../lib/Galette/Navigation/MainMenu.php:327
@@ -1912,24 +1921,24 @@ msgstr "Dashboard"
 msgid "Settings"
 msgstr "Settings"
 
-#: ../lib/Galette/Controllers/GaletteController.php:227
+#: ../lib/Galette/Controllers/GaletteController.php:240
 #: ../lib/Galette/Filters/MembersList.php:307
 msgid "All accounts"
 msgstr "All accounts"
 
-#: ../lib/Galette/Controllers/GaletteController.php:228
+#: ../lib/Galette/Controllers/GaletteController.php:241
 #: ../lib/Galette/Filters/MembersList.php:308
 msgid "Active accounts"
 msgstr "Active accounts"
 
-#: ../lib/Galette/Controllers/GaletteController.php:229
+#: ../lib/Galette/Controllers/GaletteController.php:242
 #: ../lib/Galette/Filters/MembersList.php:309
 msgid "Inactive accounts"
 msgstr "Inactive accounts"
 
-#: ../lib/Galette/Controllers/GaletteController.php:258
+#: ../lib/Galette/Controllers/GaletteController.php:271
 #: ../lib/Galette/Controllers/MapsController.php:424
-#: ../lib/Galette/Core/Preferences.php:767
+#: ../lib/Galette/Core/Preferences.php:770
 msgid ""
 "An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
@@ -1937,27 +1946,27 @@ msgstr ""
 "An SQL error has occurred while saving preferences. Please try again, and "
 "contact the administrator if the problem persists."
 
-#: ../lib/Galette/Controllers/GaletteController.php:260
+#: ../lib/Galette/Controllers/GaletteController.php:273
 msgid "Preferences has been saved."
 msgstr "Preferences has been saved."
 
-#: ../lib/Galette/Controllers/GaletteController.php:337
+#: ../lib/Galette/Controllers/GaletteController.php:350
 #: ../lib/Galette/Navigation/Dashboards.php:59
 #: ../lib/Galette/Navigation/MainMenu.php:103
 #: ../lib/Galette/Navigation/MainMenu.php:126
 msgid "My information"
 msgstr "My information"
 
-#: ../lib/Galette/Controllers/GaletteController.php:371
+#: ../lib/Galette/Controllers/GaletteController.php:384
 #: ../webroot/installer.php:221
 msgid "Passwords mismatch"
 msgstr "Passwords mismatch"
 
-#: ../lib/Galette/Controllers/GaletteController.php:375
+#: ../lib/Galette/Controllers/GaletteController.php:388
 msgid "Your credentials have been saved."
 msgstr "Your credentials have been saved."
 
-#: ../lib/Galette/Controllers/GaletteController.php:444
+#: ../lib/Galette/Controllers/GaletteController.php:457
 msgid ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
@@ -1965,84 +1974,84 @@ msgstr ""
 "You asked Galette to send a test email, but email has been disabled in the "
 "preferences."
 
-#: ../lib/Galette/Controllers/GaletteController.php:451
+#: ../lib/Galette/Controllers/GaletteController.php:464
 msgid "Test message"
 msgstr "Test message"
 
-#: ../lib/Galette/Controllers/GaletteController.php:454
+#: ../lib/Galette/Controllers/GaletteController.php:467
 msgid "Galette admin"
 msgstr "Galette admin"
 
-#: ../lib/Galette/Controllers/GaletteController.php:457
+#: ../lib/Galette/Controllers/GaletteController.php:470
 msgid "Test message."
 msgstr "Test message."
 
-#: ../lib/Galette/Controllers/GaletteController.php:464
+#: ../lib/Galette/Controllers/GaletteController.php:477
 #, php-format
 msgid "An email has been sent to %1$s"
 msgstr "An email has been sent to %1$s"
 
-#: ../lib/Galette/Controllers/GaletteController.php:473
+#: ../lib/Galette/Controllers/GaletteController.php:486
 #, php-format
 msgid "No email sent to %1$s"
 msgstr "No email sent to %1$s"
 
-#: ../lib/Galette/Controllers/GaletteController.php:483
+#: ../lib/Galette/Controllers/GaletteController.php:496
 msgid "Invalid email adress!"
 msgstr "Invalid email adress!"
 
-#: ../lib/Galette/Controllers/GaletteController.php:527
+#: ../lib/Galette/Controllers/GaletteController.php:540
 msgid "Those emailing settings work."
 msgstr "Those emailing settings work."
 
-#: ../lib/Galette/Controllers/GaletteController.php:533
+#: ../lib/Galette/Controllers/GaletteController.php:546
 msgid "Those emailing settings do not work."
 msgstr "Those emailing settings do not work."
 
-#: ../lib/Galette/Controllers/GaletteController.php:599
+#: ../lib/Galette/Controllers/GaletteController.php:612
 #: ../lib/Galette/Navigation/MainMenu.php:289
 msgid "Charts"
 msgstr "Charts"
 
-#: ../lib/Galette/Controllers/GaletteController.php:620
+#: ../lib/Galette/Controllers/GaletteController.php:633
 #: ../lib/Galette/Navigation/MainMenu.php:354
 msgid "Core fields"
 msgstr "Core fields"
 
-#: ../lib/Galette/Controllers/GaletteController.php:677
+#: ../lib/Galette/Controllers/GaletteController.php:690
 msgid "Fields configuration has been successfully stored"
 msgstr "Fields configuration has been successfully stored"
 
-#: ../lib/Galette/Controllers/GaletteController.php:682
+#: ../lib/Galette/Controllers/GaletteController.php:695
 msgid "An error occurred while saving fields configuration :("
 msgstr "An error occurred while saving fields configuration :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:706
+#: ../lib/Galette/Controllers/GaletteController.php:719
 #: ../lib/Galette/Navigation/MainMenu.php:349
 msgid "Core lists"
 msgstr "Core lists"
 
-#: ../lib/Galette/Controllers/GaletteController.php:746
+#: ../lib/Galette/Controllers/GaletteController.php:759
 msgid "List configuration has been successfully stored"
 msgstr "List configuration has been successfully stored"
 
-#: ../lib/Galette/Controllers/GaletteController.php:751
+#: ../lib/Galette/Controllers/GaletteController.php:764
 msgid "An error occurred while saving list configuration :("
 msgstr "An error occurred while saving list configuration :("
 
-#: ../lib/Galette/Controllers/GaletteController.php:822
+#: ../lib/Galette/Controllers/GaletteController.php:835
 msgid "No reminder to send for now."
 msgstr "No reminder to send for now."
 
-#: ../lib/Galette/Controllers/GaletteController.php:877
+#: ../lib/Galette/Controllers/GaletteController.php:890
 msgid "Reminder has not been sent:"
 msgstr "Reminder has not been sent:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:884
+#: ../lib/Galette/Controllers/GaletteController.php:897
 msgid "Sent reminders:"
 msgstr "Sent reminders:"
 
-#: ../lib/Galette/Controllers/GaletteController.php:948
+#: ../lib/Galette/Controllers/GaletteController.php:961
 msgid "Download document"
 msgstr "Download document"
 
@@ -2173,7 +2182,7 @@ msgid "Unable to get groups list."
 msgstr "Unable to get groups list."
 
 #: ../lib/Galette/Controllers/PdfController.php:529
-#: ../lib/Galette/Core/Install.php:1240
+#: ../lib/Galette/Core/Install.php:1293
 #: ../lib/Galette/Navigation/MainMenu.php:383
 msgid "PDF models"
 msgstr "PDF models"
@@ -2321,7 +2330,7 @@ msgstr "Recovery codes"
 msgid "Logged in as:<br/>%1$s"
 msgstr "Logged in as:<br/>%1$s"
 
-#: ../lib/Galette/Core/BehaviorConstants.php:65
+#: ../lib/Galette/Core/BehaviorConstants.php:67
 #, php-format
 msgid ""
 "You may want to set it from the \"%s\" setting listed above and remove "
@@ -2330,7 +2339,7 @@ msgstr ""
 "You may want to set it from the \"%s\" setting listed above and remove "
 "declared constant."
 
-#: ../lib/Galette/Core/BehaviorConstants.php:116
+#: ../lib/Galette/Core/BehaviorConstants.php:118
 msgid ""
 "Enable debug mode: verbose logs, no cache, Twig strict variables and "
 "detailed errors."
@@ -2338,7 +2347,7 @@ msgstr ""
 "Enable debug mode: verbose logs, no cache, Twig strict variables and "
 "detailed errors."
 
-#: ../lib/Galette/Core/BehaviorConstants.php:120
+#: ../lib/Galette/Core/BehaviorConstants.php:122
 msgid ""
 "PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin "
 "credentials and mail settings."
@@ -2346,7 +2355,7 @@ msgstr ""
 "PROD, MAINT to let only the superadmin log in, or DEMO to lock superadmin "
 "credentials and mail settings."
 
-#: ../lib/Galette/Core/BehaviorConstants.php:124
+#: ../lib/Galette/Core/BehaviorConstants.php:126
 msgid ""
 "Verbosity of the logs, as an Analog level. Defaults to WARNING, or DEBUG in "
 "debug mode."
@@ -2354,11 +2363,11 @@ msgstr ""
 "Verbosity of the logs, as an Analog level. Defaults to WARNING, or DEBUG in "
 "debug mode."
 
-#: ../lib/Galette/Core/BehaviorConstants.php:128
+#: ../lib/Galette/Core/BehaviorConstants.php:130
 msgid "Dump every SQL query to the logs."
 msgstr "Dump every SQL query to the logs."
 
-#: ../lib/Galette/Core/BehaviorConstants.php:132
+#: ../lib/Galette/Core/BehaviorConstants.php:134
 msgid ""
 "Features to activate, among those declared in the feature flags registry. "
 "Takes precedence over the features turned on from this page."
@@ -2366,7 +2375,15 @@ msgstr ""
 "Features to activate, among those declared in the feature flags registry. "
 "Takes precedence over the features turned on from this page."
 
-#: ../lib/Galette/Core/BehaviorConstants.php:165
+#: ../lib/Galette/Core/BehaviorConstants.php:138
+msgid ""
+"Accounts offered on the login page in DEMO mode, each with its login, "
+"password and label."
+msgstr ""
+"Accounts offered on the login page in DEMO mode, each with its login, "
+"password and label."
+
+#: ../lib/Galette/Core/BehaviorConstants.php:176
 #: ../lib/Galette/DynamicFields/Boolean.php:51
 #: ../lib/Galette/Entity/Adherent.php:1794
 #: ../lib/Galette/Entity/Adherent.php:1796
@@ -2393,7 +2410,7 @@ msgstr ""
 msgid "Yes"
 msgstr "Yes"
 
-#: ../lib/Galette/Core/BehaviorConstants.php:165
+#: ../lib/Galette/Core/BehaviorConstants.php:176
 #: ../lib/Galette/DynamicFields/Boolean.php:51
 #: ../lib/Galette/Entity/Adherent.php:1794
 #: ../lib/Galette/Entity/Adherent.php:1796
@@ -2430,11 +2447,11 @@ msgstr "'%s' module"
 msgid "either 'mysql' or 'pgsql' PDO driver"
 msgstr "either 'mysql' or 'pgsql' PDO driver"
 
-#: ../lib/Galette/Core/CheckModules.php:113 ../lib/Galette/Core/Install.php:169
+#: ../lib/Galette/Core/CheckModules.php:113 ../lib/Galette/Core/Install.php:173
 msgid "Ko"
 msgstr "Ko"
 
-#: ../lib/Galette/Core/CheckModules.php:120 ../lib/Galette/Core/Install.php:169
+#: ../lib/Galette/Core/CheckModules.php:120 ../lib/Galette/Core/Install.php:173
 msgid "Ok"
 msgstr "Ok"
 
@@ -2546,95 +2563,95 @@ msgid "Unknown lang (%1$s)"
 msgstr "Unknown lang (%1$s)"
 
 #. TRANS: installation step title, where the system requirements are verified
-#: ../lib/Galette/Core/Install.php:104 ../webroot/installer.php:375
+#: ../lib/Galette/Core/Install.php:108 ../webroot/installer.php:375
 msgctxt "installation step"
 msgid "Checks"
 msgstr "Checks"
 
-#: ../lib/Galette/Core/Install.php:108
+#: ../lib/Galette/Core/Install.php:112
 #: ../templates/default/modals/plugin_initdb.html.twig:151
 msgid "Installation mode"
 msgstr "Installation mode"
 
-#: ../lib/Galette/Core/Install.php:112 ../webroot/installer.php:386
+#: ../lib/Galette/Core/Install.php:116 ../webroot/installer.php:386
 msgid "Database"
 msgstr "Database"
 
-#: ../lib/Galette/Core/Install.php:116 ../webroot/installer.php:397
+#: ../lib/Galette/Core/Install.php:120 ../webroot/installer.php:397
 msgid "Database access and permissions"
 msgstr "Database access and permissions"
 
-#: ../lib/Galette/Core/Install.php:120
+#: ../lib/Galette/Core/Install.php:124
 msgid "Previous version selection"
 msgstr "Previous version selection"
 
-#: ../lib/Galette/Core/Install.php:124 ../webroot/installer.php:422
+#: ../lib/Galette/Core/Install.php:128 ../webroot/installer.php:422
 #: ../templates/default/modals/plugin_initdb.html.twig:171
 msgid "Database upgrade"
 msgstr "Database upgrade"
 
-#: ../lib/Galette/Core/Install.php:128
+#: ../lib/Galette/Core/Install.php:132
 msgid "Tables Creation"
 msgstr "Tables Creation"
 
-#: ../lib/Galette/Core/Install.php:132 ../webroot/installer.php:452
+#: ../lib/Galette/Core/Install.php:136 ../webroot/installer.php:452
 msgid "Admin parameters"
 msgstr "Admin parameters"
 
-#: ../lib/Galette/Core/Install.php:136 ../webroot/installer.php:466
+#: ../lib/Galette/Core/Install.php:140 ../webroot/installer.php:466
 #: ../templates/default/pages/desktop.html.twig:28
 msgid "Telemetry"
 msgstr "Telemetry"
 
-#: ../lib/Galette/Core/Install.php:140 ../webroot/installer.php:477
+#: ../lib/Galette/Core/Install.php:144 ../webroot/installer.php:477
 msgid "Galette initialization"
 msgstr "Galette initialization"
 
-#: ../lib/Galette/Core/Install.php:144 ../webroot/installer.php:488
+#: ../lib/Galette/Core/Install.php:148 ../webroot/installer.php:488
 #: ../templates/default/modals/plugin_initdb.html.twig:177
 #: ../templates/default/pages/mailing_queue.html.twig:128
 msgid "End!"
 msgstr "End!"
 
-#: ../lib/Galette/Core/Install.php:362
+#: ../lib/Galette/Core/Install.php:366
 msgid "Database type unknown"
 msgstr "Database type unknown"
 
 #. TRANS: parameter is the update script version
-#: ../lib/Galette/Core/Install.php:673
+#: ../lib/Galette/Core/Install.php:677
 #, php-format
 msgid "%1$s script has been successfully executed :)"
 msgstr "%1$s script has been successfully executed :)"
 
 #. TRANS: parameter is the update script version
-#: ../lib/Galette/Core/Install.php:682
+#: ../lib/Galette/Core/Install.php:686
 #, php-format
 msgid "Unable to run %1$s update script :("
 msgstr "Unable to run %1$s update script :("
 
-#: ../lib/Galette/Core/Install.php:943
+#: ../lib/Galette/Core/Install.php:996
 msgid "No configuration file found!"
 msgstr "No configuration file found!"
 
-#: ../lib/Galette/Core/Install.php:956 ../lib/Galette/Core/Install.php:967
+#: ../lib/Galette/Core/Install.php:1009 ../lib/Galette/Core/Install.php:1020
 msgid "Existing configuration file is incomplete or unreadable!"
 msgstr "Existing configuration file is incomplete or unreadable!"
 
-#: ../lib/Galette/Core/Install.php:1097
+#: ../lib/Galette/Core/Install.php:1150
 msgid "Write configuration file"
 msgstr "Write configuration file"
 
-#: ../lib/Galette/Core/Install.php:1126
+#: ../lib/Galette/Core/Install.php:1179
 msgid "Config file already exists and is up to date"
 msgstr "Config file already exists and is up to date"
 
 #. TRANS: parameter is the file path
-#: ../lib/Galette/Core/Install.php:1146
+#: ../lib/Galette/Core/Install.php:1199
 #, php-format
 msgid "Unable to create configuration file (%1$s)"
 msgstr "Unable to create configuration file (%1$s)"
 
-#: ../lib/Galette/Core/Install.php:1219
+#: ../lib/Galette/Core/Install.php:1272
 #: ../templates/default/pages/advanced_config.html.twig:48
 #: ../templates/default/pages/advanced_config.html.twig:61
 #: ../templates/default/pages/advanced_config.html.twig:212
@@ -2644,19 +2661,19 @@ msgstr "Unable to create configuration file (%1$s)"
 msgid "Status"
 msgstr "Status"
 
-#: ../lib/Galette/Core/Install.php:1228
+#: ../lib/Galette/Core/Install.php:1281
 msgid "Fields config and categories"
 msgstr "Fields config and categories"
 
-#: ../lib/Galette/Core/Install.php:1232 ../lib/Galette/Core/Install.php:1258
+#: ../lib/Galette/Core/Install.php:1285 ../lib/Galette/Core/Install.php:1311
 msgid "Mails texts"
 msgstr "Mails texts"
 
-#: ../lib/Galette/Core/Install.php:1250
+#: ../lib/Galette/Core/Install.php:1303
 msgid "Update preferences"
 msgstr "Update preferences"
 
-#: ../lib/Galette/Core/Install.php:1254
+#: ../lib/Galette/Core/Install.php:1307
 msgid "Update models"
 msgstr "Update models"
 
@@ -2702,54 +2719,58 @@ msgstr "All"
 msgid "An SQL error has occurred."
 msgstr "An SQL error has occurred."
 
-#: ../lib/Galette/Core/Plugins.php:701 ../lib/Galette/Core/Plugins.php:768
+#: ../lib/Galette/Core/PluginInstall.php:131
+msgid "Default data"
+msgstr "Default data"
+
+#: ../lib/Galette/Core/Plugins.php:721 ../lib/Galette/Core/Plugins.php:788
 msgid "No such module."
 msgstr "No such module."
 
-#: ../lib/Galette/Core/Plugins.php:707
+#: ../lib/Galette/Core/Plugins.php:727
 msgid "Cannot deactivate plugin."
 msgstr "Cannot deactivate plugin."
 
-#: ../lib/Galette/Core/Plugins.php:773
+#: ../lib/Galette/Core/Plugins.php:793
 msgid "Plugin features are part of Galette now, it cannot be enabled."
 msgstr "Plugin features are part of Galette now, it cannot be enabled."
 
-#: ../lib/Galette/Core/Plugins.php:779
+#: ../lib/Galette/Core/Plugins.php:799
 msgid "Cannot activate plugin."
 msgstr "Cannot activate plugin."
 
-#: ../lib/Galette/Core/Plugins.php:1255
+#: ../lib/Galette/Core/Plugins.php:1275
 msgid "File not found!"
 msgstr "File not found!"
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:597
-#: ../lib/Galette/Core/Preferences.php:684
+#: ../lib/Galette/Core/Preferences.php:600
+#: ../lib/Galette/Core/Preferences.php:687
 #, php-format
 msgid "Unknown preference '%1$s'!"
 msgstr "Unknown preference '%1$s'!"
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:606
-#: ../lib/Galette/Core/Preferences.php:693
+#: ../lib/Galette/Core/Preferences.php:609
+#: ../lib/Galette/Core/Preferences.php:696
 #, php-format
 msgid "Preference '%1$s' is maintained by Galette and cannot be changed!"
 msgstr "Preference '%1$s' is maintained by Galette and cannot be changed!"
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:618
-#: ../lib/Galette/Core/Preferences.php:730
+#: ../lib/Galette/Core/Preferences.php:621
+#: ../lib/Galette/Core/Preferences.php:733
 #, php-format
 msgid "You are not allowed to change preference '%1$s'!"
 msgstr "You are not allowed to change preference '%1$s'!"
 
 #. TRANS: parameter is the preference name
-#: ../lib/Galette/Core/Preferences.php:703
+#: ../lib/Galette/Core/Preferences.php:706
 #, php-format
 msgid "Preference '%1$s' holds a secret and cannot be reset to its default!"
 msgstr "Preference '%1$s' holds a secret and cannot be reset to its default!"
 
-#: ../lib/Galette/Core/Preferences.php:737
+#: ../lib/Galette/Core/Preferences.php:740
 #: ../templates/default/pages/admin_credentials.html.twig:17
 #: ../templates/default/pages/plugins.html.twig:158
 #: ../templates/default/pages/preferences.html.twig:626
@@ -2758,8 +2779,8 @@ msgid ""
 msgstr ""
 "Application runs under demo mode. This functionnality is not enabled, sorry."
 
-#: ../lib/Galette/Core/Preferences.php:1177
-#: ../lib/Galette/Core/Preferences.php:1191
+#: ../lib/Galette/Core/Preferences.php:1180
+#: ../lib/Galette/Core/Preferences.php:1194
 #: ../lib/Galette/Entity/Document.php:324 ../lib/Galette/Entity/Texts.php:192
 #: ../lib/Galette/IO/Csv.php:90
 #: ../templates/default/pages/authentication_attempts.html.twig:10
@@ -2768,16 +2789,16 @@ msgstr ""
 msgid "Y-m-d H:i:s"
 msgstr "Y-m-d H:i:s"
 
-#: ../lib/Galette/Core/Preferences.php:1179
+#: ../lib/Galette/Core/Preferences.php:1182
 msgid "Never"
 msgstr "Never"
 
-#: ../lib/Galette/Core/Preferences.php:1246
+#: ../lib/Galette/Core/Preferences.php:1249
 #: ../lib/Galette/Features/Replacements.php:961
 msgid "Main information"
 msgstr "Main information"
 
-#: ../lib/Galette/Core/Preferences.php:1258
+#: ../lib/Galette/Core/Preferences.php:1261
 #: ../templates/default/elements/display_socials.html.twig:12
 #: ../templates/default/elements/edit_socials.html.twig:66
 #: ../templates/default/pages/preferences.html.twig:14
@@ -2856,83 +2877,103 @@ msgstr "- Offering months is only compatible with beginning of membership."
 msgid "- Mandatory field %1$s empty."
 msgstr "- Mandatory field %1$s empty."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1186
+#: ../lib/Galette/Core/PreferencesSchema.php:1216
 msgid "- The numbers and measures have to be integers!"
 msgstr "- The numbers and measures have to be integers!"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1187
+#: ../lib/Galette/Core/PreferencesSchema.php:1217
 msgid "- The card height have to be an integer between 40 and 55!"
 msgstr "- The card height have to be an integer between 40 and 55!"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1188
+#: ../lib/Galette/Core/PreferencesSchema.php:1218
 msgid "- The card width have to be an integer between 70 and 95!"
 msgstr "- The card width have to be an integer between 70 and 95!"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1189
+#: ../lib/Galette/Core/PreferencesSchema.php:1219
 msgid "- Invalid number of months of membership extension."
 msgstr "- Invalid number of months of membership extension."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1190
+#: ../lib/Galette/Core/PreferencesSchema.php:1220
 msgid "- Invalid number of offered months."
 msgstr "- Invalid number of offered months."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1191
+#: ../lib/Galette/Core/PreferencesSchema.php:1221
 msgid "- The username must be composed of at least 4 characters!"
 msgstr "- The username must be composed of at least 4 characters!"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1192
+#: ../lib/Galette/Core/PreferencesSchema.php:1222
 msgid "- This username is already used by another member !"
 msgstr "- This username is already used by another member !"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1193
+#: ../lib/Galette/Core/PreferencesSchema.php:1223
 msgid "- Invalid format of beginning of membership."
 msgstr "- Invalid format of beginning of membership."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1194
+#: ../lib/Galette/Core/PreferencesSchema.php:1224
 msgid "- Invalid date for beginning of membership."
 msgstr "- Invalid date for beginning of membership."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1195
+#: ../lib/Galette/Core/PreferencesSchema.php:1225
 msgid "- Invalid year for cards."
 msgstr "- Invalid year for cards."
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1196
+#: ../lib/Galette/Core/PreferencesSchema.php:1226
 msgid "- Invalid website URL."
 msgstr "- Invalid website URL."
 
 #. TRANS: first parameter is the address, second the setting holding it
-#: ../lib/Galette/Core/PreferencesSchema.php:1198
+#: ../lib/Galette/Core/PreferencesSchema.php:1228
 #, php-format
 msgid "- Invalid E-Mail address %1$s (%2$s)"
 msgstr "- Invalid E-Mail address %1$s (%2$s)"
 
 #. TRANS: parameter is the setting name
-#: ../lib/Galette/Core/PreferencesSchema.php:1200
+#: ../lib/Galette/Core/PreferencesSchema.php:1230
 #, php-format
 msgid "- Value for '%1$s' must be a positive number!"
 msgstr "- Value for '%1$s' must be a positive number!"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
-#: ../lib/Galette/Core/PreferencesSchema.php:1203
+#: ../lib/Galette/Core/PreferencesSchema.php:1233
 msgid "- Unknown two-factor authentication mode!"
 msgstr "- Unknown two-factor authentication mode!"
 
-#: ../lib/Galette/Core/PreferencesSchema.php:1204
+#: ../lib/Galette/Core/PreferencesSchema.php:1234
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr "- Value for '%1$s' must be %2$s attempts or more!"
 
 #. TRANS: first parameter is the setting name, second the lowest value it takes
-#: ../lib/Galette/Core/PreferencesSchema.php:1206
+#: ../lib/Galette/Core/PreferencesSchema.php:1236
 #, php-format
 msgid "- Value for '%1$s' must be %2$s seconds or more!"
 msgstr "- Value for '%1$s' must be %2$s seconds or more!"
 
 #. TRANS: parameter is the setting name
-#: ../lib/Galette/Core/PreferencesSchema.php:1208
+#: ../lib/Galette/Core/PreferencesSchema.php:1238
 #, php-format
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "- Unknown visibility for '%1$s'!"
+
+#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#: ../lib/Galette/Core/PreferencesSchema.php:1240
+#, php-format
+msgid ""
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
+"example.org separated by spaces!"
+msgstr ""
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
+"example.org separated by spaces!"
+
+#. TRANS: parameter is the setting name; the URL must not be translated
+#: ../lib/Galette/Core/PreferencesSchema.php:1242
+#, php-format
+msgid ""
+"- Value for '%1$s' must be web addresses such as https://example.org "
+"separated by spaces!"
+msgstr ""
+"- Value for '%1$s' must be web addresses such as https://example.org "
+"separated by spaces!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:518
 msgid "Missing required field name!"
@@ -4057,7 +4098,7 @@ msgstr "Company name"
 #: ../lib/Galette/Features/Replacements.php:291
 #: ../lib/Galette/Filters/MembersList.php:278
 #: ../templates/default/pages/authentication_attempts.html.twig:28
-#: ../templates/default/pages/authentication_attempts.html.twig:56
+#: ../templates/default/pages/authentication_attempts.html.twig:58
 #: ../templates/default/pages/maps_settings.html.twig:58
 msgid "Address"
 msgstr "Address"
@@ -4675,7 +4716,7 @@ msgstr "Unknown ACL rule '%1$s'!"
 msgid "Route '%1$s' is not registered in ACLs!"
 msgstr "Route '%1$s' is not registered in ACLs!"
 
-#: ../lib/Galette/Middleware/Csrf.php:81
+#: ../lib/Galette/Middleware/Csrf.php:87
 msgid "Failed CSRF check!"
 msgstr "Failed CSRF check!"
 
@@ -5113,15 +5154,15 @@ msgstr "Meeting minutes"
 msgid "Votes results"
 msgstr "Votes results"
 
-#: ../lib/Galette/Repository/Members.php:365
+#: ../lib/Galette/Repository/Members.php:367
 msgid "Member Picture deleted"
 msgstr "Member Picture deleted"
 
-#: ../lib/Galette/Repository/Members.php:451
+#: ../lib/Galette/Repository/Members.php:456
 msgid "Delete members cards, transactions and dues"
 msgstr "Delete members cards, transactions and dues"
 
-#: ../lib/Galette/Repository/Members.php:468
+#: ../lib/Galette/Repository/Members.php:473
 msgid "Cannot remove a member who still have dependencies (mailings, ...)"
 msgstr "Cannot remove a member who still have dependencies (mailings, ...)"
 
@@ -5138,7 +5179,7 @@ msgid "Scheduled payments deleted (%1$s)"
 msgstr "Scheduled payments deleted (%1$s)"
 
 #. TRANS: see https://fomantic-ui.com/modules/calendar.html#custom-format - must be the same as Y-m-d for PHP https://www.php.net/manual/datetime.format.php
-#: ../lib/Galette/Twig/ViewFactory.php:127
+#: ../lib/Galette/Twig/ViewFactory.php:128
 msgid "YYYY-MM-DD"
 msgstr "YYYY-MM-DD"
 
@@ -6120,11 +6161,11 @@ msgstr "Choices for field %d have been migrated."
 msgid "Unable to migrate choices for field %d: %s"
 msgstr "Unable to migrate choices for field %d: %s"
 
-#: ../install/scripts/upgrade-to-1.40.php:139
+#: ../install/scripts/upgrade-to-1.40.php:100
 msgid "System roles have been created."
 msgstr "System roles have been created."
 
-#: ../install/scripts/upgrade-to-1.40.php:179
+#: ../install/scripts/upgrade-to-1.40.php:152
 msgid ""
 "Members positions from the maps plugin have been taken over, the plugin can "
 "be removed."
@@ -7517,9 +7558,9 @@ msgstr "An error occurred retrieving members :("
 #: ../templates/default/elements/list.html.twig:163
 #: ../templates/default/elements/maps/config.html.twig:16
 #: ../templates/default/elements/maps/libraries.html.twig:22
-#: ../templates/default/elements/scripts.html.twig:158
-#: ../templates/default/elements/scripts.html.twig:180
-#: ../templates/default/elements/scripts.html.twig:202
+#: ../templates/default/elements/scripts.html.twig:166
+#: ../templates/default/elements/scripts.html.twig:188
+#: ../templates/default/elements/scripts.html.twig:210
 #: ../templates/default/modals/replacements_legend.html.twig:32
 #: ../templates/default/modals/telemetry.html.twig:49
 #: ../templates/default/modals/telemetry.html.twig:58
@@ -8079,19 +8120,19 @@ msgctxt "self registration"
 msgid "Register"
 msgstr "Register"
 
-#: ../templates/default/elements/scripts.html.twig:20
+#: ../templates/default/elements/scripts.html.twig:28
 msgid "Generating dark theme..."
 msgstr "Generating dark theme..."
 
-#: ../templates/default/elements/scripts.html.twig:64
+#: ../templates/default/elements/scripts.html.twig:72
 msgid "Unable to store dark theme."
 msgstr "Unable to store dark theme."
 
-#: ../templates/default/elements/scripts.html.twig:296
+#: ../templates/default/elements/scripts.html.twig:304
 msgid "Deactivate HTML editor"
 msgstr "Deactivate HTML editor"
 
-#: ../templates/default/elements/scripts.html.twig:303
+#: ../templates/default/elements/scripts.html.twig:311
 #: ../templates/default/pages/mailing_form.html.twig:125
 msgid "Activate HTML editor"
 msgstr "Activate HTML editor"
@@ -8964,17 +9005,17 @@ msgid "What is counted"
 msgstr "What is counted"
 
 #: ../templates/default/pages/authentication_attempts.html.twig:27
-#: ../templates/default/pages/authentication_attempts.html.twig:55
+#: ../templates/default/pages/authentication_attempts.html.twig:57
 msgid "Account"
 msgstr "Account"
 
 #: ../templates/default/pages/authentication_attempts.html.twig:29
-#: ../templates/default/pages/authentication_attempts.html.twig:57
+#: ../templates/default/pages/authentication_attempts.html.twig:59
 msgid "Failures"
 msgstr "Failures"
 
 #: ../templates/default/pages/authentication_attempts.html.twig:30
-#: ../templates/default/pages/authentication_attempts.html.twig:58
+#: ../templates/default/pages/authentication_attempts.html.twig:60
 msgid "Refused until"
 msgstr "Refused until"
 
@@ -9002,11 +9043,15 @@ msgstr "Password recovery requests from one address"
 msgid "Self registrations from one address"
 msgstr "Self registrations from one address"
 
-#: ../templates/default/pages/authentication_attempts.html.twig:62
+#: ../templates/default/pages/authentication_attempts.html.twig:51
+msgid "Security policy violation reports from one address"
+msgstr "Security policy violation reports from one address"
+
+#: ../templates/default/pages/authentication_attempts.html.twig:64
 msgid "Lift"
 msgstr "Lift"
 
-#: ../templates/default/pages/authentication_attempts.html.twig:71
+#: ../templates/default/pages/authentication_attempts.html.twig:73
 msgid "Lift them all"
 msgstr "Lift them all"
 
@@ -9990,6 +10035,19 @@ msgstr ""
 msgid "Lost your password?"
 msgstr "Lost your password?"
 
+#: ../templates/default/pages/index.html.twig:53
+msgid "Demonstration accounts"
+msgstr "Demonstration accounts"
+
+#: ../templates/default/pages/index.html.twig:54
+msgid "Log in with one of them to discover Galette."
+msgstr "Log in with one of them to discover Galette."
+
+#: ../templates/default/pages/index.html.twig:64
+#, php-format
+msgid "Log in as %s"
+msgstr "Log in as %s"
+
 #: ../templates/default/pages/mailing_form.html.twig:23
 msgid "Mailing information"
 msgstr "Mailing information"
@@ -10636,23 +10694,28 @@ msgstr "New version: %1$s"
 msgid "Unable to check for new releases: no release found in %1$s repository."
 msgstr "Unable to check for new releases: no release found in %1$s repository."
 
-#: ../templates/default/pages/plugin_info.html.twig:49
+#: ../templates/default/pages/plugin_info.html.twig:51
+#: ../templates/default/pages/preferences.html.twig:192
+msgid "Website:"
+msgstr "Website:"
+
+#: ../templates/default/pages/plugin_info.html.twig:54
 msgid "ACLs"
 msgstr "ACLs"
 
-#: ../templates/default/pages/plugin_info.html.twig:53
+#: ../templates/default/pages/plugin_info.html.twig:58
 msgid "Route"
 msgstr "Route"
 
-#: ../templates/default/pages/plugin_info.html.twig:54
+#: ../templates/default/pages/plugin_info.html.twig:59
 msgid "ACL"
 msgstr "ACL"
 
-#: ../templates/default/pages/plugin_info.html.twig:62
+#: ../templates/default/pages/plugin_info.html.twig:67
 msgid "No ACLs!"
 msgstr "No ACLs!"
 
-#: ../templates/default/pages/plugin_info.html.twig:68
+#: ../templates/default/pages/plugin_info.html.twig:73
 msgid "Raw information"
 msgstr "Raw information"
 
@@ -10853,10 +10916,6 @@ msgstr "mobile phone from a staff user"
 #: ../templates/default/pages/preferences.html.twig:179
 msgid "Staff member whose phone number needs to be retrieved"
 msgstr "Staff member whose phone number needs to be retrieved"
-
-#: ../templates/default/pages/preferences.html.twig:192
-msgid "Website:"
-msgstr "Website:"
 
 #: ../templates/default/pages/preferences.html.twig:203
 msgid ""

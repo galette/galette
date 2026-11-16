@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
-"POT-Creation-Date: 2026-11-13 19:32+0100\n"
+"POT-Creation-Date: 2026-11-16 07:05+0100\n"
 "PO-Revision-Date: 2026-11-13 20:23+0000\n"
 "Last-Translator: Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>"
 "\n"
@@ -1258,6 +1258,14 @@ msgstr "Les libellés ont été traduits avec succès !"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
+msgid ""
+"Script protection is turned off: a script injected in a page would run. Turn "
+"it back on from the advanced configuration as soon as the cause is fixed."
+msgstr ""
+"La protection contre les scripts est désactivée : un script injecté dans une "
+"page serait exécuté. Réactivez-la depuis la configuration avancée dès que la "
+"cause est corrigée."
+
 msgid "Settings"
 msgstr "Préférences"
 
@@ -1606,6 +1614,13 @@ msgstr ""
 "Fonctionnalités à activer, parmi celles déclarées dans le registre des "
 "fonctionnalités. Prévaut sur les fonctionnalités activées depuis cette page."
 
+msgid ""
+"Accounts offered on the login page in DEMO mode, each with its login, "
+"password and label."
+msgstr ""
+"Comptes proposés sur la page de connexion en mode DEMO, chacun avec son "
+"identifiant, son mot de passe et son libellé."
+
 msgid "Yes"
 msgstr "Oui"
 
@@ -1817,6 +1832,9 @@ msgstr "Tout"
 msgid "An SQL error has occurred."
 msgstr "Une erreur SQL est survenue."
 
+msgid "Default data"
+msgstr "Données par défaut"
+
 msgid "No such module."
 msgstr "Module inconnu."
 
@@ -1996,6 +2014,24 @@ msgstr "- La valeur de '%1$s' doit être de %2$s secondes ou plus !"
 #, php-format
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "- Visibilité inconnue pour « %1$s » !"
+
+#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
+"example.org separated by spaces!"
+msgstr ""
+"- La valeur de « %1$s » doit être 'self', 'none' ou des adresses web telles "
+"que https://example.org séparées par des espaces !"
+
+#. TRANS: parameter is the setting name; the URL must not be translated
+#, php-format
+msgid ""
+"- Value for '%1$s' must be web addresses such as https://example.org "
+"separated by spaces!"
+msgstr ""
+"- La valeur de « %1$s » doit être des adresses web telles que https://"
+"example.org séparées par des espaces !"
 
 msgid "Missing required field name!"
 msgstr "Nom du champ manquant !"
@@ -6111,6 +6147,10 @@ msgstr "Requêtes de récupération de mot de passe depuis une adresse"
 msgid "Self registrations from one address"
 msgstr "Auto-enregistrement depuis une adresse"
 
+msgid "Security policy violation reports from one address"
+msgstr ""
+"Rapports de violation de la politique de sécurité depuis une même adresse"
+
 msgid "Lift"
 msgstr "Lever"
 
@@ -6768,6 +6808,16 @@ msgstr ""
 msgid "Lost your password?"
 msgstr "Mot de passe perdu ?"
 
+msgid "Demonstration accounts"
+msgstr "Comptes de démonstration"
+
+msgid "Log in with one of them to discover Galette."
+msgstr "Connectez-vous avec l'un d'eux pour découvrir Galette."
+
+#, php-format
+msgid "Log in as %s"
+msgstr "Se connecter en tant que %s"
+
 msgid "Mailing information"
 msgstr "Informations sur l'envoi"
 
@@ -7247,6 +7297,9 @@ msgstr ""
 "Impossible de vérifier les nouvelles versions : aucune version trouvée dans "
 "le dépôt %1$s."
 
+msgid "Website:"
+msgstr "Site Web :"
+
 msgid "ACLs"
 msgstr "ACL"
 
@@ -7410,9 +7463,6 @@ msgstr "téléphone mobile depuis un membre du bureau"
 
 msgid "Staff member whose phone number needs to be retrieved"
 msgstr "Membre du bureau duquel le numéro de téléphone doit être récupéré"
-
-msgid "Website:"
-msgstr "Site Web :"
 
 msgid ""
 "Enter a text (HTML allowed) that will be displayed in the footer of every "
