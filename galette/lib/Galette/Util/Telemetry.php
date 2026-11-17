@@ -11,14 +11,26 @@ declare(strict_types=1);
 namespace Galette\Util;
 
 use Analog\Analog;
+use Closure;
 use DateInterval;
 use Exception;
 use Galette\Core\Db;
+use Galette\Core\FeatureFlagManager;
+use Galette\Core\GaletteMail;
+use Galette\Core\Logs;
+use Galette\Core\MailingHistory;
 use Galette\Core\Preferences;
 use Galette\Core\Plugins;
+use Galette\Core\TwoFactorAuth;
+use Galette\DynamicFields\DynamicField;
+use Galette\Entity\Group;
+use Galette\Entity\SavedSearch;
+use Galette\Enums\PasswordStrength;
 use Laminas\Db\Sql\Expression;
+use Laminas\Db\Sql\Where;
 use RuntimeException;
 use Safe\DateTime;
+use Throwable;
 
 use function Safe\curl_exec;
 use function Safe\curl_getinfo;
@@ -47,6 +59,25 @@ class Telemetry
     public const string INSTALL_GIT = 'git';
     public const string INSTALL_ARCHIVE = 'archive';
 
+    /** Mail methods, by GaletteMail::METHOD_* value */
+    private const array MAIL_METHODS = [
+        GaletteMail::METHOD_DISABLED => 'disabled',
+        GaletteMail::METHOD_PHPMAIL  => 'php',
+        GaletteMail::METHOD_SMTP     => 'smtp',
+        GaletteMail::METHOD_SENDMAIL => 'sendmail',
+    ];
+
+    /** Two-factor authentication policies, by TwoFactorAuth::MODE_* value */
+    private const array TWO_FACTOR_MODES = [
+        TwoFactorAuth::MODE_DISABLED       => 'disabled',
+        TwoFactorAuth::MODE_OPTIONAL       => 'optional',
+        TwoFactorAuth::MODE_REQUIRED_STAFF => 'required_staff',
+        TwoFactorAuth::MODE_REQUIRED_ALL   => 'required_all',
+    ];
+
+    /** Dynamic fields forms */
+    private const array DYNAMIC_FORMS = ['adh', 'contrib', 'trans'];
+
     /**
      * Constructor
      *
@@ -64,25 +95,32 @@ class Telemetry
     /**
      * Grab telemetry information
      *
-     * @return array<string, array<string, string|array<string, string|array<string, string>>>>
+     * @return array<string, array<string, mixed>>
      */
     public function getTelemetryInfos(): array
     {
+        $system = [
+            'db'           => $this->grabDbInfos(),
+            'web_server'   => $this->grabWebserverInfos(),
+            'php'          => $this->grabPhpInfos(),
+            'os'           => $this->grabOsInfos(),
+            'timezone'     => date_default_timezone_get(),
+        ];
+        $https = $this->isHttps();
+        if ($https !== null) {
+            $system['https'] = $https;
+        }
+
         return [
             'galette'  => $this->grabGaletteInfos(),
-            'system'   => [
-                'db'           => $this->grabDbInfos(),
-                'web_server'   => $this->grabWebserverInfos(),
-                'php'          => $this->grabPhpInfos(),
-                'os'           => $this->grabOsInfos()
-            ]
+            'system'   => $system
         ];
     }
 
     /**
      * Grab Galette part information
      *
-     * @return array<string, array<int<0, max>|string, array<string, mixed>|string>|string>
+     * @return array<string, mixed>
      */
     public function grabGaletteInfos(): array
     {
@@ -94,8 +132,22 @@ class Telemetry
             'usage'              => [
                 'avg_members'           => $this->getAverage(\Galette\Entity\Adherent::TABLE),
                 'avg_contributions'     => $this->getAverage(\Galette\Entity\Contribution::TABLE),
-                'avg_transactions'      => $this->getAverage(\Galette\Entity\Transaction::TABLE)
+                'avg_transactions'      => $this->getAverage(\Galette\Entity\Transaction::TABLE),
+                'groups'                => $this->getRange($this->getCount(Group::TABLE)),
+                'dynamic_fields'        => $this->getDynamicFieldsRanges(),
+                'saved_searches'        => $this->getRange($this->getCount(SavedSearch::TABLE)),
+                'mailings'              => $this->getRange($this->getCount(
+                    MailingHistory::TABLE,
+                    function (Where $where): void {
+                        $where->equalTo('mailing_sent', right: true);
+                        $where->greaterThanOrEqualTo(
+                            'mailing_date',
+                            (new DateTime())->sub(new DateInterval('P1Y'))->format('Y-m-d H:i:s')
+                        );
+                    }
+                )),
             ],
+            'features'           => $this->grabFeaturesInfos(),
             'install_mode'       => $this->getInstallMode()
         ];
 
@@ -108,6 +160,101 @@ class Telemetry
         }
 
         return $galette;
+    }
+
+    /**
+     * Grab which features are used
+     *
+     * @return array<string, bool|string|list<string>>
+     */
+    public function grabFeaturesInfos(): array
+    {
+        $strength = PasswordStrength::tryFrom((int)$this->prefs->pref_password_strength);
+
+        return [
+            'public_pages'      => (bool)$this->prefs->pref_bool_publicpages,
+            'self_subscription' => (bool)$this->prefs->pref_bool_selfsubscribe,
+            'html_editor'       => (bool)$this->prefs->pref_editor_enabled,
+            'custom_colors'     => (bool)$this->prefs->pref_enable_custom_colors,
+            'mail_method'       => self::MAIL_METHODS[(int)$this->prefs->pref_mail_method] ?? 'unknown',
+            'two_factor'        => self::TWO_FACTOR_MODES[TwoFactorAuth::modeFrom($this->prefs)] ?? 'unknown',
+            'password_strength' => $strength === null
+                ? 'unknown'
+                : strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $strength->name)),
+            'feature_flags'     => $this->getFeatureFlags(),
+        ];
+    }
+
+    /**
+     * Experimental features turned on; only flags Galette knows are sent, and
+     * a flag whose dependencies are not turned on is not
+     *
+     * @return list<string>
+     */
+    public function getFeatureFlags(): array
+    {
+        try {
+            $flags = $this->getFeatureFlagManager();
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to load feature flags', Analog::INFO);
+            return [];
+        }
+
+        $registry = $flags->getRegistryFlags();
+        $enabled = [];
+        foreach ($flags->getAllFlagsWithStatus() as $flag => $status) {
+            if ($status['enabled'] && isset($registry[$flag])) {
+                $enabled[] = $flag;
+            }
+        }
+        sort($enabled);
+        return $enabled;
+    }
+
+    /**
+     * Feature flags manager
+     */
+    protected function getFeatureFlagManager(): FeatureFlagManager
+    {
+        return new FeatureFlagManager($this->prefs);
+    }
+
+    /**
+     * Range of dynamic fields of each form
+     *
+     * @return array<string, string>
+     */
+    private function getDynamicFieldsRanges(): array
+    {
+        $ranges = [];
+        foreach (self::DYNAMIC_FORMS as $form) {
+            $ranges[$form] = $this->getRange($this->getCount(
+                DynamicField::TABLE,
+                function (Where $where) use ($form): void {
+                    $where->equalTo('field_form', $form);
+                }
+            ));
+        }
+        return $ranges;
+    }
+
+    /**
+     * Is Galette served over HTTPS?
+     *
+     * @return ?bool Null when unknown, ie. without URL set nor request
+     */
+    public function isHttps(): ?bool
+    {
+        if (empty($_SERVER['HTTP_HOST']) && !defined('GALETTE_URI') && empty($this->prefs->pref_galette_url)) {
+            //no request nor URL to tell
+            return null;
+        }
+
+        try {
+            return str_starts_with(strtolower($this->prefs->getURL()), 'https://');
+        } catch (Throwable) { // no log: the URL is unknown, telemetry is sent without it
+            return null;
+        }
     }
 
     /**
@@ -216,12 +363,15 @@ class Telemetry
     /**
      * Grab PHP part information
      *
-     * @return array<string, array<int<0, max>|string, string|false>|string>
+     * @return array<string, array<int<0, max>|string, string|false>|string|bool>
      */
     public function grabPhpInfos(): array
     {
         return [
             'version'   => str_replace(PHP_EXTRA_VERSION, '', PHP_VERSION),
+            'sapi'      => PHP_SAPI,
+            'opcache'   => extension_loaded('Zend OPcache')
+                && (bool)ini_get(PHP_SAPI === 'cli' ? 'opcache.enable_cli' : 'opcache.enable'),
             'modules'   => get_loaded_extensions(),
             'setup'     => [
                 'max_execution_time'    => ini_get('max_execution_time'),
@@ -288,9 +438,10 @@ class Telemetry
     /**
      * Count
      *
-     * @param string $table Table to query
+     * @param string               $table Table to query
+     * @param ?Closure(Where):void $where Restricts counted rows
      */
-    public function getCount(string $table): int
+    public function getCount(string $table, ?Closure $where = null): int
     {
         $select = $this->zdb->select($table);
         $select->columns([
@@ -298,6 +449,9 @@ class Telemetry
                 'COUNT(1)'
             )
         ]);
+        if ($where !== null) {
+            $select->where($where);
+        }
         $results = $this->zdb->execute($select);
         $result = $results->current();
         return (int)$result->cnt;
@@ -324,6 +478,22 @@ class Telemetry
             return '1000-5000';
         }
         return '5000+';
+    }
+
+    /**
+     * Range of a small count (groups, dynamic fields...)
+     *
+     * @param int $count Count
+     */
+    public function getRange(int $count): string
+    {
+        return match (true) {
+            $count === 0 => '0',
+            $count <= 5 => '1-5',
+            $count <= 20 => '6-20',
+            $count <= 50 => '21-50',
+            default => '50+',
+        };
     }
 
     /**

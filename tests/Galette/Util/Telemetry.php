@@ -20,6 +20,7 @@ use function Safe\rmdir;
 use function Safe\touch;
 use function Safe\unlink;
 use function Safe\ini_get;
+use function Safe\preg_match;
 use function Safe\preg_replace;
 
 /**
@@ -44,8 +45,13 @@ class Telemetry extends GaletteTestCase
             'usage'              => [
                 'avg_members'       => '0-50',
                 'avg_contributions' => '0-50',
-                'avg_transactions'  => '0-50'
+                'avg_transactions'  => '0-50',
+                'groups'            => '0',
+                'dynamic_fields'    => ['adh' => '0', 'contrib' => '0', 'trans' => '0'],
+                'saved_searches'    => '0',
+                'mailings'          => '0',
             ],
+            'features'           => 'TO BE SET',
             'install_mode'       => 'TO BE SET'
         ];
 
@@ -54,6 +60,7 @@ class Telemetry extends GaletteTestCase
             $this->preferences,
             $this->plugins
         );
+        $expected['features'] = $telemetry->grabFeaturesInfos();
         $expected['install_mode'] = $telemetry->getInstallMode();
 
         $result = $telemetry->grabGaletteInfos();
@@ -87,11 +94,29 @@ class Telemetry extends GaletteTestCase
             ->getMock();
         $telemetry->method('getCount')
             ->willReturnCallback(
-                fn($table) => match ($table) {
-                    \Galette\Entity\Adherent::TABLE => 56,
-                    \Galette\Entity\Contribution::TABLE => 402,
-                    \Galette\Entity\Transaction::TABLE => 100,
-                    default => 0,
+                function (string $table, ?\Closure $where = null): int {
+                    if ($table === \Galette\DynamicFields\DynamicField::TABLE) {
+                        //each form is counted on its own
+                        $this->assertNotNull($where);
+                        $select = $this->zdb->select($table);
+                        $select->where($where);
+                        $sql = $this->zdb->sql->buildSqlString($select);
+                        $form = preg_match('/field_form\W+\s*=\s*\'(\w+)\'/', $sql, $matches) ? $matches[1] : null;
+                        return match ($form) {
+                            'adh' => 3,
+                            'contrib' => 7,
+                            default => 0,
+                        };
+                    }
+                    return match ($table) {
+                        \Galette\Entity\Adherent::TABLE => 56,
+                        \Galette\Entity\Contribution::TABLE => 402,
+                        \Galette\Entity\Transaction::TABLE => 100,
+                        \Galette\Entity\Group::TABLE => 3,
+                        \Galette\Entity\SavedSearch::TABLE => 21,
+                        \Galette\Core\MailingHistory::TABLE => 51,
+                        default => 0,
+                    };
                 }
             );
         $result = $telemetry->grabGaletteInfos();
@@ -99,7 +124,168 @@ class Telemetry extends GaletteTestCase
         $expected['usage']['avg_members'] = '50-250';
         $expected['usage']['avg_contributions'] = '250-500';
         $expected['usage']['avg_transactions'] = '50-250';
+        $expected['usage']['groups'] = '1-5';
+        $expected['usage']['dynamic_fields'] = ['adh' => '1-5', 'contrib' => '6-20', 'trans' => '0'];
+        $expected['usage']['saved_searches'] = '21-50';
+        $expected['usage']['mailings'] = '50+';
         $this->assertSame($expected, $result);
+    }
+
+    /**
+     * Only mailings sent during the last year are counted
+     */
+    public function testMailingsUsage(): void
+    {
+        $this->zdb->execute($this->zdb->delete(\Galette\Core\MailingHistory::TABLE));
+
+        $insert = function (bool $sent, string $interval): void {
+            $insert = $this->zdb->insert(\Galette\Core\MailingHistory::TABLE);
+            $insert->values([
+                'mailing_subject'       => 'Telemetry test',
+                'mailing_body'          => 'Telemetry test',
+                'mailing_date'          => (new \Safe\DateTime())->sub(new \DateInterval($interval))->format('Y-m-d H:i:s'),
+                'mailing_recipients'    => '[]',
+                'mailing_sent'          => $sent ? 1 : 0,
+            ]);
+            $this->zdb->execute($insert);
+        };
+
+        try {
+            $telemetry = new \Galette\Util\Telemetry(
+                $this->zdb,
+                $this->preferences,
+                $this->plugins
+            );
+
+            //neither a draft nor a mailing sent more than a year ago is counted
+            $insert(sent: false, interval: 'P1D');
+            $insert(sent: true, interval: 'P2Y');
+            $this->assertSame('0', $telemetry->grabGaletteInfos()['usage']['mailings']);
+
+            $insert(sent: true, interval: 'P1D');
+            $this->assertSame('1-5', $telemetry->grabGaletteInfos()['usage']['mailings']);
+        } finally {
+            $this->zdb->execute($this->zdb->delete(\Galette\Core\MailingHistory::TABLE));
+        }
+    }
+
+    /**
+     * Test small counts ranges
+     */
+    public function testGetRange(): void
+    {
+        $telemetry = new \Galette\Util\Telemetry(
+            $this->zdb,
+            $this->preferences,
+            $this->plugins
+        );
+
+        $ranges = [];
+        foreach ([0, 1, 5, 6, 20, 21, 50, 51] as $count) {
+            $ranges[$count] = $telemetry->getRange($count);
+        }
+        $this->assertSame(
+            [0 => '0', 1 => '1-5', 5 => '1-5', 6 => '6-20', 20 => '6-20', 21 => '21-50', 50 => '21-50', 51 => '50+'],
+            $ranges
+        );
+    }
+
+    /**
+     * Test features infos
+     */
+    public function testGrabFeaturesInfos(): void
+    {
+        $this->preferences->pref_bool_publicpages = false;
+        $this->preferences->pref_bool_selfsubscribe = true;
+        $this->preferences->pref_editor_enabled = true;
+        $this->preferences->pref_enable_custom_colors = false;
+        $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_SMTP;
+        $this->preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
+        $this->preferences->pref_password_strength = \Galette\Enums\PasswordStrength::VeryStrong->value;
+
+        $telemetry = new \Galette\Util\Telemetry(
+            $this->zdb,
+            $this->preferences,
+            $this->plugins
+        );
+
+        $expected = [
+            'public_pages'      => false,
+            'self_subscription' => true,
+            'html_editor'       => true,
+            'custom_colors'     => false,
+            'mail_method'       => 'smtp',
+            'two_factor'        => 'optional',
+            'password_strength' => 'very_strong',
+            'feature_flags'     => [],
+        ];
+        $this->assertSame($expected, $telemetry->grabFeaturesInfos());
+
+        //only flags Galette knows are sent
+        $this->assertTrue($this->preferences->storeFeatureFlags(['two-factor-required', 'not-a-flag']));
+        try {
+            $this->assertSame(['two-factor-required'], $telemetry->getFeatureFlags());
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                'Feature flag "not-a-flag" is stored as enabled but is not registered; it is ignored.'
+            );
+        } finally {
+            $this->preferences->storeFeatureFlags([]);
+        }
+    }
+
+    /**
+     * A flag whose dependencies are not turned on is not sent
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testFeatureFlagsDependencies(): void
+    {
+        $manager = $this->getMockBuilder(\Galette\Core\FeatureFlagManager::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getConfiguration', 'getDeclarations', 'getStoredDeclarations', 'isLockedByConstant'])
+            ->getMock();
+        $manager->method('getConfiguration')->willReturn(include GALETTE_TESTS_PATH . '/fixtures/feature_flags.inc.php');
+        //api-v2 requires oauth2, which is not turned on
+        $manager->method('getDeclarations')->willReturn(['acls', 'api-v2']);
+        $manager->method('getStoredDeclarations')->willReturn([]);
+        $manager->method('isLockedByConstant')->willReturn(true);
+        $manager->load();
+        $this->assertSame(['acls', 'api-v2'], $manager->getDeclaredFlags());
+
+        $telemetry = $this->getMockBuilder(\Galette\Util\Telemetry::class)
+            ->setConstructorArgs([$this->zdb, $this->preferences, $this->plugins])
+            ->onlyMethods(['getFeatureFlagManager'])
+            ->getMock();
+        $telemetry->method('getFeatureFlagManager')->willReturn($manager);
+
+        $this->assertSame(['acls'], $telemetry->getFeatureFlags());
+    }
+
+    /**
+     * Test HTTPS detection
+     */
+    public function testIsHttps(): void
+    {
+        $telemetry = new \Galette\Util\Telemetry(
+            $this->zdb,
+            $this->preferences,
+            $this->plugins
+        );
+
+        //no request nor URL
+        $this->assertNull($telemetry->isHttps());
+
+        $_SERVER['HTTP_HOST'] = 'galette.test';
+        try {
+            $this->assertFalse($telemetry->isHttps());
+            $_SERVER['HTTPS'] = 'off';
+            $this->assertFalse($telemetry->isHttps());
+            $_SERVER['HTTPS'] = 'on';
+            $this->assertTrue($telemetry->isHttps());
+        } finally {
+            $_SERVER['HTTP_HOST'] = '';
+            unset($_SERVER['HTTPS']);
+        }
     }
 
     /**
@@ -220,6 +406,8 @@ class Telemetry extends GaletteTestCase
     {
         $expected = [
             'version'   => str_replace(PHP_EXTRA_VERSION, '', PHP_VERSION),
+            'sapi'      => 'cli',
+            'opcache'   => extension_loaded('Zend OPcache') && (bool)ini_get('opcache.enable_cli'),
             'modules'   => get_loaded_extensions(),
             'setup'     => [
                 'max_execution_time'    => ini_get('max_execution_time'),
@@ -349,6 +537,7 @@ class Telemetry extends GaletteTestCase
                 'plugins',
                 'default_language',
                 'usage',
+                'features',
                 'install_mode'
             ]
         );
@@ -367,9 +556,11 @@ class Telemetry extends GaletteTestCase
                 'db',
                 'web_server',
                 'php',
-                'os'
+                'os',
+                'timezone'
             ]
         );
+        $this->assertSame(date_default_timezone_get(), $result['system']['timezone']);
     }
 
     /**

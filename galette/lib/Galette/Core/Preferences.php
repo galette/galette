@@ -1179,7 +1179,9 @@ class Preferences
             );
         }
 
-        $scheme = (isset($_SERVER['HTTPS']) ? 'https' : 'http');
+        //CGI and FastCGI servers may set HTTPS to "off" on plain HTTP
+        $https = strtolower((string)($_SERVER['HTTPS'] ?? ''));
+        $scheme = ($https !== '' && $https !== 'off') ? 'https' : 'http';
         if ($scheme === 'http' && isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
             $scheme = 'https';
         }
