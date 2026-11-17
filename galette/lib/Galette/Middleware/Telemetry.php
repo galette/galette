@@ -103,7 +103,7 @@ class Telemetry
 
                         //send telemetry data
                         try {
-                            $telemetry->send();
+                            $telemetry->send(\Galette\Util\Telemetry::TRIGGER_AUTO);
                         } catch (Throwable $e) {
                             Logs::exception($e, 'Unable to send telemetry data', Analog::INFO);
                         }

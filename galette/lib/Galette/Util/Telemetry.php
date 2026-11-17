@@ -40,6 +40,13 @@ use function Safe\preg_replace;
  */
 class Telemetry
 {
+    public const string TRIGGER_AUTO = 'auto';
+    public const string TRIGGER_MANUAL = 'manual';
+
+    public const string INSTALL_CONTAINER = 'container';
+    public const string INSTALL_GIT = 'git';
+    public const string INSTALL_ARCHIVE = 'archive';
+
     /**
      * Constructor
      *
@@ -88,7 +95,8 @@ class Telemetry
                 'avg_members'           => $this->getAverage(\Galette\Entity\Adherent::TABLE),
                 'avg_contributions'     => $this->getAverage(\Galette\Entity\Contribution::TABLE),
                 'avg_transactions'      => $this->getAverage(\Galette\Entity\Transaction::TABLE)
-            ]
+            ],
+            'install_mode'       => $this->getInstallMode()
         ];
 
         $plugins = $this->plugins->getModules();
@@ -319,12 +327,54 @@ class Telemetry
     }
 
     /**
-     * Send telemetry information
+     * Get how Galette has been installed
+     *
+     * @param string       $root            Galette root directory, parent of the galette directory
+     * @param list<string> $container_files Files present in containers (Docker, Podman)
+     *
+     * @return string One of INSTALL_* constants
      */
-    public function send(): void
+    public function getInstallMode(
+        string $root = GALETTE_ROOT . '../',
+        array $container_files = ['/.dockerenv', '/run/.containerenv']
+    ): string {
+        foreach ($container_files as $container_file) {
+            if (@file_exists($container_file)) {
+                return self::INSTALL_CONTAINER;
+            }
+        }
+        if (@file_exists($root . '.git')) {
+            return self::INSTALL_GIT;
+        }
+        return self::INSTALL_ARCHIVE;
+    }
+
+    /**
+     * Get data to send
+     *
+     * @param string $trigger What triggered the sending, one of TRIGGER_* constants
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function getPayload(string $trigger): array
     {
+        if (!in_array($trigger, [self::TRIGGER_AUTO, self::TRIGGER_MANUAL], strict: true)) {
+            throw new \InvalidArgumentException(sprintf('Unknown telemetry trigger "%s"', $trigger));
+        }
+
         $data = $this->getTelemetryInfos();
-        $infos = json_encode(['data' => $data]);
+        $data['galette']['trigger'] = $trigger;
+        return ['data' => $data];
+    }
+
+    /**
+     * Send telemetry information
+     *
+     * @param string $trigger What triggered the sending, one of TRIGGER_* constants
+     */
+    public function send(string $trigger = self::TRIGGER_MANUAL): void
+    {
+        $infos = json_encode($this->getPayload($trigger));
 
         $uri = GALETTE_TELEMETRY_URI . 'telemetry';
         $ch = curl_init($uri);
