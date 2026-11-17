@@ -31,8 +31,7 @@ class TwoFactorAuth
     /**
      * Feature flag the two mandatory policies live behind.
      *
-     * The second factor itself ships: disabled by default, offered as
-     * experimental. Making it compulsory is a feature flag the super
+     * The second factor itself ships, disabled by default. Making it compulsory is a feature flag the super
      * administrator turns on from the advanced configuration page: a clock
      * that drifts or a botched enrolment can put members outside their own
      * instance, and galette:twofactor:reset is the way back. Until the flag is

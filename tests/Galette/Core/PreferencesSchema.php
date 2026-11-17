@@ -217,13 +217,6 @@ class PreferencesSchema extends GaletteTestCase
             'pref_mail_batch_delay',
             'pref_mail_hourly_limit',
             'pref_mail_daily_limit',
-            //the second factor, and everything that drives it
-            'pref_2fa_mode',
-            'pref_2fa_superadmin_secret',
-            'pref_2fa_superadmin_enabled',
-            'pref_2fa_superadmin_timeslice',
-            'pref_throttle_second_factor_attempts',
-            'pref_throttle_second_factor_window',
             //preview features turned on
             'pref_feature_flags',
         ];
@@ -232,7 +225,19 @@ class PreferencesSchema extends GaletteTestCase
         }
 
         $this->assertFalse(Schema::isAlpha('pref_mail_smtp_host'));
-        //the other throttling scopes are not tied to the second factor
+        //the second factor is no longer experimental
+        foreach (
+            [
+                'pref_2fa_mode',
+                'pref_2fa_superadmin_secret',
+                'pref_2fa_superadmin_enabled',
+                'pref_2fa_superadmin_timeslice',
+                'pref_throttle_second_factor_attempts',
+                'pref_throttle_second_factor_window',
+            ] as $name
+        ) {
+            $this->assertFalse(Schema::isAlpha($name), $name . ' should not be flagged as alpha');
+        }
         $this->assertFalse(Schema::isAlpha('pref_throttle_account_ip_attempts'));
         $this->assertFalse(Schema::isAlpha('pref_nom'));
         $this->assertFalse(Schema::isAlpha('pref_does_not_exist'));

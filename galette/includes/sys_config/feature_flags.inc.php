@@ -84,8 +84,8 @@ $feature_flags_registry = [
     /**
      * Mandatory two-factor authentication policies
      *
-     * The second factor itself ships in 1.3.0, disabled by default and marked
-     * experimental. Making it compulsory -- for administrators and staff, or
+     * The second factor itself ships since 1.3.0, disabled by default; it is
+     * no longer experimental since 1.3.4. Making it compulsory -- for administrators and staff, or
      * for everyone.
      * The galette:twofactor:reset console command is the way back.
      * Without this flag both policies read as "optional", so a member already

@@ -16,6 +16,7 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 use function Safe\define;
+use function Safe\preg_match;
 
 /**
  * Advanced configuration controller tests
@@ -254,6 +255,15 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
         //secrets are listed but never rendered
         $this->assertStringContainsString('pref_admin_pass', $body);
         $this->assertStringNotContainsString((string)$this->preferences->pref_admin_pass, $body);
+
+        //experimental settings carry the mark, the second factor no longer does
+        $row = function (string $name) use ($body): string {
+            $this->assertSame(1, preg_match('/<tr data-name="' . $name . '".*?<\/tr>/s', $body, $matches));
+            return $matches[0];
+        };
+        $this->assertStringContainsString('circular basic flask icon', $row('pref_mail_batch_size'));
+        $this->assertStringNotContainsString('circular basic flask icon', $row('pref_2fa_mode'));
+        $this->assertStringNotContainsString('circular basic flask icon', $row('pref_throttle_second_factor_attempts'));
     }
 
     /**

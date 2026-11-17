@@ -1181,7 +1181,6 @@
                         <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_ALL') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_ALL') %} selected="selected"{% endif %}>{{ _T("Required for everyone") }}</option>
 {% endif %}
                     </select>
-                    {{ macros.experimentalMark(_T('Experimental')) }}
                 </div>
                 <div class="inline field required">
                     <label for="pref_password_length">{{ _T("Password length:") }}</label>

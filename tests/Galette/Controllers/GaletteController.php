@@ -234,7 +234,7 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
-     * The second factor ships as experimental, and only the two policies that
+     * The second factor is no longer experimental, and only the two policies that
      * cannot lock an association out are offered
      */
     public function testPreferencesOfferTheSecondFactorPolicies(): void
@@ -247,11 +247,8 @@ class GaletteController extends GaletteRoutingTestCase
         //the flag is forced on for the suite, so all four are there
         $body = (string)$this->app->handle($request)->getBody();
         $this->assertStringContainsString('name="pref_2fa_mode"', $body);
-        //the setting carries the same experimental mark as the advanced page
-        $this->assertMatchesRegularExpression(
-            '/circular basic flask icon.*Experimental/s',
-            $body
-        );
+        //the setting no longer carries the experimental mark
+        $this->assertStringNotContainsString('circular basic flask icon', $body);
         $this->assertStringContainsString('Required for administrators and staff', $body);
         $this->assertStringContainsString('Required for everyone', $body);
 
