@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-11-16 07:05+0100\n"
-"PO-Revision-Date: 2026-11-10 07:27+0000\n"
-"Last-Translator: Jože Felicijan "
-"<felicijan@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-11-17 14:51+0000\n"
+"Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
+"\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
 "galette/sl/>\n"
 "Language: sl\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
 "n%100==4 ? 2 : 3;\n"
-"X-Generator: Weblate 2026.11.2.dev0\n"
+"X-Generator: Weblate 2026.12.dev0\n"
 
 msgid "Members"
 msgstr "Člani"
@@ -53,151 +53,155 @@ msgid "System information"
 msgstr "Informacije o sistemu"
 
 msgid "Security"
-msgstr ""
+msgstr "Varnost"
 
 msgid "Plugins"
 msgstr "Vtičniki"
 
 msgid "Roles"
-msgstr ""
+msgstr "Vloge"
 
 msgid "Create members"
-msgstr ""
+msgstr "Ustvari člane"
 
 msgid "Create child members"
-msgstr ""
+msgstr "Ustvari podrejene člane"
 
 msgid "Display members"
-msgstr ""
+msgstr "Prikaži člane"
 
 msgid "Edit members"
-msgstr ""
+msgstr "Uredi člane"
 
 msgid "Delete members"
-msgstr ""
+msgstr "Briši člane"
 
 msgid ""
 "Manage members administrative information (status, exemption, account, "
 "parent)"
 msgstr ""
+"Upravljajte administrativne podatke članov (status, izjema, račun, nadrejeni)"
 
 msgid "Grant administrator rights to members"
-msgstr ""
+msgstr "Podelite skrbniške pravice članom"
 
 msgid "Change or delete members in mass"
-msgstr ""
+msgstr "Spreminjanje ali brisanje članov v masi"
 
 msgid "Send members new password links, reset their two-factor authentication"
 msgstr ""
+"Članom pošljite povezave za novo geslo in ponastavite njihovo dvofaktorsko "
+"avtentikacijo"
 
 msgid "Import members"
-msgstr ""
+msgstr "Uvozi člane"
 
 msgid "Export members as CSV"
-msgstr ""
+msgstr "Izvozi člane v obliki CSV"
 
 msgid "Print members cards, labels and attendance sheets"
-msgstr ""
+msgstr "Natisnite članske izkaznice, nalepke in sezname prisotnosti"
 
 msgid "Create contributions"
-msgstr ""
+msgstr "Ustvari prispevke"
 
 msgid "Display contributions"
-msgstr ""
+msgstr "Prikaži prispevke"
 
 msgid "Add contributions in mass"
-msgstr ""
+msgstr "Dodaj prispevke v velikem obsegu"
 
 msgid "Edit contributions"
-msgstr ""
+msgstr "Uredi prispevke"
 
 msgid "Delete contributions"
-msgstr ""
+msgstr "Izbriši prispevke"
 
 msgid "Export contributions as CSV"
-msgstr ""
+msgstr "Izvozi prispevke v formatu CSV"
 
 msgid "Manage scheduled payments"
-msgstr ""
+msgstr "Upravljanje načrtovanih plačil"
 
 msgid "Send reminders to late members"
 msgstr "Pošlji opomnike zamujajočim članom"
 
 msgid "Create transactions"
-msgstr ""
+msgstr "Ustvari transakcije"
 
 msgid "Display transactions"
-msgstr ""
+msgstr "Prikaži transakcije"
 
 msgid "Edit transactions"
-msgstr ""
+msgstr "Uredi transakcije"
 
 msgid "Delete transactions"
-msgstr ""
+msgstr "Izbriši transakcije"
 
 msgid "Attach contributions to transactions"
-msgstr ""
+msgstr "Pripnite prispevke transakcijam"
 
 msgid "Display groups"
-msgstr ""
+msgstr "Skupine za prikaz"
 
 msgid "Create groups"
-msgstr ""
+msgstr "Ustvari skupine"
 
 msgid "Delete groups"
-msgstr ""
+msgstr "Izbriši skupine"
 
 msgid "Edit groups"
-msgstr ""
+msgstr "Uredi skupine"
 
 msgid "Export groups as PDF"
-msgstr ""
+msgstr "Izvozi skupine v PDF"
 
 msgid "Send mailings"
-msgstr ""
+msgstr "Pošlji sporočila"
 
 msgid "Browse and delete sent mailings"
-msgstr ""
+msgstr "Preglejte in izbrišite poslana sporočila"
 
 msgid "Manage documents"
-msgstr ""
+msgstr "Upravljanje dokumentov"
 
 msgid ""
 "Manage statuses, titles, contributions and payment types, labels translations"
 msgstr ""
+"Upravljajte statuse, nazive, prispevke in vrste plačil ter prevode oznak"
 
 msgid "Manage emails contents and PDF models"
-msgstr ""
+msgstr "Upravljajte vsebino e-poštnih sporočil in predloge PDF"
 
 msgid "Change settings"
-msgstr ""
+msgstr "Spremeni nastavitve"
 
 msgid "Configure core and dynamic fields, and lists"
-msgstr ""
+msgstr "Konfigurirajte osnovna in dinamična polja ter sezname"
 
 msgid "Export data"
-msgstr ""
+msgstr "Izvoz podatkov"
 
 msgid "Browse and flush logs"
-msgstr ""
+msgstr "Preglejte in izbrišite dnevnike"
 
 msgid "Display system information and charts"
-msgstr ""
+msgstr "Prikaži sistemske informacije in grafikone"
 
 msgid "Lift authentication restrictions"
-msgstr ""
+msgstr "Odpravite omejitve preverjanja pristnosti"
 
 msgid "Manage plugins"
-msgstr ""
+msgstr "Upravljaj vtičnike"
 
 msgid "Manage roles and their permissions"
-msgstr ""
+msgstr "Upravljajte vloge in njihova dovoljenja"
 
 msgid "Member"
 msgstr "Član"
 
 msgid "Up to date member"
-msgstr ""
+msgstr "Član z urejenim statusom"
 
 msgid "Group manager"
 msgstr "Vodja skupine"
@@ -5144,7 +5148,7 @@ msgid "Show legend"
 msgstr "Prikaži legendo"
 
 msgid "(Un)Check all"
-msgstr "(Odznači) vse"
+msgstr "(Od)Označi vse"
 
 msgid "Invert selection"
 msgstr "Invertiraj izbor"
@@ -6691,10 +6695,9 @@ msgstr "Demonstracija"
 msgid "Log in with one of them to discover Galette."
 msgstr ""
 
-#, fuzzy, php-format
-#| msgid "Log in as %1$s"
+#, php-format
 msgid "Log in as %s"
-msgstr "Prijavi se kot %1$s"
+msgstr "Prijavi se kot %s"
 
 msgid "Mailing information"
 msgstr "Podatki o pošiljanju"
@@ -6905,7 +6908,7 @@ msgstr ""
 "rastrske ploščice."
 
 msgid "Maps center"
-msgstr ""
+msgstr "Središče zemljevidov"
 
 msgid ""
 "Where maps open when they have nothing else to show, such as the association "
@@ -7946,7 +7949,7 @@ msgid "Change parent role"
 msgstr ""
 
 msgid "Inherits from"
-msgstr ""
+msgstr "Podedovano"
 
 msgid "permissions granted"
 msgstr ""
