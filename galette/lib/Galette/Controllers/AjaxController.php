@@ -299,17 +299,26 @@ class AjaxController extends AbstractController
     }
 
     /**
-     * Successful telemetry registration
+     * Check whether the registration form has been sent on the telemetry server
      */
     #[Route(
-        name: 'setRegistered',
-        pattern: '/ajax/telemetry/registered',
-        methods: ['GET']
+        name: 'telemetryRegistration',
+        pattern: '/ajax/telemetry/registration',
+        methods: ['POST']
     )]
-    public function telemetryRegistered(Response $response): Response
+    public function telemetryRegistration(Response $response): Response
     {
-        $this->preferences->updateRegistrationDate();
-        return $this->withJson($response, ['message' => _T('Thank you for registering!')]);
+        $telemetry = new Telemetry(
+            $this->zdb,
+            $this->preferences,
+            $this->plugins
+        );
+
+        $result = ['registered' => $telemetry->checkRegistration()];
+        if ($result['registered']) {
+            $result['message'] = _T('Thank you for registering!');
+        }
+        return $this->withJson($response, $result);
     }
 
     /**

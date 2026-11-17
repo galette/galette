@@ -146,10 +146,19 @@
             ;
 {% endif %}
 {% if part == "jsregister" %}
-            $('#register').on('click', function(e) {
+            {# the registration form is on the telemetry server: once it has been opened, ask the server whether it has been sent #}
+            var registrationPending = 'galette_registration_pending';
+            var checkRegistration = function() {
                 $.ajax({
-                    url:  '{{ url_for('setRegistered') }}',
+                    url: '{{ url_for('telemetryRegistration') }}',
+                    method: 'POST',
                     success: function(data) {
+                        if (!data.registered) {
+                            return;
+                        }
+                        try {
+                            localStorage.removeItem(registrationPending);
+                        } catch (e) {}
     {%  if orig is defined and orig == 'desktop' %}
                         $('#register').remove();
                         if ($('#share a').length == 0) {
@@ -165,5 +174,20 @@
                         } %}
                     }
                 });
+            };
+
+            $('#register').on('click', function() {
+                try {
+                    localStorage.setItem(registrationPending, '1');
+                } catch (e) {}
+                //checked when coming back from the registration form
+                $(window).one('focus', checkRegistration);
             });
+
+            //registration form opened earlier, but not confirmed yet
+            try {
+                if (localStorage.getItem(registrationPending)) {
+                    checkRegistration();
+                }
+            } catch (e) {}
 {% endif %}

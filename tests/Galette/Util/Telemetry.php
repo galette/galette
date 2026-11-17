@@ -630,4 +630,68 @@ class Telemetry extends GaletteTestCase
         $this->expectException(\InvalidArgumentException::class);
         $telemetry->getPayload('unknown');
     }
+
+    /**
+     * Test registration check with the telemetry server
+     */
+    public function testCheckRegistration(): void
+    {
+        try {
+            //form not sent on the telemetry server
+            $telemetry = $this->registrationTelemetry(answer: false);
+            $this->assertFalse($telemetry->checkRegistration());
+            $this->assertFalse($telemetry->isRegistered());
+
+            //telemetry server unreachable or not up to date
+            $telemetry = $this->registrationTelemetry(new \RuntimeException('Unexpected registration status answer'));
+            $this->assertFalse($telemetry->checkRegistration());
+            $this->assertFalse($telemetry->isRegistered());
+
+            //form sent: registration is recorded
+            $telemetry = $this->registrationTelemetry(answer: true);
+            $this->assertTrue($telemetry->checkRegistration());
+            $this->assertTrue($telemetry->isRegistered());
+            $this->assertStringStartsWith(date('Y-m-d'), $this->preferences->pref_registration_date);
+
+            //already registered: the server is not asked anymore
+            $telemetry = $this->registrationTelemetry(answer: null);
+            $this->assertTrue($telemetry->checkRegistration());
+        } finally {
+            $this->resetRegistration();
+        }
+    }
+
+    /**
+     * Telemetry, with a mocked answer of the telemetry server
+     *
+     * @param bool|\Throwable|null $answer Answer, exception thrown, or null if the server must not be asked
+     */
+    private function registrationTelemetry(bool|\Throwable|null $answer): \Galette\Util\Telemetry
+    {
+        $telemetry = $this->getMockBuilder(\Galette\Util\Telemetry::class)
+            ->setConstructorArgs([$this->zdb, $this->preferences, $this->plugins])
+            ->onlyMethods(['requestRegistrationStatus'])
+            ->getMock();
+
+        $expects = $telemetry->expects($answer === null ? $this->never() : $this->once())
+            ->method('requestRegistrationStatus');
+        if ($answer instanceof \Throwable) {
+            $expects->willThrowException($answer);
+        } elseif ($answer !== null) {
+            $expects->willReturn($answer);
+        }
+
+        return $telemetry;
+    }
+
+    /**
+     * Remove registration date
+     */
+    private function resetRegistration(): void
+    {
+        $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+        $update->set(['val_pref' => ''])->where(['nom_pref' => 'pref_registration_date']);
+        $this->zdb->execute($update);
+        $this->preferences->load();
+    }
 }
