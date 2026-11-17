@@ -199,6 +199,7 @@ class Telemetry extends GaletteTestCase
         $this->preferences->pref_bool_selfsubscribe = true;
         $this->preferences->pref_editor_enabled = true;
         $this->preferences->pref_enable_custom_colors = false;
+        $this->preferences->pref_maps_enabled = true;
         $this->preferences->pref_mail_method = \Galette\Core\GaletteMail::METHOD_SMTP;
         $this->preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
         $this->preferences->pref_password_strength = \Galette\Enums\PasswordStrength::VeryStrong->value;
@@ -214,6 +215,7 @@ class Telemetry extends GaletteTestCase
             'self_subscription' => true,
             'html_editor'       => true,
             'custom_colors'     => false,
+            'maps'              => true,
             'mail_method'       => 'smtp',
             'two_factor'        => 'optional',
             'password_strength' => 'very_strong',
