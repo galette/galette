@@ -419,6 +419,30 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * Installation keeps what the telemetry step, which comes first, stored
+     */
+    public function testInstallInitKeepsTelemetry(): void
+    {
+        $instance = $this->preferences->generateUUID('instance');
+        $registration = $this->preferences->generateUUID('registration');
+        $this->assertTrue($this->preferences->updateTelemetryDate());
+        $sent = $this->preferences->pref_telemetry_date;
+
+        $this->assertTrue($this->preferences->installInit(
+            'en_US',
+            'da_admin',
+            password_hash('da_secret', PASSWORD_BCRYPT)
+        ));
+
+        $prefs = new \Galette\Core\Preferences($this->zdb);
+        $this->assertSame($instance, $prefs->pref_instance_uuid);
+        $this->assertSame($registration, $prefs->pref_registration_uuid);
+        $this->assertSame($sent, $prefs->pref_telemetry_date);
+        $this->assertSame('', $prefs->pref_registration_date);
+        $this->assertSame('da_admin', $prefs->pref_admin_login);
+    }
+
+    /**
      * Galette still writes those values itself
      */
     public function testReadOnlyPreferencesAreStillMaintained(): void

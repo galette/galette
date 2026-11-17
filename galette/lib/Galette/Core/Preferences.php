@@ -243,6 +243,14 @@ class Preferences
     /** Superadmin credentials, only changed through storeAdminCredentials() */
     private const array ADMIN_CREDENTIALS = ['pref_admin_login', 'pref_admin_pass'];
 
+    /** Telemetry preferences installation keeps, telemetry being sent before preferences are initialized */
+    private const array KEPT_AT_INSTALL = [
+        'pref_instance_uuid',
+        'pref_registration_uuid',
+        'pref_telemetry_date',
+        'pref_registration_date',
+    ];
+
     /** Dark mode CSS file should be deleted from cache */
     private bool $delete_dark_css = false;
     /**
@@ -404,6 +412,15 @@ class Preferences
         $values['pref_admin_login'] = $adm_login;
         $values['pref_admin_pass'] = $adm_pass;
         $values['pref_card_year'] = date('Y');
+
+        //telemetry step comes first: keep the UUIDs it sent, and the date it did,
+        //or Galette would never send telemetry again with the same UUID
+        $stored = $this->storage->readAll() ?? [];
+        foreach (self::KEPT_AT_INSTALL as $kept) {
+            if (!empty($stored[$kept])) {
+                $values[$kept] = $stored[$kept];
+            }
+        }
 
         return $this->storage->replaceAll(values: $values);
     }
