@@ -7,8 +7,6 @@
 {% import "macros.twig" as macros %}
 
 {% block content %}
-    {{ macros.experimentalBanner() }}
-
     {% if tfa_enabled %}
         <div class="ui success message">
             <div class="header">{{ _T("Two-factor authentication is enabled") }}</div>

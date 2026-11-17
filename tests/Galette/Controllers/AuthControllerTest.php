@@ -608,10 +608,13 @@ class AuthControllerTest extends GaletteRoutingTestCase
         //nothing enabled yet
         $test_response = $this->app->handle($this->createRequest('two-factor-manage'));
         $this->assertSame(200, $test_response->getStatusCode());
+        //no longer experimental
+        $this->assertStringNotContainsString('flask icon', (string)$test_response->getBody());
 
         //opening the enrolment page stores a pending, unusable secret
         $test_response = $this->app->handle($this->createRequest('two-factor-enrol'));
         $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertStringNotContainsString('flask icon', (string)$test_response->getBody());
 
         $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
         $this->assertTrue($secret->load($member->id));
