@@ -176,6 +176,7 @@ class Telemetry
             'self_subscription' => (bool)$this->prefs->pref_bool_selfsubscribe,
             'html_editor'       => (bool)$this->prefs->pref_editor_enabled,
             'custom_colors'     => (bool)$this->prefs->pref_enable_custom_colors,
+            'maps'              => (bool)$this->prefs->pref_maps_enabled,
             'mail_method'       => self::MAIL_METHODS[(int)$this->prefs->pref_mail_method] ?? 'unknown',
             'two_factor'        => self::TWO_FACTOR_MODES[TwoFactorAuth::modeFrom($this->prefs)] ?? 'unknown',
             'password_strength' => $strength === null
