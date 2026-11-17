@@ -15,6 +15,10 @@ use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 use function Safe\file_get_contents;
+use function Safe\mkdir;
+use function Safe\rmdir;
+use function Safe\touch;
+use function Safe\unlink;
 use function Safe\ini_get;
 use function Safe\preg_replace;
 
@@ -41,7 +45,8 @@ class Telemetry extends GaletteTestCase
                 'avg_members'       => '0-50',
                 'avg_contributions' => '0-50',
                 'avg_transactions'  => '0-50'
-            ]
+            ],
+            'install_mode'       => 'TO BE SET'
         ];
 
         $telemetry = new \Galette\Util\Telemetry(
@@ -49,6 +54,7 @@ class Telemetry extends GaletteTestCase
             $this->preferences,
             $this->plugins
         );
+        $expected['install_mode'] = $telemetry->getInstallMode();
 
         $result = $telemetry->grabGaletteInfos();
         $this->assertSame(40, strlen($result['uuid']));
@@ -342,7 +348,8 @@ class Telemetry extends GaletteTestCase
                 'version',
                 'plugins',
                 'default_language',
-                'usage'
+                'usage',
+                'install_mode'
             ]
         );
 
@@ -363,5 +370,71 @@ class Telemetry extends GaletteTestCase
                 'os'
             ]
         );
+    }
+
+    /**
+     * Test install mode
+     */
+    public function testGetInstallMode(): void
+    {
+        $telemetry = new \Galette\Util\Telemetry(
+            $this->zdb,
+            $this->preferences,
+            $this->plugins
+        );
+
+        $root = sys_get_temp_dir() . '/galette-install-mode-' . uniqid() . '/';
+        mkdir($root);
+        $container_file = $root . '.dockerenv';
+        try {
+            $this->assertSame(
+                \Galette\Util\Telemetry::INSTALL_ARCHIVE,
+                $telemetry->getInstallMode($root, [$container_file])
+            );
+
+            mkdir($root . '.git');
+            $this->assertSame(
+                \Galette\Util\Telemetry::INSTALL_GIT,
+                $telemetry->getInstallMode($root, [$container_file])
+            );
+
+            touch($container_file);
+            $this->assertSame(
+                \Galette\Util\Telemetry::INSTALL_CONTAINER,
+                $telemetry->getInstallMode($root, [$container_file])
+            );
+        } finally {
+            if (file_exists($container_file)) {
+                unlink($container_file);
+            }
+            if (is_dir($root . '.git')) {
+                rmdir($root . '.git');
+            }
+            rmdir($root);
+        }
+    }
+
+    /**
+     * Test sent data
+     */
+    public function testGetPayload(): void
+    {
+        $telemetry = new \Galette\Util\Telemetry(
+            $this->zdb,
+            $this->preferences,
+            $this->plugins
+        );
+
+        $payload = $telemetry->getPayload(\Galette\Util\Telemetry::TRIGGER_AUTO);
+        $this->assertSame(['data'], array_keys($payload));
+        $this->assertSame(['galette', 'system'], array_keys($payload['data']));
+        $this->assertSame(\Galette\Util\Telemetry::TRIGGER_AUTO, $payload['data']['galette']['trigger']);
+        $this->assertSame($telemetry->getInstallMode(), $payload['data']['galette']['install_mode']);
+
+        $payload = $telemetry->getPayload(\Galette\Util\Telemetry::TRIGGER_MANUAL);
+        $this->assertSame(\Galette\Util\Telemetry::TRIGGER_MANUAL, $payload['data']['galette']['trigger']);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $telemetry->getPayload('unknown');
     }
 }
