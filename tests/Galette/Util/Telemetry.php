@@ -12,6 +12,7 @@ namespace Galette\Tests\Util;
 
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use function Safe\file_get_contents;
 use function Safe\ini_get;
@@ -111,10 +112,44 @@ class Telemetry extends GaletteTestCase
         $this->assertNotEmpty($infos['engine']);
         $this->assertNotEmpty($infos['version']);
         $this->assertNotNull($infos['size']);
-        if (!$this->zdb->isPostgres()) {
+        if ($this->zdb->isPostgres()) {
+            $this->assertSame('PostgreSQL', $infos['engine']);
+        } else {
+            $this->assertContains($infos['engine'], ['MariaDB', 'MySQL', 'Percona Server']);
             //no sql mode for postgres databases
             $this->assertNotEmpty($infos['sql_mode']);
         }
+    }
+
+    /**
+     * MySQL families provider
+     *
+     * @return array<string, array<int, string>>
+     */
+    public static function mysqlFamilyProvider(): array
+    {
+        return [
+            'MariaDB, packaged' => ['Debian 12', '10.11.6-MariaDB-0+deb12u1', 'MariaDB'],
+            'MariaDB, upstream' => ['mariadb.org binary distribution', '11.4.3-MariaDB', 'MariaDB'],
+            'MariaDB, official' => ['MariaDB Server', '10.6.18-MariaDB', 'MariaDB'],
+            'Percona' => ["Percona Server (GPL), Release '37', Revision '39e2'", '8.0.37-29', 'Percona Server'],
+            'MySQL, community' => ['MySQL Community Server - GPL', '8.0.39', 'MySQL'],
+            'MySQL, packaged' => ['(Ubuntu)', '8.0.39-0ubuntu0.22.04.1', 'MySQL'],
+            'MariaDB 11.8' => [
+                '-- Please help get to 10k stars at https://github.',
+                '11.8.6-MariaDB-0+deb13u1 from Debian',
+                'MariaDB'
+            ],
+        ];
+    }
+
+    /**
+     * Test MySQL family
+     */
+    #[DataProvider('mysqlFamilyProvider')]
+    public function testGetMysqlFamily(string $comment, string $version, string $expected): void
+    {
+        $this->assertSame($expected, \Galette\Util\Telemetry::getMysqlFamily($comment, $version));
     }
 
     /**
@@ -133,6 +168,43 @@ class Telemetry extends GaletteTestCase
         //no webserver infos from CLI
         $this->assertEmpty($result['engine']);
         $this->assertEmpty($result['version']);
+
+        //web server information from a web request
+        $_SERVER['SERVER_SOFTWARE'] = 'Apache/2.4.62 (Fedora Linux) OpenSSL/3.2.2';
+        try {
+            $result = $telemetry->grabWebserverInfos();
+        } finally {
+            unset($_SERVER['SERVER_SOFTWARE']);
+        }
+        $this->assertSame(['engine' => 'Apache', 'version' => '2.4.62'], $result);
+    }
+
+    /**
+     * Server software provider
+     *
+     * @return array<string, array<int, string|array<string, string>>>
+     */
+    public static function serverSoftwareProvider(): array
+    {
+        return [
+            'Apache' => ['Apache/2.4.62 (Fedora Linux) OpenSSL/3.2.2', ['engine' => 'Apache', 'version' => '2.4.62']],
+            'nginx' => ['nginx/1.26.2', ['engine' => 'nginx', 'version' => '1.26.2']],
+            'No version' => ['Apache', ['engine' => 'Apache', 'version' => '']],
+            'Built-in server' => ['PHP 8.3.0 Development Server', ['engine' => 'PHP', 'version' => '']],
+            'Empty' => ['', ['engine' => '', 'version' => '']],
+        ];
+    }
+
+    /**
+     * Test server software parsing
+     *
+     * @param string                $software Server software string
+     * @param array<string, string> $expected Expected result
+     */
+    #[DataProvider('serverSoftwareProvider')]
+    public function testParseServerSoftware(string $software, array $expected): void
+    {
+        $this->assertSame($expected, \Galette\Util\Telemetry::parseServerSoftware($software));
     }
 
     /**
@@ -174,6 +246,14 @@ class Telemetry extends GaletteTestCase
         if (file_exists('/etc/fedora-release')) {
             $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/fedora-release'));
         }
+        if ($distro === '') {
+            foreach (['/etc/os-release', '/usr/lib/os-release'] as $os_release) {
+                if (is_readable($os_release)) {
+                    $distro = \Galette\Util\Telemetry::parseOsRelease(file_get_contents($os_release));
+                    break;
+                }
+            }
+        }
 
         $expected = [
             'family'       => php_uname('s'),
@@ -188,6 +268,37 @@ class Telemetry extends GaletteTestCase
         );
         $result = $telemetry->grabOsInfos();
         $this->assertSame($expected, $result);
+    }
+
+    /**
+     * os-release contents provider
+     *
+     * @return array<string, array<int, string>>
+     */
+    public static function osReleaseProvider(): array
+    {
+        return [
+            'Debian' => [
+                "PRETTY_NAME=\"Debian GNU/Linux 12 (bookworm)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"12\"\nID=debian\n",
+                'Debian GNU/Linux 12 (bookworm)'
+            ],
+            'Alpine, no quotes' => [
+                "NAME=\"Alpine Linux\"\nID=alpine\nVERSION_ID=3.20.3\nPRETTY_NAME=Alpine Linux v3.20\n",
+                'Alpine Linux v3.20'
+            ],
+            'Single quotes' => ["PRETTY_NAME='Ubuntu 24.04.1 LTS'\n", 'Ubuntu 24.04.1 LTS'],
+            'No pretty name' => ["NAME=\"Ubuntu\"\nVERSION=\"24.04.1 LTS (Noble Numbat)\"\n", 'Ubuntu 24.04.1 LTS (Noble Numbat)'],
+            'Empty' => ['', ''],
+        ];
+    }
+
+    /**
+     * Test os-release parsing
+     */
+    #[DataProvider('osReleaseProvider')]
+    public function testParseOsRelease(string $contents, string $expected): void
+    {
+        $this->assertSame($expected, \Galette\Util\Telemetry::parseOsRelease($contents));
     }
 
     /**

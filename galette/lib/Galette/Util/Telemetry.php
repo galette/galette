@@ -109,7 +109,34 @@ class Telemetry
      */
     public function grabDbInfos(): array
     {
-        return $this->zdb->getInfos();
+        $infos = $this->zdb->getInfos();
+        if (!$this->zdb->isPostgres()) {
+            $infos['engine'] = self::getMysqlFamily(
+                (string)$infos['engine'],
+                (string)$infos['version']
+            );
+        }
+        return $infos;
+    }
+
+    /**
+     * Get MySQL server family
+     *
+     * MySQL engine is retrieved from @@version_comment, that is a free text
+     * set by packagers (ie. "Debian 12", "Source distribution").
+     *
+     * @param string $comment Version comment
+     * @param string $version Server version
+     */
+    public static function getMysqlFamily(string $comment, string $version): string
+    {
+        if (stripos($version, 'mariadb') !== false || stripos($comment, 'mariadb') !== false) {
+            return 'MariaDB';
+        }
+        if (stripos($comment, 'percona') !== false) {
+            return 'Percona Server';
+        }
+        return 'MySQL';
     }
 
     /**
@@ -123,6 +150,11 @@ class Telemetry
             'engine'  => '',
             'version' => '',
         ];
+
+        // set by the web server when running from a web request
+        if (!empty($_SERVER['SERVER_SOFTWARE'])) {
+            return self::parseServerSoftware((string)$_SERVER['SERVER_SOFTWARE']);
+        }
 
         if (PHP_SAPI == 'cli' || !filter_var(gethostbyname(parse_url($this->prefs->getURL(), PHP_URL_HOST)), FILTER_VALIDATE_IP)) {
             // Do not try to get headers if hostname cannot be resolved
@@ -142,10 +174,32 @@ class Telemetry
         if ($response = curl_exec($ch)) {
             $headers = substr($response, 0, curl_getinfo($ch, CURLINFO_HEADER_SIZE));
             $header_matches = [];
-            if (preg_match('/^Server: (?<engine>[^ ]+)\/(?<version>[^ ]+)/im', $headers, $header_matches)) {
-                $server['engine']  = $header_matches['engine'];
-                $server['version'] = $header_matches['version'];
+            if (preg_match('/^Server: *(?<software>.+)$/im', $headers, $header_matches)) {
+                $server = self::parseServerSoftware($header_matches['software']);
             }
+        }
+
+        return $server;
+    }
+
+    /**
+     * Parse web server software string
+     *
+     * @param string $software Software string (ie. "Apache/2.4.62 (Fedora Linux)", "nginx")
+     *
+     * @return array<string, string>
+     */
+    public static function parseServerSoftware(string $software): array
+    {
+        $server = [
+            'engine'  => '',
+            'version' => '',
+        ];
+
+        $matches = [];
+        if (preg_match('/^(?<engine>[^\/\s]+)(?:\/(?<version>\S+))?/', trim($software), $matches)) {
+            $server['engine']  = $matches['engine'];
+            $server['version'] = $matches['version'] ?? '';
         }
 
         return $server;
@@ -186,12 +240,41 @@ class Telemetry
         if (@file_exists('/etc/fedora-release')) {
             $distro = preg_replace('/\s+$/S', '', file_get_contents('/etc/fedora-release'));
         }
+        if (!$distro) {
+            foreach (['/etc/os-release', '/usr/lib/os-release'] as $os_release) {
+                if (@is_readable($os_release)) {
+                    $distro = self::parseOsRelease(file_get_contents($os_release));
+                    break;
+                }
+            }
+        }
 
         return [
             'family'       => php_uname('s'),
             'distribution' => ($distro ?: ''),
             'version'      => php_uname('r')
         ];
+    }
+
+    /**
+     * Get distribution name from os-release file contents
+     *
+     * @param string $contents os-release file contents
+     */
+    public static function parseOsRelease(string $contents): string
+    {
+        $values = [];
+        foreach (explode("\n", $contents) as $line) {
+            $matches = [];
+            if (preg_match('/^\s*(?<key>[A-Z_]+)=(?<value>.*)$/', $line, $matches)) {
+                $values[$matches['key']] = trim(trim($matches['value']), '"\'');
+            }
+        }
+
+        if (!empty($values['PRETTY_NAME'])) {
+            return $values['PRETTY_NAME'];
+        }
+        return trim(($values['NAME'] ?? '') . ' ' . ($values['VERSION'] ?? ''));
     }
 
     /**
