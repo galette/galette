@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-11-16 07:05+0100\n"
-"PO-Revision-Date: 2026-11-17 14:51+0000\n"
+"PO-Revision-Date: 2026-11-18 10:05+0000\n"
 "Last-Translator: Jože Felicijan <felicijan@users.noreply.hosted.weblate.org>"
 "\n"
 "Language-Team: Slovenian <https://hosted.weblate.org/projects/galette/"
@@ -857,7 +857,7 @@ msgstr "Račun člana je bil spremenjen."
 #. TRANS: %1$d is the number of roles given, %2$d the number taken back, %3$d the member identifier
 #, php-format
 msgid "%1$d role(s) given, %2$d taken back for member #%3$d"
-msgstr ""
+msgstr "Članu št. %3$d dodeljena(-e) je/so %1$d vloga(-e), odvzeta(-e) pa %2$d"
 
 msgid "An error occurred adding member to its groups as manager."
 msgstr ""
@@ -912,66 +912,67 @@ msgstr "Odstrani vrsto plačila %1$s"
 #, php-format
 msgid "Role '%1$s' has not been added; is its name missing or already used?"
 msgstr ""
+"Vloga »%1$s« ni bila dodana; ali manjka njeno ime oziroma je že v uporabi?"
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' has been added; choose its permissions."
-msgstr ""
+msgstr "Vloga '%1$s' je bila dodana; izberite njena dovoljenja."
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s'"
-msgstr ""
+msgstr "Vloga '%1$s'"
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' has not been modified!"
-msgstr ""
+msgstr "Vloga '%1$s' ni bila spremenjena!"
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' modified"
-msgstr ""
+msgstr "Vloga '%1$s' je bila spremenjena"
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' has been successfully modified."
-msgstr ""
+msgstr "Vloga '%1$s' je bila uspešno spremenjena."
 
 msgid "System roles are given from members data."
-msgstr ""
+msgstr "Sistemske vloge se določijo na podlagi podatkov o članih."
 
 msgid "Please choose a member."
-msgstr ""
+msgstr "Prosimo, izberite člana."
 
 msgid "Requested group does not exist."
-msgstr ""
+msgstr "Zahtevana skupina ne obstaja."
 
 msgid "Member already has this role."
-msgstr ""
+msgstr "Član že ima to vlogo."
 
 #. TRANS: %1$s is the role name, %2$d the member identifier
 #, php-format
 msgid "Role '%1$s' given to member #%2$d"
-msgstr ""
+msgstr "Vloga '%1$s' dodeljena članu št. %2$d"
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' has been given."
-msgstr ""
+msgstr "Vloga '%1$s' je bila dodeljena."
 
 msgid "This role was not given."
-msgstr ""
+msgstr "Ta vloga ni bila dodeljena."
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Role '%1$s' has been taken back."
-msgstr ""
+msgstr "Vloga '%1$s' je bila odvzeta."
 
 #. TRANS: %1$s is the role name
 #, php-format
 msgid "Remove role %1$s"
-msgstr ""
+msgstr "Odstrani vlogo %1$s"
 
 msgid "This search is already saved."
 msgstr "To iskanje je že shranjeno."
@@ -1167,6 +1168,8 @@ msgid ""
 "You are not allowed to import groups managers; remove that column from the "
 "import model."
 msgstr ""
+"Uvoz upraviteljev skupin ni dovoljen; odstranite ta stolpec iz predloge za "
+"uvoz."
 
 msgid "An error occurred importing the file :("
 msgstr "Pri uvozu datoteke je prišlo do napake :("
@@ -1249,6 +1252,8 @@ msgid ""
 "Script protection is turned off: a script injected in a page would run. Turn "
 "it back on from the advanced configuration as soon as the cause is fixed."
 msgstr ""
+"Zaščita skripta je izklopljena: izvajal bi se skript, vstavljen v stran. "
+"Znova ga vklopite iz napredne konfiguracije, takoj ko je vzrok odpravljen."
 
 msgid "Settings"
 msgstr "Nastavitve"
@@ -1289,7 +1294,7 @@ msgstr ""
 "nastavitvah onemogočena."
 
 msgid "Test message"
-msgstr "Preskusno sporočilo"
+msgstr "Testno sporočilo"
 
 msgid "Galette admin"
 msgstr "Galette admin"
@@ -1357,13 +1362,13 @@ msgid "Flush the logs"
 msgstr "Izbriši dnevnike"
 
 msgid "Maps are not enabled."
-msgstr ""
+msgstr "Zemljevidi niso omogočeni."
 
 msgid "Maps"
 msgstr "Zemljevidi"
 
 msgid "Coordinates have not been loaded."
-msgstr ""
+msgstr "Koordinate niso bile naložene."
 
 msgid "Superadmin cannot be localized."
 msgstr "Superadministratorja ni mogoče lokalizirati."
@@ -1390,6 +1395,8 @@ msgid ""
 "Maps center needs both a latitude, between -90 and 90, and a longitude, "
 "between -180 and 180."
 msgstr ""
+"Središče zemljevida zahteva tako zemljepisno širino (med -90 in 90) kot tudi "
+"zemljepisno dolžino (med -180 in 180)."
 
 msgid "An address is required to use your own background map."
 msgstr "Za uporabo lastnega zemljevida ozadja je potreben naslov."
@@ -1399,6 +1406,7 @@ msgstr "Nastavitve zemljevidov so shranjene."
 
 msgid "Town search is not available for now, you can still enter coordinates."
 msgstr ""
+"Iskanje krajev trenutno ni na voljo, lahko pa še vedno vnesete koordinate."
 
 msgid "Coordinates have been removed!"
 msgstr "Koordinate so bile odstranjene!"
@@ -1416,7 +1424,7 @@ msgid "Coordinates have not been stored :("
 msgstr "Koordinate niso shranjene :("
 
 msgid "Unable to generate PDF file."
-msgstr ""
+msgstr "Datoteke PDF ni mogoče ustvariti."
 
 msgid "Unable to get members list."
 msgstr "Seznama članov ni mogoče pridobiti."
@@ -1585,6 +1593,8 @@ msgid ""
 "Accounts offered on the login page in DEMO mode, each with its login, "
 "password and label."
 msgstr ""
+"Računi, ki so na strani za prijavo na voljo v načinu DEMO; vsak ima svojo "
+"prijavo, geslo in oznako."
 
 msgid "Yes"
 msgstr "Da"
@@ -1794,10 +1804,8 @@ msgstr "Vse"
 msgid "An SQL error has occurred."
 msgstr "Prišlo je do napake SQL."
 
-#, fuzzy
-#| msgid "Default"
 msgid "Default data"
-msgstr "Privzeto"
+msgstr "Privzeti podatki"
 
 msgid "No such module."
 msgstr "Takšnega modula ni."
@@ -1807,6 +1815,8 @@ msgstr "Vtičnika ni mogoče deaktivirati."
 
 msgid "Plugin features are part of Galette now, it cannot be enabled."
 msgstr ""
+"Funkcionalnosti vtičnikov so zdaj del sistema Galette; ni jih mogoče "
+"omogočiti."
 
 msgid "Cannot activate plugin."
 msgstr "Vtičnika ni mogoče aktivirati."
@@ -1972,6 +1982,8 @@ msgid ""
 "- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
 "example.org separated by spaces!"
 msgstr ""
+"- Vrednost za '%1$s' mora biti 'self', 'none' ali spletni naslovi, kot je "
+"https://example.org, ločeni s presledki!"
 
 #. TRANS: parameter is the setting name; the URL must not be translated
 #, php-format
@@ -1979,6 +1991,8 @@ msgid ""
 "- Value for '%1$s' must be web addresses such as https://example.org "
 "separated by spaces!"
 msgstr ""
+"- Vrednost za '%1$s' mora biti spletni naslov, kot je https://example.org, "
+"ločen s presledki!"
 
 msgid "Missing required field name!"
 msgstr "Manjka ime obveznega polja!"
@@ -2198,7 +2212,7 @@ msgid "- The amount must be an integer!"
 msgstr "- Znesek mora biti celo število!"
 
 msgid "- You are not allowed to attach a contribution to this transaction!"
-msgstr ""
+msgstr "- Tej transakciji ne smete dodati prispevka!"
 
 msgid "- The duration must be a positive integer!"
 msgstr "- Trajanje mora biti pozitivno celo število!"
@@ -2210,6 +2224,8 @@ msgid ""
 "- You are not allowed to change the amount of a contribution attached to a "
 "transaction you cannot access!"
 msgstr ""
+"- Ne smete spreminjati zneska prispevka, vezanega na transakcijo, do katere "
+"nimate dostopa!"
 
 msgid "- Sum of all contributions exceed corresponding transaction amount."
 msgstr "- Vsota vseh prispevkov presega ustrezni znesek transakcije."
@@ -3103,13 +3119,13 @@ msgid "OpenFreeMap, colours"
 msgstr "OpenFreeMap, barve"
 
 msgid "VersaTiles, colours"
-msgstr ""
+msgstr "VersaTiles, barve"
 
 msgid "VersaTiles, grey"
-msgstr ""
+msgstr "VersaTiles, siva"
 
 msgid "Plan IGN, France only"
-msgstr ""
+msgstr "Načrt IGN, samo Francija"
 
 msgid "OpenStreetMap"
 msgstr "Open Street Map"
@@ -3124,10 +3140,10 @@ msgid "OpenStreetMap Germany"
 msgstr "OpenStreetMap Nemčija"
 
 msgid "CyclOSM, for cycling"
-msgstr ""
+msgstr "CyclOSM, za kolesarjenje"
 
 msgid "OpenTopoMap, topographic"
-msgstr ""
+msgstr "OpenTopoMap, topografski"
 
 msgid "Esri, light grey"
 msgstr "Esri, svetlo siva"
@@ -3195,7 +3211,7 @@ msgid "My localization"
 msgstr "Moja lokalizacija"
 
 msgid "Set my position on the members map"
-msgstr ""
+msgstr "Nastavi moj položaj na zemljevidu članov"
 
 msgid "View, search into and filter member's list"
 msgstr "Ogled, iskanje in filtriranje seznama članov"
@@ -3308,7 +3324,7 @@ msgid "View application's logs"
 msgstr "Ogled dnevnikov aplikacije"
 
 msgid "Display members positions on maps, and choose the background map"
-msgstr ""
+msgstr "Prikažite položaje članov na zemljevidih in izberite zemljevid ozadja"
 
 msgid "Customize lists fields and order"
 msgstr "Prilagodite polja seznamov in vrstni red"
@@ -3376,12 +3392,12 @@ msgid "Geolocalize %1$s"
 msgstr "Geolokaliziraj %1$s"
 
 msgid "Show on map"
-msgstr ""
+msgstr "Prikaži na zemljevidu"
 
 #. TRANS: parameter is the member name
 #, php-format
 msgid "Show %1$s on map"
-msgstr ""
+msgstr "Prikaži %1$s na zemljevidu"
 
 msgid "Mass change"
 msgstr "Sprememba mase"
@@ -3417,7 +3433,7 @@ msgid "Galleries"
 msgstr "Galerije"
 
 msgid "See where members live"
-msgstr ""
+msgstr "Poglejte, kje živijo člani"
 
 msgid "Public pages"
 msgstr "Javne strani"
@@ -4220,12 +4236,14 @@ msgid "Unable to migrate choices for field %d: %s"
 msgstr "Izbir za polje %d ni mogoče preseliti: %s"
 
 msgid "System roles have been created."
-msgstr ""
+msgstr "Sistemske vloge so bile ustvarjene."
 
 msgid ""
 "Members positions from the maps plugin have been taken over, the plugin can "
 "be removed."
 msgstr ""
+"Lokacije članov iz vtičnika za zemljevide so bile prenesene; vtičnik lahko "
+"odstranite."
 
 msgid "Please chose the parameters of the admin account on Galette"
 msgstr "Prosimo, izberite parametre skrbniškega računa na Galette"
@@ -4721,7 +4739,7 @@ msgstr "Odstrani iz skupine %1$s"
 
 #, php-format
 msgid "Cancel removal from group %1$s"
-msgstr ""
+msgstr "Prekliči odstranitev iz skupine %1$s"
 
 msgid "no group"
 msgstr "brez skupine"
@@ -4802,51 +4820,51 @@ msgid "Right"
 msgstr "Desno"
 
 msgid "Role"
-msgstr ""
+msgstr "Vloga"
 
 msgid "Every logged in member"
-msgstr ""
+msgstr "Vsak prijavljeni član"
 
 msgid "Active account, up to date membership"
-msgstr ""
+msgstr "Aktiven račun, veljavno članstvo"
 
 #, php-format
 msgid "From their status: %1$s"
-msgstr ""
+msgstr "Iz njihovega stanja: %1$s"
 
 msgid "Marked as administrator"
-msgstr ""
+msgstr "Označeno kot administrator"
 
 msgid "Manager of the group, see groups above"
-msgstr ""
+msgstr "Vodja skupine, glej skupine zgoraj"
 
 msgid "Computed from member's information"
-msgstr ""
+msgstr "Izračunano na podlagi podatkov člana"
 
 msgid "All groups"
 msgstr "Vse skupine"
 
 msgctxt "member roles"
 msgid "will be removed"
-msgstr ""
+msgstr "bo odstranjeno"
 
 #, php-format
 msgid "Take role %1$s back"
-msgstr ""
+msgstr "Prevzemi vlogo %1$s nazaj"
 
 #, php-format
 msgid "Cancel removal of role %1$s"
-msgstr ""
+msgstr "Prekliči odstranitev vloge %1$s"
 
 msgctxt "member roles"
 msgid "added"
-msgstr ""
+msgstr "dodano"
 
 msgid "Give role"
-msgstr ""
+msgstr "Dodelite vlogo"
 
 msgid "Choose a role"
-msgstr ""
+msgstr "Izberite vlogo"
 
 msgid "Not supplied"
 msgstr "Ni dobavljeno"
@@ -5160,10 +5178,10 @@ msgid "Enable dark mode"
 msgstr "Omogoči temni način"
 
 msgid "Disable debug bar"
-msgstr ""
+msgstr "Onemogoči vrstico za odpravljanje napak"
 
 msgid "Enable debug bar"
-msgstr ""
+msgstr "Omogoči vrstico za odpravljanje napak"
 
 msgid "Unimpersonate"
 msgstr "Lažna predstavitev"
@@ -5292,10 +5310,10 @@ msgid "Search result"
 msgstr "Rezultat iskanja"
 
 msgid "The map could not be loaded."
-msgstr ""
+msgstr "Zemljevida ni bilo mogoče naložiti."
 
 msgid "No geographic position yet."
-msgstr ""
+msgstr "Geografski položaj še ni določen."
 
 msgid "See member profile"
 msgstr "Oglejte si profil člana"
@@ -5724,7 +5742,7 @@ msgid "secret"
 msgstr "skrivnost"
 
 msgid "default"
-msgstr "Privzeto"
+msgstr "privzeto"
 
 msgid "modified"
 msgstr "spremenjeno"
@@ -6027,10 +6045,8 @@ msgstr "Zahteve za obnovitev gesla z enega naslova"
 msgid "Self registrations from one address"
 msgstr "Samonaročnine z enega naslova"
 
-#, fuzzy
-#| msgid "Self registrations from one address"
 msgid "Security policy violation reports from one address"
-msgstr "Samonaročnine z enega naslova"
+msgstr "Poročila o kršitvah varnostne politike z enega naslova"
 
 msgid "Lift"
 msgstr "Dvigalo"
@@ -6687,13 +6703,11 @@ msgstr "Za izvedbo tega dejanja izberite vsaj eno polje s seznama."
 msgid "Lost your password?"
 msgstr "Ste pozabili geslo?"
 
-#, fuzzy
-#| msgid "Demonstration"
 msgid "Demonstration accounts"
-msgstr "Demonstracija"
+msgstr "Demonstracijski računi"
 
 msgid "Log in with one of them to discover Galette."
-msgstr ""
+msgstr "Prijavite se z enim od njih in odkrijte Galette."
 
 #, php-format
 msgid "Log in as %s"
@@ -6857,11 +6871,13 @@ msgid "Follow the sending"
 msgstr "Sledite pošiljanju"
 
 msgid "Display members positions on maps"
-msgstr ""
+msgstr "Prikaži položaje članov na zemljevidih"
 
 msgid ""
 "Members can then set their position, and a map is added to public pages."
 msgstr ""
+"Člani lahko nato določijo svojo lokacijo, na javne strani pa se doda "
+"zemljevid."
 
 msgid "Members positions precision"
 msgstr "Natančnost položajev elementov"
@@ -6914,23 +6930,28 @@ msgid ""
 "Where maps open when they have nothing else to show, such as the association "
 "town. Left empty, maps show the whole of France."
 msgstr ""
+"Kjer se zemljevidi odprejo, ko nimajo česa drugega za prikazati – na primer "
+"v primeru mesta, povezanega z določeno vsebino. Če ostanejo prazni, "
+"zemljevidi prikazujejo celotno Francijo."
 
 msgid "Search coordinates"
-msgstr ""
+msgstr "Iskalne koordinate"
 
 msgid "Latitude"
-msgstr ""
+msgstr "Zemljepisna širina"
 
 msgid "Longitude"
-msgstr ""
+msgstr "Zemljepisna dolžina"
 
 msgid ""
 "Public map as the form sets it, with sample positions: where they are "
 "stored, and where visitors see them."
 msgstr ""
+"Javni zemljevid, kot ga določa obrazec, s primeri lokacij: kje so shranjene "
+"in kje jih obiskovalci vidijo."
 
 msgid "No town found."
-msgstr ""
+msgstr "Mesto ni bilo najdeno."
 
 msgid "Attached to:"
 msgstr "Priloženo:"
@@ -7006,7 +7027,7 @@ msgid "Family"
 msgstr "Družina"
 
 msgid "Roles:"
-msgstr ""
+msgstr "Vloge:"
 
 msgid "Not managed group"
 msgstr "Ni upravljana skupina"
@@ -7221,7 +7242,7 @@ msgid "Incompatible with current version"
 msgstr "Nezdružljivo s trenutno različico"
 
 msgid "Invalid plugin definition"
-msgstr ""
+msgstr "Neveljavna definicija vtičnika"
 
 msgid "Database version missing"
 msgstr "Manjka različica baze podatkov"
@@ -7233,7 +7254,7 @@ msgid "Need update"
 msgstr "Potrebna je posodobitev"
 
 msgid "Part of Galette now, can be removed"
-msgstr ""
+msgstr "Zdaj del galete; lahko se odstrani"
 
 msgid "Explicitly disabled"
 msgstr "Izrecno onemogočeno"
@@ -7525,10 +7546,10 @@ msgid ""
 msgstr "Vnesite celoten URL vira RSS. Prikazan bo na namizju Galette."
 
 msgid "Rights are managed with roles."
-msgstr ""
+msgstr "Pravice se upravljajo z vlogami."
 
 msgid "Manage roles"
-msgstr ""
+msgstr "Upravljanje vlog"
 
 msgid "Sender name:"
 msgstr "Ime pošiljatelja:"
@@ -7911,118 +7932,133 @@ msgid "Please make sure to select at least one reminder."
 msgstr "Prosimo, izberite vsaj en opomnik."
 
 msgid "Given to every logged in member."
-msgstr ""
+msgstr "Dodeljeno vsakemu prijavljenemu članu."
 
 msgid ""
 "Given to members whose account is active and whose membership is up to date."
 msgstr ""
+"Namenjeno članom, katerih račun je aktiven in katerih članstvo je urejeno."
 
 msgid ""
 "Given to members with a staff status; change their status to give or take it "
 "back."
 msgstr ""
+"Dodeljeno članom s statusom osebja; spremenite njihov status, da jim to "
+"pravico podelite ali odvzamete."
 
 msgid ""
 "Given to members marked as administrators; change it with the Galette Admin "
 "field, when editing them."
 msgstr ""
+"Dodeljeno članom, označenim kot administratorji; to lahko spremenite v polju "
+"»Galette Admin« pri njihovem urejanju."
 
 msgid ""
 "Given to managers of a group, on that group only; choose managers from the "
 "group page."
 msgstr ""
+"Dodeljeno upraviteljem skupine in velja samo za to skupino; upravitelje "
+"izberite na strani skupine."
 
 msgid "Only its permissions can be changed."
-msgstr ""
+msgstr "Spremeniti je mogoče le njegova dovoljenja."
 
 msgid "System"
-msgstr ""
+msgstr "Sistem"
 
 #, php-format
 msgid "%1$s / %2$s permissions"
-msgstr ""
+msgstr "Dovoljenja %1$s / %2$s"
 
 msgid "Rename role"
-msgstr ""
+msgstr "Preimenuj vlogo"
 
 msgid "Change parent role"
-msgstr ""
+msgstr "Spremeni nadrejeno vlogo"
 
 msgid "Inherits from"
 msgstr "Podedovano"
 
 msgid "permissions granted"
-msgstr ""
+msgstr "dovoljenja podeljena"
 
 msgid "Granted"
-msgstr ""
+msgstr "Odobreno"
 
 msgid "Permission"
-msgstr ""
+msgstr "Dovoljenje"
 
 #, php-format
 msgid "Inherited from %1$s"
-msgstr ""
+msgstr "Podedovano od %1$s"
 
 msgid ""
 "Members are always granted on what they own, and what their children own."
 msgstr ""
+"Članom se vedno priznajo pravice na podlagi tega, kar imajo v lasti oni in "
+"kar imajo v lasti njihovi otroci."
 
 msgid "Always on own"
-msgstr ""
+msgstr "Vedno na svojem"
 
 msgid ""
 "This permission does not apply to members: it is not granted when the role "
 "is given for a group."
 msgstr ""
+"To dovoljenje ne velja za člane: ne podeli se, kadar je vloga dodeljena za "
+"skupino."
 
 msgid "Not on a group"
-msgstr ""
+msgstr "Ne v skupini"
 
 msgid "No member has this role."
-msgstr ""
+msgstr "Noben član nima te vloge."
 
 #, php-format
 msgid "%1$s member has this role."
 msgid_plural "%1$s members have this role."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
+msgstr[0] "To vlogo ima član %1$s."
+msgstr[1] "Ti vlogi imata %1$s člana."
+msgstr[2] "To vlogo imajo %1$s člani."
+msgstr[3] "To vlogo ima %1$s članov."
 
 msgid "Nearly every member has it, they are not listed."
-msgstr ""
+msgstr "Skoraj vsak član to ima, vendar niso navedeni."
 
 msgid "Take role back"
-msgstr ""
+msgstr "Prevzemi vlogo nazaj"
 
 #, php-format
 msgid "Take role back from %1$s"
-msgstr ""
+msgstr "Prevzemi vlogo nazaj od %1$s"
 
 msgid "This role has not been given to anyone yet."
-msgstr ""
+msgstr "Ta vloga še ni bila dodeljena nikomur."
 
 #, php-format
 msgid "%1$s / %2$s from %3$s"
-msgstr ""
+msgstr "%1$s / %2$s od %3$s"
 
 msgid "No parent role"
-msgstr ""
+msgstr "Brez starševske vloge"
 
 msgid ""
 "System roles are given from members data: any logged-in member, members up "
 "to date, groups managers (on the groups they manage), staff members and "
 "administrators. Other roles are given explicitly, for all groups or for one."
 msgstr ""
+"Sistemske vloge se določijo na podlagi podatkov o članih: vsak prijavljeni "
+"član, aktivni člani, vodje skupin (za skupine, ki jih upravljajo), osebje in "
+"administratorji. Druge vloge se dodelijo izrecno – bodisi za vse skupine "
+"bodisi za posamezno skupino."
 
 #, php-format
 msgid "Edit role '%1$s'"
-msgstr ""
+msgstr "Uredi vlogo '%1$s'"
 
 #, php-format
 msgid "Delete role '%1$s'"
-msgstr ""
+msgstr "Izbriši vlogo '%1$s'"
 
 msgid "Replace parameters with the current advanced search"
 msgstr "Zamenjajte parametre s trenutnim naprednim iskanjem"
