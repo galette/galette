@@ -76,6 +76,9 @@ trait Dynamics
     /**
      * Extract posted values for dynamic fields
      *
+     * Errors go to the object errors; the result is false as well when a value
+     * is wrong or a required one is missing.
+     *
      * @param array<string, mixed>                  $post     Posted values
      * @param array<string,int|bool>                $required Array of required fields
      * @param array<string>                         $disabled Array of disabled fields
@@ -249,7 +252,7 @@ trait Dynamics
                 }
             }
 
-            return $valid;
+            return $valid && $missing === [];
         }
         return false;
     }
