@@ -94,6 +94,11 @@ fields of a plugin object in mails and PDF.
 The `field_form` columns of `galette_field_types` and `galette_dynamic_fields`
 hold up to 50 characters instead of 10.
 
+`dynamicsCheck()` refuses uploaded files too big or not fully received when
+it is given them, and `dynamicsFiles()` reports files it cannot store in the
+object errors. Objects can hide fields of their form, or require them, by
+overriding `isDynamicFieldHidden()` and `isDynamicFieldRequired()`.
+
 ## Plugin definition
 
 `_define.php` now returns a `Galette\Core\Plugins\PluginDefinition`

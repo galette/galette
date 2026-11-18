@@ -53,6 +53,9 @@ class DynamicFieldsHandle
 
     private bool $has_changed = false;
 
+    /** @var array<int, array<int, int>> Occurrences moved on store, new index by former one, by field */
+    private array $moved_indexes = [];
+
     /**
      * Default constructor
      *
@@ -230,7 +233,8 @@ class DynamicFieldsHandle
             'field_val'     => is_string($value) ? Html::clean($value) : $value,
         ];
 
-        if (!isset($this->current_values[$field][$idx])) {
+        //getValues() gives fields without value a new occurrence: it is still to be inserted
+        if (!isset($this->current_values[$field][$idx]) || isset($this->current_values[$field][$idx]['is_new'])) {
             $input['is_new'] = true;
         }
 
@@ -416,7 +420,11 @@ class DynamicFieldsHandle
                     $val_index = (int)$entry['val_index'];
                     foreach ($this->current_values[$field_id] as &$current) {
                         if ((int)$current['val_index'] === $val_index + 1) {
+                            //the index the form posted, before any move
+                            $original = $current['original_val_index'] ?? (int)$current['val_index'];
+                            $current['original_val_index'] = $original;
                             $current['val_index'] = $val_index;
+                            $this->moved_indexes[(int)$field_id][$original] = $val_index;
                             ++$val_index;
                             $current['old_val_index'] = $val_index;
                             if ($field instanceof File) {
@@ -477,6 +485,19 @@ class DynamicFieldsHandle
         if ($filename !== null) {
             rename($filename, GALETTE_FILES_PATH . $field->getFileName((int)$this->item_id, $to));
         }
+    }
+
+    /**
+     * Get the occurrences moved when removed ones were dropped on store
+     *
+     * Files are sent after values are stored: an upload replacing an occurrence
+     * that moved goes to its new index.
+     *
+     * @return array<int, array<int, int>> New index by former one, by field
+     */
+    public function getMovedIndexes(): array
+    {
+        return $this->moved_indexes;
     }
 
     /**

@@ -86,14 +86,16 @@ class ThingsController extends AbstractPluginController
         $thing = $this->getThing($request, $id);
         $files = $request->getUploadedFiles();
 
-        if ($thing->check((array)$request->getParsedBody(), $files) && $thing->store()) {
+        $stored = $thing->check((array)$request->getParsedBody(), $files) && $thing->store();
+        if ($stored) {
+            //other values are stored: files that failed are to be sent again
             $thing->storeFiles($files);
         }
 
         if ($thing->getErrors() !== []) {
             return $this->redirectWithErrors(
                 response: $response,
-                errors: $thing->getErrors(),
+                errors: $stored ? ['Thing has been stored, but not all its files.', ...$thing->getErrors()] : $thing->getErrors(),
                 redirect_url: $this->routeparser->urlFor('plugin1_thing_edit', ['id' => (string)$id])
             );
         }

@@ -95,6 +95,149 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test objects may hide fields of their form, or require them
+     */
+    public function testObjectModes(): void
+    {
+        $this->logSuperAdmin();
+        $hidden_id = $this->createDynamicField('Thing color', required: true);
+        $required_id = $this->createDynamicField('Thing size');
+        $optional_id = $this->createDynamicField('Thing weight', required: true);
+
+        $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $this->assertTrue($thing->check(['info_field_' . $hidden_id . '_1' => 'red']));
+        $this->assertTrue($thing->store());
+
+        $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $thing->hidden_fields = [$hidden_id => true];
+        $thing->required_fields = [$required_id => true, $optional_id => false];
+
+        //a hidden field is not displayed, but kept in the form for scripts to show it again
+        $view = $this->container->get(\Slim\Views\Twig::class);
+        $form = $view->fetch('components/dynamic_fields.html.twig', ['object' => $thing]);
+        $this->assertMatchesRegularExpression('/class="[^"]*column displaynone" data-dynfield="' . $hidden_id . '"/', $form);
+        $this->assertMatchesRegularExpression('/class="[^"]*column" data-dynfield="' . $required_id . '"/', $form);
+        $this->assertMatchesRegularExpression('/<div class="field required">\s*<label for="info_field_' . $required_id . '_1"/', $form);
+        $this->assertMatchesRegularExpression('/<div class="field">\s*<label for="info_field_' . $optional_id . '_1"/', $form);
+        $display = $view->fetch('elements/display_dynamic_fields.html.twig', ['object' => $thing]);
+        $this->assertStringNotContainsString('Thing color', $display);
+        $this->assertStringContainsString('Thing size', $display);
+
+        //the object decides which fields are required
+        $this->assertFalse($thing->check([
+            'info_field_' . $hidden_id . '_1' => '',
+            'info_field_' . $required_id . '_1' => '',
+            'info_field_' . $optional_id . '_1' => '',
+        ]));
+        $this->assertSame(['Missing required field Thing size'], $thing->getErrors());
+
+        //a hidden field is not checked, and keeps its stored value
+        $this->assertTrue($thing->check([
+            'info_field_' . $hidden_id . '_1' => 'blue',
+            'info_field_' . $required_id . '_1' => 'large',
+            'info_field_' . $optional_id . '_1' => '',
+        ]));
+        $this->assertTrue($thing->store());
+        $loaded = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $this->assertSame('red', $loaded->getDynamicFields()->getValues($hidden_id)[0]['field_val']);
+        $this->assertSame('large', $loaded->getDynamicFields()->getValues($required_id)[0]['field_val']);
+
+        $this->assertTrue($loaded->remove());
+        $this->login->logout();
+    }
+
+    /**
+     * Test files are checked before the object is stored, and stored where the form expects them
+     */
+    public function testUploads(): void
+    {
+        $this->logSuperAdmin();
+        $field_id = $this->createDynamicField('Thing pictures', type: \Galette\DynamicFields\DynamicField::FILE, repeat: 0);
+        $small = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, \Galette\DynamicFields\DynamicField::FILE);
+        $this->assertTrue($small->store([
+            'field_name' => 'Thing icon',
+            'field_perm' => (string)\Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type' => (string)\Galette\DynamicFields\DynamicField::FILE,
+            'field_required' => '0',
+            'field_size' => '1',
+            'form_name' => 'plugin1'
+        ]));
+        $small_id = $small->getId();
+
+        $upload = function (string $fixture, string $name, int $error = UPLOAD_ERR_OK): \Slim\Psr7\UploadedFile {
+            $tmp = sys_get_temp_dir() . '/' . $name;
+            copy(GALETTE_TESTS_PATH . '/' . $fixture, $tmp);
+            return new \Slim\Psr7\UploadedFile(
+                fileNameOrStream: $tmp,
+                name: $name,
+                type: 'image/png',
+                size: filesize($tmp),
+                error: $error
+            );
+        };
+        $key = 'info_field_' . $field_id . '_';
+        $path = fn(int $pos): string => GALETTE_FILES_PATH . sprintf('plugin1_1_field_%1$s_value_%2$s', $field_id, $pos);
+
+        //two pictures
+        $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $files = [$key . '1' => $upload('fixtures/galette_pro.png', 'a.png'), $key . '2' => $upload('test.gif', 'b.gif')];
+        //a form always posts something
+        $this->assertTrue($thing->check(['valid' => '1'], $files));
+        $this->assertTrue($thing->store());
+        $thing->storeFiles($files);
+        $this->assertSame([], $thing->getErrors());
+        $this->assertSame(filesize(GALETTE_TESTS_PATH . '/test.gif'), filesize($path(2)));
+
+        //the first one is dropped, the second one replaced: the replacement takes its new place
+        $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $files = [$key . '2' => $upload('fake_image.jpg', 'c.jpg')];
+        $this->assertTrue($thing->check([$key . '1' => '1'], $files));
+        $this->assertTrue($thing->store());
+        $thing->storeFiles($files);
+        $this->assertSame([], $thing->getErrors());
+        $loaded = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $this->assertSame(
+            [['val_index' => 1, 'field_val' => 'c.jpg']],
+            array_map(
+                fn(array $value): array => ['val_index' => (int)$value['val_index'], 'field_val' => $value['field_val']],
+                $loaded->getDynamicFields()->getValues($field_id)
+            )
+        );
+        $this->assertSame(filesize(GALETTE_TESTS_PATH . '/fake_image.jpg'), filesize($path(1)));
+        $this->assertFileDoesNotExist($path(2));
+
+        //a file too big, or not fully received, stops the object from being stored
+        $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $this->assertFalse($thing->check(
+            [$key . '1' => '1'],
+            ['info_field_' . $small_id . '_1' => $upload('fixtures/galette_pro.png', 'big.png')]
+        ));
+        $this->assertSame(
+            [sprintf('File is too big. Maximum allowed size is %1$s', \Galette\Util\Filesize::fromKilobytes(1))],
+            $thing->getErrors()
+        );
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'file too large');
+        $this->assertFalse($thing->check(
+            [$key . '1' => '1'],
+            [$key . '1' => $upload('test.gif', 'partial.gif', UPLOAD_ERR_PARTIAL)]
+        ));
+        $this->assertSame(['File for Thing pictures has not been received, please send it again.'], $thing->getErrors());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'file upload error: ' . UPLOAD_ERR_PARTIAL);
+
+        //files that arrive once the object is stored are reported
+        $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $thing->storeFiles([$key . '2' => $upload('test.gif', 'late.gif', UPLOAD_ERR_PARTIAL)]);
+        $this->assertSame(['File for Thing pictures has not been received, please send it again.'], $thing->getErrors());
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'file upload error: ' . UPLOAD_ERR_PARTIAL);
+        $this->assertFileDoesNotExist($path(2));
+
+        $loaded = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $this->assertTrue($loaded->remove());
+        unlink($path(1));
+        $this->login->logout();
+    }
+
+    /**
      * Test values of a new plugin object are stored once it gets its identifier
      */
     public function testNewObjectValues(): void
