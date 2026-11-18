@@ -267,13 +267,15 @@ class DynamicFieldsSet extends GaletteTestCase
         \Galette\Repository\DynamicFieldsSet::unregisterForms('myplugin');
         $other = clone $provider;
         $other->forms = ['myplugin_other' => $other_class];
-        \Galette\Repository\DynamicFieldsSet::registerForms('myplugin_other', $other);
+        foreach (['myplugin_other', 'Myplugin', 'MYPLUGIN'] as $route) {
+            \Galette\Repository\DynamicFieldsSet::registerForms($route, $other);
+            $this->expectLogEntry(
+                \Analog\Analog::ERROR,
+                sprintf('Plugin "%s" dynamic forms are ignored: its route name must hold lowercase letters and digits only', $route)
+            );
+        }
         \Galette\Repository\DynamicFieldsSet::registerForms('mypluginother', $other);
         $this->assertSame($core, \Galette\Repository\DynamicFieldsSet::getClasses());
-        $this->expectLogEntry(
-            \Analog\Analog::ERROR,
-            'Plugin "myplugin_other" dynamic forms are ignored: its route name contains an underscore'
-        );
         $this->expectLogEntry(
             \Analog\Analog::ERROR,
             'Plugin "mypluginother" dynamic form "myplugin_other" is ignored: name must be "mypluginother", or start with "mypluginother_"'
