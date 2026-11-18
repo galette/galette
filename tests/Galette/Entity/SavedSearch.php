@@ -85,6 +85,33 @@ class SavedSearch extends GaletteTestCase
     }
 
     /**
+     * Test members fields names are replaced by their labels, on every read
+     */
+    #[AllowMockObjectsWithoutExpectations]
+    public function testSParametersLabels(): void
+    {
+        global $i18n; // globals :(
+        $i18n = $this->i18n;
+        $i18n->changeLanguage('en_US');
+
+        $saved = new \Galette\Entity\SavedSearch($this->zdb, $this->login);
+        $this->assertTrue(
+            $saved->check(
+                [
+                    'parameters'    => ['nom_adh' => 'Doe'],
+                    'form'          => 'Adherent',
+                    'name'          => 'By name'
+                ]
+            )
+        );
+
+        //labels were lost from the second read on
+        foreach ([1, 2] as $read) {
+            $this->assertSame(['Name:' => 'Doe'], $saved->sparameters, 'Read #' . $read);
+        }
+    }
+
+    /**
      * Test loading an unknown saved search
      */
     #[AllowMockObjectsWithoutExpectations]

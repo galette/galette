@@ -313,7 +313,7 @@ class SavedSearch
                     }
                     break;
                 case 'sparameters':
-                    include_once GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
+                    $members_fields = \Galette\Defaults\MembersFields::get();
                     $parameters = [];
                     foreach ($this->parameters as $key => $parameter) {
                         if (isset($members_fields[$key])) {

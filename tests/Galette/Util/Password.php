@@ -260,7 +260,6 @@ class Password extends GaletteTestCase
         );
         $login = new \Galette\Core\Login($this->zdb, $i18n);
         $history = new \Galette\Core\History($this->zdb, $login, $this->preferences);
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
 
         $adh = new \Galette\Entity\Adherent($this->zdb);
         $adh->setDependencies(
