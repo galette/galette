@@ -114,10 +114,14 @@ class DynamicFieldsSet
     public static function registerForms(string $plugin, DynamicFormsProviderInterface $provider): void
     {
         self::unregisterForms($plugin);
-        if (str_contains($plugin, '_')) {
-            //form names start with the route: "auto" and "auto_vehicle" would both own "auto_vehicle_record"
+        if (!preg_match('/^[a-z][a-z0-9]*\z/', $plugin)) {
+            //form names start with the route: "auto" and "auto_vehicle" would both own
+            //"auto_vehicle_record", as "auto" and "Auto" would both own "auto_record"
             Analog::log(
-                sprintf('Plugin "%s" dynamic forms are ignored: its route name contains an underscore', $plugin),
+                sprintf(
+                    'Plugin "%s" dynamic forms are ignored: its route name must hold lowercase letters and digits only',
+                    $plugin
+                ),
                 Analog::ERROR
             );
             return;
@@ -163,9 +167,8 @@ class DynamicFieldsSet
         }
         //stored fields and values stay with their plugin, even once it is disabled:
         //routes holding no underscore, the name tells its single owner
-        $prefix = strtolower($plugin);
-        if ($form !== $prefix && !str_starts_with($form, $prefix . '_')) {
-            return sprintf('name must be "%1$s", or start with "%1$s_"', $prefix);
+        if ($form !== $plugin && !str_starts_with($form, $plugin . '_')) {
+            return sprintf('name must be "%1$s", or start with "%1$s_"', $plugin);
         }
         if (
             isset(self::getCoreClasses()[$form])

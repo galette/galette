@@ -327,8 +327,8 @@ fields are checked, stored and displayed by the core.
   the form name: at most 50 lowercase letters, digits or underscores,
   the plugin route name alone or followed by `_` (such as `auto_vehicle`
   for the `auto` plugin), so fields and values stay with their plugin.
-  A plugin whose route name contains an underscore cannot declare forms:
-  its forms could also belong to another plugin.
+  Only a plugin whose route name holds lowercase letters and digits only can
+  declare forms: otherwise, its forms could also belong to another plugin.
   Never change it once released: stored values refer to it.
   A class belongs to a single form. A form that does not match, whose class
   does not use the `Galette\Features\Dynamics` trait (directly, through a
