@@ -22,7 +22,7 @@ final class MembersFieldsCategories
     /**
      * Get definitions
      *
-     * Translatable values are translated in current language at call time.
+     * Labels are source strings, stored as is and translated when displayed.
      *
      * @return array<int,array<string,string|int>>
      */

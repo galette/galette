@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Galette\Defaults;
 
 /**
- * Default email texts, in source language
+ * Default email texts
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -20,7 +20,8 @@ final class Texts
     /**
      * Get definitions
      *
-     * Translatable values are translated in current language at call time.
+     * Texts are translated in current language at call time, but every row
+     * is tagged en_US; use Entity\Texts::getDefaultTexts() for rows of a given language.
      *
      * @return array<int,array<string,string>>
      */

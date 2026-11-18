@@ -22,7 +22,8 @@ final class PdfModels
     /**
      * Get definitions
      *
-     * Translatable values are translated in current language at call time.
+     * Translatable values are kept as _T("...") markers, stored as is;
+     * model names are translated when a model is loaded.
      *
      * @return array<int,array<string,mixed>>
      */
