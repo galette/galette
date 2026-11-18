@@ -20,6 +20,7 @@ use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\DynamicFields\DynamicField;
+use Galette\DynamicFields\File as FileField;
 use Analog\Analog;
 use Galette\Core\Logs;
 
@@ -260,7 +261,8 @@ class DynamicFieldsController extends CrudController
         if ($provider !== null) {
             //plugins load their objects, and tell whether the user can see them
             $object = $provider->getDynamicFormObject($form_name, $id, $this->login);
-            $loaded = $object instanceof $object_class;
+            //a subclass may belong to a form of its own, the provider did not open
+            $loaded = $object instanceof $object_class && $object->getFormName() === $form_name;
         } elseif ($object_class === Preferences::class) {
             //settings are a single object, nothing to load but its dynamic fields
             $object = new Preferences($this->zdb, load: false);
@@ -281,8 +283,8 @@ class DynamicFieldsController extends CrudController
         $fields = $loaded ? $object->getDynamicFields()->getFields() : [];
         $field = $fields[$fid] ?? null;
 
-        //field does not exist or access is forbidden
-        $denied = $field === null || !$loaded;
+        //field does not exist, holds no file, or access is forbidden
+        $denied = !$field instanceof FileField || !$loaded;
         if (!$denied && $provider === null && !$object instanceof Preferences) {
             //a settings file goes to whoever can see its field; other files also require access to their object
             $denied = !$object->canShow($this->login);
@@ -307,7 +309,17 @@ class DynamicFieldsController extends CrudController
             }
         }
 
-        if (file_exists(GALETTE_FILES_PATH . $filename)) {
+        //a file left on disk once its value is gone is not sent
+        $stored = false;
+        if (in_array($pos, $object->getDynamicFields()->getValueIndexes($fid), strict: true)) {
+            foreach ($object->getDynamicFields()->getValues($fid) as $value) {
+                if ((int)$value['val_index'] === $pos && (string)$value['field_val'] !== '') {
+                    $stored = true;
+                }
+            }
+        }
+
+        if ($stored && file_exists(GALETTE_FILES_PATH . $filename)) {
             $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
 
             $response = $response->withHeader('Content-Description', 'File Transfer')

@@ -84,7 +84,7 @@ trait Dynamics
      * @param array<string, mixed>                  $post     Posted values
      * @param array<string,int|bool>                $required Array of required fields
      * @param array<string>                         $disabled Array of disabled fields
-     * @param ?array<string, UploadedFileInterface> $files    Uploaded files; required files are not checked when null
+     * @param ?array<string, UploadedFileInterface> $files    Uploaded files, given when the whole form is posted; otherwise required files, and required fields the post lacks, are not checked
      */
     protected function dynamicsCheck(array $post, array $required, array $disabled, ?array $files = null): bool
     {
@@ -182,6 +182,26 @@ trait Dynamics
             }
 
             if ($files !== null) {
+                //the whole form is posted: a required field it lacks is missing as well
+                foreach ($fields as $field_id => $field) {
+                    if (
+                        isset($posted_values[$field_id])
+                        || isset($hidden[$field_id])
+                        || isset($disabled[$this->name_pattern . $field_id . '_1'])
+                        || $field instanceof File
+                        || $this->isReadOnlyDynamicField($field)
+                        || !$this->isDynamicFieldRequired($field)
+                    ) {
+                        continue;
+                    }
+                    $missing[$field_id] = true;
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is a field name
+                        _T('Missing required field %1$s'),
+                        $field->getName(),
+                    );
+                }
+
                 //files are stored once the object is: check them before
                 $failed = [];
                 foreach ($this->getDynamicUploads($files) as [$field, $file]) {
