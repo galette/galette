@@ -263,6 +263,28 @@ class DynamicFieldsSet extends GaletteTestCase
             );
         }
 
+        //a form of a disabled plugin stays its own: no other route can match its name
+        \Galette\Repository\DynamicFieldsSet::unregisterForms('myplugin');
+        $other = clone $provider;
+        $other->forms = ['myplugin_other' => $other_class];
+        \Galette\Repository\DynamicFieldsSet::registerForms('myplugin_other', $other);
+        \Galette\Repository\DynamicFieldsSet::registerForms('mypluginother', $other);
+        $this->assertSame($core, \Galette\Repository\DynamicFieldsSet::getClasses());
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Plugin "myplugin_other" dynamic forms are ignored: its route name contains an underscore'
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Plugin "mypluginother" dynamic form "myplugin_other" is ignored: name must be "mypluginother", or start with "mypluginother_"'
+        );
+
+        //it gets its forms back once enabled again
+        $provider->forms = ['myplugin_other' => $other_class];
+        \Galette\Repository\DynamicFieldsSet::registerForms('myplugin', $provider);
+        $this->assertSame($core + ['myplugin_other' => $other_class], \Galette\Repository\DynamicFieldsSet::getClasses());
+        $this->assertSame($provider, \Galette\Repository\DynamicFieldsSet::getFormProvider('myplugin_other'));
+
         //a plugin failing to tell its forms does not prevent others from starting
         $failing = clone $provider;
         $failing->forms = ['throw' => true];
