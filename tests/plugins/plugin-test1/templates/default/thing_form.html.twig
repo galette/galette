@@ -1,0 +1,19 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    <form class="ui form" action="{{ url_for("plugin1_thing_doedit", {"id": thing.getID()}) }}" method="post" enctype="multipart/form-data">
+        {% include "components/dynamic_fields.html.twig" with {object: thing} %}
+
+        <div class="ui basic center aligned fitted segment">
+            <button type="submit" name="valid" class="action ui labeled icon primary button">
+                <i class="save icon" aria-hidden="true"></i> {{ _T("Save") }}
+            </button>
+        </div>
+    </form>
+{% endblock %}

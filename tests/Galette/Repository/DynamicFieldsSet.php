@@ -91,4 +91,137 @@ class DynamicFieldsSet extends GaletteTestCase
         $date = DynamicField::getFieldType($this->zdb, DynamicField::DATE);
         $this->assertSame('2026-03-01', \Galette\Repository\DynamicFieldsSet::getTextValue($date, '2026-03-01'));
     }
+
+    /**
+     * Test forms declared by plugins
+     */
+    public function testRegisterForms(): void
+    {
+        $provider = new class implements \Galette\Core\Plugins\DynamicFormsProviderInterface {
+            /** @var array<string, mixed> */
+            public array $forms = [];
+
+            /**
+             * Get the forms the plugin declares
+             *
+             * @return array<string, class-string>
+             */
+            public function getDynamicForms(): array
+            {
+                return $this->forms; //@phpstan-ignore return.type
+            }
+
+            /**
+             * Get the label of a declared form
+             *
+             * @param string $form Form name
+             */
+            public function getDynamicFormLabel(string $form): string
+            {
+                return 'Label of ' . $form;
+            }
+
+            /**
+             * Get an object of a declared form, if the user can see it
+             *
+             * @param string              $form  Form name
+             * @param int                 $id    Object identifier
+             * @param \Galette\Core\Login $login Current user
+             */
+            public function getDynamicFormObject(string $form, int $id, \Galette\Core\Login $login): ?object
+            {
+                return null;
+            }
+
+            /**
+             * Get the page to go back to when a file of a declared form cannot be sent
+             *
+             * @param string                    $form        Form name
+             * @param int                       $id          Object identifier
+             * @param \Slim\Routing\RouteParser $routeparser Route parser
+             */
+            public function getDynamicFormReturnUrl(string $form, int $id, \Slim\Routing\RouteParser $routeparser): string
+            {
+                return $routeparser->urlFor('slash');
+            }
+        };
+
+        //a class of the plugin, with dynamic fields
+        $thing = new class {
+            use \Galette\Features\Dynamics;
+
+            protected \Galette\Core\Db $zdb;
+            protected ?\Galette\Core\Login $login = null;
+            protected ?int $id = null;
+            /** @var array<string> */
+            protected array $errors = [];
+        };
+        $thing_class = $thing::class;
+
+        $core = \Galette\Repository\DynamicFieldsSet::getClasses();
+        $provider->forms = [
+            'things' => $thing_class,
+            'objectslend_object' => $thing_class,
+            //names must fit the columns, and be lowercase
+            str_repeat('a', 51) => $thing_class,
+            'Things' => $thing_class,
+            '1things' => $thing_class,
+            //names already used
+            'adh' => $thing_class,
+            'member' => $thing_class,
+            //classes must exist and have dynamic fields
+            'nothing' => 'MyPlugin\DoesNotExist',
+            'noclass' => 42,
+            'nodynamic' => \Galette\Entity\Title::class,
+        ];
+        \Galette\Repository\DynamicFieldsSet::registerForms('myplugin', $provider);
+
+        $this->assertSame(
+            $core + ['things' => $thing_class, 'objectslend_object' => $thing_class],
+            \Galette\Repository\DynamicFieldsSet::getClasses()
+        );
+        $this->assertSame($provider, \Galette\Repository\DynamicFieldsSet::getFormProvider('things'));
+        $this->assertNull(\Galette\Repository\DynamicFieldsSet::getFormProvider('adh'));
+        $this->assertNull(\Galette\Repository\DynamicFieldsSet::getFormProvider('unknown'));
+        $this->assertSame('Label of things', DynamicField::getFormsNames()['things']);
+        $this->assertSame('Label of things', DynamicField::getFormTitle('things'));
+
+        $reasons = [
+            str_repeat('a', 51) => 'name must be at most 50 lowercase letters, digits or underscores, starting with a letter',
+            'Things' => 'name must be at most 50 lowercase letters, digits or underscores, starting with a letter',
+            '1things' => 'name must be at most 50 lowercase letters, digits or underscores, starting with a letter',
+            'adh' => 'name is already used',
+            'member' => 'name is already used',
+            'nothing' => 'class does not exist',
+            'noclass' => 'class does not exist',
+            'nodynamic' => 'class does not use the Galette\Features\Dynamics trait',
+        ];
+        foreach ($reasons as $form => $reason) {
+            $this->expectLogEntry(
+                \Analog\Analog::ERROR,
+                sprintf('Plugin "myplugin" dynamic form "%s" is ignored: %s', $form, $reason)
+            );
+        }
+
+        //another plugin cannot take a registered name
+        $other = clone $provider;
+        $other->forms = ['things' => $thing_class];
+        \Galette\Repository\DynamicFieldsSet::registerForms('otherplugin', $other);
+        $this->assertSame($provider, \Galette\Repository\DynamicFieldsSet::getFormProvider('things'));
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'Plugin "otherplugin" dynamic form "things" is ignored: name is already used'
+        );
+
+        //a new registration replaces the previous one
+        $provider->forms = ['stuff' => $thing_class];
+        \Galette\Repository\DynamicFieldsSet::registerForms('myplugin', $provider);
+        $this->assertSame(
+            $core + ['stuff' => $thing_class],
+            \Galette\Repository\DynamicFieldsSet::getClasses()
+        );
+
+        \Galette\Repository\DynamicFieldsSet::unregisterForms('myplugin');
+        $this->assertSame($core, \Galette\Repository\DynamicFieldsSet::getClasses());
+    }
 }

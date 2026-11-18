@@ -51,3 +51,7 @@ CREATE TABLE galette_positions (
 
 -- adhesion form sentence has been renamed in 1.3.0: models stored before are no longer translated
 UPDATE galette_pdfmodels SET model_body = REPLACE(model_body, 'in order to complete your subscription.")', 'in order to complete your membership.")');
+
+-- plugins declare dynamic fields forms of their own, whose names are longer
+ALTER TABLE galette_field_types MODIFY field_form varchar(50) NOT NULL;
+ALTER TABLE galette_dynamic_fields MODIFY field_form varchar(50) NOT NULL;

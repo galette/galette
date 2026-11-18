@@ -1,0 +1,17 @@
+{#
+ # This file is part of Galette (https://galette.eu).
+ # SPDX-FileCopyrightText: Copyright © 2003-2026 The Galette Team
+ # SPDX-License-Identifier: GPL-3.0-or-later
+ #}
+
+{% extends 'page.html.twig' %}
+
+{% block content %}
+    {% include "elements/display_dynamic_fields.html.twig" with {object: thing} %}
+
+    <div class="ui basic center aligned fitted segment">
+        <a href="{{ url_for("plugin1_thing_edit", {"id": thing.getID()}) }}" class="ui labeled icon button">
+            <i class="edit icon" aria-hidden="true"></i> {{ _T("Edit") }}
+        </a>
+    </div>
+{% endblock %}

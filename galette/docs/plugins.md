@@ -317,6 +317,60 @@ settings page next to the core public pages.
 Declaring a page does not protect it: its routes still need the
 `Galette\Middleware\PublicPages` middleware.
 
+### DynamicFormsProviderInterface
+
+Gives the plugin objects dynamic fields: each declared form gets a tab on
+the dynamic fields configuration page, next to the core forms, and its
+fields are checked, stored and displayed by the core.
+
+- `getDynamicForms()` returns the class of the objects of each form, keyed by
+  the form name: at most 50 lowercase letters, digits or underscores,
+  starting with a letter, unused by the core and other plugins.
+  Never change it once released: stored values refer to it.
+  A form that does not match, or whose class does not use the
+  `Galette\Features\Dynamics` trait, is dropped and reported.
+- `getDynamicFormLabel(string $form)` returns the label of the form tab.
+- `getDynamicFormObject(string $form, int $id, Login $login)` returns the
+  object, or null when it does not exist or the user cannot see it. The core
+  calls it before sending a file of a dynamic field, then checks the
+  permission of the field itself.
+- `getDynamicFormReturnUrl(string $form, int $id, RouteParser $routeparser)`
+  returns the page to go back to when such a file cannot be sent, such as
+  the list of the plugin objects: the object may not exist, or the user may
+  not see it.
+
+The class gets `$zdb`, `$errors`, `$id` properties, and optionally `$login`,
+which the trait uses; `$id` must be set before values are stored, so a new
+object gets it once inserted. Subclasses belong to the form of their declared
+parent. `getFormName()` throws a `LogicException` when no active plugin declares
+the class. The plugin then calls the trait methods itself:
+
+```php
+class Thing
+{
+    use \Galette\Features\Dynamics;
+
+    public function check(array $values, array $files): bool
+    {
+        //...the plugin own checks
+        return $this->dynamicsCheck($values, required: [], disabled: [], files: $files);
+    }
+
+    public function store(): bool
+    {
+        //...store the object first: values need its identifier
+        return $this->dynamicsStore();
+    }
+}
+```
+
+`dynamicsFiles($request->getUploadedFiles())` stores files once the object
+is stored, and `dynamicsRemove()` drops values along with the object.
+Templates include `components/dynamic_fields.html.twig` in the form (which
+needs `enctype="multipart/form-data"` for file fields) and
+`elements/display_dynamic_fields.html.twig` on the display page, both with
+`{object: thing}`.
+
 ### FixturesProviderInterface
 
 Lets `galette:seed-fixtures` create sample data tied to core fixture members
