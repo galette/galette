@@ -274,7 +274,7 @@ class DynamicFieldsHandle
             $this->handleRemovals();
 
             foreach ($this->current_values as $field_id => $values) {
-                foreach ($values as $value) {
+                foreach ($values as $idx => $value) {
                     $value[DynamicField::PK] = $field_id;
                     if ($value['item_id'] == 0) {
                         $value['item_id'] = $this->item_id;
@@ -283,6 +283,8 @@ class DynamicFieldsHandle
                     if (isset($value['is_new'])) {
                         unset($value['is_new']);
                         $this->getInsertStatement()->execute($value);
+                        //stored now: a later store updates it
+                        unset($this->current_values[$field_id][$idx]['is_new']);
                         $this->has_changed = true;
                     } else {
                         $params = [
