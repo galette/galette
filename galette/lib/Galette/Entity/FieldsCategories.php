@@ -34,8 +34,8 @@ class FieldsCategories
     /**
      * Default constructor
      *
-     * @param Db                  $zdb      Database
-     * @param array<string,mixed> $defaults default values
+     * @param Db                             $zdb      Database
+     * @param array<int,array<string,mixed>> $defaults default values
      */
     public function __construct(private readonly Db $zdb, private readonly array $defaults)
     {

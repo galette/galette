@@ -78,7 +78,7 @@ class CsvIn extends Csv
 
     /** @var array<string,mixed>  */
     private array $members_fields;
-    /** @var array<string,mixed> */
+    /** @var array<int,array<string,mixed>> */
     private array $members_fields_cats;
     /** @var array<string,bool> */
     private array $required;
@@ -146,13 +146,13 @@ class CsvIn extends Csv
     /**
      * Import members from CSV file
      *
-     * @param Db                  $zdb                 Database instance
-     * @param Preferences         $preferences         Preferences instance
-     * @param History             $history             History instance
-     * @param string              $filename            CSV filename
-     * @param array<string,mixed> $members_fields      Members fields
-     * @param array<string,mixed> $members_fields_cats Members fields categories
-     * @param bool                $dryrun              Run in dry run mode (do not store in database)
+     * @param Db                             $zdb                 Database instance
+     * @param Preferences                    $preferences         Preferences instance
+     * @param History                        $history             History instance
+     * @param string                         $filename            CSV filename
+     * @param array<string,mixed>            $members_fields      Members fields
+     * @param array<int,array<string,mixed>> $members_fields_cats Members fields categories
+     * @param bool                           $dryrun              Run in dry run mode (do not store in database)
      */
     public function import(
         Db $zdb,

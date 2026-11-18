@@ -21,7 +21,7 @@ abstract class GaletteTestCase extends BaseGaletteTestCase
 {
     /** @var array<string,mixed> */
     protected array $members_fields;
-    /** @var array<string,mixed> */
+    /** @var array<int,array<string,mixed>> */
     protected array $members_fields_cats;
     protected \Galette\Core\I18n $i18n;
     protected \Galette\Core\Preferences $preferences;

@@ -8,28 +8,44 @@
 
 declare(strict_types=1);
 
+namespace Galette\Defaults;
+
 use Galette\Entity\PdfModel;
 
-//TODO: find a better way.
-//phpcs:ignore SlevomatCodingStandard.Variables.UnusedVariable.UnusedVariable -- used on file inclusion
-$pdfmodels_fields = [
-    [
-        'model_id'  => PdfModel::MAIN_MODEL,
-        'model_name'    => '_T("Main")',
-        'model_title'   => null,
-        'model_type'    => PdfModel::MAIN_MODEL,
-        'model_header'  => '<table>
+/**
+ * Default PDF models
+ *
+ * @author Johan Cwiklinski <johan@x-tnd.be>
+ */
+final class PdfModels
+{
+    /**
+     * Get definitions
+     *
+     * Translatable values are translated in current language at call time.
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    public static function get(): array
+    {
+        return [
+            [
+                'model_id'  => PdfModel::MAIN_MODEL,
+                'model_name'    => '_T("Main")',
+                'model_title'   => null,
+                'model_type'    => PdfModel::MAIN_MODEL,
+                'model_header'  => '<table>
     <tr>
         <td id="pdf_assoname"><strong id="asso_name">{ASSO_NAME}</strong><br/>{ASSO_SLOGAN}</td>
         <td id="pdf_logo">{ASSO_PRINT_LOGO}</td>
     </tr>
 </table>',
-        'model_footer'  => '<div id="pdf_footer">
+                'model_footer'  => '<div id="pdf_footer">
     _T("Association") {ASSO_NAME} - {ASSO_ADDRESS}<br/>
     {ASSO_WEBSITE}
 </div>',
-        'model_body'    => null,
-        'model_styles'  => 'div#pdf_title {
+                'model_body'    => null,
+                'model_styles'  => 'div#pdf_title {
     font-size: 1.4em;
     font-weight:bold;
     text-align: center;
@@ -67,16 +83,16 @@ td[dir=rtl]#pdf_assoname {
     width: 100%;
     margin-left: 25%;
 }',
-        'model_parent'  => null
-    ],
-    [
-        'model_id'  => PdfModel::INVOICE_MODEL,
-        'model_name'    => '_T("Invoice")',
-        'model_title'   => '_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
-        'model_type'    => PdfModel::INVOICE_MODEL,
-        'model_header'  => null,
-        'model_footer'  => null,
-        'model_body'    => '<table>
+                'model_parent'  => null
+            ],
+            [
+                'model_id'  => PdfModel::INVOICE_MODEL,
+                'model_name'    => '_T("Invoice")',
+                'model_title'   => '_T("Invoice") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
+                'model_type'    => PdfModel::INVOICE_MODEL,
+                'model_header'  => null,
+                'model_footer'  => null,
+                'model_body'    => '<table>
     <tr>
         <td width="300"></td>
         <td><strong>{NAME_ADH}</strong><br/>
@@ -111,17 +127,17 @@ td[dir=rtl]#pdf_assoname {
         </td>
     </tr>
 </table>',
-        'model_styles'  => null,
-        'model_parent'  => PdfModel::MAIN_MODEL
-    ],
-    [
-        'model_id'  => PdfModel::RECEIPT_MODEL,
-        'model_name'    => '_T("Receipt")',
-        'model_title'   => '_T("Receipt") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
-        'model_type'    => PdfModel::RECEIPT_MODEL,
-        'model_header'  => null,
-        'model_footer'  => null,
-        'model_body'    => '<table>
+                'model_styles'  => null,
+                'model_parent'  => PdfModel::MAIN_MODEL
+            ],
+            [
+                'model_id'  => PdfModel::RECEIPT_MODEL,
+                'model_name'    => '_T("Receipt")',
+                'model_title'   => '_T("Receipt") {CONTRIBUTION_YEAR}-{CONTRIBUTION_ID}',
+                'model_type'    => PdfModel::RECEIPT_MODEL,
+                'model_header'  => null,
+                'model_footer'  => null,
+                'model_body'    => '<table>
     <tr>
         <td width="300"></td>
         <td><strong>{NAME_ADH}</strong><br/>
@@ -156,17 +172,17 @@ td[dir=rtl]#pdf_assoname {
         </td>
     </tr>
 </table>',
-        'model_styles'  => null,
-        'model_parent'  => PdfModel::MAIN_MODEL
-    ],
-    [
-        'model_id'  => PdfModel::ADHESION_FORM_MODEL,
-        'model_name'    => '_T("Adhesion form")',
-        'model_title'   => '_T("Adhesion form")',
-        'model_type'    => PdfModel::ADHESION_FORM_MODEL,
-        'model_header'  => null,
-        'model_footer'  => null,
-        'model_body'    => '<hr/>
+                'model_styles'  => null,
+                'model_parent'  => PdfModel::MAIN_MODEL
+            ],
+            [
+                'model_id'  => PdfModel::ADHESION_FORM_MODEL,
+                'model_name'    => '_T("Adhesion form")',
+                'model_title'   => '_T("Adhesion form")',
+                'model_type'    => PdfModel::ADHESION_FORM_MODEL,
+                'model_header'  => null,
+                'model_footer'  => null,
+                'model_body'    => '<hr/>
 <div class="infos">_T("Complete the following form and send it with your funds, in order to complete your membership.")</div>
 <table>
     <tr>
@@ -253,7 +269,7 @@ td[dir=rtl]#pdf_assoname {
 </table>
 <p>str_replace(\'%s\', \'{ASSO_NAME}\', \'_T("Hereby, I agree to comply to %s association statutes and its rules.")\')</p><p>_T("At ................................................")</p><p>_T("On .......... / .......... / .......... ")</p><p>_T("Signature")</p>
 <p class="notes">_T("* Only for compagnies")<br/>_T("** Galette identifier, if applicable")</p>',
-        'model_styles'  => 'td.label {
+                'model_styles'  => 'td.label {
     width: 20%;
     font-weight: bold;
 }
@@ -293,6 +309,8 @@ td.boxlabel {
 td.box {
     width: 5%;
 }',
-        'model_parent'  => PdfModel::MAIN_MODEL
-    ]
-];
+                'model_parent'  => PdfModel::MAIN_MODEL
+            ]
+        ];
+    }
+}

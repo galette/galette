@@ -124,11 +124,11 @@ class FieldsConfig
     /**
      * Default constructor
      *
-     * @param Db                   $zdb           Database
-     * @param string               $table         the table for which to get fields configuration
-     * @param array<string, mixed> $defaults      default values
-     * @param array<string, mixed> $cats_defaults default categories values
-     * @param bool                 $install       Are we calling from installer?
+     * @param Db                               $zdb           Database
+     * @param string                           $table         the table for which to get fields configuration
+     * @param array<string, mixed>             $defaults      default values
+     * @param array<int, array<string, mixed>> $cats_defaults default categories values
+     * @param bool                             $install       Are we calling from installer?
      */
     public function __construct(
         protected Db $zdb,

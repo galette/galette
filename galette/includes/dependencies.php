@@ -32,6 +32,9 @@ use Galette\Core\Preferences;
 use Galette\Core\PrintLogo;
 use Galette\Core\SystemClock;
 use Galette\Core\Translator;
+use Galette\Defaults\MembersFields;
+use Galette\Defaults\MembersFieldsCategories;
+use Galette\Defaults\Texts as DefaultTexts;
 use Galette\Entity\Adherent;
 use Galette\Entity\FieldsConfig;
 use Galette\Entity\ListsConfig;
@@ -153,16 +156,8 @@ return [
     // -------------------------------------------------------------------------
     // Fields definitions
     // -------------------------------------------------------------------------
-    'texts_fields' => factory(function (): array {
-        include GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
-        /** @var array<array<string,string>> $texts_fields */
-        return $texts_fields;
-    }),
-    'members_fields' => factory(function (): array {
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-        /** @var array<array<string,string|bool|int>> $members_fields */
-        return $members_fields;
-    }),
+    'texts_fields' => factory(fn(): array => DefaultTexts::get()),
+    'members_fields' => factory(fn(): array => MembersFields::get()),
     'members_form_fields' => factory(function (ContainerInterface $c): array {
         $fields = $c->get('members_fields');
         foreach ($fields as $k => $field) {
@@ -172,11 +167,7 @@ return [
         }
         return $fields;
     }),
-    'members_fields_cats' => factory(function (): array {
-        include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
-        /** @var array<array<string,string|int>> $members_fields_cats */
-        return $members_fields_cats;
-    }),
+    'members_fields_cats' => factory(fn(): array => MembersFieldsCategories::get()),
     FieldsConfig::class => factory(fn(ContainerInterface $c): FieldsConfig => new FieldsConfig(
         zdb: $c->get(Db::class),
         table: Adherent::TABLE,
