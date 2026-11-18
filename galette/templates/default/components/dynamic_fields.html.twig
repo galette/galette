@@ -154,6 +154,9 @@
                             {% set disabled = true %}
                         {% endif %}
                         {% set is_file = get_class(field) == 'Galette\\DynamicFields\\File' %}
+                        {# objects may not use every field of their form; hidden ones stay in the form, for scripts to show them again #}
+                        {% set hidden = object.isDynamicFieldHidden(field) %}
+                        {% set field_required = not hidden and object.isDynamicFieldRequired(field) %}
                         {% set values = object.getDynamicFields().getValues(field.getId()) %}
                         {# a field takes several occurrences when its repeat is greater than one, or zero (as many as wanted); a null or single repeat means it takes a single one #}
                         {% set repeatable = not masschange and field.isRepeatable() %}
@@ -165,11 +168,11 @@
                           {% set columns = (field.getWidthInForms() == 3) ? 'eight wide ' : 'sixteen wide ' %}
                         {% endif %}
                         {# a lone file field has no occurrence to add, but its stored file can be dropped #}
-                        <div class="{% if repeatable %}repeatable {% elseif is_file %}dynfiles {% endif %}{{ columns }}column"{% if repeatable %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}>
+                        <div class="{% if repeatable %}repeatable {% elseif is_file %}dynfiles {% endif %}{{ columns }}column{% if hidden %} displaynone{% endif %}" data-dynfield="{{ field.getId() }}"{% if repeatable %} data-maxrepeat="{{ field.getRepeat() }}"{% endif %}>
                             {% for field_data in values %}
                                 {# the occurrence is numbered after its stored index, which the form posts back and the file names carry #}
                                 {% set idx = field_data.val_index %}
-                                {% set required = field.isRequired() and (not repeatable or idx == 1) %}
+                                {% set required = field_required and (not repeatable or idx == 1) %}
                                 {# a stored file is dropped from its own occurrence, repeatable or not #}
                                 {% set removable = repeatable or (is_file and object.getID() is not null and field_data.field_val) %}
                                 <div class="field{% if removable %} removable{% endif %}{% if required %} required{% endif %}{% if is_file %} wide{% endif %}"{% if field_data.field_val %} data-filled="1"{% endif %}>
@@ -177,7 +180,7 @@
                                 </div>
                             {% endfor %}
                             {% if values is not iterable or values|length == 0 %}
-                                {% set required = field.isRequired() %}
+                                {% set required = field_required %}
                                 <div class="field{% if repeatable %} removable{% endif %}{% if required %} required{% endif %}{% if is_file %} wide{% endif %}">
                                     {{ _self.draw_field(field, {'field_val': ''}, disabled, 1, object, masschange, required and not masschange, repeatable) }}
                                 </div>

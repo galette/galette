@@ -325,10 +325,13 @@ fields are checked, stored and displayed by the core.
 
 - `getDynamicForms()` returns the class of the objects of each form, keyed by
   the form name: at most 50 lowercase letters, digits or underscores,
-  starting with a letter, unused by the core and other plugins.
+  the plugin route name alone or followed by `_` (such as `auto_vehicle`
+  for the `auto` plugin), so fields and values stay with their plugin.
   Never change it once released: stored values refer to it.
-  A form that does not match, or whose class does not use the
-  `Galette\Features\Dynamics` trait, is dropped and reported.
+  A class belongs to a single form. A form that does not match, whose class
+  does not use the `Galette\Features\Dynamics` trait (directly, through a
+  parent or another trait) or already belongs to a form, is dropped and
+  reported.
 - `getDynamicFormLabel(string $form)` returns the label of the form tab.
 - `getDynamicFormObject(string $form, int $id, Login $login)` returns the
   object, or null when it does not exist or the user cannot see it. The core
@@ -364,8 +367,20 @@ class Thing
 }
 ```
 
+Given the uploaded files, `dynamicsCheck()` refuses files too big or not
+fully received, before anything is stored.
 `dynamicsFiles($request->getUploadedFiles())` stores files once the object
-is stored, and `dynamicsRemove()` drops values along with the object.
+is stored; it adds to the object errors the files it cannot store, while
+other values are already stored: check `getErrors()` afterwards, and tell
+the user to send them again. `dynamicsRemove()` drops values along with the
+object.
+
+Objects that do not use every field of their form, or require some of them
+only, override `isDynamicFieldHidden(DynamicField $field)` and
+`isDynamicFieldRequired(DynamicField $field)`. A hidden field is neither
+displayed nor checked, and keeps its stored value; it stays in the form with
+the `displaynone` class, in a column whose `data-dynfield` attribute is the
+field identifier, for scripts to show it again.
 Templates include `components/dynamic_fields.html.twig` in the form (which
 needs `enctype="multipart/form-data"` for file fields) and
 `elements/display_dynamic_fields.html.twig` on the display page, both with
