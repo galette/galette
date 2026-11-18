@@ -18,6 +18,7 @@ use Galette\Exception\MissingPluginException;
 use League\Event\EventDispatcher;
 use League\Event\ListenerSubscriber;
 use Psr\Container\ContainerInterface;
+use ReflectionClass;
 use RuntimeException;
 use Safe\Exceptions\DirException;
 use Safe\Exceptions\FilesystemException;
@@ -354,7 +355,7 @@ class Plugins
     private function registerPreferences(string $id): bool
     {
         $class = $this->getClassName($id, full: true);
-        if (!class_exists($class) || !is_subclass_of($class, GalettePlugin::class)) {
+        if (!self::isSubclassOf($class, GalettePlugin::class)) {
             return false;
         }
 
@@ -550,8 +551,7 @@ class Plugins
     {
         $plugin_class = $this->getClassName($this->id, full: true);
         if (
-            !class_exists($plugin_class)
-            || !is_subclass_of($plugin_class, GalettePlugin::class)
+            !self::isSubclassOf($plugin_class, GalettePlugin::class)
         ) {
             //plugin is missing its mandatory class or does not extend GalettePlugin
             Analog::log(
@@ -733,7 +733,7 @@ class Plugins
     public function loadEventProviders(string $id): void
     {
         $providerClassName = '\\' . $this->getNamespace($id) . '\\' . 'PluginEventProvider';
-        if (is_a($providerClassName, ListenerSubscriber::class, allow_string: true)) {
+        if (self::isSubclassOf($providerClassName, ListenerSubscriber::class)) {
             /** @var ListenerSubscriber $provider */
             $provider = $this->container->get($providerClassName);
             $this->event_dispatcher->subscribeListenersFrom($provider);
@@ -1075,7 +1075,7 @@ class Plugins
         $pages = [];
         foreach ($this->getActiveModules() as $id => $module) {
             $class = $this->getClassName($id, full: true);
-            if (!class_exists($class) || !is_subclass_of($class, GalettePlugin::class)) {
+            if (!self::isSubclassOf($class, GalettePlugin::class)) {
                 continue;
             }
 
@@ -1113,7 +1113,7 @@ class Plugins
         $providers = [];
         foreach (array_keys($this->getActiveModules()) as $id) {
             $class = sprintf('%s\\Fixtures', $this->getNamespace($id));
-            if (!class_exists($class) || !is_subclass_of($class, Plugins\FixturesProviderInterface::class)) {
+            if (!self::isSubclassOf($class, Plugins\FixturesProviderInterface::class)) {
                 continue;
             }
 
@@ -1321,5 +1321,16 @@ class Plugins
     {
         $this->zdb = $db;
         return $this;
+    }
+
+    /**
+     * Whether a class extends a class or implements an interface, without instantiating it
+     *
+     * @param string       $class  Class name, that may not exist
+     * @param class-string $parent Parent class or interface
+     */
+    private static function isSubclassOf(string $class, string $parent): bool
+    {
+        return class_exists($class) && (new ReflectionClass($class))->isSubclassOf($parent);
     }
 }
