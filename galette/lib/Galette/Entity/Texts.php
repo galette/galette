@@ -544,11 +544,8 @@ class Texts
         $i18n->changeLanguage($lang);
 
         //do the magic!
-        include GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
         $texts = [];
-
-        //@phpstan-ignore variable.undefined
-        foreach ($texts_fields as $text_field) {
+        foreach (\Galette\Defaults\Texts::get() as $text_field) {
             unset($text_field['tid']);
             $text_field['tlang'] = $lang;
             $texts[] = $text_field;

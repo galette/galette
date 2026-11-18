@@ -190,17 +190,9 @@ $container->set('acls', function (ContainerInterface $c) {
     return $acls;
 });
 
-$container->set('texts_fields', function () {
-    include_once GALETTE_ROOT . 'includes/fields_defs/texts_fields.php';
-    /** @var array<array<string,string>> $texts_fields */
-    return $texts_fields;
-});
+$container->set('texts_fields', fn(): array => \Galette\Defaults\Texts::get());
 
-$container->set('members_fields', function () {
-    include GALETTE_ROOT . 'includes/fields_defs/members_fields.php';
-    /** @var array<array<string,string|bool|int>> $members_fields */
-    return $members_fields;
-});
+$container->set('members_fields', fn(): array => \Galette\Defaults\MembersFields::get());
 
 $container->set('members_form_fields', function (ContainerInterface $c) {
     $fields = $c->get('members_fields');
@@ -212,11 +204,7 @@ $container->set('members_form_fields', function (ContainerInterface $c) {
     return $fields;
 });
 
-$container->set('members_fields_cats', function () {
-    include GALETTE_ROOT . 'includes/fields_defs/members_fields_cats.php';
-    /** @var array<array<string,string|int>> $members_fields_cats */
-    return $members_fields_cats;
-});
+$container->set('members_fields_cats', fn(): array => \Galette\Defaults\MembersFieldsCategories::get());
 
 // -----------------------------------------------------------------------------
 // Feature Flags

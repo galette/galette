@@ -85,7 +85,7 @@ abstract class AbstractController
     #[Inject("members_form_fields")]
     protected array $members_form_fields;
     /**
-     * @var array<string,mixed>
+     * @var array<int,array<string,mixed>>
      */
     #[Inject("members_fields_cats")]
     protected array $members_fields_cats;

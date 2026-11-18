@@ -180,9 +180,7 @@ class PdfModels extends Repository
     protected function loadDefaults(): array
     {
         if (!count($this->defaults)) {
-            include GALETTE_ROOT . 'includes/fields_defs/pdfmodels_fields.php';
-            //@phpstan-ignore variable.undefined
-            $this->defaults = $pdfmodels_fields;
+            $this->defaults = \Galette\Defaults\PdfModels::get();
         }
         return parent::loadDefaults();
     }

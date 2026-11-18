@@ -1183,15 +1183,11 @@ define('PREFIX_DB', '" . $this->db_prefix . "');
             $preferences = new Preferences($zdb, load: false);
             $ct = new \Galette\Entity\ContributionsTypes($zdb);
             $status = new \Galette\Entity\Status($zdb);
-            include_once __DIR__ . '/../../../includes/fields_defs/members_fields.php';
-            include_once __DIR__ . '/../../../includes/fields_defs/members_fields_cats.php';
             $fc = new \Galette\Entity\FieldsConfig(
                 zdb: $zdb,
                 table: \Galette\Entity\Adherent::TABLE,
-                //@phpstan-ignore variable.undefined
-                defaults: $members_fields,
-                //@phpstan-ignore variable.undefined
-                cats_defaults: $members_fields_cats,
+                defaults: \Galette\Defaults\MembersFields::get(),
+                cats_defaults: \Galette\Defaults\MembersFieldsCategories::get(),
                 install: true
             );
 
