@@ -142,7 +142,7 @@ class PluginGalettePlugin1 extends GalettePlugin implements
      */
     public function getDynamicFormObject(string $form, int $id, Login $login): ?object
     {
-        if (!$login->isLogged() || !in_array($id, [1, 2], strict: true) || ($id === 2 && $login->getAccessLevel() < Authentication::ACCESS_STAFF)) {
+        if (!Thing::canSee($id, $login)) {
             return null;
         }
         return new Thing($this->zdb, $login, $id);

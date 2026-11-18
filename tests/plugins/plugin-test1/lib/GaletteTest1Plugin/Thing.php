@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace GaletteTest1Plugin;
 
+use Galette\Core\Authentication;
 use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\DynamicFields\DynamicField;
@@ -46,6 +47,19 @@ class Thing
         private readonly ?Login $login = null,
         private ?int $id = null
     ) {
+    }
+
+    /**
+     * Can a user see a thing? Things 1 and 2 exist; anyone logged in sees the first, only staff the second
+     *
+     * @param int   $id    Thing identifier
+     * @param Login $login Current user
+     */
+    public static function canSee(int $id, Login $login): bool
+    {
+        return $login->isLogged()
+            && in_array($id, [1, 2], strict: true)
+            && ($id === 1 || $login->getAccessLevel() >= Authentication::ACCESS_STAFF);
     }
 
     /**

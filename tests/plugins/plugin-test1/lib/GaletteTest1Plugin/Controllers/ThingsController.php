@@ -108,14 +108,14 @@ class ThingsController extends AbstractPluginController
     }
 
     /**
-     * Get a thing: only things 1 and 2 exist
+     * Get a thing the user can see
      *
      * @param Request $request PSR Request
      * @param int     $id      Thing identifier
      */
     private function getThing(Request $request, int $id): Thing
     {
-        if (!in_array($id, [1, 2], strict: true)) {
+        if (!Thing::canSee($id, $this->login)) {
             throw new HttpNotFoundException($request);
         }
         return new Thing($this->zdb, $this->login, $id);

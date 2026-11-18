@@ -13,7 +13,9 @@ namespace Galette\Tests\Controllers\Crud;
 use Galette\Tests\GaletteRoutingTestCase;
 
 use function Safe\copy;
+use function Safe\file_get_contents;
 use function Safe\filesize;
+use function Safe\tempnam;
 use function Safe\unlink;
 
 /**
@@ -25,6 +27,59 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
 {
     protected int $seed = 20261116091512;
     protected bool $load_plugins = true;
+
+    /** @var array<string> Files to remove once the test is over, whatever its outcome */
+    private array $files = [];
+
+    /**
+     * Tear down tests
+     */
+    public function tearDown(): void
+    {
+        foreach ($this->files as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+        $this->files = [];
+        parent::tearDown();
+    }
+
+    /**
+     * Get an uploaded file, from a copy of a fixture
+     *
+     * @param string $fixture Fixture path, from the tests directory
+     * @param string $name    Client file name
+     * @param int    $error   Upload error
+     */
+    private function upload(string $fixture, string $name, int $error = UPLOAD_ERR_OK): \Slim\Psr7\UploadedFile
+    {
+        //a path of its own: another run may use the same fixture
+        $tmp = tempnam(sys_get_temp_dir(), 'galette_upload_');
+        $this->files[] = $tmp;
+        copy(GALETTE_TESTS_PATH . '/' . $fixture, $tmp);
+        return new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: $tmp,
+            name: $name,
+            type: 'image/png',
+            size: filesize($tmp),
+            error: $error
+        );
+    }
+
+    /**
+     * Get the path of a stored file, removed once the test is over
+     *
+     * @param int $thing_id Thing identifier
+     * @param int $field_id Field identifier
+     * @param int $pos      Occurrence
+     */
+    private function storedPath(int $thing_id, int $field_id, int $pos = 1): string
+    {
+        $path = GALETTE_FILES_PATH . sprintf('plugin1_%1$s_field_%2$s_value_%3$s', $thing_id, $field_id, $pos);
+        $this->files[] = $path;
+        return $path;
+    }
 
     /**
      * Test the form of the test plugin is configured as the core ones
@@ -164,19 +219,9 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
         ]));
         $small_id = $small->getId();
 
-        $upload = function (string $fixture, string $name, int $error = UPLOAD_ERR_OK): \Slim\Psr7\UploadedFile {
-            $tmp = sys_get_temp_dir() . '/' . $name;
-            copy(GALETTE_TESTS_PATH . '/' . $fixture, $tmp);
-            return new \Slim\Psr7\UploadedFile(
-                fileNameOrStream: $tmp,
-                name: $name,
-                type: 'image/png',
-                size: filesize($tmp),
-                error: $error
-            );
-        };
+        $upload = $this->upload(...);
         $key = 'info_field_' . $field_id . '_';
-        $path = fn(int $pos): string => GALETTE_FILES_PATH . sprintf('plugin1_1_field_%1$s_value_%2$s', $field_id, $pos);
+        $path = fn(int $pos): string => $this->storedPath(1, $field_id, $pos);
 
         //two pictures
         $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
@@ -233,7 +278,6 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
 
         $loaded = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
         $this->assertTrue($loaded->remove());
-        unlink($path(1));
         $this->login->logout();
     }
 
@@ -304,6 +348,22 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
         $texts->getTexts('pwd', \Galette\Core\I18n::DEFAULT_LANG);
         $this->assertSame('Thing notes: R & D|Thing size: Large', $texts->getBody());
 
+        //a field added once the thing values are loaded is replaced with nothing
+        $this->assertCount(1, $thing->getDynamicFields()->getValues($line_id));
+        $added_id = $this->createDynamicField('Thing weight');
+        $update = $this->zdb->update(\Galette\Entity\Texts::TABLE);
+        $update
+            ->set(['tbody' => '{DYNFIELD_' . $line_id . '_PLUGIN1}|{LABEL_DYNFIELD_' . $added_id . '_PLUGIN1}{DYNFIELD_' . $added_id . '_PLUGIN1}'])
+            ->where(['tref' => 'pwd', 'tlang' => \Galette\Core\I18n::DEFAULT_LANG]);
+        $this->zdb->execute($update);
+        $texts = new \Galette\Entity\Texts($this->preferences, $this->routeparser);
+        $texts
+            ->setMember($this->getMemberOne())
+            ->setNoContribution()
+            ->setDynamicObject($thing);
+        $texts->getTexts('pwd', \Galette\Core\I18n::DEFAULT_LANG);
+        $this->assertSame('R & D|', $texts->getBody());
+
         //only objects with dynamic fields
         $this->expectException(\InvalidArgumentException::class);
         $texts->setDynamicObject(new \stdClass());
@@ -331,7 +391,19 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
         //a repeated field gets its template to add occurrences
         $this->assertStringContainsString('repeat_template', $body);
 
-        //a missing required value goes back to the form
+        //a required field the form lacks goes back to the form
+        $test_response = $this->app->handle(
+            $this->createRequest('plugin1_thing_doedit', ['id' => '1'], 'POST')
+                ->withParsedBody(['info_field_' . $line_id . '_1' => 'red'])
+        );
+        $this->assertSame(
+            ['Location' => [$this->routeparser->urlFor('plugin1_thing_edit', ['id' => '1'])]],
+            $test_response->getHeaders()
+        );
+        $this->expectFlashData(['error_detected' => ['Missing required field Thing serial']]);
+        $this->assertSame(0, $this->countValues(1));
+
+        //so does a missing required value
         $test_response = $this->app->handle(
             $this->createRequest('plugin1_thing_doedit', ['id' => '1'], 'POST')
                 ->withParsedBody([
@@ -347,7 +419,6 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
         $this->assertSame(0, $this->countValues(1));
 
         //repeated values and a file are stored
-        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
         $test_response = $this->app->handle(
             $this->createRequest('plugin1_thing_doedit', ['id' => '1'], 'POST')
                 ->withParsedBody([
@@ -356,21 +427,14 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
                     'info_field_' . $required_id . '_1' => 'SN-42'
                 ])
                 ->withUploadedFiles([
-                    'info_field_' . $file_id . '_1' => new \Slim\Psr7\UploadedFile(
-                        fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
-                        name: 'galette_pro.png',
-                        type: 'image/png',
-                        size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
-                        error: UPLOAD_ERR_OK
-                    )
+                    'info_field_' . $file_id . '_1' => $this->upload('fixtures/galette_pro.png', 'galette_pro.png')
                 ])
         );
         $this->assertSame(
             ['Location' => [$this->routeparser->urlFor('plugin1_thing', ['id' => '1'])]],
             $test_response->getHeaders()
         );
-        $filename = sprintf('plugin1_1_field_%s_value_1', $file_id);
-        $this->assertFileExists(GALETTE_FILES_PATH . $filename);
+        $this->assertFileExists($this->storedPath(1, $file_id));
         $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
         $this->assertSame(
             ['red', 'blue'],
@@ -398,7 +462,6 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
         $this->assertSame(404, $test_response->getStatusCode());
 
         $this->assertTrue($thing->remove());
-        unlink(GALETTE_FILES_PATH . $filename);
         $this->login->logout();
     }
 
@@ -448,23 +511,15 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
         );
         $dynfile_id = 'info_field_' . $field_id . '_1';
 
+        $line_id = $this->createDynamicField(name: 'Thing color', perm: \Galette\Entity\FieldsConfig::USER_READ);
+        $content = file_get_contents(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png');
+
         //both things get a file
-        $filenames = [];
         foreach ([1, 2] as $thing_id) {
-            copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
             $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, $thing_id);
-            $thing->storeFiles([
-                $dynfile_id => new \Slim\Psr7\UploadedFile(
-                    fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
-                    name: 'galette_pro.png',
-                    type: 'image/png',
-                    size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
-                    error: UPLOAD_ERR_OK
-                )
-            ]);
+            $thing->storeFiles([$dynfile_id => $this->upload('fixtures/galette_pro.png', 'galette_pro.png')]);
             $this->assertSame([], $thing->getErrors());
-            $filenames[$thing_id] = sprintf('plugin1_%1$s_field_%2$s_value_1', $thing_id, $field_id);
-            $this->assertFileExists(GALETTE_FILES_PATH . $filenames[$thing_id]);
+            $this->assertFileExists($this->storedPath($thing_id, $field_id));
         }
 
         $expected_headers = [
@@ -479,10 +534,15 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
         foreach ([1, 2] as $thing_id) {
             $test_response = $this->app->handle($this->createFileRequest($thing_id, $field_id));
             $this->expectOK($test_response, $expected_headers);
+            $this->assertSame($content, (string)$test_response->getBody());
         }
 
         //an object the plugin does not know
         $test_response = $this->app->handle($this->createFileRequest(3, $field_id));
+        $this->expectDenied($test_response);
+
+        //a field that holds no file
+        $test_response = $this->app->handle($this->createFileRequest(1, $line_id));
         $this->expectDenied($test_response);
 
         $this->login->logout();
@@ -493,8 +553,30 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
         $this->assertSame($member_one->id, $this->login->id);
         $test_response = $this->app->handle($this->createFileRequest(1, $field_id));
         $this->expectOK($test_response, $expected_headers);
+        $this->assertSame($content, (string)$test_response->getBody());
         $test_response = $this->app->handle($this->createFileRequest(2, $field_id));
         $this->expectDenied($test_response);
+
+        //and their pages follow the same rule; the edit form is for staff only
+        $test_response = $this->app->handle($this->createRequest('plugin1_thing', ['id' => '1']));
+        $this->assertSame(200, $test_response->getStatusCode());
+        $this->assertStringNotContainsString(
+            $this->routeparser->urlFor('plugin1_thing_edit', ['id' => '1']),
+            (string)$test_response->getBody()
+        );
+        $test_response = $this->app->handle($this->createRequest('plugin1_thing', ['id' => '2']));
+        $this->assertSame(404, $test_response->getStatusCode());
+        $this->login->logout();
+
+        //a file left on disk once its value is gone is not sent
+        $this->logSuperAdmin();
+        $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $this->assertTrue($thing->remove());
+        $this->assertFileExists($this->storedPath(1, $field_id));
+        $test_response = $this->app->handle($this->createFileRequest(1, $field_id));
+        $this->assertSame(['Location' => [$this->routeparser->urlFor('plugin1_public_page')]], $test_response->getHeaders());
+        $this->expectFlashData(['error_detected' => ['The file does not exists or cannot be read :(']]);
+        $this->expectLogEntry(\Analog\Analog::WARNING, 'that does not exists.');
         $this->login->logout();
 
         //a form nobody declared is not found
@@ -511,10 +593,6 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
         );
         $this->assertSame(404, $this->app->handle($request)->getStatusCode());
         $this->login->logout();
-
-        foreach ($filenames as $filename) {
-            unlink(GALETTE_FILES_PATH . $filename);
-        }
     }
 
     /**
@@ -549,7 +627,8 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+        //the message follows the language of the user
+        $this->expectFlashData(['error_detected' => [_T('You do not have permission for requested URL.')]]);
     }
 
     /**
