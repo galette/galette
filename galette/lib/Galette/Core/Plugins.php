@@ -1171,7 +1171,7 @@ class Plugins
         $domains = [];
         foreach ($this->getActiveModules() as $id => $module) {
             $class = $this->getClassName($id, full: true);
-            if (!class_exists($class) || !is_subclass_of($class, GalettePlugin::class)) {
+            if (!self::isSubclassOf($class, GalettePlugin::class)) {
                 continue;
             }
 
