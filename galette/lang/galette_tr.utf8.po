@@ -22,14 +22,15 @@
 # Ahmet Güneş <a.gunes55@gmail.com>, 2026.
 # Cahit OK <cahitok333@gmail.com>, 2026.
 # Johan Cwiklinski <trasher@users.noreply.hosted.weblate.org>, 2026.
+# "Ahmet Hakan Çelikağı (Student)" <ahmet.celikagi@users.noreply.hosted.weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: translations@galette.eu\n"
 "POT-Creation-Date: 2026-11-16 07:05+0100\n"
-"PO-Revision-Date: 2026-10-18 05:50+0000\n"
-"Last-Translator: Johan Cwiklinski "
-"<trasher@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-11-18 10:05+0000\n"
+"Last-Translator: \"Ahmet Hakan Çelikağı (Student)\" "
+"<ahmet.celikagi@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/galette/galette/"
 "tr/>\n"
 "Language: tr\n"
@@ -37,13 +38,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.11.dev0\n"
+"X-Generator: Weblate 2026.12.dev0\n"
 
 msgid "Members"
 msgstr "Üyeler"
 
 msgid "Contributions"
-msgstr ""
+msgstr "Katkılar"
 
 msgid "Transactions"
 msgstr ""
@@ -70,7 +71,7 @@ msgid "System information"
 msgstr "Sistem bilgisi"
 
 msgid "Security"
-msgstr ""
+msgstr "Güvenlik"
 
 msgid "Plugins"
 msgstr "Eklentiler"
