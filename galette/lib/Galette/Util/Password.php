@@ -267,7 +267,7 @@ class Password
 
         if (!file_exists($file)) {
             //copy default provided list
-            $worst500 = explode(PHP_EOL, file_get_contents(GALETTE_ROOT . 'includes/fields_defs/pass_blacklist'));
+            $worst500 = explode(PHP_EOL, file_get_contents(GALETTE_ROOT . 'includes/pass_blacklist'));
             file_put_contents($file, implode(PHP_EOL, $worst500));
         }
 
