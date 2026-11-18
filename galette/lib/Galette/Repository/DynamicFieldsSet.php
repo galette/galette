@@ -16,13 +16,17 @@ use Galette\Core\Db;
 use Galette\Core\Login;
 use Galette\Core\RowsCache;
 use Galette\Core\Plugins\DynamicFormsProviderInterface;
+use Galette\Core\Logs;
 use Galette\Features\Dynamics;
+use ReflectionClass;
+use Throwable;
 use Galette\DynamicFields\Choice;
 use Galette\DynamicFields\DynamicField;
 use Galette\DynamicFields\Text;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\FieldsConfig;
 
+use function Safe\class_parents;
 use function Safe\class_uses;
 use function Safe\preg_match;
 
@@ -110,8 +114,16 @@ class DynamicFieldsSet
     public static function registerForms(string $plugin, DynamicFormsProviderInterface $provider): void
     {
         self::unregisterForms($plugin);
-        foreach ($provider->getDynamicForms() as $form => $class) {
-            $error = self::rejectForm((string)$form, $class);
+        try {
+            $forms = $provider->getDynamicForms();
+        } catch (Throwable $e) {
+            //one plugin must not prevent Galette from starting
+            Logs::exception($e, sprintf('Plugin "%s" dynamic forms are ignored', $plugin));
+            return;
+        }
+
+        foreach ($forms as $form => $class) {
+            $error = self::rejectForm($plugin, (string)$form, $class);
             if ($error !== null) {
                 Analog::log(
                     sprintf('Plugin "%s" dynamic form "%s" is ignored: %s', $plugin, $form, $error),
@@ -120,7 +132,8 @@ class DynamicFieldsSet
                 continue;
             }
             self::$plugin_forms[$form] = [
-                'class' => $class,
+                //as PHP spells it, getFormName() compares it strictly
+                'class' => (new ReflectionClass($class))->getName(),
                 'plugin' => $plugin,
                 'provider' => $provider
             ];
@@ -130,13 +143,19 @@ class DynamicFieldsSet
     /**
      * Why a plugin form cannot be registered, if it cannot
      *
-     * @param string $form  Form name
-     * @param mixed  $class Form class
+     * @param string $plugin Plugin route name
+     * @param string $form   Form name
+     * @param mixed  $class  Form class
      */
-    private static function rejectForm(string $form, mixed $class): ?string
+    private static function rejectForm(string $plugin, string $form, mixed $class): ?string
     {
-        if (!preg_match('/^' . self::FORM_PATTERN . '$/', $form)) {
+        if (!preg_match('/^' . self::FORM_PATTERN . '\z/', $form)) {
             return 'name must be at most 50 lowercase letters, digits or underscores, starting with a letter';
+        }
+        //stored fields and values stay with their plugin, even once it is disabled
+        $prefix = strtolower($plugin);
+        if ($form !== $prefix && !str_starts_with($form, $prefix . '_')) {
+            return sprintf('name must be "%1$s", or start with "%1$s_"', $prefix);
         }
         if (
             isset(self::getCoreClasses()[$form])
@@ -145,20 +164,49 @@ class DynamicFieldsSet
         ) {
             return 'name is already used';
         }
-        if (!is_string($class) || !class_exists($class)) {
+
+        try {
+            $exists = is_string($class) && class_exists($class);
+        } catch (Throwable $e) {
+            // no log: the reason is logged along with the ignored form.
+            //a broken class file must not prevent Galette from starting
+            return 'class cannot be loaded: ' . $e->getMessage();
+        }
+        if (!$exists) {
             return 'class does not exist';
         }
-
-        $traits = [];
-        $current = $class;
-        do {
-            $traits += class_uses($current);
-        } while ($current = get_parent_class($current));
-        if (!isset($traits[Dynamics::class])) {
+        $class = (new ReflectionClass($class))->getName();
+        if (in_array($class, self::getClasses(), strict: true)) {
+            //an object belongs to a single form
+            return 'class is already used by another form';
+        }
+        if (!in_array(Dynamics::class, self::getTraits($class), strict: true)) {
             return sprintf('class does not use the %s trait', Dynamics::class);
         }
 
         return null;
+    }
+
+    /**
+     * Get the traits a class uses, through its parents and other traits
+     *
+     * @param class-string $class Class name
+     *
+     * @return array<string>
+     */
+    private static function getTraits(string $class): array
+    {
+        $pending = array_merge([$class], array_values(class_parents($class)));
+        $traits = [];
+        while (($current = array_shift($pending)) !== null) {
+            foreach (class_uses($current) as $trait) {
+                if (!in_array($trait, $traits, strict: true)) {
+                    $traits[] = $trait;
+                    $pending[] = $trait;
+                }
+            }
+        }
+        return $traits;
     }
 
     /**
