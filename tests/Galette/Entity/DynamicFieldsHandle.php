@@ -400,8 +400,9 @@ class DynamicFieldsHandle extends GaletteTestCase
             'Some errors has been thew attempting to edit/store a member'
         );
 
-        //an empty file input, or a failed upload, is not a file
-        foreach ([UPLOAD_ERR_NO_FILE, UPLOAD_ERR_INI_SIZE] as $error) {
+        //an empty file input is not a file; a failed upload is reported as such
+        $not_received = ['File for Required file has not been received, please send it again.'];
+        foreach ([UPLOAD_ERR_NO_FILE => $missing, UPLOAD_ERR_INI_SIZE => $not_received] as $error => $expected) {
             $adh = $this->getMemberWithDynamics();
             $files = [$key => new \Slim\Psr7\UploadedFile(
                 fileNameOrStream: 'php://memory',
@@ -409,7 +410,10 @@ class DynamicFieldsHandle extends GaletteTestCase
                 size: 0,
                 error: $error
             )];
-            $this->assertSame($missing, $adh->check(values: $data, required: [], disabled: [], files: $files));
+            $this->assertSame($expected, $adh->check(values: $data, required: [], disabled: [], files: $files));
+            if ($error !== UPLOAD_ERR_NO_FILE) {
+                $this->expectLogEntry(\Analog\Analog::ERROR, 'file upload error: ' . $error);
+            }
             $this->expectLogEntry(
                 \Analog\Analog::ERROR,
                 'Some errors has been thew attempting to edit/store a member'
