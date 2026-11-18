@@ -89,7 +89,8 @@ active plugins declare, and only them: their patterns use the
 `DynamicFieldsSet::FORMS_PLACEHOLDER` placeholder, which routes loading
 replaces with the declared form names once all routes are registered.
 `DynamicFieldsSet::getClasses()` and `DynamicField::getFormsNames()` list the
-plugin forms as well.
+plugin forms as well. `Replacements::setDynamicObject()` replaces the dynamic
+fields of a plugin object in mails and PDF.
 The `field_form` columns of `galette_field_types` and `galette_dynamic_fields`
 hold up to 50 characters instead of 10.
 

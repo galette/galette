@@ -116,6 +116,57 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
     }
 
     /**
+     * Test dynamic fields of a plugin object are replaced in texts
+     */
+    public function testReplacements(): void
+    {
+        $this->logSuperAdmin();
+        $line_id = $this->createDynamicField('Thing notes');
+        $choice = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, \Galette\DynamicFields\DynamicField::CHOICE);
+        $this->assertTrue($choice->store([
+            'field_name' => 'Thing size',
+            'field_perm' => (string)\Galette\Entity\FieldsConfig::USER_WRITE,
+            'field_type' => (string)\Galette\DynamicFields\DynamicField::CHOICE,
+            'field_required' => '0',
+            'fixed_values' => "Small\nLarge",
+            'form_name' => 'plugin1'
+        ]));
+        $choice_id = $choice->getId();
+
+        $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $this->assertTrue($thing->check([
+            'info_field_' . $line_id . '_1' => 'R & D',
+            'info_field_' . $choice_id . '_1' => '1'
+        ]));
+        $this->assertTrue($thing->store());
+        $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+
+        $texts = new \Galette\Entity\Texts($this->preferences, $this->routeparser);
+        $this->assertArrayHasKey('dynfield_' . $line_id . '_plugin1', $texts->getDynamicPatterns('plugin1'));
+        $this->assertArrayHasKey('label_dynfield_' . $choice_id . '_plugin1', $texts->getDynamicPatterns('plugin1'));
+
+        $update = $this->zdb->update(\Galette\Entity\Texts::TABLE);
+        $update
+            ->set([
+                'tbody' => '{LABEL_DYNFIELD_' . $line_id . '_PLUGIN1}: {DYNFIELD_' . $line_id . '_PLUGIN1}'
+                    . '|{LABEL_DYNFIELD_' . $choice_id . '_PLUGIN1}: {DYNFIELD_' . $choice_id . '_PLUGIN1}'
+            ])
+            ->where(['tref' => 'pwd', 'tlang' => \Galette\Core\I18n::DEFAULT_LANG]);
+        $this->zdb->execute($update);
+
+        $texts
+            ->setMember($this->getMemberOne())
+            ->setNoContribution()
+            ->setDynamicObject($thing);
+        $texts->getTexts('pwd', \Galette\Core\I18n::DEFAULT_LANG);
+        $this->assertSame('Thing notes: R & D|Thing size: Large', $texts->getBody());
+
+        //only objects with dynamic fields
+        $this->expectException(\InvalidArgumentException::class);
+        $texts->setDynamicObject(new \stdClass());
+    }
+
+    /**
      * Test plugin pages draw, check and store dynamic fields with the core components
      */
     public function testPages(): void
