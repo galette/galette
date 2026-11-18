@@ -800,10 +800,10 @@ trait Replacements
         $form_name = $object->getFormName();
 
         $this->setPatterns($this->getDynamicPatterns($form_name));
-        $fields = new DynamicFieldsSet($this->zdb, $this->login);
+        //the fields the object holds values for: one added since is left empty
         return $this->setDynamicFields(
             form_name: $form_name,
-            dynamic_fields: $fields->getList($form_name),
+            dynamic_fields: $object->getDynamicFields()->getFields(),
             object: $object
         );
     }
@@ -886,12 +886,19 @@ trait Replacements
             $key   = strtolower(rtrim(ltrim($pattern, '{'), '}'));
             $value = '';
 
-            if (preg_match("/^{LABEL_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
+            //a field missing from the given ones is replaced with nothing
+            if (
+                preg_match("/^{LABEL_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)
+                && isset($dynamic_fields[(int)$match[1]])
+            ) {
                 /** dynamic field label */
-                $field_id = $match[1];
+                $field_id = (int)$match[1];
                 $value    = self::escape($dynamic_fields[$field_id]->getName());
             }
-            if (preg_match("/^{(INPUT_|VALUE_)?DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
+            if (
+                preg_match("/^{(INPUT_|VALUE_)?DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)
+                && isset($dynamic_fields[(int)$match[2]])
+            ) {
                 /** dynamic field value */
                 $capacity = trim($match[1], '_');
                 $field_id    = (int)$match[2];
