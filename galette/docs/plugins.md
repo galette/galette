@@ -371,6 +371,13 @@ needs `enctype="multipart/form-data"` for file fields) and
 `elements/display_dynamic_fields.html.twig` on the display page, both with
 `{object: thing}`.
 
+Mails and PDF of a plugin object get its dynamic fields with
+`setDynamicObject($thing)`, on any class using the
+`Galette\Features\Replacements` trait (texts, PDF models…). Their patterns
+are named after the form, `{DYNFIELD_<field id>_<FORM>}` and
+`{LABEL_DYNFIELD_<field id>_<FORM>}`; `getDynamicPatterns($form)` lists
+them, to display a legend.
+
 ### FixturesProviderInterface
 
 Lets `galette:seed-fixtures` create sample data tied to core fixture members

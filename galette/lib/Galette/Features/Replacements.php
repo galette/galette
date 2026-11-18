@@ -29,6 +29,7 @@ use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 use NumberFormatter;
 use PHPMailer\PHPMailer\PHPMailer;
+use InvalidArgumentException;
 use RuntimeException;
 use Slim\Routing\RouteParser;
 use DI\Attribute\Inject;
@@ -778,6 +779,33 @@ trait Replacements
         );
 
         return $this;
+    }
+
+    /**
+     * Set the dynamic fields of an object, and proceed related replacements
+     *
+     * For objects of plugins forms: their patterns are named after the form,
+     * as `{DYNFIELD_<field id>_<FORM>}` and `{LABEL_DYNFIELD_<field id>_<FORM>}`;
+     * getDynamicPatterns() lists them, for a legend.
+     *
+     * @param object $object Object using the Dynamics trait
+     */
+    public function setDynamicObject(object $object): self
+    {
+        if (!method_exists($object, 'getFormName')) {
+            throw new InvalidArgumentException(
+                sprintf('%s objects have no dynamic fields.', $object::class)
+            );
+        }
+        $form_name = $object->getFormName();
+
+        $this->setPatterns($this->getDynamicPatterns($form_name));
+        $fields = new DynamicFieldsSet($this->zdb, $this->login);
+        return $this->setDynamicFields(
+            form_name: $form_name,
+            dynamic_fields: $fields->getList($form_name),
+            object: $object
+        );
     }
 
     /**
