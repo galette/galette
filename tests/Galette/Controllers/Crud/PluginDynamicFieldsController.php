@@ -269,6 +269,15 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
         $this->assertSame(['File for Thing pictures has not been received, please send it again.'], $thing->getErrors());
         $this->expectLogEntry(\Analog\Analog::ERROR, 'file upload error: ' . UPLOAD_ERR_PARTIAL);
 
+        //files of a field the thing hides are ignored, as they are once it is stored
+        $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
+        $thing->hidden_fields = [$small_id => true];
+        $files = ['info_field_' . $small_id . '_1' => $upload('fixtures/galette_pro.png', 'big.png')];
+        $this->assertTrue($thing->check(['valid' => '1'], $files), implode(' ', $thing->getErrors()));
+        $thing->storeFiles($files);
+        $this->assertSame([], $thing->getErrors());
+        $this->assertFileDoesNotExist($this->storedPath(1, $small_id));
+
         //files that arrive once the object is stored are reported
         $thing = new \GaletteTest1Plugin\Thing($this->zdb, $this->login, 1);
         $thing->storeFiles([$key . '2' => $upload('test.gif', 'late.gif', UPLOAD_ERR_PARTIAL)]);
@@ -363,6 +372,21 @@ class PluginDynamicFieldsController extends GaletteRoutingTestCase
             ->setDynamicObject($thing);
         $texts->getTexts('pwd', \Galette\Core\I18n::DEFAULT_LANG);
         $this->assertSame('R & D|', $texts->getBody());
+
+        //nor are the fields the thing hides
+        $thing->hidden_fields = [$line_id => true];
+        $update = $this->zdb->update(\Galette\Entity\Texts::TABLE);
+        $update
+            ->set(['tbody' => '{LABEL_DYNFIELD_' . $line_id . '_PLUGIN1}{DYNFIELD_' . $line_id . '_PLUGIN1}|{DYNFIELD_' . $choice_id . '_PLUGIN1}'])
+            ->where(['tref' => 'pwd', 'tlang' => \Galette\Core\I18n::DEFAULT_LANG]);
+        $this->zdb->execute($update);
+        $texts = new \Galette\Entity\Texts($this->preferences, $this->routeparser);
+        $texts
+            ->setMember($this->getMemberOne())
+            ->setNoContribution()
+            ->setDynamicObject($thing);
+        $texts->getTexts('pwd', \Galette\Core\I18n::DEFAULT_LANG);
+        $this->assertSame('|Large', $texts->getBody());
 
         //only objects with dynamic fields
         $this->expectException(\InvalidArgumentException::class);

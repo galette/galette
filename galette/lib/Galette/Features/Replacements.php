@@ -800,10 +800,15 @@ trait Replacements
         $form_name = $object->getFormName();
 
         $this->setPatterns($this->getDynamicPatterns($form_name));
-        //the fields the object holds values for: one added since is left empty
+        //the fields the object holds values for: one added since is left empty,
+        //as are those the object hides
+        $dynamic_fields = array_filter(
+            $object->getDynamicFields()->getFields(),
+            fn(DynamicField $field): bool => !$object->isDynamicFieldHidden($field)
+        );
         return $this->setDynamicFields(
             form_name: $form_name,
-            dynamic_fields: $object->getDynamicFields()->getFields(),
+            dynamic_fields: $dynamic_fields,
             object: $object
         );
     }

@@ -205,6 +205,10 @@ trait Dynamics
                 //files are stored once the object is: check them before
                 $failed = [];
                 foreach ($this->getDynamicUploads($files) as [$field, $file]) {
+                    if (isset($hidden[$field->getId()])) {
+                        //ignored, as it will be when files are stored
+                        continue;
+                    }
                     $error = $this->checkDynamicUpload($field, $file);
                     if ($error !== null) {
                         $valid = false;
