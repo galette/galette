@@ -15,12 +15,14 @@ use Galette\Controllers\Attributes\Route;
 use Galette\Core\Galette;
 use Galette\Core\Plugins;
 use Galette\Middleware\Authenticate;
+use Galette\Repository\DynamicFieldsSet;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
 use ReflectionMethod;
 use RuntimeException;
 use Slim\Interfaces\RouteCollectorProxyInterface;
+use Slim\Interfaces\RouteInterface;
 use Slim\Routing\RouteCollectorProxy;
 
 use function Safe\glob;
@@ -49,6 +51,13 @@ class RouteLoader
     ];
 
     /**
+     * Registered routes whose pattern holds the dynamic forms placeholder
+     *
+     * @var list<RouteInterface>
+     */
+    private array $dynamic_forms_routes = [];
+
+    /**
      * Register all routes
      *
      * @template TContainerInterface of (\Psr\Container\ContainerInterface|null)
@@ -73,6 +82,24 @@ class RouteLoader
         }
 
         $this->register($app, $fallbacks);
+        $this->setDynamicFormsPatterns();
+    }
+
+    /**
+     * Make routes of dynamic forms match the declared forms
+     *
+     * Done once all routes are registered, plugins are loaded then and have
+     * declared their forms; the router is only built on first dispatch.
+     */
+    private function setDynamicFormsPatterns(): void
+    {
+        $forms_pattern = DynamicFieldsSet::getFormsRoutePattern();
+        foreach ($this->dynamic_forms_routes as $route) {
+            $route->setPattern(
+                str_replace(DynamicFieldsSet::FORMS_PLACEHOLDER, $forms_pattern, $route->getPattern())
+            );
+        }
+        $this->dynamic_forms_routes = [];
     }
 
     /**
@@ -193,6 +220,9 @@ class RouteLoader
                 $route->pattern,
                 [$entry['class'], $entry['method']]
             )->setName($route->name);
+            if (str_contains($route->pattern, DynamicFieldsSet::FORMS_PLACEHOLDER)) {
+                $this->dynamic_forms_routes[] = $slim_route;
+            }
 
             foreach ($route->middleware as $middleware) {
                 $slim_route->add($middleware);

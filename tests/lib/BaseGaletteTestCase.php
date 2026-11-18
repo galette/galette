@@ -202,6 +202,7 @@ abstract class BaseGaletteTestCase extends TestCase
         \Galette\Core\PreferencesSchema::reset();
         //reference rows read by a test must not leak to the next one
         \Galette\Core\RowsCache::clear();
+        \Galette\Repository\DynamicFieldsSet::resetForms();
         //a later test must not record mails instead of sending them
         \Galette\Core\GaletteMail::setMailerFactory(factory: null);
 

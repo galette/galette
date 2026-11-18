@@ -25,6 +25,7 @@ use Analog\Analog;
  * - PreferencesProviderInterface: if the plugin stores settings in Galette preferences
  * - InstallInitInterface: if the plugin creates default data when it is installed
  * - ContentSecurityPolicyProviderInterface: if the plugin pages need external origins (frames, APIs, ...)
+ * - DynamicFormsProviderInterface: if the plugin objects get dynamic fields
  *
  * Note: a plugin can implement one or more of these interfaces, but it is not mandatory to implement all of them.
  */

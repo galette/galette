@@ -135,7 +135,7 @@ CREATE TABLE galette_logs (
 DROP TABLE IF EXISTS galette_field_types;
 CREATE TABLE galette_field_types (
     field_id int unsigned NOT NULL auto_increment,
-    field_form varchar(10) NOT NULL,
+    field_form varchar(50) NOT NULL,
     field_index int NOT NULL default 0,
     field_name varchar(255) NOT NULL default '',
     field_perm int NOT NULL default 1,
@@ -160,7 +160,7 @@ DROP TABLE IF EXISTS galette_dynamic_fields;
 CREATE TABLE galette_dynamic_fields (
     item_id int NOT NULL default 0,
     field_id int unsigned NOT NULL default 0,
-    field_form varchar(10) NOT NULL,
+    field_form varchar(50) NOT NULL,
     val_index int NOT NULL default 0,
     field_val longtext,
     PRIMARY KEY (item_id, field_id, field_form, val_index),

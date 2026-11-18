@@ -14,6 +14,7 @@ use Galette\Core\Authentication;
 use Galette\Core\Login;
 use Galette\Repository\DynamicFieldsSet;
 use Psr\Http\Message\UploadedFileInterface;
+use LogicException;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Logs;
@@ -26,6 +27,7 @@ use Galette\Entity\FieldsConfig;
 use Galette\IO\UploadSize;
 use Galette\Util\Filesize;
 
+use function Safe\class_parents;
 use function Safe\preg_grep;
 
 /**
@@ -421,10 +423,29 @@ trait Dynamics
 
     /**
      * Get form name
+     *
+     * The form the class was declared for, or the one of its closest declared parent.
+     *
+     * @throws LogicException when no form is declared for the class: its plugin may be inactive
      */
     public function getFormName(): string
     {
-        return array_search(static::class, DynamicFieldsSet::getClasses());
+        $classes = DynamicFieldsSet::getClasses();
+        $form_name = array_search(static::class, $classes, strict: true);
+        if ($form_name !== false) {
+            return $form_name;
+        }
+
+        foreach (class_parents($this) as $parent) {
+            $form_name = array_search($parent, $classes, strict: true);
+            if ($form_name !== false) {
+                return $form_name;
+            }
+        }
+
+        throw new LogicException(
+            sprintf('No dynamic form is declared for class %s: is its plugin active?', static::class)
+        );
     }
 
     /**

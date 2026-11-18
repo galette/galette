@@ -24,6 +24,7 @@ use Galette\Entity\FieldsConfig;
 use Galette\Entity\ListsConfig;
 use Galette\Features\Translatable;
 use Galette\Features\I18n;
+use Galette\Repository\DynamicFieldsSet;
 use Laminas\Db\Sql\Expression;
 use Laminas\Db\Sql\Predicate\Expression as PredicateExpression;
 
@@ -462,7 +463,7 @@ abstract class DynamicField
             'contrib'   => _T("Contributions"),
             'trans'     => _T("Transactions"),
             'prefs'     => _T("Settings")
-        ];
+        ] + DynamicFieldsSet::getPluginFormsNames();
     }
 
     /**
@@ -473,7 +474,7 @@ abstract class DynamicField
     public static function getFormTitle(string $form_name): string
     {
         $names = self::getFormsNames();
-        return $names[$form_name];
+        return $names[$form_name] ?? $form_name;
     }
 
     /**
