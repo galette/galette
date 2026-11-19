@@ -286,7 +286,11 @@ class GaletteController extends GaletteRoutingTestCase
             $body = (string)$this->app->handle($request)->getBody();
             $uuid = $preferences->pref_registration_uuid;
             $this->assertMatchesRegularExpression('/^[0-9A-Za-z]{40}$/', $uuid);
-            $this->assertStringContainsString('reference?showmodal&uuid=' . $uuid . '"', $body);
+            $this->assertStringContainsString(
+                '<button type="button" id="register" data-url="' . GALETTE_TELEMETRY_URI
+                    . 'reference?showmodal&uuid=' . $uuid . '"',
+                $body
+            );
             $this->assertStringContainsString(
                 '<input type="hidden" name="pref_registration_uuid" value="' . $uuid . '"/>',
                 $body

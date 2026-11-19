@@ -249,7 +249,12 @@ class AjaxControllerTest extends GaletteRoutingTestCase
         $this->preferences->updateRegistrationDate();
         try {
             $this->assertSame(
-                ['registered' => true, 'message' => 'Thank you for registering!'],
+                [
+                    'registered'    => true,
+                    'message'       => 'Thank you for registering!',
+                    //the preferences page shows it in place of "Not registered"
+                    'date'          => $this->preferences->getRegistrationDate()
+                ],
                 $this->getJson($requests[1])
             );
         } finally {

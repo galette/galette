@@ -317,6 +317,7 @@ class AjaxController extends AbstractController
         $result = ['registered' => $telemetry->checkRegistration()];
         if ($result['registered']) {
             $result['message'] = _T('Thank you for registering!');
+            $result['date'] = $this->preferences->getRegistrationDate();
         }
         return $this->withJson($response, $result);
     }

@@ -148,10 +148,25 @@
 {% if part == "jsregister" %}
             {# the registration form is on the telemetry server: once it has been opened, ask the server whether it has been sent #}
             var registrationPending = 'galette_registration_pending';
+            var registrationChecking = false;
+            var isRegistrationPending = function() {
+                try {
+                    return localStorage.getItem(registrationPending) !== null;
+                } catch (e) {
+                    return false;
+                }
+            };
             var checkRegistration = function() {
+                if (registrationChecking || !isRegistrationPending()) {
+                    return;
+                }
+                registrationChecking = true;
                 $.ajax({
                     url: '{{ url_for('telemetryRegistration') }}',
                     method: 'POST',
+                    complete: function() {
+                        registrationChecking = false;
+                    },
                     success: function(data) {
                         if (!data.registered) {
                             return;
@@ -161,9 +176,9 @@
                         } catch (e) {}
     {%  if orig is defined and orig == 'desktop' %}
                         $('#register').remove();
-                        if ($('#share a').length == 0) {
-                            $('#share').remove();
-                        }
+    {% else %}
+                        $('#registration_date').text(data.date);
+                        $('#register .register-text').text('{{ _T("Update your information")|e("js") }}');
     {% endif %}
                         {% include "elements/js/modal.js.twig" with {
                             modal_without_title: true,
@@ -180,14 +195,18 @@
                 try {
                     localStorage.setItem(registrationPending, '1');
                 } catch (e) {}
-                //checked when coming back from the registration form
-                $(window).one('focus', checkRegistration);
+                window.open($(this).data('url'), '_blank', 'noopener');
+            });
+
+            //checked each time the page is shown again, until the form has been sent:
+            //coming back before sending it must not end the checks
+            $(window).on('focus', checkRegistration);
+            $(document).on('visibilitychange', function() {
+                if (document.visibilityState === 'visible') {
+                    checkRegistration();
+                }
             });
 
             //registration form opened earlier, but not confirmed yet
-            try {
-                if (localStorage.getItem(registrationPending)) {
-                    checkRegistration();
-                }
-            } catch (e) {}
+            checkRegistration();
 {% endif %}

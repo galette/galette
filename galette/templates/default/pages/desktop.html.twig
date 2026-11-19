@@ -29,10 +29,10 @@
                             </button>
             {% endif %}
             {% if not registered %}
-                            <a class="large ui blue button" href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" title="{{ _T("Register your organization as a Galette user") }}" target="_blank">
+                            <button type="button" class="large ui blue button" data-url="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" id="register" title="{{ _T("Register your organization as a Galette user") }}">
                                 <i class="id card icon" aria-hidden="true"></i>
                                 {{ _T("Register") }}
-                            </a>
+                            </button>
             {% endif %}
                         </div>
                         <div class="tooltip ui toggle checkbox" title="{{ _T("The panel will be automatically hidden once you have registered and send telemetry data. Check the box if you want to hide it anyways.") }}">
