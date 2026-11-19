@@ -74,6 +74,16 @@ if (php_sapi_name() === 'cli-server') { //@phpstan-ignore theCodingMachineSafe.f
     }
 }
 
+//the registration check is asked by Galette itself, not the browser: the end to
+//end suite points it to the fake telemetry server its spec starts (see
+//tests/e2e/specs/telemetry-registration.spec.ts), rather than the real one
+if (php_sapi_name() === 'cli-server' && !defined('GALETTE_TELEMETRY_URI')) { //@phpstan-ignore theCodingMachineSafe.function
+    $telemetry_uri = (string)getenv('E2E_TELEMETRY_URI');
+    if ($telemetry_uri !== '') {
+        define('GALETTE_TELEMETRY_URI', rtrim($telemetry_uri, '/') . '/'); //@phpstan-ignore theCodingMachineSafe.function
+    }
+}
+
 if (!defined('GALETTE_TESTS_PATH')) {
     define('GALETTE_TESTS_PATH', __DIR__); //@phpstan-ignore theCodingMachineSafe.function
 }

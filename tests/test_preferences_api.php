@@ -28,6 +28,7 @@ declare(strict_types=1);
  * - enable_maps: Enable maps, on a raster background and with no center set
  * - disable_maps: Disable maps and restore their default background
  * - remove_position: Remove the position of a member (member: its id)
+ * - reset_registration: Forget the instance has been registered on the telemetry server
  */
 
 use Galette\Core\Db;
@@ -199,6 +200,14 @@ try {
             case 'remove_position':
                 (new Positions($zdb))->remove(Coordinates::TYPE, (int)($input['member'] ?? 0));
                 echo json_encode(['success' => true, 'message' => 'Position removed']);
+                break;
+
+            case 'reset_registration':
+                //Galette maintains it itself: no preference setter takes it
+                $update = $zdb->update(Preferences::TABLE);
+                $update->set(['val_pref' => ''])->where(['nom_pref' => 'pref_registration_date']);
+                $zdb->execute($update);
+                echo json_encode(['success' => true, 'message' => 'Registration reset']);
                 break;
 
             default:

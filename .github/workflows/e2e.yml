@@ -26,6 +26,9 @@ jobs:
     env:
       DB: pgsql
       GALETTE_TESTS: 1
+      # Fake telemetry server, started by tests/e2e/specs/telemetry-registration.spec.ts;
+      # also keeps the other specs from reaching the real one
+      E2E_TELEMETRY_URI: http://127.0.0.1:8091/
 
     strategy:
         fail-fast: false
