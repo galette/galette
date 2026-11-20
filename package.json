@@ -65,7 +65,7 @@
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.8",
     "leaflet": "^1.9.4",
-    "leaflet-control-geocoder": "^4.0.0",
+    "leaflet-control-geocoder": "^42.0.0",
     "leaflet-gesture-handling": "^1.2.2",
     "leaflet-legend": "^1.0.2",
     "leaflet.fullscreen": "^5.3.3",
