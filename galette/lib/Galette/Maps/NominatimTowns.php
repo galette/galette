@@ -119,9 +119,9 @@ class NominatimTowns
         $results = [];
         foreach ($places as $place) {
             $address = $place['address'] ?? [];
-            //settlement labels, from the largest to the smallest
-            $full_name = $address['city'] ?? $address['town'] ?? $address['municipality']
-                ?? $address['village'] ?? $address['hamlet'] ?? null;
+            //settlement labels, from the most specific to the largest
+            $full_name = $address['hamlet'] ?? $address['village'] ?? $address['town']
+                ?? $address['city'] ?? $address['municipality'] ?? null;
             if ($full_name === null) {
                 Analog::log(
                     'Nominatim result "' . ($place['display_name'] ?? '') . '" is not a town',

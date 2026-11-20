@@ -61,7 +61,7 @@ class NominatimTowns extends GaletteTestCase
         $places = [
             ['lat' => '50.3620', 'lon' => '3.4729', 'display_name' => 'Valenciennes, Nord', 'address' => ['city' => 'Valenciennes']],
             ['lat' => '50.3620', 'lon' => '3.4729', 'display_name' => 'Valenciennes again', 'address' => ['town' => 'Valenciennes']],
-            ['lat' => '45.1', 'lon' => '1.2', 'display_name' => 'Somewhere', 'address' => ['village' => 'Petit Valenciennes']],
+            ['lat' => '45.1', 'lon' => '1.2', 'display_name' => 'Somewhere', 'address' => ['village' => 'Petit Valenciennes', 'municipality' => 'Valenciennes-Agglo']],
             ['lat' => '46.1', 'lon' => '1.3', 'display_name' => 'Municipality', 'address' => ['municipality' => 'Valenciennes-Commune']],
             ['lat' => '47.1', 'lon' => '1.4', 'display_name' => 'Hamlet', 'address' => ['hamlet' => 'Les Valenciennes']],
             ['lat' => '44.0', 'lon' => '2.0', 'display_name' => 'Rue de Valenciennes', 'address' => ['road' => 'Rue de Valenciennes']],
