@@ -39,6 +39,10 @@ class NominatimTowns
     private const string URI = 'https://nominatim.openstreetmap.org/search';
     /** How long answers are kept, in seconds */
     public const int CACHE_TTL = 7 * 24 * 3600;
+    /** Place types that are towns, from the most specific to the largest */
+    private const array SETTLEMENTS = ['hamlet', 'village', 'town', 'city', 'municipality'];
+    /** Same name places closer than this, in kilometers, are the same town */
+    private const float SAME_TOWN_DISTANCE = 5.0;
 
     private readonly ClientInterface $client;
     private readonly string $cache_dir;
@@ -118,10 +122,7 @@ class NominatimTowns
 
         $results = [];
         foreach ($places as $place) {
-            $address = $place['address'] ?? [];
-            //settlement labels, from the largest to the smallest
-            $full_name = $address['city'] ?? $address['town'] ?? $address['municipality']
-                ?? $address['village'] ?? $address['hamlet'] ?? null;
+            $full_name = $this->getTownName($place);
             if ($full_name === null) {
                 Analog::log(
                     'Nominatim result "' . ($place['display_name'] ?? '') . '" is not a town',
@@ -137,10 +138,18 @@ class NominatimTowns
                     Analog::log('Town is already in list, ignore.', Analog::INFO);
                     continue 2;
                 }
+                //same town returned twice, as a place node and as its boundary
+                if (
+                    $elt['full_name'] === $full_name
+                    && $this->getDistance($elt, $latitude, $longitude) < self::SAME_TOWN_DISTANCE
+                ) {
+                    Analog::log('Town "' . $full_name . '" is already in list nearby, ignore.', Analog::INFO);
+                    continue 2;
+                }
             }
 
             $results[] = [
-                'full_name' => (string)$full_name,
+                'full_name' => $full_name,
                 'latitude'  => $latitude,
                 'longitude' => $longitude
             ];
@@ -148,6 +157,62 @@ class NominatimTowns
 
         $this->writeCache($cache_file, $results);
         return $results;
+    }
+
+    /**
+     * Get the name of the town a nominatim result stands for
+     *
+     * The matched place itself is used: its address also lists the places
+     * it is in (and the road or the suburb it is on), which do not name it.
+     *
+     * @param array<string, mixed> $place Nominatim result
+     *
+     * @return ?string null when the result is not a town
+     */
+    private function getTownName(array $place): ?string
+    {
+        /** @var array<string, string> $address */
+        $address = $place['address'] ?? [];
+        $type = $place['addresstype'] ?? null;
+
+        if ($type !== null) {
+            if (!in_array($type, self::SETTLEMENTS, strict: true)) {
+                return null;
+            }
+            $name = $place['name'] ?? '';
+            if ($name === '') {
+                $name = $address[$type] ?? '';
+            }
+            return $name !== '' ? (string)$name : null;
+        }
+
+        //no place type: most specific settlement of the address
+        foreach (self::SETTLEMENTS as $settlement) {
+            if (($address[$settlement] ?? '') !== '') {
+                return (string)$address[$settlement];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Distance between a listed town and a position
+     *
+     * @param array<string, string> $town      Listed town
+     * @param string                $latitude  Latitude
+     * @param string                $longitude Longitude
+     *
+     * @return float Distance in kilometers
+     */
+    private function getDistance(array $town, string $latitude, string $longitude): float
+    {
+        $lat1 = deg2rad((float)$town['latitude']);
+        $lat2 = deg2rad((float)$latitude);
+        $delta_lat = $lat2 - $lat1;
+        $delta_lon = deg2rad((float)$longitude - (float)$town['longitude']);
+
+        $a = sin($delta_lat / 2) ** 2 + cos($lat1) * cos($lat2) * sin($delta_lon / 2) ** 2;
+        return 2 * 6371 * asin(min(1.0, sqrt($a)));
     }
 
     /**
