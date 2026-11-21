@@ -121,7 +121,6 @@ class Members extends GaletteTestCase
                     error: UPLOAD_ERR_OK
                 );
                 $this->assertGreaterThan(0, (int)$member->picture->storeFile($uploaded_file));
-                $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member->id);
             }
         }
         $this->login->logOut();
@@ -1404,6 +1403,12 @@ class Members extends GaletteTestCase
         $this->assertTrue($adh->appearsInMembersList());
 
         $this->assertTrue($adh->hasPicture());
+
+        //listed from the picture file only
+        $this->assertTrue($adh->picture->delete());
+        $this->assertSame(['staff' => [], 'members' => []], $members->getPublicList(with_photos: true));
+        $this->assertSame(0, $members->getCount());
+        $this->assertSame(['staff' => [], 'groups' => []], $members->getPublicStaffList(with_photos: true));
     }
 
     /**

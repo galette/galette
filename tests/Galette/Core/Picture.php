@@ -121,19 +121,48 @@ class Picture extends GaletteTestCase
             size: filesize($source),
             error: UPLOAD_ERR_OK
         );
-        $this->assertTrue($picture->storeFile($uploaded_file));
-        $this->assertTrue(is_file($path . $id . '.jpg'));
-        $this->expectLogEntry(\Analog\Analog::INFO, 'Pictures directory `' . $path . '` has been created');
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $id);
-
-        //picture is only in the database now: directory is created again to restore it
-        unlink($path . $id . '.jpg');
-        rmdir($path);
-        $picture = new ExposedPicture($path, $id);
+        //pictures are stored on disk only
+        $this->assertSame(
+            0,
+            $this->countQueries(
+                fn() => $this->assertTrue($picture->storeFile($uploaded_file)),
+                'pictures'
+            )
+        );
         $this->assertTrue($picture->hasPicture());
         $this->assertTrue(is_file($path . $id . '.jpg'));
-        $this->assertSame(200, $picture->getWidth());
         $this->expectLogEntry(\Analog\Analog::INFO, 'Pictures directory `' . $path . '` has been created');
+
+        $picture = new ExposedPicture($path, $id);
+        $this->assertTrue($picture->hasPicture());
+        $this->assertSame(200, $picture->getWidth());
+    }
+
+    /**
+     * Test a picture removed from disk is gone
+     */
+    public function testRemovedFileIsGone(): void
+    {
+        $id = 999999;
+        $path = $this->tmp_dir;
+        $source = sys_get_temp_dir() . '/galette-upload-' . uniqid() . '.jpg';
+        copy(GALETTE_ROOT . '../tests/fake_image.jpg', $source);
+
+        $picture = new ExposedPicture($path, $id);
+        $uploaded_file = new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: $source,
+            name: 'fake_image.jpg',
+            type: 'image/jpeg',
+            size: filesize($source),
+            error: UPLOAD_ERR_OK
+        );
+        $this->assertTrue($picture->storeFile($uploaded_file));
+        $this->expectLogEntry(\Analog\Analog::INFO, 'Pictures directory `' . $path . '` has been created');
+
+        unlink($path . $id . '.jpg');
+        $picture = new ExposedPicture($path, $id);
+        $this->assertFalse($picture->hasPicture());
+        $this->assertFalse(is_file($path . $id . '.jpg'));
     }
 
     /**
@@ -330,14 +359,6 @@ class Picture extends GaletteTestCase
         $this->assertSame(
             'Unable to write file or temporary file',
             $this->picture->getErrorMessage(\Galette\Core\Picture::CANT_WRITE)
-        );
-        $this->assertSame(
-            'An SQL error has occurred.',
-            $this->picture->getErrorMessage(\Galette\Core\Picture::SQL_ERROR)
-        );
-        $this->assertSame(
-            'An SQL error has occurred.',
-            $this->picture->getErrorMessage(\Galette\Core\Picture::SQL_BLOB_ERROR)
         );
     }
 }

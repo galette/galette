@@ -713,7 +713,6 @@ class Adherent extends GaletteTestCase
         $fakedata = new \Galette\Util\FakeData();
         $this->assertTrue($fakedata->addPhoto($this->adh));
         //Process tries to remove any existing photo
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $this->adh->id);
 
         $this->assertTrue($this->adh->hasPicture());
 
@@ -2125,7 +2124,6 @@ class Adherent extends GaletteTestCase
         //a picture is stored
         $fakedata = new \Galette\Util\FakeData();
         $this->assertTrue($fakedata->addPhoto($this->adh));
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $this->adh->id);
         $this->assertTrue($this->adh->hasPicture());
         $this->assertTrue($this->adh->check(values: [], required: $required, disabled: [], files: []));
 

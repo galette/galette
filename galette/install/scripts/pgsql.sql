@@ -165,14 +165,6 @@ CREATE TABLE galette_dynamic_fields (
   PRIMARY KEY (item_id, field_id, field_form, val_index)
 );
 
-DROP TABLE IF EXISTS galette_pictures CASCADE;
-CREATE TABLE galette_pictures (
-  id_adh integer DEFAULT 0 NOT NULL,
-  picture bytea NOT NULL,
-  format character varying(30) DEFAULT '' NOT NULL,
-  PRIMARY KEY (id_adh)
-);
-
 -- Table for dynamic translation of strings;
 DROP TABLE IF EXISTS galette_l10n CASCADE;
 CREATE TABLE galette_l10n (

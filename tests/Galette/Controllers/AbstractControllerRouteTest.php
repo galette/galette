@@ -81,20 +81,14 @@ class AbstractControllerRouteTest extends GaletteRoutingTestCase
      */
     public function testLazyPrintLogo(): void
     {
-        $controller = null;
-        $this->assertSame(
-            0,
-            $this->countQueries(
-                function () use (&$controller): void {
-                    $controller = $this->container->make(\Galette\Controllers\GaletteController::class);
-                },
-                PREFIX_DB . \Galette\Core\Picture::TABLE
-            )
-        );
+        $controller = $this->container->make(\Galette\Controllers\GaletteController::class);
+        $property = new \ReflectionProperty(AbstractController::class, 'print_logo');
+        $this->assertFalse($property->isInitialized($controller));
 
         $read = fn(string $name): mixed => $this->{$name};
         $print_logo = \Closure::bind($read, $controller, AbstractController::class)('print_logo');
         $this->assertInstanceOf(\Galette\Core\PrintLogo::class, $print_logo);
+        $this->assertTrue($property->isInitialized($controller));
         $this->assertSame($print_logo, \Closure::bind($read, $controller, AbstractController::class)('print_logo'));
 
         $warning = null;

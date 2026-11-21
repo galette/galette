@@ -353,7 +353,7 @@ class Members
 
                 $p = new Picture($member->id_adh);
                 if ($p->hasPicture()) {
-                    if (!$p->delete(transaction: false)) {
+                    if (!$p->delete()) {
                         Analog::log(
                             'Unable to delete picture for member ' . $str_adh,
                             Analog::ERROR
@@ -517,6 +517,14 @@ class Members
     {
         global $zdb;
 
+        if ($with_photos && Picture::getStoredIds() === []) {
+            $this->count = 0;
+            return [
+                'staff'     => [],
+                'members'   => []
+            ];
+        }
+
         try {
             $this->extra_order = ['priorite_statut ASC'];
             $select = $this->buildSelect(
@@ -571,6 +579,14 @@ class Members
     public function getPublicStaffList(bool $with_photos): array
     {
         global $zdb, $preferences;
+
+        if ($with_photos && Picture::getStoredIds() === []) {
+            $this->count = 0;
+            return [
+                'staff' => [],
+                'groups' => []
+            ];
+        }
 
         try {
             $this->extra_order = ['priorite_statut ASC'];
@@ -870,11 +886,8 @@ class Members
                 case self::SHOW_PUBLIC_LIST:
                 case self::SHOW_STAFF_PUBLIC_LIST:
                     if ($photos) {
-                        $select->join(
-                            ['picture' => PREFIX_DB . Picture::TABLE],
-                            'a.' . self::PK . '= picture.' . self::PK,
-                            []
-                        );
+                        //callers return early when no picture is stored, avoiding an empty IN ()
+                        $select->where->in('a.' . self::PK, Picture::getStoredIds());
                     }
 
                     $select->join(

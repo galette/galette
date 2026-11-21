@@ -2891,7 +2891,6 @@ class MembersController extends GaletteRoutingTestCase
             $test_response->getHeaders()
         );
         $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member_one->id);
         $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
 
         //check photo is present
@@ -4011,7 +4010,6 @@ class MembersController extends GaletteRoutingTestCase
         $request = $request->withUploadedFiles(['photo' => $this->getUploadedPhoto()]);
         $test_response = $this->app->handle($request);
         $this->assertSame(['Location' => [$show_url]], $test_response->getHeaders());
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member_one->id);
         $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
         $this->assertFileExists($photo);
 
@@ -4057,7 +4055,6 @@ class MembersController extends GaletteRoutingTestCase
 
         $fakedata = new \Galette\Util\FakeData();
         $this->assertTrue($fakedata->addPhoto($member_one));
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member_one->id);
         $this->assertTrue($member_one->hasPicture());
         $photo = (new \Galette\Core\Picture($member_one->id))->getPath();
 
@@ -4123,7 +4120,6 @@ class MembersController extends GaletteRoutingTestCase
 
         $fakedata = new \Galette\Util\FakeData();
         $this->assertTrue($fakedata->addPhoto($member_one));
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for ' . $member_one->id);
         $photo = (new \Galette\Core\Picture($member_one->id))->getPath();
         $route_arguments = ['id' => (string)$member_one->id];
 

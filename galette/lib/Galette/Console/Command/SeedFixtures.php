@@ -19,7 +19,6 @@ use Galette\Core\Galette;
 use Galette\Core\History;
 use Galette\Core\Login;
 use Galette\Core\MailingHistory;
-use Galette\Core\Picture;
 use Galette\Core\Plugins;
 use Galette\Core\Plugins\FixturesContext;
 use Galette\Core\Preferences;
@@ -32,7 +31,6 @@ use Galette\Entity\Title;
 use Galette\Entity\Transaction;
 use Galette\Maps\Coordinates;
 use Galette\Maps\Positions;
-use Laminas\Db\Adapter\Driver\StatementInterface;
 use Safe\DateTime;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -42,9 +40,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-use function Safe\fclose;
-use function Safe\fopen;
-use function Safe\fread;
 use function Safe\imagecreatetruecolor;
 use function Safe\imageellipse;
 use function Safe\imagefilledrectangle;
@@ -93,7 +88,6 @@ class SeedFixtures extends AbstractCommand
 
     /** @var array<string, int> Created transaction IDs indexed by description */
     private array $transactions = [];
-    private ?StatementInterface $insert_picture_stmt = null;
 
     /**
      * Configure command options
@@ -513,7 +507,7 @@ class SeedFixtures extends AbstractCommand
                 $this->zdb->execute($delete);
             }
 
-            // Delete pictures, from database and filesystem
+            // Delete pictures
             $this->cleanPhotos();
 
             // Delete members (children first due to parent_id FK)
@@ -548,10 +542,6 @@ class SeedFixtures extends AbstractCommand
         if ($member_ids === []) {
             return;
         }
-
-        $delete = $this->zdb->delete(Picture::TABLE);
-        $delete->where->in(Adherent::PK, $member_ids);
-        $this->zdb->execute($delete);
 
         foreach ($member_ids as $id) {
             foreach (['jpg', 'png', 'gif', 'webp'] as $ext) {
@@ -901,10 +891,7 @@ class SeedFixtures extends AbstractCommand
         foreach ($this->members as $adh) {
             $color = $colors[$i % count($colors)];
             $initials = $this->getInitials($adh);
-            $filepath = $this->generateAvatar($adh->id, $initials, $color);
-            if ($filepath !== null) {
-                $this->storePicture($adh->id, $filepath);
-            }
+            $this->generateAvatar($adh->id, $initials, $color);
             $i++;
         }
 
@@ -928,7 +915,7 @@ class SeedFixtures extends AbstractCommand
      * @param string     $initials Initials to display
      * @param array<int> $color    RGB color array
      */
-    private function generateAvatar(int $id, string $initials, array $color): ?string
+    private function generateAvatar(int $id, string $initials, array $color): void
     {
         $size = 200;
         $img = imagecreatetruecolor($size, $size);
@@ -936,7 +923,7 @@ class SeedFixtures extends AbstractCommand
         $bg = imagecolorallocate(image: $img, red: $color[0], green: $color[1], blue: $color[2]);
         $white = imagecolorallocate(image: $img, red: 255, green: 255, blue: 255);
         if ($bg === false || $white === false) {
-            return null;
+            return;
         }
 
         imagefilledrectangle(image: $img, x1: 0, y1: 0, x2: $size - 1, y2: $size - 1, color: $bg);
@@ -960,56 +947,7 @@ class SeedFixtures extends AbstractCommand
             color: $white
         );
 
-        $filepath = GALETTE_PHOTOS_PATH . $id . '.png';
-        imagepng($img, $filepath);
-
-        return $filepath;
-    }
-
-    /**
-     * Store a photo in the database for a member
-     */
-    private function storePicture(int $id, string $filepath): void
-    {
-        $f = fopen($filepath, 'r');
-        $picture = '';
-        while ($r = fread($f, 8192)) {
-            $picture .= $r;
-        }
-        fclose($f);
-
-        if ($this->insert_picture_stmt === null) {
-            $insert = $this->zdb->insert(Picture::TABLE);
-            $insert->values(
-                [
-                    Adherent::PK  => ':' . Adherent::PK,
-                    'picture'   => ':picture',
-                    'format'    => ':format'
-                ]
-            );
-            $stmt = $this->zdb->sql->prepareStatementForSqlObject($insert);
-            $container = $stmt->getParameterContainer();
-            $container->offsetSet(
-                'picture', //'picture',
-                ':picture',
-                $container::TYPE_LOB
-            );
-            $stmt->setParameterContainer($container);
-            $this->insert_picture_stmt = $stmt;
-        }
-
-        // Direct insert into pictures table
-        try {
-            $this->insert_picture_stmt->execute(
-                [
-                    Adherent::PK  => $id,
-                    'picture'     => $picture,
-                    'format'      => 'png'
-                ]
-            );
-        } catch (\Throwable) {
-            // no log: picture might already exist, ignore
-        }
+        imagepng($img, GALETTE_PHOTOS_PATH . $id . '.png');
     }
 
     /**

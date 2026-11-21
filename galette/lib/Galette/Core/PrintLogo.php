@@ -23,9 +23,6 @@ use function Safe\imagepng;
 class PrintLogo extends Logo
 {
     protected string|int $id = 'custom_print_logo';
-    // Database wants a member id (integer), not a string.
-    // Will be used to query the correct id
-    protected int $db_id = 999999;
 
     /**
      * Default constructor

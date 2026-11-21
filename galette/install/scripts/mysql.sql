@@ -167,14 +167,6 @@ CREATE TABLE galette_dynamic_fields (
     FOREIGN KEY (field_id) REFERENCES galette_field_types (field_id) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
 
-DROP TABLE IF EXISTS galette_pictures;
-CREATE TABLE galette_pictures (
-    id_adh int unsigned NOT NULL default 0,
-    picture mediumblob NOT NULL,
-    format varchar(30) NOT NULL default '',
-    PRIMARY KEY (id_adh)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci;
-
 -- Table for dynamic translation of strings;
 DROP TABLE IF EXISTS galette_l10n;
 CREATE TABLE galette_l10n (
