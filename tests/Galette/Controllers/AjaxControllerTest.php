@@ -231,7 +231,7 @@ class AjaxControllerTest extends GaletteRoutingTestCase
     {
         $requests = [
             $this->createRequest('telemetryInfos'),
-            $this->createRequest('setRegistered'),
+            $this->createRequest('telemetryRegistration', [], 'POST'),
         ];
         foreach ($requests as $request) {
             $this->expectLogin($this->app->handle($request));
@@ -245,13 +245,23 @@ class AjaxControllerTest extends GaletteRoutingTestCase
         $infos = json_decode(substr($body, 5, -6), associative: true);
         $this->assertArrayHasKey('galette', $infos);
 
-        $this->assertSame(
-            ['message' => 'Thank you for registering!'],
-            $this->getJson($requests[1])
-        );
-        $select = $this->zdb->select(\Galette\Core\Preferences::TABLE);
-        $select->where(['nom_pref' => 'pref_registration_date']);
-        $this->assertStringStartsWith(date('Y-m-d'), (string)$this->zdb->execute($select)->current()->val_pref);
+        //registration form sent on the telemetry server, and confirmed (see Util\Telemetry::testCheckRegistration())
+        $this->preferences->updateRegistrationDate();
+        try {
+            $this->assertSame(
+                [
+                    'registered'    => true,
+                    'message'       => 'Thank you for registering!',
+                    //the preferences page shows it in place of "Not registered"
+                    'date'          => $this->preferences->getRegistrationDate()
+                ],
+                $this->getJson($requests[1])
+            );
+        } finally {
+            $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+            $update->set(['val_pref' => ''])->where(['nom_pref' => 'pref_registration_date']);
+            $this->zdb->execute($update);
+        }
     }
 
     /**

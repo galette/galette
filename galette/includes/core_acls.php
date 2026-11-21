@@ -33,7 +33,6 @@ $core_acls = [
     '/(.+)?admin(.+)?/i'                => 'superadmin',
     '/(.+)?[aA]dvancedConfig(.+)?/i'    => 'superadmin',
     '/(.+)?telemetry(.+)?/i'            => 'config:preferences',
-    'setRegistered'                     => 'config:preferences',
     'authAttempts'                      => 'security:manage',
     'doAuthAttempts'                    => 'security:manage',
     '/(.+)?preferences(.+)?/i'          => 'config:preferences',
