@@ -1423,9 +1423,7 @@
                 } %}
 
                 {# once registered, the button only updates information: nothing to wait for #}
-                {% if not pref.pref_registration_date %}
-                    {% include "modals/telemetry.html.twig" with {part: "jsregister"} %}
-                {% endif %}
+                {% include "modals/telemetry.html.twig" with {part: "jsregister", registered: pref.pref_registration_date is not empty} %}
 
                 {% set modal_onapprove = "
                     $('.modal-form form #redirect_uri').val(window.location.href);

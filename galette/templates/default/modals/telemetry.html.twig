@@ -146,10 +146,29 @@
             ;
 {% endif %}
 {% if part == "jsregister" %}
-            {# the registration form is on the telemetry server: once it has been opened, ask the server whether it has been sent #}
+            {# the registration form is on the telemetry server: the button opens it -- also to update information once registered #}
+            $('#register').on('click', function() {
+    {% if registered is not defined or not registered %}
+                setRegistrationPending();
+    {% endif %}
+                window.open($(this).data('url'), '_blank', 'noopener');
+            });
+    {% if registered is not defined or not registered %}
+            {# once opened, ask the telemetry server whether it has been sent #}
             var registrationPending = 'galette_registration_pending';
+            //kept in memory as well: storage may be unavailable, or refuse writes
+            var registrationPendingHere = false;
             var registrationChecking = false;
+            var setRegistrationPending = function() {
+                registrationPendingHere = true;
+                try {
+                    localStorage.setItem(registrationPending, '1');
+                } catch (e) {}
+            };
             var isRegistrationPending = function() {
+                if (registrationPendingHere) {
+                    return true;
+                }
                 try {
                     return localStorage.getItem(registrationPending) !== null;
                 } catch (e) {
@@ -171,15 +190,16 @@
                         if (!data.registered) {
                             return;
                         }
+                        registrationPendingHere = false;
                         try {
                             localStorage.removeItem(registrationPending);
                         } catch (e) {}
-    {%  if orig is defined and orig == 'desktop' %}
+        {%  if orig is defined and orig == 'desktop' %}
                         $('#register').remove();
-    {% else %}
+        {% else %}
                         $('#registration_date').text(data.date);
                         $('#register .register-text').text('{{ _T("Update your information")|e("js") }}');
-    {% endif %}
+        {% endif %}
                         {% include "elements/js/modal.js.twig" with {
                             modal_without_title: true,
                             modal_content: "data.message",
@@ -190,13 +210,6 @@
                     }
                 });
             };
-
-            $('#register').on('click', function() {
-                try {
-                    localStorage.setItem(registrationPending, '1');
-                } catch (e) {}
-                window.open($(this).data('url'), '_blank', 'noopener');
-            });
 
             //checked each time the page is shown again, until the form has been sent:
             //coming back before sending it must not end the checks
@@ -209,4 +222,5 @@
 
             //registration form opened earlier, but not confirmed yet
             checkRegistration();
+    {% endif %}
 {% endif %}

@@ -664,10 +664,8 @@ class Telemetry
             return false;
         }
 
-        if ($registered) {
-            $this->prefs->updateRegistrationDate();
-        }
-        return $registered;
+        //not recorded, not registered: the page keeps checking, and the next check writes it again
+        return $registered && $this->prefs->updateRegistrationDate();
     }
 
     /**

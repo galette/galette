@@ -647,6 +647,16 @@ class Telemetry extends GaletteTestCase
             $this->assertFalse($telemetry->checkRegistration());
             $this->assertFalse($telemetry->isRegistered());
 
+            //form sent, but the date cannot be stored: not registered, the next check retries
+            $preferences = $this->getMockBuilder(\Galette\Core\Preferences::class)
+                ->setConstructorArgs([$this->zdb])
+                ->onlyMethods(['updateRegistrationDate'])
+                ->getMock();
+            $preferences->expects($this->once())->method('updateRegistrationDate')->willReturn(false);
+            $telemetry = $this->registrationTelemetry(answer: true, preferences: $preferences);
+            $this->assertFalse($telemetry->checkRegistration());
+            $this->assertFalse($telemetry->isRegistered());
+
             //form sent: registration is recorded
             $telemetry = $this->registrationTelemetry(answer: true);
             $this->assertTrue($telemetry->checkRegistration());
@@ -664,12 +674,15 @@ class Telemetry extends GaletteTestCase
     /**
      * Telemetry, with a mocked answer of the telemetry server
      *
-     * @param bool|\Throwable|null $answer Answer, exception thrown, or null if the server must not be asked
+     * @param bool|\Throwable|null           $answer      Answer, exception thrown, or null if the server must not be asked
+     * @param ?\Galette\Core\Preferences $preferences Preferences, the ones of the test case if null
      */
-    private function registrationTelemetry(bool|\Throwable|null $answer): \Galette\Util\Telemetry
-    {
+    private function registrationTelemetry(
+        bool|\Throwable|null $answer,
+        ?\Galette\Core\Preferences $preferences = null
+    ): \Galette\Util\Telemetry {
         $telemetry = $this->getMockBuilder(\Galette\Util\Telemetry::class)
-            ->setConstructorArgs([$this->zdb, $this->preferences, $this->plugins])
+            ->setConstructorArgs([$this->zdb, $preferences ?? $this->preferences, $this->plugins])
             ->onlyMethods(['requestRegistrationStatus'])
             ->getMock();
 

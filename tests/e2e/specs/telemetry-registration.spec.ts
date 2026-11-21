@@ -157,6 +157,10 @@ test.describe('Telemetry registration', () => {
       await expect(button).not.toHaveText(register);
       await expect(page.locator('.ui.modal.visible')).toHaveCount(0);
       expect(telemetry.asked.length).toBe(asked);
+
+      //registered: the button still opens the form, to update information, with nothing to wait for
+      expect(await openRegistrationForm(page)).toBe(uuid);
+      expect(await page.evaluate(() => localStorage.getItem('galette_registration_pending'))).toBeNull();
     } finally {
       await resetRegistration(page);
     }
@@ -172,6 +176,36 @@ test.describe('Telemetry registration', () => {
       expect(answer.registered).toBe(true);
       expect(telemetry.asked.at(-1)).toBe(uuid);
 
+      await ModalHelper.expectModalText(page, answer.message ?? '');
+      await ModalHelper.clickCancel(page);
+      await expect(page.locator('button#register')).toHaveCount(0);
+    } finally {
+      await resetRegistration(page);
+    }
+  });
+
+  test('Dashboard - registration is checked without storage', async ({ loggedInPage: page }) => {
+    //private browsing, blocked site data...
+    await page.addInitScript(() => {
+      const refuse = () => {
+        throw new DOMException('Storage is disabled', 'SecurityError');
+      };
+      Storage.prototype.getItem = refuse;
+      Storage.prototype.setItem = refuse;
+      Storage.prototype.removeItem = refuse;
+    });
+    await resetRegistration(page);
+    try {
+      await page.goto('/dashboard');
+      const uuid = await openRegistrationForm(page);
+      telemetry.registered.delete(uuid);
+
+      expect((await comeBack(page)).registered).toBe(false);
+      expect(telemetry.asked.at(-1)).toBe(uuid);
+
+      telemetry.registered.add(uuid);
+      const answer = await comeBack(page);
+      expect(answer.registered).toBe(true);
       await ModalHelper.expectModalText(page, answer.message ?? '');
       await ModalHelper.clickCancel(page);
       await expect(page.locator('button#register')).toHaveCount(0);
