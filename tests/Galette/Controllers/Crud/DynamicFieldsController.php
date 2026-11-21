@@ -721,6 +721,23 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         foreach ($files as $file) {
             copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', GALETTE_FILES_PATH . $file);
         }
+        //files are sent along with their stored value only
+        $values = [
+            [$member_one->id, $adh_field_id, 'adh'],
+            [$member_two->id, $adh_field_id, 'adh'],
+            [$contrib_id, $contrib_field_id, 'contrib']
+        ];
+        foreach ($values as [$item_id, $field_id, $form_name]) {
+            $insert = $this->zdb->insert(\Galette\Entity\DynamicFieldsHandle::TABLE);
+            $insert->values([
+                'item_id' => $item_id,
+                'field_id' => $field_id,
+                'field_form' => $form_name,
+                'val_index' => 1,
+                'field_val' => 'galette_pro.png'
+            ]);
+            $this->zdb->execute($insert);
+        }
 
         $mdata = $this->dataAdherentOne();
         $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));

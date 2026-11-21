@@ -14,6 +14,7 @@ use Galette\Core\Authentication;
 use Galette\Core\Login;
 use Galette\Repository\DynamicFieldsSet;
 use Psr\Http\Message\UploadedFileInterface;
+use LogicException;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Logs;
@@ -26,6 +27,7 @@ use Galette\Entity\FieldsConfig;
 use Galette\IO\UploadSize;
 use Galette\Util\Filesize;
 
+use function Safe\class_parents;
 use function Safe\preg_grep;
 
 /**
@@ -76,10 +78,13 @@ trait Dynamics
     /**
      * Extract posted values for dynamic fields
      *
+     * Errors go to the object errors; the result is false as well when a value
+     * is wrong or a required one is missing.
+     *
      * @param array<string, mixed>                  $post     Posted values
      * @param array<string,int|bool>                $required Array of required fields
      * @param array<string>                         $disabled Array of disabled fields
-     * @param ?array<string, UploadedFileInterface> $files    Uploaded files; required files are not checked when null
+     * @param ?array<string, UploadedFileInterface> $files    Uploaded files, given when the whole form is posted; otherwise required files, and required fields the post lacks, are not checked
      */
     protected function dynamicsCheck(array $post, array $required, array $disabled, ?array $files = null): bool
     {
@@ -91,6 +96,14 @@ trait Dynamics
             $valid = true;
             $fields = $this->dynamics->getFields();
 
+            //fields the object does not use: posted values are ignored, stored ones are kept
+            $hidden = [];
+            foreach ($fields as $field_id => $field) {
+                if ($this->isDynamicFieldHidden($field)) {
+                    $hidden[$field_id] = true;
+                }
+            }
+
             $dynamic_fields = [];
             //posted fields
             foreach ($post as $key => $value) {
@@ -100,7 +113,7 @@ trait Dynamics
                 }
 
                 [$field_id, $val_index] = explode('_', str_replace($this->name_pattern, '', $key));
-                if (!is_numeric($field_id) || !is_numeric($val_index)) {
+                if (!is_numeric($field_id) || !is_numeric($val_index) || isset($hidden[(int)$field_id])) {
                     continue;
                 }
 
@@ -116,6 +129,7 @@ trait Dynamics
                 $pattern = '/' . $this->name_pattern . $field->getId() . '_(\d)/';
                 if (
                     $field instanceof Boolean
+                    && !isset($hidden[$field->getId()])
                     && !isset($disabled[$this->name_pattern . $field->getId() . '_1'])
                     && !preg_grep($pattern, array_keys($dynamic_fields))
                 ) {
@@ -151,7 +165,7 @@ trait Dynamics
 
             foreach ($posted_values as $field_id => $values) {
                 //a posted file value is its delete control, not a value
-                if (!$fields[$field_id]->isRequired() || $fields[$field_id] instanceof File) {
+                if (!$this->isDynamicFieldRequired($fields[$field_id]) || $fields[$field_id] instanceof File) {
                     continue;
                 }
                 foreach ($values as $value) {
@@ -168,10 +182,48 @@ trait Dynamics
             }
 
             if ($files !== null) {
+                //the whole form is posted: a required field it lacks is missing as well
+                foreach ($fields as $field_id => $field) {
+                    if (
+                        isset($posted_values[$field_id])
+                        || isset($hidden[$field_id])
+                        || isset($disabled[$this->name_pattern . $field_id . '_1'])
+                        || $field instanceof File
+                        || $this->isReadOnlyDynamicField($field)
+                        || !$this->isDynamicFieldRequired($field)
+                    ) {
+                        continue;
+                    }
+                    $missing[$field_id] = true;
+                    $this->errors[] = sprintf(
+                        //TRANS: parameter is a field name
+                        _T('Missing required field %1$s'),
+                        $field->getName(),
+                    );
+                }
+
+                //files are stored once the object is: check them before
+                $failed = [];
+                foreach ($this->getDynamicUploads($files) as [$field, $file]) {
+                    if (isset($hidden[$field->getId()])) {
+                        //ignored, as it will be when files are stored
+                        continue;
+                    }
+                    $error = $this->checkDynamicUpload($field, $file);
+                    if ($error !== null) {
+                        $valid = false;
+                        $failed[$field->getId()] = true;
+                        $this->errors[] = $error;
+                    }
+                }
+
                 foreach ($fields as $field_id => $field) {
                     if (
                         !$field instanceof File
-                        || !$field->isRequired()
+                        || isset($hidden[$field_id])
+                        //a failed upload is reported already
+                        || isset($failed[$field_id])
+                        || !$this->isDynamicFieldRequired($field)
                         || $this->isReadOnlyDynamicField($field)
                         || $this->hasDynamicFile($field_id, $posted_values[$field_id] ?? [], $files)
                     ) {
@@ -249,7 +301,7 @@ trait Dynamics
                 }
             }
 
-            return $valid;
+            return $valid && $missing === [];
         }
         return false;
     }
@@ -315,66 +367,134 @@ trait Dynamics
     /**
      * Store dynamic Files
      *
+     * Errors go to the object errors: other values are already stored,
+     * the user is to send the files again.
+     *
      * @param array<UploadedFileInterface> $files Posted files
      */
     protected function dynamicsFiles(array $files): void
     {
+        //occurrences may have moved when values were stored
+        $moved = isset($this->dynamics) ? $this->dynamics->getMovedIndexes() : [];
         $this->loadDynamicFields();
-        $fields = $this->dynamics->getFields();
         $store = false;
 
-        foreach ($files as $key => $file) {
-            if (substr((string)$key, 0, 11) != $this->name_pattern) {
+        foreach ($this->getDynamicUploads($files) as [$field, $file, $val_index]) {
+            if ($this->isDynamicFieldHidden($field)) {
                 continue;
             }
 
-            [$field_id, $val_index] = explode('_', str_replace($this->name_pattern, '', $key));
-            if (!is_numeric($field_id) || !is_numeric($val_index)) {
+            $error = $this->checkDynamicUpload($field, $file);
+            if ($error !== null) {
+                $this->errors[] = $error;
                 continue;
             }
 
-            if (
-                $file->getError() == UPLOAD_ERR_NO_FILE
-                && $file->getClientFilename() == ''
-            ) {
-                //not upload atempt.
-                continue;
-            } elseif ($file->getError() !== UPLOAD_ERR_OK) {
-                Analog::log("file upload error", Analog::ERROR);
-                continue;
-            }
-
-            $field = $fields[(int)$field_id] ?? null;
-            if (!$field instanceof File) {
-                continue;
-            }
-
-            //a field declaring no size of its own follows the preference
-            $max_size = $field->getSize() ?: UploadSize::DynamicFiles->get();
-            if ($file->getSize() > $max_size * 1024) {
-                Analog::log(
-                    'file too large: ' . Filesize::fromBytes($file->getSize())
-                    . ', vs ' . Filesize::fromKilobytes($max_size) . ' allowed',
-                    Analog::ERROR
-                );
-                $this->errors[] = sprintf(
-                    _T('File is too big. Maximum allowed size is %1$s'),
-                    Filesize::fromKilobytes($max_size)
-                );
-                continue;
-            }
-
-            $new_filename = $field->getFileName($this->getID(), (int)$val_index);
+            $val_index = $moved[$field->getId()][$val_index] ?? $val_index;
+            $new_filename = $field->getFileName($this->getID(), $val_index);
             Analog::log("new file: $new_filename", Analog::DEBUG);
 
             $file->moveTo(GALETTE_FILES_PATH . $new_filename);
-            $this->dynamics->setValue($this->getID(), (int)$field_id, (int)$val_index, $file->getClientFilename());
+            $this->dynamics->setValue($this->getID(), $field->getId(), $val_index, $file->getClientFilename());
             $store = true;
         }
 
         if ($store === true) {
             $this->dynamicsStore();
         }
+    }
+
+    /**
+     * Get the files posted for file fields
+     *
+     * @param array<UploadedFileInterface> $files Posted files
+     *
+     * @return list<array{File, UploadedFileInterface, int}> Field, file and occurrence of each upload attempt
+     */
+    private function getDynamicUploads(array $files): array
+    {
+        if (!isset($this->dynamics)) {
+            $this->loadDynamicFields();
+        }
+        $fields = $this->dynamics->getFields();
+
+        $uploads = [];
+        foreach ($files as $key => $file) {
+            if (substr((string)$key, 0, 11) != $this->name_pattern) {
+                continue;
+            }
+
+            [$field_id, $val_index] = explode('_', str_replace($this->name_pattern, '', $key)) + [1 => ''];
+            $field = $fields[(int)$field_id] ?? null;
+            if (!is_numeric($field_id) || !is_numeric($val_index) || !$field instanceof File) {
+                continue;
+            }
+            if ($file->getError() == UPLOAD_ERR_NO_FILE && $file->getClientFilename() == '') {
+                //no upload attempt
+                continue;
+            }
+            $uploads[] = [$field, $file, (int)$val_index];
+        }
+        return $uploads;
+    }
+
+    /**
+     * Why an uploaded file cannot be stored, if it cannot
+     *
+     * @param File                  $field File field
+     * @param UploadedFileInterface $file  Uploaded file
+     */
+    private function checkDynamicUpload(File $field, UploadedFileInterface $file): ?string
+    {
+        if ($file->getError() !== UPLOAD_ERR_OK) {
+            Analog::log('file upload error: ' . $file->getError(), Analog::ERROR);
+            return sprintf(
+                //TRANS: parameter is a field name
+                _T('File for %1$s has not been received, please send it again.'),
+                $field->getName()
+            );
+        }
+
+        //a field declaring no size of its own follows the preference
+        $max_size = $field->getSize() ?: UploadSize::DynamicFiles->get();
+        if ($file->getSize() > $max_size * 1024) {
+            Analog::log(
+                'file too large: ' . Filesize::fromBytes((int)$file->getSize())
+                . ', vs ' . Filesize::fromKilobytes($max_size) . ' allowed',
+                Analog::ERROR
+            );
+            return sprintf(
+                _T('File is too big. Maximum allowed size is %1$s'),
+                Filesize::fromKilobytes($max_size)
+            );
+        }
+
+        return null;
+    }
+
+    /**
+     * Is a dynamic field hidden for this object?
+     *
+     * Objects that do not use every field of their form override it: hidden
+     * fields are neither displayed nor checked, their stored values are kept.
+     *
+     * @param DynamicField $field Dynamic field
+     */
+    public function isDynamicFieldHidden(DynamicField $field): bool
+    {
+        return false;
+    }
+
+    /**
+     * Is a dynamic field required for this object?
+     *
+     * Objects override it to require a field for some of them only.
+     *
+     * @param DynamicField $field Dynamic field
+     */
+    public function isDynamicFieldRequired(DynamicField $field): bool
+    {
+        return $field->isRequired();
     }
 
     /**
@@ -418,10 +538,29 @@ trait Dynamics
 
     /**
      * Get form name
+     *
+     * The form the class was declared for, or the one of its closest declared parent.
+     *
+     * @throws LogicException when no form is declared for the class: its plugin may be inactive
      */
     public function getFormName(): string
     {
-        return array_search(static::class, DynamicFieldsSet::getClasses());
+        $classes = DynamicFieldsSet::getClasses();
+        $form_name = array_search(static::class, $classes, strict: true);
+        if ($form_name !== false) {
+            return $form_name;
+        }
+
+        foreach (class_parents($this) as $parent) {
+            $form_name = array_search($parent, $classes, strict: true);
+            if ($form_name !== false) {
+                return $form_name;
+            }
+        }
+
+        throw new LogicException(
+            sprintf('No dynamic form is declared for class %s: is its plugin active?', static::class)
+        );
     }
 
     /**

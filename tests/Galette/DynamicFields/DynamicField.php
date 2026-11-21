@@ -151,6 +151,8 @@ class DynamicField extends GaletteTestCase
      */
     public function testGetFormsNames(): void
     {
+        //core forms only: the test plugin declares one, which is checked with plugins
+        \Galette\Repository\DynamicFieldsSet::resetForms();
         $expected = [];
         foreach ($this->formNamesProvider() as $form) {
             $expected[$form['form']] = $form['expected'];

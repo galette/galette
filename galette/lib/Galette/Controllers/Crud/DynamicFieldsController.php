@@ -20,6 +20,7 @@ use Galette\Controllers\CrudController;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Galette\DynamicFields\DynamicField;
+use Galette\DynamicFields\File as FileField;
 use Analog\Analog;
 use Galette\Core\Logs;
 
@@ -37,13 +38,13 @@ use function Safe\rewind;
 
 #[Route(
     name: 'removeDynamicField',
-    pattern: '/fields/dynamic/remove/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+    pattern: '/fields/dynamic/remove/{form_name:' . DynamicFieldsSet::FORMS_PLACEHOLDER . '}/{id:\d+}',
     methods: ['GET'],
     handler: 'confirmDelete'
 )]
 #[Route(
     name: 'doRemoveDynamicField',
-    pattern: '/fields/dynamic/remove/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+    pattern: '/fields/dynamic/remove/{form_name:' . DynamicFieldsSet::FORMS_PLACEHOLDER . '}/{id:\d+}',
     methods: ['POST'],
     handler: 'delete'
 )]
@@ -58,7 +59,7 @@ class DynamicFieldsController extends CrudController
      */
     #[Route(
         name: 'addDynamicField',
-        pattern: '/fields/dynamic/add/{form_name:adh|contrib|trans|prefs}',
+        pattern: '/fields/dynamic/add/{form_name:' . DynamicFieldsSet::FORMS_PLACEHOLDER . '}',
         methods: ['GET']
     )]
     public function add(Request $request, Response $response, ?string $form_name = null): Response
@@ -93,7 +94,7 @@ class DynamicFieldsController extends CrudController
      */
     #[Route(
         name: 'doAddDynamicField',
-        pattern: '/fields/dynamic/add/{form_name:adh|contrib|trans|prefs}',
+        pattern: '/fields/dynamic/add/{form_name:' . DynamicFieldsSet::FORMS_PLACEHOLDER . '}',
         methods: ['POST']
     )]
     public function doAdd(Request $request, Response $response, ?string $form_name = null): Response
@@ -174,7 +175,7 @@ class DynamicFieldsController extends CrudController
      */
     #[Route(
         name: 'configureDynamicFields',
-        pattern: '/fields/dynamic/configure[/{form_name:adh|contrib|trans|prefs}]',
+        pattern: '/fields/dynamic/configure[/{form_name:' . DynamicFieldsSet::FORMS_PLACEHOLDER . '}]',
         methods: ['GET']
     )]
     public function list(
@@ -184,7 +185,7 @@ class DynamicFieldsController extends CrudController
         int|string|null $value = null,
         string $form_name = 'adh'
     ): Response {
-        if (isset($_POST['form_name']) && trim((string)$_POST['form_name']) != '') {
+        if (isset($_POST['form_name']) && isset(DynamicFieldsSet::getClasses()[$_POST['form_name']])) {
             $form_name = $_POST['form_name'];
         }
         $fields = new DynamicFieldsSet($this->zdb, $this->login);
@@ -244,7 +245,7 @@ class DynamicFieldsController extends CrudController
      */
     #[Route(
         name: 'getDynamicFile',
-        pattern: '/{form_name:adh|contrib|trans|prefs}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
+        pattern: '/{form_name:' . DynamicFieldsSet::FORMS_PLACEHOLDER . '}/{id:\d+}/file/{fid:\d+}/{pos:\d+}/{name}',
         methods: ['GET']
     )]
     public function getDynamicFile(
@@ -256,7 +257,13 @@ class DynamicFieldsController extends CrudController
         string $name
     ): Response {
         $object_class = DynamicFieldsSet::getClasses()[$form_name];
-        if ($object_class === Preferences::class) {
+        $provider = DynamicFieldsSet::getFormProvider($form_name);
+        if ($provider !== null) {
+            //plugins load their objects, and tell whether the user can see them
+            $object = $provider->getDynamicFormObject($form_name, $id, $this->login);
+            //a subclass may belong to a form of its own, the provider did not open
+            $loaded = $object instanceof $object_class && $object->getFormName() === $form_name;
+        } elseif ($object_class === Preferences::class) {
             //settings are a single object, nothing to load but its dynamic fields
             $object = new Preferences($this->zdb, load: false);
             $loaded = true;
@@ -273,12 +280,12 @@ class DynamicFieldsController extends CrudController
                 ->enableDep('dynamics')
                 ->load($id);
         }
-        $fields = $object->getDynamicFields()->getFields();
+        $fields = $loaded ? $object->getDynamicFields()->getFields() : [];
         $field = $fields[$fid] ?? null;
 
-        //field does not exist or access is forbidden
-        $denied = $field === null || !$loaded;
-        if (!$denied && !$object instanceof Preferences) {
+        //field does not exist, holds no file, or access is forbidden
+        $denied = !$field instanceof FileField || !$loaded;
+        if (!$denied && $provider === null && !$object instanceof Preferences) {
             //a settings file goes to whoever can see its field; other files also require access to their object
             $denied = !$object->canShow($this->login);
         }
@@ -293,8 +300,8 @@ class DynamicFieldsController extends CrudController
 
         $filename = $field->getFileName($id, $pos);
 
-        if ($form_name !== 'member' && !file_exists(GALETTE_FILES_PATH . $filename)) {
-            //handle old names for non adh dynamic files
+        if ($provider === null && $form_name !== 'member' && !file_exists(GALETTE_FILES_PATH . $filename)) {
+            //handle old names for non adh dynamic files; plugin forms never had them
             $test_filename = $field->getFileName($id, $pos, 'member');
             if (file_exists(GALETTE_FILES_PATH . $test_filename)) {
                 //rename old file to new name
@@ -302,7 +309,17 @@ class DynamicFieldsController extends CrudController
             }
         }
 
-        if (file_exists(GALETTE_FILES_PATH . $filename)) {
+        //a file left on disk once its value is gone is not sent
+        $stored = false;
+        if (in_array($pos, $object->getDynamicFields()->getValueIndexes($fid), strict: true)) {
+            foreach ($object->getDynamicFields()->getValues($fid) as $value) {
+                if ((int)$value['val_index'] === $pos && (string)$value['field_val'] !== '') {
+                    $stored = true;
+                }
+            }
+        }
+
+        if ($stored && file_exists(GALETTE_FILES_PATH . $filename)) {
             $type = File::getMimeType(GALETTE_FILES_PATH . $filename);
 
             $response = $response->withHeader('Content-Description', 'File Transfer')
@@ -342,12 +359,18 @@ class DynamicFieldsController extends CrudController
      */
     private function getDynamicFileRedirectUrl(string $form_name, int $id): string
     {
+        $provider = DynamicFieldsSet::getFormProvider($form_name);
+        if ($provider !== null) {
+            return $provider->getDynamicFormReturnUrl($form_name, $id, $this->routeparser);
+        }
+
         return match ($form_name) {
             //contributions and transactions have no display page
             'contrib' => $this->routeparser->urlFor('contributions', ['type' => 'contributions']),
             'trans' => $this->routeparser->urlFor('contributions', ['type' => 'transactions']),
             'prefs' => $this->routeparser->urlFor($this->accessControl->can('config:preferences') ? 'preferences' : 'slash'),
-            default => $this->routeparser->urlFor('member', ['id' => (string)$id])
+            'adh' => $this->routeparser->urlFor('member', ['id' => (string)$id]),
+            default => $this->routeparser->urlFor('slash')
         };
     }
 
@@ -362,7 +385,7 @@ class DynamicFieldsController extends CrudController
      */
     #[Route(
         name: 'editDynamicField',
-        pattern: '/fields/dynamic/edit/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+        pattern: '/fields/dynamic/edit/{form_name:' . DynamicFieldsSet::FORMS_PLACEHOLDER . '}/{id:\d+}',
         methods: ['GET']
     )]
     public function edit(Request $request, Response $response, int $id, ?string $form_name = null): Response
@@ -410,7 +433,7 @@ class DynamicFieldsController extends CrudController
      */
     #[Route(
         name: 'doEditDynamicField',
-        pattern: '/fields/dynamic/edit/{form_name:adh|contrib|trans|prefs}/{id:\d+}',
+        pattern: '/fields/dynamic/edit/{form_name:' . DynamicFieldsSet::FORMS_PLACEHOLDER . '}/{id:\d+}',
         methods: ['POST']
     )]
     public function doEdit(Request $request, Response $response, int $id, ?string $form_name = null): Response
@@ -556,7 +579,7 @@ class DynamicFieldsController extends CrudController
      */
     #[Route(
         name: 'moveDynamicField',
-        pattern: '/fields/dynamic/move/{form_name:adh|contrib|trans|prefs}'
+        pattern: '/fields/dynamic/move/{form_name:' . DynamicFieldsSet::FORMS_PLACEHOLDER . '}'
             . '/{direction:' . DynamicField::MOVE_UP . '|' . DynamicField::MOVE_DOWN . '}/{id:\d+}',
         methods: ['GET']
     )]
