@@ -22,6 +22,7 @@ use Galette\Entity\Transaction;
 use Galette\Maps\Coordinates;
 use Galette\Tests\GaletteTestCase;
 use Safe\DateTime;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 use function Safe\json_decode;
@@ -429,5 +430,150 @@ class SeedFixtures extends GaletteTestCase
         $results = $this->zdb->execute($select);
 
         $this->assertGreaterThanOrEqual(8, $results->count());
+    }
+
+    /**
+     * Count rows of a table referencing fixture members
+     */
+    private function countForMembers(string $table, string $column = 'id_adh'): int
+    {
+        $member_ids = $this->getFixtureMemberIds();
+        if ($member_ids === []) {
+            return 0;
+        }
+        $select = $this->zdb->select($table);
+        $select->where->in($column, $member_ids);
+        return $this->zdb->execute($select)->count();
+    }
+
+    /**
+     * Count fixture groups
+     */
+    private function countGroups(): int
+    {
+        $select = $this->zdb->select(Group::TABLE);
+        $select->where(['group_name' => 'Bureau']);
+        return $this->zdb->execute($select)->count();
+    }
+
+    /**
+     * Test fixtures list, which does not touch the database
+     */
+    public function testList(): void
+    {
+        $tester = $this->runSeed(['--list' => true]);
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+
+        $display = $tester->getDisplay();
+        foreach (
+            [
+                'members',
+                'photos',
+                'dynamic-fields',
+                'groups',
+                'roles',
+                'transactions',
+                'contributions',
+                'mailings',
+                'positions',
+            ] as $name
+        ) {
+            $this->assertMatchesRegularExpression('/^\s+' . $name . '\s/m', $display);
+        }
+        $this->assertSame([], $this->getFixtureMemberIds());
+    }
+
+    /**
+     * Test an unknown fixtures set is refused
+     */
+    public function testUnknownFixtures(): void
+    {
+        $tester = $this->runSeed(['fixtures' => ['members', 'unicorns']]);
+        $this->assertSame(Command::INVALID, $tester->getStatusCode());
+        $this->assertStringContainsString('Unknown fixtures: unicorns', $tester->getDisplay());
+        $this->assertSame([], $this->getFixtureMemberIds());
+    }
+
+    /**
+     * Test seeding a single set keeps other ones
+     */
+    public function testSeedSelection(): void
+    {
+        $this->runSeed();
+        $member_ids = $this->getFixtureMemberIds();
+        $mailings = $this->countForMembers(MailingHistory::TABLE, 'mailing_sender');
+        $contributions = $this->countForMembers(Contribution::TABLE);
+        $this->assertGreaterThan(0, $mailings);
+
+        $select = $this->zdb->select(MailingHistory::TABLE);
+        $select->columns(['mailing_id']);
+        $select->order('mailing_id DESC');
+        $select->limit(1);
+        $last_mailing = (int)$this->zdb->execute($select)->current()->mailing_id;
+
+        $tester = $this->runSeed(['fixtures' => ['mailings']]);
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $this->assertStringContainsString('Fixtures seeded: mailings.', $tester->getDisplay());
+
+        //members are kept, mailings have been created again
+        $this->assertSame($member_ids, $this->getFixtureMemberIds());
+        $this->assertSame($mailings, $this->countForMembers(MailingHistory::TABLE, 'mailing_sender'));
+        $this->assertSame($contributions, $this->countForMembers(Contribution::TABLE));
+        $select = $this->zdb->select(MailingHistory::TABLE);
+        $select->where->in('mailing_sender', $member_ids);
+        $select->where->lessThanOrEqualTo('mailing_id', $last_mailing);
+        $this->assertSame(0, $this->zdb->execute($select)->count());
+
+        //contributions are linked to existing transactions
+        $tester = $this->runSeed(['fixtures' => ['contributions']]);
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $this->assertSame($contributions, $this->countForMembers(Contribution::TABLE));
+        $select = $this->zdb->select(Contribution::TABLE);
+        $select->where->in('id_adh', $member_ids);
+        $select->where->isNotNull(Transaction::PK);
+        $this->assertGreaterThan(0, $this->zdb->execute($select)->count());
+    }
+
+    /**
+     * Test removing a set removes the ones depending on it
+     */
+    public function testCleanSelection(): void
+    {
+        $this->runSeed();
+        $member_ids = $this->getFixtureMemberIds();
+        $this->assertGreaterThan(0, $this->countForMembers(Transaction::TABLE));
+        $this->assertGreaterThan(0, $this->countForMembers(Contribution::TABLE));
+
+        $tester = $this->runSeed(['--clean' => true, 'fixtures' => ['transactions']]);
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $this->assertStringContainsString('Dependent fixtures processed as well: contributions', $tester->getDisplay());
+
+        $this->assertSame(0, $this->countForMembers(Transaction::TABLE));
+        $this->assertSame(0, $this->countForMembers(Contribution::TABLE));
+        $this->assertSame($member_ids, $this->getFixtureMemberIds());
+        $this->assertSame(1, $this->countGroups());
+        $this->assertGreaterThan(0, $this->countForMembers(MailingHistory::TABLE, 'mailing_sender'));
+    }
+
+    /**
+     * Test missing required sets are seeded as well
+     */
+    public function testSeedSelectionAddsMissingRequirements(): void
+    {
+        $tester = $this->runSeed(['fixtures' => ['groups']]);
+        $this->assertSame(Command::SUCCESS, $tester->getStatusCode());
+        $display = $tester->getDisplay();
+        $this->assertStringContainsString('Missing required fixtures seeded as well: members', $display);
+        $this->assertStringContainsString('Dependent fixtures processed as well: roles', $display);
+
+        $this->assertGreaterThanOrEqual(30, count($this->getFixtureMemberIds()));
+        $this->assertSame(1, $this->countGroups());
+        $select = $this->zdb->select(Role::TABLE);
+        $select->where->isNull('role_key');
+        $this->assertSame(2, $this->zdb->execute($select)->count());
+
+        //not required, not seeded
+        $this->assertSame(0, $this->countForMembers(Transaction::TABLE));
+        $this->assertSame(0, $this->countForMembers(MailingHistory::TABLE, 'mailing_sender'));
     }
 }

@@ -36,6 +36,7 @@ use Laminas\Db\Adapter\Driver\StatementInterface;
 use Safe\DateTime;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -100,11 +101,22 @@ class SeedFixtures extends AbstractCommand
     protected function configure(): void
     {
         $this
+            ->addArgument(
+                name: 'fixtures',
+                mode: InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
+                description: 'Fixtures to seed or remove, with the ones depending on them (all when omitted, see --list)'
+            )
+            ->addOption(
+                name: 'list',
+                shortcut: 'l',
+                mode: InputOption::VALUE_NONE,
+                description: 'List available fixtures and exit'
+            )
             ->addOption(
                 name: 'clean',
                 shortcut: null,
                 mode: InputOption::VALUE_NONE,
-                description: 'Remove all E2E fixtures and exit'
+                description: 'Remove E2E fixtures (all, or the requested ones) and exit'
             );
     }
 
@@ -116,63 +128,275 @@ class SeedFixtures extends AbstractCommand
         $io = new SymfonyStyle($input, $output);
         $io->title('Galette E2E Fixtures Seeder');
 
+        $definitions = $this->getFixtureDefinitions();
+
+        if ($input->getOption('list')) {
+            $rows = [];
+            foreach ($definitions as $name => $definition) {
+                $rows[] = [$name, implode(', ', $definition['requires']), $definition['description']];
+            }
+            $io->table(['Name', 'Requires', 'Description'], $rows);
+            return Command::SUCCESS;
+        }
+
+        /** @var list<string> $requested */
+        $requested = array_values(array_unique($input->getArgument('fixtures')));
+        $unknown = array_diff($requested, array_keys($definitions));
+        if ($unknown !== []) {
+            $io->error(sprintf(
+                'Unknown fixtures: %1$s. Available fixtures: %2$s.',
+                implode(', ', $unknown),
+                implode(', ', array_keys($definitions))
+            ));
+            return Command::INVALID;
+        }
+
         // Ensure HTTP_HOST is set for CLI context (used by Preferences::getURL())
         $_SERVER['HTTP_HOST'] ??= 'localhost';
 
         // Log in as superadmin for all operations
         $this->login->logAdmin('superadmin', $this->preferences);
 
-        if ($input->getOption('clean')) {
+        if ($requested === []) {
+            // Clean before seeding for idempotence
             $this->cleanAll($io);
-            $io->success('All E2E fixtures removed.');
-            return Command::SUCCESS;
+            if ($input->getOption('clean')) {
+                $io->success('All E2E fixtures removed.');
+                return Command::SUCCESS;
+            }
+            $selected = array_keys($definitions);
+        } else {
+            // Fixtures depending on the requested ones would reference removed data
+            $selected = $this->resolveDependents($requested, $definitions);
+            $dependents = array_diff($selected, $requested);
+            if ($dependents !== []) {
+                $io->text(sprintf('Dependent fixtures processed as well: %s', implode(', ', $dependents)));
+            }
+
+            foreach (array_reverse($selected) as $name) {
+                $definitions[$name]['clean']();
+            }
+            $io->text(sprintf('Cleaned fixtures: %s', implode(', ', array_reverse($selected))));
+
+            if ($input->getOption('clean')) {
+                $io->success(sprintf('E2E fixtures removed: %s.', implode(', ', $selected)));
+                return Command::SUCCESS;
+            }
+
+            $missing = $this->resolveMissingRequirements($selected, $definitions);
+            if ($missing !== []) {
+                $io->text(sprintf('Missing required fixtures seeded as well: %s', implode(', ', $missing)));
+            }
+            $selected = array_values(array_intersect(array_keys($definitions), [...$selected, ...$missing]));
         }
 
-        // Clean before seeding for idempotence
-        $this->cleanAll($io);
+        foreach ($selected as $name) {
+            $definitions[$name]['seed']($io);
+        }
 
-        $io->section('Creating titles');
-        $this->createTitles($io);
-
-        $io->section('Creating dynamic fields');
-        $this->createDynamicFields($io);
-
-        $io->section('Creating members');
-        $this->createMembers($io);
-
-        $io->section('Generating and storing photos');
-        $this->createPhotos($io);
-
-        $io->section('Creating groups');
-        $this->createGroups($io);
-
-        $io->section('Creating roles');
-        $this->createRoles($io);
-
-        $io->section('Creating transactions');
-        $this->createTransactions($io);
-
-        $io->section('Creating contributions');
-        $this->createContributions($io);
-
-        $io->section('Creating mailings');
-        $this->createMailings($io);
-
-        $io->section('Setting dynamic field values');
-        $this->setDynamicFieldValues($io);
-
-        $io->section('Locating members');
-        $this->createPositions($io);
-
-        $this->seedPlugins($io);
-
-        $io->success(sprintf(
-            'Fixtures seeded: %d members, %d transactions, dynamic fields configured.',
-            count($this->members),
-            count($this->transactions)
-        ));
+        $message = sprintf('Fixtures seeded: %s.', implode(', ', $selected));
+        $counts = [];
+        if (in_array('members', $selected, strict: true)) {
+            $counts[] = sprintf('%d members', count($this->members));
+        }
+        if (in_array('transactions', $selected, strict: true)) {
+            $counts[] = sprintf('%d transactions', count($this->transactions));
+        }
+        if ($counts !== []) {
+            $message .= ' ' . ucfirst(implode(', ', $counts)) . '.';
+        }
+        $io->success($message);
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * Get fixtures sets, core ones then active plugins ones
+     *
+     * Sets are ordered so each one comes after the ones it requires: they are
+     * seeded in this order, and cleaned in reverse order.
+     *
+     * @return array<string, array{
+     *     description: string,
+     *     requires: list<string>,
+     *     seed: callable(SymfonyStyle): void,
+     *     clean: callable(): void,
+     *     exists?: callable(): bool
+     * }>
+     */
+    private function getFixtureDefinitions(): array
+    {
+        $definitions = [
+            'members' => [
+                'description' => 'Titles, members and their children',
+                'requires' => [],
+                'seed' => function (SymfonyStyle $io): void {
+                    $io->section('Creating titles');
+                    $this->createTitles($io);
+                    $io->section('Creating members');
+                    $this->createMembers($io);
+                },
+                'clean' => $this->cleanMembers(...),
+                'exists' => fn(): bool => $this->getFixtureMemberIds() !== [],
+            ],
+            'photos' => [
+                'description' => 'Members avatar photos',
+                'requires' => ['members'],
+                'seed' => function (SymfonyStyle $io): void {
+                    $io->section('Generating and storing photos');
+                    $this->createPhotos($io);
+                },
+                'clean' => $this->cleanPhotos(...),
+            ],
+            'dynamic-fields' => [
+                'description' => 'Members and contributions dynamic fields, with members values',
+                'requires' => ['members'],
+                'seed' => function (SymfonyStyle $io): void {
+                    $io->section('Creating dynamic fields');
+                    $this->createDynamicFields($io);
+                    $io->section('Setting dynamic field values');
+                    $this->setDynamicFieldValues($io);
+                },
+                'clean' => $this->cleanDynamicFields(...),
+            ],
+            'groups' => [
+                'description' => 'Groups, with their managers and members',
+                'requires' => ['members'],
+                'seed' => function (SymfonyStyle $io): void {
+                    $io->section('Creating groups');
+                    $this->createGroups($io);
+                },
+                'clean' => $this->cleanGroups(...),
+                'exists' => fn(): bool => $this->getFixtureGroupIds() !== [],
+            ],
+            'roles' => [
+                'description' => 'Roles, given globally or for a group',
+                'requires' => ['members', 'groups'],
+                'seed' => function (SymfonyStyle $io): void {
+                    $io->section('Creating roles');
+                    $this->createRoles($io);
+                },
+                'clean' => $this->cleanRoles(...),
+            ],
+            'transactions' => [
+                'description' => 'Transactions',
+                'requires' => ['members'],
+                'seed' => function (SymfonyStyle $io): void {
+                    $io->section('Creating transactions');
+                    $this->createTransactions($io);
+                },
+                'clean' => $this->cleanTransactions(...),
+                'exists' => function (): bool {
+                    $this->loadTransactions();
+                    return $this->transactions !== [];
+                },
+            ],
+            'contributions' => [
+                'description' => 'Contributions, some of them within transactions',
+                'requires' => ['members', 'transactions'],
+                'seed' => function (SymfonyStyle $io): void {
+                    $io->section('Creating contributions');
+                    $this->createContributions($io);
+                },
+                'clean' => $this->cleanContributions(...),
+            ],
+            'mailings' => [
+                'description' => 'Mailings history, sent and drafts',
+                'requires' => ['members'],
+                'seed' => function (SymfonyStyle $io): void {
+                    $io->section('Creating mailings');
+                    $this->createMailings($io);
+                },
+                'clean' => $this->cleanMailings(...),
+            ],
+            'positions' => [
+                'description' => 'Members positions on map',
+                'requires' => ['members'],
+                'seed' => function (SymfonyStyle $io): void {
+                    $io->section('Locating members');
+                    $this->createPositions($io);
+                },
+                'clean' => $this->cleanPositions(...),
+            ],
+        ];
+
+        foreach ($this->plugins->getFixturesProviders() as $id => $provider) {
+            if (isset($definitions[$id])) {
+                continue;
+            }
+            $definitions[$id] = [
+                'description' => (string)$this->plugins->getModule($id)['name'],
+                'requires' => ['members', 'groups'],
+                'seed' => function (SymfonyStyle $io) use ($id, $provider): void {
+                    $io->section(sprintf('Seeding plugin %s', $id));
+                    $io->text('   ' . $provider->seedFixtures($this->getFixturesContext()));
+                },
+                'clean' => function () use ($provider): void {
+                    $provider->cleanFixtures($this->getFixturesContext());
+                },
+            ];
+        }
+
+        return $definitions;
+    }
+
+    /**
+     * Add sets depending, even indirectly, on requested ones
+     *
+     * @param list<string>                                 $names       Requested sets
+     * @param array<string, array{requires: list<string>}> $definitions Sets definitions
+     *
+     * @return list<string> Sets in definitions order
+     */
+    private function resolveDependents(array $names, array $definitions): array
+    {
+        $resolved = array_fill_keys($names, value: true);
+        // Definitions are ordered: a single pass catches indirect dependents
+        foreach ($definitions as $name => $definition) {
+            foreach ($definition['requires'] as $required) {
+                if (isset($resolved[$required])) {
+                    $resolved[$name] = true;
+                }
+            }
+        }
+
+        return array_values(array_filter(
+            array_keys($definitions),
+            fn(string $name): bool => isset($resolved[$name])
+        ));
+    }
+
+    /**
+     * Get sets required, even indirectly, by selected ones and absent from database
+     *
+     * @param list<string>                                                            $names       Selected sets
+     * @param array<string, array{requires: list<string>, exists?: callable(): bool}> $definitions Sets definitions
+     *
+     * @return list<string> Missing sets in definitions order
+     */
+    private function resolveMissingRequirements(array $names, array $definitions): array
+    {
+        $missing = [];
+        $pending = $names;
+        while ($pending !== []) {
+            $name = array_shift($pending);
+            foreach ($definitions[$name]['requires'] as $required) {
+                if (in_array($required, $names, strict: true) || isset($missing[$required])) {
+                    continue;
+                }
+                $exists = $definitions[$required]['exists'] ?? null;
+                if ($exists === null || $exists()) {
+                    continue;
+                }
+                $missing[$required] = true;
+                $pending[] = $required;
+            }
+        }
+
+        return array_values(array_filter(
+            array_keys($definitions),
+            fn(string $name): bool => isset($missing[$name])
+        ));
     }
 
     /**
@@ -180,89 +404,117 @@ class SeedFixtures extends AbstractCommand
      */
     public function cleanAll(SymfonyStyle $io): void
     {
-        // Plugins data may reference fixture members and groups, remove it first
-        $context = $this->getFixturesContext();
-        foreach ($this->plugins->getFixturesProviders() as $provider) {
-            $provider->cleanFixtures($context);
+        // Plugins data may reference fixture members and groups: reverse order removes it first
+        foreach (array_reverse($this->getFixtureDefinitions()) as $definition) {
+            $definition['clean']();
         }
+        $this->cleanHistory();
 
-        // Get all fixture member IDs
+        $io->text('Cleaned existing fixture data.');
+    }
+
+    /**
+     * Get identifiers of fixture members
+     *
+     * @return list<int>
+     */
+    private function getFixtureMemberIds(): array
+    {
         $select = $this->zdb->select(Adherent::TABLE);
-        $select->columns(['id_adh']);
+        $select->columns([Adherent::PK]);
         $select->where(['fingerprint' => self::FIXTURE_FINGERPRINT]);
-        $results = $this->zdb->execute($select);
         $member_ids = [];
-        foreach ($results as $row) {
-            $member_ids[] = (int)$row->id_adh;
+        foreach ($this->zdb->execute($select) as $row) {
+            $member_ids[] = (int)$row->{Adherent::PK};
+        }
+        return $member_ids;
+    }
+
+    /**
+     * Get identifiers of fixture groups, indexed by name
+     *
+     * @return array<string, int>
+     */
+    private function getFixtureGroupIds(): array
+    {
+        $select = $this->zdb->select(Group::TABLE);
+        $select->columns([Group::PK, 'group_name']);
+        $select->where->in('group_name', array_column($this->getGroupDefinitions(), 'name'));
+        $select->order(Group::PK);
+        $groups = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $groups[(string)$row->group_name] = (int)$row->{Group::PK};
+        }
+        return $groups;
+    }
+
+    /**
+     * Load fixture members from database, when not created in current run
+     */
+    private function loadMembers(): void
+    {
+        if ($this->members !== []) {
+            return;
         }
 
-        if (count($member_ids) > 0) {
-            // Delete mailings sent by fixture members (FK on mailing_sender is RESTRICT)
-            $delete = $this->zdb->delete(MailingHistory::TABLE);
-            $delete->where->in('mailing_sender', $member_ids);
-            $this->zdb->execute($delete);
+        $select = $this->zdb->select(Adherent::TABLE);
+        $select->where(['fingerprint' => self::FIXTURE_FINGERPRINT]);
+        // Creation order, as positions and photos depend on it
+        $select->order(Adherent::PK);
+        foreach ($this->zdb->execute($select) as $row) {
+            $adh = new Adherent($this->zdb, $row, deps: false);
+            $this->members[(string)($row->login_adh ?: 'member-' . $adh->id)] = $adh;
+        }
+    }
 
+    /**
+     * Load fixture transactions from database, when not created in current run
+     */
+    private function loadTransactions(): void
+    {
+        if ($this->transactions !== []) {
+            return;
+        }
+
+        $member_ids = $this->getFixtureMemberIds();
+        if ($member_ids === []) {
+            return;
+        }
+
+        $select = $this->zdb->select(Transaction::TABLE);
+        $select->columns([Transaction::PK, 'trans_desc']);
+        $select->where->in(Adherent::PK, $member_ids);
+        $select->order(Transaction::PK);
+        foreach ($this->zdb->execute($select) as $row) {
+            $this->transactions[(string)$row->trans_desc] = (int)$row->{Transaction::PK};
+        }
+    }
+
+    /**
+     * Remove fixture members and titles
+     *
+     * Sets depending on members are expected to be removed already; remaining
+     * links from other data are removed as well.
+     */
+    private function cleanMembers(): void
+    {
+        $member_ids = $this->getFixtureMemberIds();
+        if ($member_ids !== []) {
             // Delete dynamic field values for members
             $delete = $this->zdb->delete(DynamicFieldsHandle::TABLE);
             $delete->where->in('item_id', $member_ids);
             $delete->where->equalTo('field_form', 'adh');
             $this->zdb->execute($delete);
 
-            // Get contribution IDs for these members
-            $select = $this->zdb->select(Contribution::TABLE);
-            $select->columns(['id_cotis']);
-            $select->where->in('id_adh', $member_ids);
-            $results = $this->zdb->execute($select);
-            $contrib_ids = [];
-            foreach ($results as $row) {
-                $contrib_ids[] = (int)$row->id_cotis;
-            }
-
-            // Delete dynamic field values for contributions
-            if (count($contrib_ids) > 0) {
-                $delete = $this->zdb->delete(DynamicFieldsHandle::TABLE);
-                $delete->where->in('item_id', $contrib_ids);
-                $delete->where->equalTo('field_form', 'contrib');
+            // Delete group memberships and managers
+            foreach ([Group::GROUPSUSERS_TABLE, Group::GROUPSMANAGERS_TABLE] as $table) {
+                $delete = $this->zdb->delete($table);
+                $delete->where->in(Adherent::PK, $member_ids);
                 $this->zdb->execute($delete);
             }
 
-            // Delete contributions
-            $delete = $this->zdb->delete(Contribution::TABLE);
-            $delete->where->in('id_adh', $member_ids);
-            $this->zdb->execute($delete);
-
-            // Delete transactions
-            $delete = $this->zdb->delete(Transaction::TABLE);
-            $delete->where->in('id_adh', $member_ids);
-            $this->zdb->execute($delete);
-
-            // Delete group memberships
-            $delete = $this->zdb->delete(Group::GROUPSUSERS_TABLE);
-            $delete->where->in('id_adh', $member_ids);
-            $this->zdb->execute($delete);
-
-            // Delete group managers
-            $delete = $this->zdb->delete(Group::GROUPSMANAGERS_TABLE);
-            $delete->where->in('id_adh', $member_ids);
-            $this->zdb->execute($delete);
-
-            // Delete positions
-            (new Positions($this->zdb))->remove(Coordinates::TYPE, $member_ids);
-
-            // Delete pictures
-            $delete = $this->zdb->delete(Picture::TABLE);
-            $delete->where->in('id_adh', $member_ids);
-            $this->zdb->execute($delete);
-
-            // Delete photo files
-            foreach ($member_ids as $id) {
-                foreach (['jpg', 'png', 'gif', 'webp'] as $ext) {
-                    $file = GALETTE_PHOTOS_PATH . $id . '.' . $ext;
-                    if (file_exists($file)) {
-                        unlink($file);
-                    }
-                }
-            }
+            // Delete pictures, from database and filesystem
+            $this->cleanPhotos();
 
             // Delete members (children first due to parent_id FK)
             $delete = $this->zdb->delete(Adherent::TABLE);
@@ -274,40 +526,49 @@ class SeedFixtures extends AbstractCommand
             $delete->where(['fingerprint' => self::FIXTURE_FINGERPRINT]);
             $this->zdb->execute($delete);
         }
+        $this->members = [];
 
-        // Delete fixture roles; permissions and assignments cascade
-        $delete = $this->zdb->delete(Role::TABLE);
-        $delete->where->in('name', array_column($this->getRoleDefinitions(), 'name'));
-        $delete->where->isNull('role_key');
-        $this->zdb->execute($delete);
+        // Delete fixture titles (only those we created, never MR/MRS)
+        foreach ($this->getTitleDefinitions() as $title_def) {
+            $delete = $this->zdb->delete(Title::TABLE);
+            $delete->where([
+                Title::PK => $title_def['id'],
+                'short_label' => $title_def['short'],
+            ]);
+            $this->zdb->execute($delete);
+        }
+    }
 
-        // Delete fixture groups (children first to respect FK)
-        $group_defs = array_reverse($this->getGroupDefinitions());
-        foreach ($group_defs as $group_def) {
-            // First get group ID
-            $select = $this->zdb->select(Group::TABLE);
-            $select->columns(['id_group']);
-            $select->where(['group_name' => $group_def['name']]);
-            $results = $this->zdb->execute($select);
-            foreach ($results as $row) {
-                $gid = (int)$row->id_group;
-                // Delete group members and managers first
-                $delete = $this->zdb->delete(Group::GROUPSUSERS_TABLE);
-                $delete->where(['id_group' => $gid]);
-                $this->zdb->execute($delete);
-
-                $delete = $this->zdb->delete(Group::GROUPSMANAGERS_TABLE);
-                $delete->where(['id_group' => $gid]);
-                $this->zdb->execute($delete);
-
-                // Then delete the group
-                $delete = $this->zdb->delete(Group::TABLE);
-                $delete->where(['id_group' => $gid]);
-                $this->zdb->execute($delete);
-            }
+    /**
+     * Remove fixture members photos
+     */
+    private function cleanPhotos(): void
+    {
+        $member_ids = $this->getFixtureMemberIds();
+        if ($member_ids === []) {
+            return;
         }
 
-        // Delete fixture dynamic fields via DynamicField::remove() to also clean L10n translations
+        $delete = $this->zdb->delete(Picture::TABLE);
+        $delete->where->in(Adherent::PK, $member_ids);
+        $this->zdb->execute($delete);
+
+        foreach ($member_ids as $id) {
+            foreach (['jpg', 'png', 'gif', 'webp'] as $ext) {
+                $file = GALETTE_PHOTOS_PATH . $id . '.' . $ext;
+                if (file_exists($file)) {
+                    unlink($file);
+                }
+            }
+        }
+    }
+
+    /**
+     * Remove fixture dynamic fields and their values
+     */
+    private function cleanDynamicFields(): void
+    {
+        // DynamicField::remove() also removes values and L10n translations
         foreach (array_merge($this->getAdhDynamicFieldDefinitions(), $this->getContribDynamicFieldDefinitions()) as $field_def) {
             $select = $this->zdb->select(DynamicField::TABLE);
             $select->where([
@@ -320,35 +581,117 @@ class SeedFixtures extends AbstractCommand
                 $field->remove();
             }
         }
-
-        // Delete history entries created during seeding (superadmin login)
-        $delete = $this->zdb->delete(History::TABLE);
-        $delete->where(['adh_log' => 'superadmin']);
-        $this->zdb->execute($delete);
-
-        // Delete fixture titles (only those we created, never MR/MRS)
-        foreach ($this->getTitleDefinitions() as $title_def) {
-            $delete = $this->zdb->delete(Title::TABLE);
-            $delete->where([
-                Title::PK => $title_def['id'],
-                'short_label' => $title_def['short'],
-            ]);
-            $this->zdb->execute($delete);
-        }
-
-        $io->text('Cleaned existing fixture data.');
+        $this->dynamic_field_ids = [];
     }
 
     /**
-     * Seed fixtures of active plugins
+     * Remove fixture groups, with their managers and members
      */
-    private function seedPlugins(SymfonyStyle $io): void
+    private function cleanGroups(): void
     {
-        $context = $this->getFixturesContext();
-        foreach ($this->plugins->getFixturesProviders() as $id => $provider) {
-            $io->section(sprintf('Seeding plugin %s', $id));
-            $io->text('   ' . $provider->seedFixtures($context));
+        // Children first to respect FK
+        foreach (array_reverse($this->getFixtureGroupIds()) as $gid) {
+            foreach ([Group::GROUPSUSERS_TABLE, Group::GROUPSMANAGERS_TABLE, Group::TABLE] as $table) {
+                $delete = $this->zdb->delete($table);
+                $delete->where([Group::PK => $gid]);
+                $this->zdb->execute($delete);
+            }
         }
+    }
+
+    /**
+     * Remove fixture roles; permissions and assignments cascade
+     */
+    private function cleanRoles(): void
+    {
+        $delete = $this->zdb->delete(Role::TABLE);
+        $delete->where->in('name', array_column($this->getRoleDefinitions(), 'name'));
+        $delete->where->isNull('role_key');
+        $this->zdb->execute($delete);
+    }
+
+    /**
+     * Remove fixture members transactions
+     */
+    private function cleanTransactions(): void
+    {
+        $this->transactions = [];
+        $member_ids = $this->getFixtureMemberIds();
+        if ($member_ids === []) {
+            return;
+        }
+
+        $delete = $this->zdb->delete(Transaction::TABLE);
+        $delete->where->in(Adherent::PK, $member_ids);
+        $this->zdb->execute($delete);
+    }
+
+    /**
+     * Remove fixture members contributions, and their dynamic field values
+     */
+    private function cleanContributions(): void
+    {
+        $member_ids = $this->getFixtureMemberIds();
+        if ($member_ids === []) {
+            return;
+        }
+
+        $select = $this->zdb->select(Contribution::TABLE);
+        $select->columns([Contribution::PK]);
+        $select->where->in(Adherent::PK, $member_ids);
+        $contrib_ids = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $contrib_ids[] = (int)$row->{Contribution::PK};
+        }
+
+        if ($contrib_ids !== []) {
+            $delete = $this->zdb->delete(DynamicFieldsHandle::TABLE);
+            $delete->where->in('item_id', $contrib_ids);
+            $delete->where->equalTo('field_form', 'contrib');
+            $this->zdb->execute($delete);
+        }
+
+        $delete = $this->zdb->delete(Contribution::TABLE);
+        $delete->where->in(Adherent::PK, $member_ids);
+        $this->zdb->execute($delete);
+    }
+
+    /**
+     * Remove mailings sent by fixture members (FK on mailing_sender is RESTRICT)
+     */
+    private function cleanMailings(): void
+    {
+        $member_ids = $this->getFixtureMemberIds();
+        if ($member_ids === []) {
+            return;
+        }
+
+        $delete = $this->zdb->delete(MailingHistory::TABLE);
+        $delete->where->in('mailing_sender', $member_ids);
+        $this->zdb->execute($delete);
+    }
+
+    /**
+     * Remove fixture members positions
+     */
+    private function cleanPositions(): void
+    {
+        $member_ids = $this->getFixtureMemberIds();
+        if ($member_ids === []) {
+            return;
+        }
+
+        (new Positions($this->zdb))->remove(Coordinates::TYPE, $member_ids);
+    }
+
+    /**
+     * Remove history entries created during seeding (superadmin login)
+     */
+    private function cleanHistory(): void
+    {
+        $delete = $this->zdb->delete(History::TABLE);
+        $delete->where(['adh_log' => 'superadmin']);
+        $this->zdb->execute($delete);
     }
 
     /**
@@ -365,18 +708,6 @@ class SeedFixtures extends AbstractCommand
             $members[(string)($row->login_adh ?: 'member-' . $row->{Adherent::PK})] = (int)$row->{Adherent::PK};
         }
 
-        $groups = [];
-        $names = array_column($this->getGroupDefinitions(), 'name');
-        if ($names !== []) {
-            $select = $this->zdb->select(Group::TABLE);
-            $select->columns([Group::PK, 'group_name']);
-            $select->where->in('group_name', $names);
-            $select->order(Group::PK);
-            foreach ($this->zdb->execute($select) as $row) {
-                $groups[(string)$row->group_name] = (int)$row->{Group::PK};
-            }
-        }
-
         return new FixturesContext(
             zdb: $this->zdb,
             login: $this->login,
@@ -384,7 +715,7 @@ class SeedFixtures extends AbstractCommand
             history: $this->history,
             plugins: $this->plugins,
             members: $members,
-            groups: $groups
+            groups: $this->getFixtureGroupIds()
         );
     }
 
@@ -546,6 +877,8 @@ class SeedFixtures extends AbstractCommand
      */
     private function createPhotos(SymfonyStyle $io): void
     {
+        $this->loadMembers();
+
         if (!function_exists('imagecreatetruecolor')) {
             $io->warning('GD extension not available, skipping photo generation.');
             return;
@@ -684,6 +1017,8 @@ class SeedFixtures extends AbstractCommand
      */
     private function createGroups(SymfonyStyle $io): void
     {
+        $this->loadMembers();
+
         $created_groups = [];
 
         foreach ($this->getGroupDefinitions() as $group_def) {
@@ -739,6 +1074,8 @@ class SeedFixtures extends AbstractCommand
      */
     private function createRoles(SymfonyStyle $io): void
     {
+        $this->loadMembers();
+
         $roles = new Roles($this->zdb, $this->permissions);
         $system = [];
         foreach ($roles->getList() as $role) {
@@ -784,6 +1121,8 @@ class SeedFixtures extends AbstractCommand
      */
     private function createTransactions(SymfonyStyle $io): void
     {
+        $this->loadMembers();
+
         foreach ($this->getTransactionData() as $trans_data) {
             $member_login = $trans_data['member_login'];
             unset($trans_data['member_login']);
@@ -817,6 +1156,9 @@ class SeedFixtures extends AbstractCommand
      */
     private function createContributions(SymfonyStyle $io): void
     {
+        $this->loadMembers();
+        $this->loadTransactions();
+
         $count = 0;
         foreach ($this->getContributionData() as $contrib_data) {
             $member_login = $contrib_data['member_login'];
@@ -869,6 +1211,8 @@ class SeedFixtures extends AbstractCommand
      */
     private function createPositions(SymfonyStyle $io): void
     {
+        $this->loadMembers();
+
         //towns latitude and longitude
         $towns = [
             [48.856614, 2.352222],  //Paris
@@ -911,6 +1255,8 @@ class SeedFixtures extends AbstractCommand
      */
     private function createMailings(SymfonyStyle $io): void
     {
+        $this->loadMembers();
+
         $count = 0;
         foreach ($this->getMailingData() as $mailing_data) {
             if (!isset($this->members[$mailing_data['sender_login']])) {
@@ -955,6 +1301,8 @@ class SeedFixtures extends AbstractCommand
      */
     private function setDynamicFieldValues(SymfonyStyle $io): void
     {
+        $this->loadMembers();
+
         $adh_count = 0;
         foreach ($this->getMemberDynamicValues() as $login => $field_values) {
             if (!isset($this->members[$login])) {

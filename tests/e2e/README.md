@@ -478,7 +478,22 @@ bin/console galette:seed-fixtures
 
 # Remove all fixture data
 bin/console galette:seed-fixtures --clean
+
+# List fixtures sets, with the ones they require
+bin/console galette:seed-fixtures --list
+
+# Seed again some sets only (and the ones depending on them), keeping others
+bin/console galette:seed-fixtures plugin-events mailings
+
+# Remove some sets only: here transactions, and contributions depending on them
+bin/console galette:seed-fixtures --clean transactions
 ```
+
+Seeding a set removes it first, with the sets depending on it: `members` plays
+everything again, a plugin id only that plugin. A required set missing from the
+database is seeded as well, so `groups` on an empty database also creates
+members. History of the `superadmin` account is only removed when all fixtures
+are.
 
 Fixture data includes:
 - **100+ members** from various fictional universes (Star Wars, Harry Potter, Kaamelott, etc.)
@@ -723,7 +738,8 @@ from core, and what is generic belongs here rather than in a plugin.
 
 - Plugin data comes from a `Fixtures` class of the plugin namespace, implementing
   `Galette\Core\Plugins\FixturesProviderInterface`: `galette:seed-fixtures` seeds it
-  after core fixtures, for each active plugin, and `--clean` removes it.
+  after core fixtures, for each active plugin, and `--clean` removes it. The
+  plugin id seeds or removes it alone: `galette:seed-fixtures plugin-xxx`.
 - A helper only the plugin needs stays in the plugin `tests/e2e/`; one another
   plugin could use comes here, in `helpers/`.
 - Specs run in parallel with those of other plugins: an entry a spec changes is

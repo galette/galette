@@ -102,6 +102,74 @@ class SeedFixturesPlugins extends GaletteTestCase
     }
 
     /**
+     * Get identifiers of fixture members
+     *
+     * @return array<int, int>
+     */
+    private function getFixtureMemberIds(): array
+    {
+        $select = $this->zdb->select(Adherent::TABLE);
+        $select->columns([Adherent::PK]);
+        $select->where(['fingerprint' => SeedFixturesCommand::FIXTURE_FINGERPRINT]);
+        $select->order(Adherent::PK);
+        $member_ids = [];
+        foreach ($this->zdb->execute($select) as $row) {
+            $member_ids[] = (int)$row->{Adherent::PK};
+        }
+        return $member_ids;
+    }
+
+    /**
+     * Get calls recorded by test plugin fixtures
+     *
+     * @return list<array{method: string, context: FixturesContext}>
+     */
+    private function getCalls(): array
+    {
+        return Fixtures::$calls;
+    }
+
+    /**
+     * Test a plugin can be seeded and cleaned alone
+     */
+    public function testPluginFixturesSelection(): void
+    {
+        $this->runSeed();
+        $member_ids = $this->getFixtureMemberIds();
+        $this->assertNotEmpty($member_ids);
+        Fixtures::$calls = [];
+
+        $tester = $this->runSeed(['fixtures' => ['plugin-test2']]);
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertStringContainsString('Fixtures seeded: plugin-test2.', $tester->getDisplay());
+        $calls = $this->getCalls();
+        $this->assertSame(['clean', 'seed'], array_column($calls, 'method'));
+        $this->assertSame($member_ids, array_values($calls[1]['context']->members));
+        $this->assertContains('Bureau', array_keys($calls[1]['context']->groups));
+        $this->assertSame($member_ids, $this->getFixtureMemberIds());
+
+        Fixtures::$calls = [];
+        $tester = $this->runSeed(['--clean' => true, 'fixtures' => ['plugin-test2']]);
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertSame(['clean'], array_column(Fixtures::$calls, 'method'));
+        $this->assertSame($member_ids, $this->getFixtureMemberIds());
+    }
+
+    /**
+     * Test plugins are listed with core fixtures
+     */
+    public function testListPlugins(): void
+    {
+        $tester = $this->runSeed(['--list' => true]);
+        $this->assertSame(0, $tester->getStatusCode());
+        $this->assertMatchesRegularExpression(
+            '/^\s+plugin-test2\s+members, groups\s+Galette Test2 Plugin\s*$/m',
+            $tester->getDisplay()
+        );
+        $this->assertSame([], Fixtures::$calls);
+    }
+
+    /**
      * Test only active plugins with a Fixtures class provide fixtures
      */
     public function testGetFixturesProviders(): void

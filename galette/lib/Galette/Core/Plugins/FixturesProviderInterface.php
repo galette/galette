@@ -21,6 +21,10 @@ namespace Galette\Core\Plugins;
  * one while still running on a core that does not know this interface, as
  * nothing else than the command ever loads it.
  *
+ * Plugin fixtures require core members and groups. They can be seeded or
+ * removed alone, from the plugin id: `galette:seed-fixtures plugin-xxx`
+ * cleans then seeds the plugin only, keeping core fixtures in place.
+ *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
 interface FixturesProviderInterface

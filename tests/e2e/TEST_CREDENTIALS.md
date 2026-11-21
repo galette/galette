@@ -30,7 +30,22 @@ bin/console galette:seed-fixtures
 
 # Remove all fixture data
 bin/console galette:seed-fixtures --clean
+
+# List fixtures sets, with the ones they require
+bin/console galette:seed-fixtures --list
+
+# Seed again some sets only (and the ones depending on them), keeping others
+bin/console galette:seed-fixtures plugin-events mailings
+
+# Remove some sets only: here transactions, and contributions depending on them
+bin/console galette:seed-fixtures --clean transactions
 ```
+
+Seeding a set removes it first, with the sets depending on it: `members` plays
+everything again, a plugin id only that plugin. A required set missing from the
+database is seeded as well, so `groups` on an empty database also creates
+members. History of the `superadmin` account is only removed when all fixtures
+are.
 
 ## Notable members
 
