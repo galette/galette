@@ -18,6 +18,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use function Safe\glob;
 use function Safe\json_encode;
@@ -91,6 +92,52 @@ class NominatimTowns extends GaletteTestCase
             $query
         );
         $this->assertStringStartsWith('Galette (', $request->getHeaderLine('User-Agent'));
+    }
+
+    /**
+     * Addresses with several settlement levels
+     *
+     * @return array<string, array{0: array<string, string>, 1: string}>
+     */
+    public static function settlementsProvider(): array
+    {
+        return [
+            'hamlet in a village' => [['hamlet' => 'Les Valenciennes', 'village' => 'Somecommune'], 'Les Valenciennes'],
+            'hamlet in a municipality' => [['hamlet' => 'Les Valenciennes', 'municipality' => 'Somecommune'], 'Les Valenciennes'],
+            'village in a town' => [['village' => 'Petit Valenciennes', 'town' => 'Sometown'], 'Petit Valenciennes'],
+            'town in a city' => [['town' => 'Valenciennes', 'city' => 'Somecity'], 'Valenciennes'],
+            'city in a municipality' => [['city' => 'Valenciennes', 'municipality' => 'Valenciennes-Agglo'], 'Valenciennes'],
+            'every level' => [
+                [
+                    'hamlet' => 'Les Valenciennes',
+                    'village' => 'Petit Valenciennes',
+                    'town' => 'Sometown',
+                    'city' => 'Somecity',
+                    'municipality' => 'Valenciennes-Agglo',
+                ],
+                'Les Valenciennes'
+            ],
+        ];
+    }
+
+    /**
+     * The most specific settlement of the address gives the town name
+     *
+     * @param array<string, string> $address  Nominatim address details
+     * @param string                $expected Expected town name
+     */
+    #[DataProvider('settlementsProvider')]
+    public function testSettlementPriority(array $address, string $expected): void
+    {
+        $places = [
+            ['lat' => '45.1', 'lon' => '1.2', 'display_name' => 'Somewhere', 'address' => $address],
+        ];
+        $search = $this->getSearch([new Response(200, [], (string)json_encode($places))]);
+
+        $this->assertSame(
+            [['full_name' => $expected, 'latitude' => '45.1', 'longitude' => '1.2']],
+            $search->search('Valenciennes')
+        );
     }
 
     /**
