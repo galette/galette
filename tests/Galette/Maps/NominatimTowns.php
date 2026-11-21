@@ -141,6 +141,61 @@ class NominatimTowns extends GaletteTestCase
     }
 
     /**
+     * The matched place names the town; roads and other places are ignored
+     */
+    public function testMatchedPlace(): void
+    {
+        $places = [
+            [
+                'lat' => '50.3579', 'lon' => '3.5234', 'display_name' => 'Valenciennes, Nord',
+                'category' => 'place', 'addresstype' => 'city', 'name' => 'Valenciennes',
+                'address' => ['suburb' => 'Centre', 'city' => 'Valenciennes'],
+            ],
+            //same town, as its boundary
+            [
+                'lat' => '50.3620', 'lon' => '3.4729', 'display_name' => 'Valenciennes, Nord',
+                'category' => 'boundary', 'addresstype' => 'city', 'name' => 'Valenciennes',
+                'address' => ['city' => 'Valenciennes'],
+            ],
+            //same name, far away
+            [
+                'lat' => '46.0', 'lon' => '1.5', 'display_name' => 'Valenciennes, Creuse',
+                'category' => 'place', 'addresstype' => 'hamlet', 'name' => 'Valenciennes',
+                'address' => ['hamlet' => 'Valenciennes', 'village' => 'Somecommune'],
+            ],
+            [
+                'lat' => '50.37', 'lon' => '3.50', 'display_name' => 'Rue de Valenciennes, Anzin',
+                'category' => 'highway', 'addresstype' => 'road', 'name' => 'Rue de Valenciennes',
+                'address' => ['road' => 'Rue de Valenciennes', 'hamlet' => 'Le Pont', 'town' => 'Anzin'],
+            ],
+            [
+                'lat' => '50.35', 'lon' => '3.52', 'display_name' => 'Faubourg de Valenciennes',
+                'category' => 'place', 'addresstype' => 'suburb', 'name' => 'Faubourg de Valenciennes',
+                'address' => ['suburb' => 'Faubourg de Valenciennes', 'city' => 'Valenciennes'],
+            ],
+            //no name, taken from the address
+            [
+                'lat' => '47.1', 'lon' => '1.4', 'display_name' => 'Petit Valenciennes',
+                'category' => 'place', 'addresstype' => 'village',
+                'address' => ['village' => 'Petit Valenciennes', 'municipality' => 'Valenciennes-Agglo'],
+            ],
+        ];
+        $search = $this->getSearch([new Response(200, [], (string)json_encode($places))]);
+
+        $this->assertSame(
+            [
+                ['full_name' => 'Valenciennes', 'latitude' => '50.3579', 'longitude' => '3.5234'],
+                ['full_name' => 'Valenciennes', 'latitude' => '46.0', 'longitude' => '1.5'],
+                ['full_name' => 'Petit Valenciennes', 'latitude' => '47.1', 'longitude' => '1.4'],
+            ],
+            $search->search('Valenciennes', 'France')
+        );
+        $this->expectLogEntry(Analog::INFO, 'Town "Valenciennes" is already in list nearby, ignore.');
+        $this->expectLogEntry(Analog::INFO, 'Nominatim result "Rue de Valenciennes, Anzin" is not a town');
+        $this->expectLogEntry(Analog::INFO, 'Nominatim result "Faubourg de Valenciennes" is not a town');
+    }
+
+    /**
      * An empty town does not query the service
      */
     public function testEmptyTown(): void
