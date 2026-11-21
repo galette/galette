@@ -87,6 +87,30 @@ class RouteLoaderTest extends GaletteTestCase
     }
 
     /**
+     * Dynamic fields routes match the forms the core and active plugins declare, and only them
+     */
+    public function testDynamicFormsRoutes(): void
+    {
+        $collector = $this->app->getRouteCollector();
+        $resolver = $this->app->getRouteResolver();
+
+        $route = $collector->getNamedRoute('getDynamicFile');
+        $this->assertSame(
+            '/{form_name:adh|contrib|trans|prefs|plugin1}/{id:\\d+}/file/{fid:\\d+}/{pos:\\d+}/{name}',
+            $route->getPattern()
+        );
+
+        $results = $resolver->computeRoutingResults('/plugin1/1/file/2/1/thing.png', 'GET');
+        $this->assertSame(\Slim\Routing\RoutingResults::FOUND, $results->getRouteStatus());
+        $results = $resolver->computeRoutingResults('/plugin2/1/file/2/1/thing.png', 'GET');
+        $this->assertSame(\Slim\Routing\RoutingResults::NOT_FOUND, $results->getRouteStatus());
+        $results = $resolver->computeRoutingResults('/fields/dynamic/configure/plugin1', 'GET');
+        $this->assertSame(\Slim\Routing\RoutingResults::FOUND, $results->getRouteStatus());
+        $results = $resolver->computeRoutingResults('/fields/dynamic/configure/adherents', 'GET');
+        $this->assertSame(\Slim\Routing\RoutingResults::NOT_FOUND, $results->getRouteStatus());
+    }
+
+    /**
      * A plugin root page is not shadowed by the generic plugin information page
      */
     public function testPluginRootRoute(): void

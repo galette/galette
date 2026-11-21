@@ -82,6 +82,23 @@ Since Galette 1.3.3, `DynamicField::check()` requires a non blank
 `field_name` for every field type, separators included. A plugin creating dynamic fields from code must
 give them a name.
 
+Plugins can give their own objects dynamic fields, by implementing
+`Galette\Core\Plugins\DynamicFormsProviderInterface`; see the plugin
+development guide. Routes of dynamic fields match the forms the core and
+active plugins declare, and only them: their patterns use the
+`DynamicFieldsSet::FORMS_PLACEHOLDER` placeholder, which routes loading
+replaces with the declared form names once all routes are registered.
+`DynamicFieldsSet::getClasses()` and `DynamicField::getFormsNames()` list the
+plugin forms as well. `Replacements::setDynamicObject()` replaces the dynamic
+fields of a plugin object in mails and PDF.
+The `field_form` columns of `galette_field_types` and `galette_dynamic_fields`
+hold up to 50 characters instead of 10.
+
+`dynamicsCheck()` refuses uploaded files too big or not fully received when
+it is given them, and `dynamicsFiles()` reports files it cannot store in the
+object errors. Objects can hide fields of their form, or require them, by
+overriding `isDynamicFieldHidden()` and `isDynamicFieldRequired()`.
+
 ## Plugin definition
 
 `_define.php` now returns a `Galette\Core\Plugins\PluginDefinition`

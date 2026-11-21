@@ -313,6 +313,27 @@ class Plugins extends GaletteTestCase
     }
 
     /**
+     * Test forms of a deactivated plugin are no longer declared
+     */
+    public function testDeactivationDropsDynamicForms(): void
+    {
+        $plugins = $this->getPlugins();
+        $this->assertNotNull(\Galette\Repository\DynamicFieldsSet::getFormProvider('plugin1'));
+
+        try {
+            $plugins->deactivateModule('plugin-test1');
+            $this->assertNull(\Galette\Repository\DynamicFieldsSet::getFormProvider('plugin1'));
+            $this->assertArrayNotHasKey('plugin1', \Galette\Repository\DynamicFieldsSet::getClasses());
+        } finally {
+            //only a reload knows the module is disabled
+            $this->getPlugins()->activateModule('plugin-test1');
+        }
+
+        $this->getPlugins();
+        $this->assertNotNull(\Galette\Repository\DynamicFieldsSet::getFormProvider('plugin1'));
+    }
+
+    /**
      * Test non-existant module activation
      */
     public function testNonExistantModuleActivation(): void

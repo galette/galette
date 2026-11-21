@@ -17,6 +17,7 @@ use Analog\Analog;
 use Galette\Access\Permission;
 use Galette\Core\Plugins\PluginDefinition;
 use Galette\Exception\MissingPluginException;
+use Galette\Repository\DynamicFieldsSet;
 use League\Event\EventDispatcher;
 use League\Event\ListenerSubscriber;
 use Psr\Container\ContainerInterface;
@@ -334,6 +335,7 @@ class Plugins
             $this->loadEventProviders($id);
             $this->overridePrefs($id);
             $declared = $this->registerPreferences($id) || $declared;
+            $this->registerDynamicForms($id);
         }
 
         if ($declared) {
@@ -371,6 +373,24 @@ class Plugins
             $plugin instanceof Plugins\PublicPagesProviderInterface ? $plugin->getPublicPages() : []
         );
         return true;
+    }
+
+    /**
+     * Register the dynamic forms a module declares
+     *
+     * @param string $id Module ID
+     */
+    private function registerDynamicForms(string $id): void
+    {
+        $class = $this->getClassName($id, full: true);
+        if (!self::isSubclassOf($class, GalettePlugin::class)) {
+            return;
+        }
+
+        $plugin = $this->container->get($class);
+        if ($plugin instanceof Plugins\DynamicFormsProviderInterface) {
+            DynamicFieldsSet::registerForms((string)$this->modules[$id]['route'], $plugin);
+        }
     }
 
     /**
@@ -728,6 +748,7 @@ class Plugins
         }
 
         PreferencesSchema::unregister($this->modules[$id]['route']);
+        DynamicFieldsSet::unregisterForms((string)$this->modules[$id]['route']);
     }
 
     /**
@@ -1171,7 +1192,7 @@ class Plugins
         $domains = [];
         foreach ($this->getActiveModules() as $id => $module) {
             $class = $this->getClassName($id, full: true);
-            if (!class_exists($class) || !is_subclass_of($class, GalettePlugin::class)) {
+            if (!self::isSubclassOf($class, GalettePlugin::class)) {
                 continue;
             }
 

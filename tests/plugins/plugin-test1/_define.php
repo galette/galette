@@ -19,7 +19,10 @@ return new PluginDefinition(
     route: 'plugin1',
     date: '2016-10-19',
     acls: [
-        'plugin1_root'  => 'groupmanager'
+        'plugin1_root'  => 'groupmanager',
+        'plugin1_thing' => 'member',
+        'plugin1_thing_edit' => 'staff',
+        'plugin1_thing_doedit' => 'staff'
     ],
     repository: 'galette/plugin-test-one',
     csrf_exclusions: ['/plugin1_webhook/']

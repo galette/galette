@@ -29,6 +29,7 @@ use Galette\DynamicFields\DynamicField;
 use Analog\Analog;
 use NumberFormatter;
 use PHPMailer\PHPMailer\PHPMailer;
+use InvalidArgumentException;
 use RuntimeException;
 use Slim\Routing\RouteParser;
 use DI\Attribute\Inject;
@@ -781,6 +782,38 @@ trait Replacements
     }
 
     /**
+     * Set the dynamic fields of an object, and proceed related replacements
+     *
+     * For objects of plugins forms: their patterns are named after the form,
+     * as `{DYNFIELD_<field id>_<FORM>}` and `{LABEL_DYNFIELD_<field id>_<FORM>}`;
+     * getDynamicPatterns() lists them, for a legend.
+     *
+     * @param object $object Object using the Dynamics trait
+     */
+    public function setDynamicObject(object $object): self
+    {
+        if (!method_exists($object, 'getFormName')) {
+            throw new InvalidArgumentException(
+                sprintf('%s objects have no dynamic fields.', $object::class)
+            );
+        }
+        $form_name = $object->getFormName();
+
+        $this->setPatterns($this->getDynamicPatterns($form_name));
+        //the fields the object holds values for: one added since is left empty,
+        //as are those the object hides
+        $dynamic_fields = array_filter(
+            $object->getDynamicFields()->getFields(),
+            fn(DynamicField $field): bool => !$object->isDynamicFieldHidden($field)
+        );
+        return $this->setDynamicFields(
+            form_name: $form_name,
+            dynamic_fields: $dynamic_fields,
+            object: $object
+        );
+    }
+
+    /**
      * Set documents related replacements
      */
     public function setDocuments(): self
@@ -858,12 +891,19 @@ trait Replacements
             $key   = strtolower(rtrim(ltrim($pattern, '{'), '}'));
             $value = '';
 
-            if (preg_match("/^{LABEL_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
+            //a field missing from the given ones is replaced with nothing
+            if (
+                preg_match("/^{LABEL_DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)
+                && isset($dynamic_fields[(int)$match[1]])
+            ) {
                 /** dynamic field label */
-                $field_id = $match[1];
+                $field_id = (int)$match[1];
                 $value    = self::escape($dynamic_fields[$field_id]->getName());
             }
-            if (preg_match("/^{(INPUT_|VALUE_)?DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)) {
+            if (
+                preg_match("/^{(INPUT_|VALUE_)?DYNFIELD_([0-9]+)_$uform_name}$/", $pattern, $match)
+                && isset($dynamic_fields[(int)$match[2]])
+            ) {
                 /** dynamic field value */
                 $capacity = trim($match[1], '_');
                 $field_id    = (int)$match[2];

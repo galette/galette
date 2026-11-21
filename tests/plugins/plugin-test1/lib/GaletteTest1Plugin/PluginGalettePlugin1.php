@@ -14,15 +14,20 @@ use DI\Attribute\Inject;
 use Galette\Access\AccessControl;
 use Galette\Access\Permission;
 use Galette\Core\Authentication;
+use Galette\Core\Db;
 use Galette\Core\GalettePlugin;
+use Galette\Core\Login;
 use Galette\Core\PreferencesSchema;
+use Galette\Core\Plugins\DynamicFormsProviderInterface;
 use Galette\Core\Plugins\PermissionsProviderInterface;
 use Galette\Core\Plugins\PreferencesProviderInterface;
 use Galette\Core\Plugins\PublicPagesProviderInterface;
+use Slim\Routing\RouteParser;
 
 /**
- * This fixture also declares preferences, a public page and permissions, so
- * that the registration path is exercised by every test that loads plugins.
+ * This fixture also declares preferences, a public page, permissions and a
+ * dynamic fields form, so that the registration path is exercised by every
+ * test that loads plugins.
  * It gets access control injected, as plugins checking permissions do.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
@@ -30,10 +35,14 @@ use Galette\Core\Plugins\PublicPagesProviderInterface;
 class PluginGalettePlugin1 extends GalettePlugin implements
     PreferencesProviderInterface,
     PublicPagesProviderInterface,
-    PermissionsProviderInterface
+    PermissionsProviderInterface,
+    DynamicFormsProviderInterface
 {
     #[Inject]
     protected AccessControl $accessControl;
+
+    #[Inject]
+    protected Db $zdb;
 
     /**
      * Get the preferences the plugin declares
@@ -100,6 +109,55 @@ class PluginGalettePlugin1 extends GalettePlugin implements
                 owner: true
             ),
         ];
+    }
+
+    /**
+     * Get the forms the plugin declares
+     *
+     * @return array<string, class-string>
+     */
+    public function getDynamicForms(): array
+    {
+        return ['plugin1' => Thing::class];
+    }
+
+    /**
+     * Get the label of a declared form
+     *
+     * @param string $form Form name
+     */
+    public function getDynamicFormLabel(string $form): string
+    {
+        return 'Plugin one things';
+    }
+
+    /**
+     * Get an object of a declared form, if the user can see it
+     *
+     * Things 1 and 2 exist; anyone logged in sees the first, only staff the second.
+     *
+     * @param string $form  Form name
+     * @param int    $id    Object identifier
+     * @param Login  $login Current user
+     */
+    public function getDynamicFormObject(string $form, int $id, Login $login): ?object
+    {
+        if (!Thing::canSee($id, $login)) {
+            return null;
+        }
+        return new Thing($this->zdb, $login, $id);
+    }
+
+    /**
+     * Get the page to go back to when a file of a declared form cannot be sent
+     *
+     * @param string      $form        Form name
+     * @param int         $id          Object identifier
+     * @param RouteParser $routeparser Route parser
+     */
+    public function getDynamicFormReturnUrl(string $form, int $id, RouteParser $routeparser): string
+    {
+        return $routeparser->urlFor('plugin1_public_page');
     }
 
     /**
