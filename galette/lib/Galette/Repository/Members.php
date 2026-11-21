@@ -332,6 +332,7 @@ class Members
         global $zdb, $hist, $emitter, $login;
 
         $processed = [];
+        $pictures = [];
         $list = (is_array($ids) ? $ids : [$ids]);
 
         try {
@@ -353,21 +354,8 @@ class Members
 
                 $p = new Picture($member->id_adh);
                 if ($p->hasPicture()) {
-                    if (!$p->delete()) {
-                        Analog::log(
-                            'Unable to delete picture for member ' . $str_adh,
-                            Analog::ERROR
-                        );
-                        throw new \Exception(
-                            'Unable to delete picture for member '
-                            . $str_adh
-                        );
-                    } else {
-                        $hist->add(
-                            _T("Member Picture deleted"),
-                            $str_adh
-                        );
-                    }
+                    //files are removed once changes are committed: a rollback could not restore them
+                    $pictures[$str_adh] = $p;
                 }
 
                 $processed[] = $member;
@@ -448,6 +436,20 @@ class Members
 
             //commit all changes
             $zdb->commit();
+
+            foreach ($pictures as $str_adh => $picture) {
+                if ($picture->delete()) {
+                    $hist->add(
+                        _T("Member Picture deleted"),
+                        $str_adh
+                    );
+                } else {
+                    Analog::log(
+                        'Unable to delete picture for member ' . $str_adh,
+                        Analog::ERROR
+                    );
+                }
+            }
 
             foreach ($processed as $p) {
                 $emitter->dispatch(new GaletteEvent('member.remove', $p));

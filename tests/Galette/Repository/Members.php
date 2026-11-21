@@ -2025,6 +2025,7 @@ class Members extends GaletteTestCase
     {
         $member = $this->getMemberTwo();
         $id = (int)$member->id;
+        $this->assertTrue((new \Galette\Util\FakeData())->addPhoto($member));
 
         $seen = null;
         $emitter = $this->container->get(\League\Event\EventDispatcher::class);
@@ -2036,14 +2037,17 @@ class Members extends GaletteTestCase
                 $seen = [
                     'id'             => (int)$event->getObject()->id_adh,
                     'exists'         => $this->zdb->execute($select)->count() === 1,
-                    'in_transaction' => $this->zdb->inTransaction()
+                    'in_transaction' => $this->zdb->inTransaction(),
+                    'picture'        => (new \Galette\Core\Picture($event->getObject()->id_adh))->hasPicture()
                 ];
             }
         );
 
         $members = new \Galette\Repository\Members();
         $this->assertTrue($members->removeMembers($id));
-        $this->assertSame(['id' => $id, 'exists' => true, 'in_transaction' => true], $seen);
+        $this->assertSame(['id' => $id, 'exists' => true, 'in_transaction' => true, 'picture' => true], $seen);
+        //picture file is removed once changes are committed
+        $this->assertFalse((new \Galette\Core\Picture($id))->hasPicture());
     }
 
     /**
@@ -2106,6 +2110,7 @@ class Members extends GaletteTestCase
     {
         $member = $this->getMemberTwo();
         $id = (int)$member->id;
+        $this->assertTrue((new \Galette\Util\FakeData())->addPhoto($member));
 
         $emitter = $this->container->get(\League\Event\EventDispatcher::class);
         $emitter->subscribeOnceTo(
@@ -2125,5 +2130,10 @@ class Members extends GaletteTestCase
         $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to delete selected member(s) | Plugin refuses');
         //rollback also cancels the test transaction, member cannot be checked
         $this->assertFalse($this->zdb->inTransaction());
+
+        //picture file is kept, as everything else
+        $picture = new \Galette\Core\Picture($id);
+        $this->assertTrue($picture->hasPicture());
+        $this->assertTrue($picture->delete());
     }
 }
