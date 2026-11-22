@@ -80,7 +80,8 @@
         "spomky-labs/otphp": "^11.5",
         "psr/clock": "^1.0",
         "psr/log": "^3.0",
-        "tecnickcom/tc-lib-pdf": "^8.84"
+        "tecnickcom/tc-lib-pdf": "^8.84",
+        "doctrine/dbal": "^4"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^4.0",
