@@ -168,6 +168,8 @@ class Mailing extends GaletteTestCase
      */
     public function testUnsafeAttachmentIsRefused(): void
     {
+        //no allowed list: the files a web server could run are refused all the same
+        $this->preferences->pref_upload_extensions = '';
         $mailing = new \Galette\Core\Mailing($this->preferences);
         $tmp = tempnam(sys_get_temp_dir(), 'galette');
         file_put_contents($tmp, 'content');

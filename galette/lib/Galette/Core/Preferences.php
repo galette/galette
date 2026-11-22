@@ -162,6 +162,7 @@ use function Safe\preg_replace;
  * @property      int      $pref_upload_size_documents
  * @property      int      $pref_upload_size_imports
  * @property      int      $pref_upload_size_dynamic_files
+ * @property      string   $pref_upload_extensions
  * @property      int      $pref_throttle_account_ip_attempts
  * @property      int      $pref_throttle_account_ip_window
  * @property      int      $pref_2fa_mode

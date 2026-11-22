@@ -45,6 +45,7 @@ class DynamicFieldsHandle extends GaletteTestCase
             }
         }
         $this->files = [];
+        unset($GLOBALS['preferences']);
 
         parent::tearDown();
     }
@@ -472,6 +473,10 @@ class DynamicFieldsHandle extends GaletteTestCase
         $stored = GALETTE_FILES_PATH . $stored_field->getFileName($this->adh->id, 1);
         $this->files[] = $stored;
 
+        //no allowed list: the files a web server could run are refused all the same
+        $this->preferences->pref_upload_extensions = '';
+        $GLOBALS['preferences'] = $this->preferences;
+
         foreach (['shell.php' => 'content', 'notes.txt' => '<?php echo "pwned";'] as $name => $content) {
             $tmp = tempnam(sys_get_temp_dir(), 'galette');
             $this->files[] = $tmp;
@@ -504,6 +509,26 @@ class DynamicFieldsHandle extends GaletteTestCase
         )]));
         $this->assertFileExists($stored);
         $this->expectNoLogEntry();
+        unlink($stored);
+
+        //a file the allowed list does not name is refused
+        $this->preferences->pref_upload_extensions = 'pdf odt';
+        $tmp = tempnam(sys_get_temp_dir(), 'galette');
+        $this->files[] = $tmp;
+        file_put_contents($tmp, 'content');
+        $adh = $this->getMemberWithDynamics();
+        $this->assertSame(
+            ['File extension is not allowed, only pdf, odt files are.'],
+            $adh->handleFiles([$key => new \Slim\Psr7\UploadedFile(
+                fileNameOrStream: $tmp,
+                name: 'notes.txt',
+                size: 7,
+                error: UPLOAD_ERR_OK
+            )])
+        );
+        $this->assertFileDoesNotExist($stored);
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Refused file notes.txt, its extension is not allowed.');
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a member files');
     }
 
     /**

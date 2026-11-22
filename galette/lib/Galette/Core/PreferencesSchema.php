@@ -18,6 +18,7 @@ use Galette\Entity\Status;
 use Galette\Enums\PublicPageVisibility;
 use Galette\IO\File;
 use Galette\IO\PdfMembersCards;
+use Galette\IO\UploadExtensions;
 use Galette\Maps\Center;
 use Galette\Maps\Precision;
 use Galette\Maps\TileProviders;
@@ -93,6 +94,7 @@ final class PreferencesSchema
     public const string TYPE_YEAR = 'year';
     public const string TYPE_CSP_SOURCES = 'csp_sources';
     public const string TYPE_CSP_ORIGINS = 'csp_origins';
+    public const string TYPE_EXTENSIONS = 'extensions';
 
     public const string ACL_ADMIN = 'admin';
     public const string ACL_SUPERADMIN = 'superadmin';
@@ -116,6 +118,8 @@ final class PreferencesSchema
     public const string ERR_PUBLIC_PAGE_VISIBILITY = 'public_page_visibility';
     public const string ERR_CSP_SOURCES = 'csp_sources';
     public const string ERR_CSP_ORIGINS = 'csp_origins';
+    public const string ERR_EXTENSIONS = 'extensions';
+    public const string ERR_UNSAFE_EXTENSIONS = 'unsafe_extensions';
 
     /** @var array<int, string> Every type an entry may declare */
     private const array TYPES = [
@@ -133,6 +137,7 @@ final class PreferencesSchema
         self::TYPE_YEAR,
         self::TYPE_CSP_SOURCES,
         self::TYPE_CSP_ORIGINS,
+        self::TYPE_EXTENSIONS,
     ];
 
     /** @var array<string, Entry>|null Core and plugin entries, merged */
@@ -967,6 +972,14 @@ final class PreferencesSchema
                 'error' => self::ERR_POSITIVE_NUMBER,
                 'advanced' => true,
             ],
+            /* Extensions of the documents, mailings attachments and dynamic
+               fields files, space separated; empty lets any extension in.
+               Files a web server could run are refused whatever it says. */
+            UploadExtensions::PREFERENCE => [
+                'type' => self::TYPE_EXTENSIONS,
+                'default' => UploadExtensions::DEFAULT,
+                'advanced' => true,
+            ],
         ] + self::getMapsSchema();
     }
 
@@ -1233,6 +1246,10 @@ final class PreferencesSchema
             self::ERR_CSP_SOURCES => _T("- Value for '%1\$s' must be 'self', 'none', or web addresses such as https://example.org separated by spaces!"),
             //TRANS: parameter is the setting name; the URL must not be translated
             self::ERR_CSP_ORIGINS => _T("- Value for '%1\$s' must be web addresses such as https://example.org separated by spaces!"),
+            //TRANS: parameter is the setting name; pdf and odt must not be translated
+            self::ERR_EXTENSIONS => _T("- Value for '%1\$s' must be file extensions such as pdf or odt separated by spaces!"),
+            //TRANS: first parameter is the setting name, second a list of file extensions
+            self::ERR_UNSAFE_EXTENSIONS => _T("- '%1\$s' cannot allow %2\$s: a web server could run such files."),
             default => throw new \InvalidArgumentException(sprintf('Unknown error identifier "%s".', $id)),
         };
 

@@ -17,6 +17,7 @@ use Galette\Core\GaletteMail;
 use Galette\Core\Login;
 use Galette\Core\Preferences;
 use Galette\Core\PreferencesSchema;
+use Galette\IO\UploadExtensions;
 use Galette\Util\Password;
 use Galette\Util\Html;
 
@@ -74,6 +75,7 @@ final class Fields
             PreferencesSchema::TYPE_URL => $this->validateWebUrl($value),
             PreferencesSchema::TYPE_CSP_SOURCES => $this->validateCspSources($fieldname, $value),
             PreferencesSchema::TYPE_CSP_ORIGINS => $this->validateCspOrigins($fieldname, $value),
+            PreferencesSchema::TYPE_EXTENSIONS => $this->validateExtensions($fieldname, $value),
             default => $value,
         };
     }
@@ -343,5 +345,35 @@ final class Fields
         }
 
         return implode(' ', $sources);
+    }
+
+    /**
+     * Check a list of file extensions
+     *
+     * An extension a web server could run is refused here rather than
+     * silently ignored at upload time.
+     *
+     * @param string $fieldname Field name
+     * @param mixed  $value     Value to check
+     */
+    private function validateExtensions(string $fieldname, mixed $value): mixed
+    {
+        $extensions = is_string($value) ? UploadExtensions::parse($value) : null;
+        if ($extensions === null) {
+            $this->errors[] = PreferencesSchema::getErrorMessage(PreferencesSchema::ERR_EXTENSIONS, $fieldname);
+            return $value;
+        }
+
+        $unsafe = UploadExtensions::getUnsafe($extensions);
+        if ($unsafe !== []) {
+            $this->errors[] = PreferencesSchema::getErrorMessage(
+                PreferencesSchema::ERR_UNSAFE_EXTENSIONS,
+                $fieldname,
+                implode(', ', $unsafe)
+            );
+            return $value;
+        }
+
+        return implode(' ', $extensions);
     }
 }

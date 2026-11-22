@@ -17,6 +17,7 @@ use Galette\Core\Login;
 use Galette\Features\I18n;
 use Galette\Features\Permissions;
 use Galette\IO\FileTrait;
+use Galette\IO\UploadExtensions;
 use Galette\IO\UploadSize;
 use Galette\Util\Html;
 use Galette\Repository\Documents;
@@ -64,6 +65,7 @@ class Document
 
         $this->init(
             dest: $this->store_path,
+            extensions: UploadExtensions::get(),
             maxlength: UploadSize::Documents->get()
         );
 

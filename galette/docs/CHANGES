@@ -15,6 +15,7 @@ Improvements
 - Plugins with an invalid definition file are disabled and reported as such, instead of stopping Galette or being reported as incompatible
 - PDF are generated with tc-lib-pdf instead of TCPDF; default PDF models use standard HTML
 - Fewer database queries: one connection per request, reference data (statuses, titles, contribution and payment types, fields configuration, dynamic translations) read once, members, contributions, transactions, scheduled payments and roles lists no longer query each of their rows
+- Documents, mailings attachments and dynamic fields files are restricted to a list of extensions, set from the advanced configuration; it defaults to office documents, pictures, text and zip archives, and an empty list lets any file in
 
 Removals and requirements
 

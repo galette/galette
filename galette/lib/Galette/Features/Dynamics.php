@@ -24,6 +24,7 @@ use Galette\DynamicFields\Boolean;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\FieldsConfig;
 use Galette\IO\UnsafeFiles;
+use Galette\IO\UploadExtensions;
 use Galette\IO\UploadSize;
 use Galette\Util\Filesize;
 
@@ -347,6 +348,16 @@ trait Dynamics
 
             $field = $fields[(int)$field_id] ?? null;
             if (!$field instanceof File) {
+                continue;
+            }
+
+            if (!UploadExtensions::allows((string)$file->getClientFilename(), UploadExtensions::get())) {
+                Analog::log('Refused file ' . $file->getClientFilename() . ', its extension is not allowed.', Analog::ERROR);
+                $this->errors[] = str_replace(
+                    '%s',
+                    implode(', ', UploadExtensions::get()),
+                    _T("File extension is not allowed, only %s files are.")
+                );
                 continue;
             }
 

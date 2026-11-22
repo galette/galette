@@ -39,6 +39,7 @@ class DocumentsController extends GaletteRoutingTestCase
         } catch (\Throwable) {
             //ignore
         }
+        unset($GLOBALS['preferences']);
 
         parent::tearDown();
     }
@@ -233,6 +234,9 @@ class DocumentsController extends GaletteRoutingTestCase
     public function testAddPage(): void
     {
         $this->logSuperAdmin();
+        //a known list, whatever previous tests left behind
+        $this->preferences->pref_upload_extensions = 'pdf odt';
+        $GLOBALS['preferences'] = $this->preferences;
 
         $route_name = 'addDocument';
         $request = $this->createRequest($route_name);
@@ -242,6 +246,12 @@ class DocumentsController extends GaletteRoutingTestCase
         $body = (string)$test_response->getBody();
         $this->assertStringContainsString(
             'Add document',
+            $body
+        );
+        //the file input only offers, and the tip names, the allowed extensions
+        $this->assertStringContainsString('accept=".pdf,.odt"', $body);
+        $this->assertStringContainsString(
+            '<br/>Allowed extensions: pdf, odt</span>',
             $body
         );
 

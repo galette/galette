@@ -7,6 +7,7 @@
 {% extends (mode == 'ajax') ? "ajax.html.twig" : "page.html.twig" %}
 
 {% block content %}
+    {% set upload_extensions = callstatic('\\Galette\\IO\\UploadExtensions', 'get') %}
     <form action="{% if document.getID() is null %}{{ url_for('doAddDocument') }}{% else %}{{ url_for('editDocument', {'id': document.getID()}) }}{% endif %}" method="post" class="ui form" enctype="multipart/form-data">
     {% if mode != 'ajax' %}
         <div class="ui segment" id="general">
@@ -16,6 +17,7 @@
                     label: _T("File:"),
                     for: "document_new",
                     max_size: preferences.pref_upload_size_documents,
+                    extensions: upload_extensions,
                     input_id: "document_new"
                 } %}
     {% if document.getID() is not null %}
@@ -26,7 +28,7 @@
     {% endif %}
                 <div class="extra ui basic fitted segment">
                     <div class="ui file action input">
-                        <input id="document_new" type="file" name="document_file" aria-describedby="document_new-tip"/>
+                        <input id="document_new" type="file" name="document_file" aria-describedby="document_new-tip"{% if upload_extensions is not empty %} accept="{{ callstatic('\\Galette\\IO\\UploadExtensions', 'accept', upload_extensions) }}"{% endif %}/>
                         <label for="document_new" class="ui button{% if callstatic('\\Galette\\Core\\Galette', 'isDemo') %} disabled{% endif %}">
                             <i class="blue upload icon" aria-hidden="true"></i>
                             {% if document.getId() != null %}{{ _T("Choose another file") }}{% else %}{{ _T("Choose a file") }}{% endif %}

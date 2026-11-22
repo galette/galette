@@ -11,9 +11,16 @@
  # input it describes. `label` (and `for`) draw the field label around the icon;
  # `icon` can be set to false where a tooltip already carries the information;
  # `small` to false for the bigger icon of a corner label.
+ # `extensions`, a list of allowed extensions, tells which files are let in.
  #}
+{% set size_tip = _T('Maximum allowed size is %1$s')|format(callstatic('\\Galette\\Util\\Filesize', 'fromKilobytes', max_size)) %}
+{% set extensions = extensions ?? [] %}
+{% if extensions is not empty %}
+    {% set size_tip = size_tip|e ~ '<br/>' ~ _T('Allowed extensions: %1$s')|format(extensions|join(', '))|e %}
+{% endif %}
 {% include "components/forms/tip.html.twig" with {
-    tip: _T('Maximum allowed size is %1$s')|format(callstatic('\\Galette\\Util\\Filesize', 'fromKilobytes', max_size)),
+    tip: size_tip,
+    html: extensions is not empty,
     id: input_id,
     label: label ?? null,
     for: for ?? null,

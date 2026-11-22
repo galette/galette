@@ -82,6 +82,9 @@ class Document extends GaletteTestCase
         mkdir($dest);
         $pdf = file_get_contents(GALETTE_TESTS_PATH . '/fixtures/status.pdf');
         $php = '<?php echo "pwned";';
+        //no allowed list: the files a web server could run are refused all the same
+        $this->preferences->pref_upload_extensions = '';
+        $GLOBALS['preferences'] = $this->preferences;
 
         try {
             //PHP file is refused, whatever its content
@@ -146,6 +149,40 @@ class Document extends GaletteTestCase
             $this->expectLogEntry(\Analog\Analog::ERROR, 'Refused file shell.php, a web server could run it.');
             $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a document file');
         } finally {
+            unset($GLOBALS['preferences']);
+            array_map(unlink(...), glob($dest . '*'));
+            rmdir($dest);
+        }
+    }
+
+    /**
+     * Test documents follow the allowed extensions
+     */
+    public function testAllowedExtensions(): void
+    {
+        $dest = sys_get_temp_dir() . '/galette_documents_' . uniqid() . '/';
+        mkdir($dest);
+        $this->preferences->pref_upload_extensions = 'pdf odt';
+        $GLOBALS['preferences'] = $this->preferences;
+
+        try {
+            $document = new \Galette\Entity\Document($this->zdb);
+            $document->setDestDir($dest);
+            $this->assertSame(
+                ['File extension is not allowed, only pdf, odt files are.'],
+                $document->handleFiles($this->getUploadedFile('minutes.zip', "PK\x03\x04"))
+            );
+            $this->assertFileDoesNotExist($dest . 'minutes.zip');
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Invalid extension for file minutes.zip.');
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a document file');
+
+            $document = new \Galette\Entity\Document($this->zdb);
+            $document->setDestDir($dest);
+            $this->assertTrue($document->handleFiles($this->getUploadedFile('Minutes.ODT', 'content')));
+            $this->assertFileExists($dest . 'Minutes.ODT');
+            $this->expectNoLogEntry();
+        } finally {
+            unset($GLOBALS['preferences']);
             array_map(unlink(...), glob($dest . '*'));
             rmdir($dest);
         }

@@ -82,6 +82,27 @@ Since Galette 1.3.3, `DynamicField::check()` requires a non blank
 `field_name` for every field type, separators included. A plugin creating dynamic fields from code must
 give them a name.
 
+## Uploaded files
+
+Since Galette 1.3.4, files a web server could run are refused on every upload
+going through `FileTrait`, whatever the plugin allows.
+
+Galette 1.4 adds a list of allowed extensions, set by the administrator from
+the advanced configuration, that documents, mailings attachments and dynamic
+fields files follow. A plugin storing files of the same kind can follow it too:
+
+```php
+$this->init(
+    dest: $this->store_path,
+    extensions: \Galette\IO\UploadExtensions::get(),
+    maxlength: \Galette\IO\UploadSize::Documents->get()
+);
+```
+
+`UploadExtensions::get()` returns an empty array when the administrator
+emptied the list, which `FileTrait` reads as any extension. A plugin with a
+fixed list of its own, such as pictures, keeps passing it.
+
 ## Plugin definition
 
 `_define.php` now returns a `Galette\Core\Plugins\PluginDefinition`
