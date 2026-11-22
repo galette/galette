@@ -40,6 +40,7 @@ Plugins and development
 - Two-factor authentication is no longer experimental; making it mandatory is still behind the 'two-factor-required' feature flag
 - Fewer database queries: dynamic fields of contributions and transactions, print logo, contextualized plural translations and preferences legend were looked up twice
 - Files of dynamic fields were left on disk when their member, contribution, transaction or field was removed
+- Documents with an uppercase extension, or a .jpeg one, could not be downloaded
 
 1.3.2 -> 1.3.3
 

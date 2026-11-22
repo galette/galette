@@ -358,12 +358,9 @@ class Document
         $this->upload($files, 'document_file');
         if (count($this->uploadErrors())) {
             $this->errors = $this->uploadErrors();
-        } elseif (isset($this->name_wo_ext)) {
-            $this->filename = sprintf(
-                '%s.%s',
-                $this->name_wo_ext,
-                $this->extension
-            );
+        } elseif (isset($this->name)) {
+            //file is written on disk with its original name
+            $this->filename = $this->name;
         }
 
         if (count($this->errors) > 0) {
