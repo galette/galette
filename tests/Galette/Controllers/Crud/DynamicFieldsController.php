@@ -599,92 +599,99 @@ class DynamicFieldsController extends GaletteRoutingTestCase
         );
         $dynfile_id = 'info_field_' . $field_id_1 . '_1';
 
-        //create dynamic file
-        $mdata = $this->dataAdherentOne();
-        copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
-        $uploaded_files = [
-            $dynfile_id => new \Slim\Psr7\UploadedFile(
-                fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
-                name: 'galette_pro.png',
-                type: 'impage/png',
-                size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
-                error: UPLOAD_ERR_OK
-            )
-        ];
-        $member_request = $this->createRequest('doEditMember', ['id' => (string)$member_one->id], 'POST');
-        $member_request = $member_request->withParsedBody($mdata + ['id_adh' => $member_one->id]);
-        $member_request = $member_request->withUploadedFiles($uploaded_files);
-        $test_response = $this->app->handle($member_request);
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
+        $stored_file = GALETTE_FILES_PATH . sprintf('member_%1$s_field_%2$s_value_1', $member_one->id, $field_id_1);
 
-        $request = $this->createRequest(
-            'getDynamicFile',
-            [
-                'form_name' => 'adh',
-                'id' => (string)$member_one->id,
-                'fid' => (string)$field_id_1,
-                'pos' => '1',
-                'name' => $dynfile_id
-            ]
-        );
-        $test_response = $this->app->handle($request);
-        $expected_headers = [
-            'Content-Description' => ['File Transfer'],
-            'Content-Type' => ['image/png'],
-            'Content-Disposition' => ['attachment;filename="' . $dynfile_id . '"'],
-            'Pragma' => ['public'],
-            'Content-Transfer-Encoding' => ['binary'],
-            'Expires' => ['0'],
-            'Cache-Control' => ['must-revalidate']
-        ];
-        $this->expectOK($test_response, $expected_headers);
+        try {
+            //create dynamic file
+            $mdata = $this->dataAdherentOne();
+            copy(GALETTE_TESTS_PATH . '/fixtures/galette_pro.png', sys_get_temp_dir() . '/galette_pro.png');
+            $uploaded_files = [
+                $dynfile_id => new \Slim\Psr7\UploadedFile(
+                    fileNameOrStream: sys_get_temp_dir() . '/galette_pro.png',
+                    name: 'galette_pro.png',
+                    type: 'impage/png',
+                    size: filesize(sys_get_temp_dir() . '/galette_pro.png'),
+                    error: UPLOAD_ERR_OK
+                )
+            ];
+            $member_request = $this->createRequest('doEditMember', ['id' => (string)$member_one->id], 'POST');
+            $member_request = $member_request->withParsedBody($mdata + ['id_adh' => $member_one->id]);
+            $member_request = $member_request->withUploadedFiles($uploaded_files);
+            $test_response = $this->app->handle($member_request);
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['success_detected' => ['Member account has been modified.']]);
 
-        //file does not exist
-        $request = $this->createRequest(
-            'getDynamicFile',
-            [
-                'form_name' => 'adh',
-                'id' => (string)$member_one->id,
-                'fid' => (string)$field_id_1,
-                'pos' => '2',
-                'name' => $dynfile_id
-            ]
-        );
-        $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectLogEntry(
-            \Analog\Analog::WARNING,
-            sprintf(
-                'A request has been made to get a dynamic file named `member_%1$s_field_%2$s_value_2` that does not exists.',
-                $member_one->id,
-                $field_id_1
-            )
-        );
-        $this->expectFlashData(['error_detected' => ['The file does not exists or cannot be read :(']]);
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'adh',
+                    'id' => (string)$member_one->id,
+                    'fid' => (string)$field_id_1,
+                    'pos' => '1',
+                    'name' => $dynfile_id
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            $expected_headers = [
+                'Content-Description' => ['File Transfer'],
+                'Content-Type' => ['image/png'],
+                'Content-Disposition' => ['attachment;filename="' . $dynfile_id . '"'],
+                'Pragma' => ['public'],
+                'Content-Transfer-Encoding' => ['binary'],
+                'Expires' => ['0'],
+                'Cache-Control' => ['must-revalidate']
+            ];
+            $this->expectOK($test_response, $expected_headers);
 
-        $this->login->logout();
+            //file does not exist
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'adh',
+                    'id' => (string)$member_one->id,
+                    'fid' => (string)$field_id_1,
+                    'pos' => '2',
+                    'name' => $dynfile_id
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_one->id])]], $test_response->getHeaders());
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectLogEntry(
+                \Analog\Analog::WARNING,
+                sprintf(
+                    'A request has been made to get a dynamic file named `member_%1$s_field_%2$s_value_2` that does not exists.',
+                    $member_one->id,
+                    $field_id_1
+                )
+            );
+            $this->expectFlashData(['error_detected' => ['The file does not exists or cannot be read :(']]);
 
-        //no right on field
-        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
-        $request = $this->createRequest(
-            'getDynamicFile',
-            [
-                'form_name' => 'adh',
-                'id' => (string)$member_two->id,
-                'fid' => (string)$field_id_1,
-                'pos' => '1',
-                'name' => $dynfile_id
-            ]
-        );
-        $test_response = $this->app->handle($request);
-        $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_two->id])]], $test_response->getHeaders());
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->expectNoLogEntry();
-        $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+            $this->login->logout();
 
-        $this->login->logout();
+            //no right on field
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $request = $this->createRequest(
+                'getDynamicFile',
+                [
+                    'form_name' => 'adh',
+                    'id' => (string)$member_two->id,
+                    'fid' => (string)$field_id_1,
+                    'pos' => '1',
+                    'name' => $dynfile_id
+                ]
+            );
+            $test_response = $this->app->handle($request);
+            $this->assertSame(['Location' => [$this->routeparser->urlFor('member', ['id' => (string)$member_two->id])]], $test_response->getHeaders());
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectNoLogEntry();
+            $this->expectFlashData(['error_detected' => ['You do not have permission for requested URL.']]);
+        } finally {
+            $this->login->logout();
+            if (file_exists($stored_file)) {
+                unlink($stored_file);
+            }
+        }
     }
 
     /**
