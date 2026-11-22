@@ -13,6 +13,10 @@ namespace Galette\Tests\Core;
 use Galette\Tests\GaletteTestCase;
 use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 
+use function Safe\file_put_contents;
+use function Safe\tempnam;
+use function Safe\unlink;
+
 /**
  * Mailing tests class
  *
@@ -157,5 +161,49 @@ class Mailing extends GaletteTestCase
             'File is too big. Maximum allowed size is 42 Ko',
             $message->invoke($mailing, \Galette\Core\Mailing::FILE_TOO_BIG)
         );
+    }
+
+    /**
+     * Test files a web server could run are refused as attachments
+     */
+    public function testUnsafeAttachmentIsRefused(): void
+    {
+        $mailing = new \Galette\Core\Mailing($this->preferences);
+        $tmp = tempnam(sys_get_temp_dir(), 'galette');
+        file_put_contents($tmp, 'content');
+
+        try {
+            $this->assertSame(
+                \Galette\Core\Mailing::INVALID_FILE,
+                $mailing->storeFile(new \Slim\Psr7\UploadedFile(
+                    fileNameOrStream: $tmp,
+                    name: 'shell.php',
+                    size: 7,
+                    error: UPLOAD_ERR_OK
+                ))
+            );
+            $this->assertFileExists($tmp);
+            $this->assertSame([], $mailing->attachments);
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Refused file shell.php, a web server could run it.');
+
+            file_put_contents($tmp, '<?php echo "pwned";');
+            $this->assertSame(
+                \Galette\Core\Mailing::MIME_NOT_ALLOWED,
+                $mailing->storeFile(new \Slim\Psr7\UploadedFile(
+                    fileNameOrStream: $tmp,
+                    name: 'notes.txt',
+                    size: 19,
+                    error: UPLOAD_ERR_OK
+                ))
+            );
+            $this->assertSame([], $mailing->attachments);
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Mimetype `text/x-php` not allowed');
+            $this->expectNoLogEntry();
+        } finally {
+            if (file_exists($tmp)) {
+                unlink($tmp);
+            }
+            $mailing->removeAttachments(temp: true);
+        }
     }
 }
