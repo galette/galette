@@ -457,6 +457,56 @@ class DynamicFieldsHandle extends GaletteTestCase
     }
 
     /**
+     * Test files a web server could run are refused on file fields
+     */
+    public function testUnsafeFileIsRefused(): void
+    {
+        $this->logSuperAdmin();
+        $field = $this->createField(\Galette\DynamicFields\DynamicField::FILE, 'A file', 1);
+        $fid = $field->getId();
+        $key = 'info_field_' . $fid . '_1';
+
+        $this->getMemberOne();
+        /** @var \Galette\DynamicFields\File $stored_field */
+        $stored_field = $this->getMemberWithDynamics()->getDynamicFields()->getFields()[$fid];
+        $stored = GALETTE_FILES_PATH . $stored_field->getFileName($this->adh->id, 1);
+        $this->files[] = $stored;
+
+        foreach (['shell.php' => 'content', 'notes.txt' => '<?php echo "pwned";'] as $name => $content) {
+            $tmp = tempnam(sys_get_temp_dir(), 'galette');
+            $this->files[] = $tmp;
+            file_put_contents($tmp, $content);
+            $adh = $this->getMemberWithDynamics();
+            $this->assertSame(
+                ['File does not comply with requirements.'],
+                $adh->handleFiles([$key => new \Slim\Psr7\UploadedFile(
+                    fileNameOrStream: $tmp,
+                    name: $name,
+                    size: strlen($content),
+                    error: UPLOAD_ERR_OK
+                )])
+            );
+            $this->assertFileDoesNotExist($stored);
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Refused file ' . $name . ', a web server could run it.');
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a member files');
+        }
+
+        //any other file is stored
+        $tmp = tempnam(sys_get_temp_dir(), 'galette');
+        $this->files[] = $tmp;
+        file_put_contents($tmp, 'content');
+        $adh = $this->getMemberWithDynamics();
+        $this->assertTrue($adh->handleFiles([$key => new \Slim\Psr7\UploadedFile(
+            fileNameOrStream: $tmp,
+            name: 'notes.txt',
+            size: 7,
+            error: UPLOAD_ERR_OK
+        )]));
+        $this->assertFileExists($stored);
+        $this->expectNoLogEntry();
+    }
+
+    /**
      * Test a required file field a member cannot change is not checked
      */
     public function testRequiredReadOnlyFileField(): void

@@ -255,6 +255,14 @@ trait FileTrait
             return $ret;
         }
 
+        if (UnsafeFiles::hasUnsafeExtension((string)$this->name)) {
+            Analog::log(
+                '[' . $class . '] Refused file ' . $this->name . ', a web server could run it.',
+                Analog::ERROR
+            );
+            return self::INVALID_FILE;
+        }
+
         //Second, let's check file size
         if ($file->getSize() > ($this->maxlength * 1024)) {
             Analog::log(
@@ -270,8 +278,8 @@ trait FileTrait
         $mime = $this->getMimeType($file->getStream()->getMetadata('uri'));
 
         if (
-            count($this->allowed_mimes) > 0
-            && !in_array($mime, $this->allowed_mimes)
+            UnsafeFiles::isUnsafeMimeType($mime)
+            || (count($this->allowed_mimes) > 0 && !in_array($mime, $this->allowed_mimes))
         ) {
             Analog::log(
                 '[' . $class . '] Mimetype `' . $mime . '` not allowed',

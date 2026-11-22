@@ -354,6 +354,8 @@ class Document
             return true;
         }
         $this->errors = [];
+        //name of a previous attempt must not be kept
+        $this->name = null;
         // document upload
         $this->upload($files, 'document_file');
         if (count($this->uploadErrors())) {

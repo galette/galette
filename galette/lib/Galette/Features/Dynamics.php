@@ -23,6 +23,7 @@ use Galette\DynamicFields\Date;
 use Galette\DynamicFields\Boolean;
 use Galette\Entity\DynamicFieldsHandle;
 use Galette\Entity\FieldsConfig;
+use Galette\IO\UnsafeFiles;
 use Galette\IO\UploadSize;
 use Galette\Util\Filesize;
 
@@ -346,6 +347,19 @@ trait Dynamics
 
             $field = $fields[(int)$field_id] ?? null;
             if (!$field instanceof File) {
+                continue;
+            }
+
+            $uri = (string)$file->getStream()->getMetadata('uri');
+            if (
+                UnsafeFiles::hasUnsafeExtension((string)$file->getClientFilename())
+                || (is_file($uri) && UnsafeFiles::hasUnsafeContent($uri))
+            ) {
+                Analog::log(
+                    'Refused file ' . $file->getClientFilename() . ', a web server could run it.',
+                    Analog::ERROR
+                );
+                $this->errors[] = _T("File does not comply with requirements.");
                 continue;
             }
 
