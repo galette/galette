@@ -829,6 +829,9 @@ abstract class DynamicField
                 ->equalTo('field_form', $this->form);
             $this->zdb->execute($update);
 
+            //file names are built from the values: get them before they are removed
+            $files = $this instanceof File ? File::getStoredFiles($this->zdb, $this->form, field: $this->id) : [];
+
             //remove associated values
             try {
                 $delete = $this->zdb->delete(DynamicFieldsHandle::TABLE);
@@ -839,6 +842,7 @@ abstract class DynamicField
                     ]
                 );
                 $this->zdb->execute($delete);
+                $this->zdb->afterCommit(fn() => File::removeFiles($files));
             } catch (Throwable $e) {
                 throw new \RuntimeException('Unable to remove associated values for field ' . $this->id . '!', $e->getCode(), $e);
             }

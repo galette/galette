@@ -13,6 +13,7 @@ namespace Galette\Entity;
 use Galette\DynamicFields\File;
 use Galette\DynamicFields\Separator;
 use Laminas\Db\ResultSet\ResultSet;
+use RuntimeException;
 use Throwable;
 use Analog\Analog;
 use Galette\Core\Logs;
@@ -390,6 +391,8 @@ class DynamicFieldsHandle
         }
 
         if (count($fromdb)) {
+            //files are removed and renumbered once the removal is committed, in the same order
+            $file_operations = [];
             foreach ($fromdb as $entry) {
                 if (!isset($this->delete_stmt)) {
                     $delete = $this->zdb->delete(self::TABLE);
@@ -406,7 +409,7 @@ class DynamicFieldsHandle
                 $field = $this->dynamic_fields[$field_id] ?? null;
                 if ($field instanceof File) {
                     //the file on disk is named after the value index
-                    $this->removeFile($field, (int)$entry['val_index']);
+                    $file_operations[] = fn() => $this->removeFile($field, (int)$entry['val_index']);
                 }
                 //update val index
                 if (
@@ -420,34 +423,32 @@ class DynamicFieldsHandle
                             ++$val_index;
                             $current['old_val_index'] = $val_index;
                             if ($field instanceof File) {
-                                $this->moveFile($field, $val_index, $val_index - 1);
+                                $file_operations[] = fn() => $this->moveFile($field, $val_index, $val_index - 1);
                             }
                         }
                     }
                 }
             }
+            if (count($file_operations)) {
+                //once committed, values could no longer be restored if files cannot be renumbered
+                if (!is_writable(GALETTE_FILES_PATH)) {
+                    throw new RuntimeException(
+                        'Files directory ' . GALETTE_FILES_PATH . ' is not writable, dynamic files cannot be updated.'
+                    );
+                }
+                $this->zdb->afterCommit(function () use ($file_operations): void {
+                    //stop on first failure: going on would overwrite files that have not been moved
+                    try {
+                        foreach ($file_operations as $operation) {
+                            $operation();
+                        }
+                    } catch (Throwable $e) {
+                        Logs::exception($e, 'Unable to update files of removed dynamic fields values');
+                    }
+                });
+            }
             $this->has_changed = true;
         }
-    }
-
-    /**
-     * Get the path of the file stored for a dynamic file field occurrence
-     *
-     * Files uploaded before Galette 1.2 are all prefixed with `member`, whatever
-     * the form they belong to; fall back on that name, as other call sites do.
-     *
-     * @param File $field     Field descriptor
-     * @param int  $val_index Value index
-     */
-    private function getFilePath(File $field, int $val_index): ?string
-    {
-        $filename = GALETTE_FILES_PATH . $field->getFileName((int)$this->item_id, $val_index);
-        if (file_exists($filename)) {
-            return $filename;
-        }
-
-        $legacy = GALETTE_FILES_PATH . $field->getFileName((int)$this->item_id, $val_index, 'member');
-        return file_exists($legacy) ? $legacy : null;
     }
 
     /**
@@ -458,7 +459,7 @@ class DynamicFieldsHandle
      */
     private function removeFile(File $field, int $val_index): void
     {
-        $filename = $this->getFilePath($field, $val_index);
+        $filename = $field->getFilePath((int)$this->item_id, $val_index);
         if ($filename !== null) {
             unlink($filename);
         }
@@ -473,7 +474,7 @@ class DynamicFieldsHandle
      */
     private function moveFile(File $field, int $from, int $to): void
     {
-        $filename = $this->getFilePath($field, $from);
+        $filename = $field->getFilePath((int)$this->item_id, $from);
         if ($filename !== null) {
             rename($filename, GALETTE_FILES_PATH . $field->getFileName((int)$this->item_id, $to));
         }
@@ -503,6 +504,9 @@ class DynamicFieldsHandle
                 $this->zdb->beginTransaction();
             }
 
+            //file names are built from the values: get them before they are removed
+            $files = File::getStoredFiles($this->zdb, $this->form_name, [(int)$this->item_id]);
+
             $delete = $this->zdb->delete(self::TABLE);
             $delete->where(
                 [
@@ -511,6 +515,8 @@ class DynamicFieldsHandle
                 ]
             );
             $this->zdb->execute($delete);
+            //files are not part of the transaction: wait for its owner to commit
+            $this->zdb->afterCommit(fn() => File::removeFiles($files));
 
             if (!$transaction) {
                 $this->zdb->commit();

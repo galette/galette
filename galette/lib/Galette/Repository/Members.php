@@ -427,11 +427,13 @@ class Members
             );
             $zdb->execute($del_qry);
 
-            //delete dynamic fields values
+            //delete dynamic fields values; file names are built from them
+            $files = File::getStoredFiles($zdb, 'adh', $list);
             $del_qry = $zdb->delete(DynamicFieldsHandle::TABLE);
             $del_qry->where(['field_form' => 'adh']);
             $del_qry->where->in('item_id', $list);
             $zdb->execute($del_qry);
+            $zdb->afterCommit(fn() => File::removeFiles($files));
 
             //delete geographic positions
             (new Positions($zdb))->remove(Coordinates::TYPE, $list);

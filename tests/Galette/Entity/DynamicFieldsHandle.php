@@ -12,8 +12,13 @@ namespace Galette\Tests\Entity;
 
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\chmod;
 use function Safe\file_get_contents;
 use function Safe\file_put_contents;
+use function Safe\fileperms;
+use function Safe\mkdir;
+use function Safe\rename;
+use function Safe\rmdir;
 use function Safe\tempnam;
 use function Safe\unlink;
 
@@ -52,17 +57,19 @@ class DynamicFieldsHandle extends GaletteTestCase
      * @param ?int   $repeat   Number of occurrences
      * @param int    $perm     Field permission
      * @param bool   $required Is field required
+     * @param string $form     Form name
      */
     private function createField(
         int $type,
         string $name,
         ?int $repeat,
         int $perm = \Galette\Entity\FieldsConfig::USER_WRITE,
-        bool $required = false
+        bool $required = false,
+        string $form = 'adh'
     ): \Galette\DynamicFields\DynamicField {
         $field = \Galette\DynamicFields\DynamicField::getFieldType($this->zdb, $type);
         $stored = $field->store([
-            'form_name'         => 'adh',
+            'form_name'         => $form,
             'field_name'        => $name,
             'field_perm'        => $perm,
             'field_type'        => $type,
@@ -470,5 +477,338 @@ class DynamicFieldsHandle extends GaletteTestCase
         $adh = $this->getMemberWithDynamics();
         $this->assertTrue($adh->check(values: $mdata, required: [], disabled: [], files: []), implode(' ', $adh->getErrors()));
         $this->login->logout();
+    }
+
+    /**
+     * Store a file occurrence for an object, and write its file on disk
+     *
+     * @param object                      $object Object (member, contribution, ...)
+     * @param \Galette\DynamicFields\File $field  File field
+     * @param int                         $index  Value index
+     *
+     * @return string Path of the file on disk
+     */
+    private function storeFile(object $object, \Galette\DynamicFields\File $field, int $index): string
+    {
+        $dynamics = new \Galette\Entity\DynamicFieldsHandle($this->zdb, $this->login, $object);
+        $dynamics->setValue(item: $object->id, field: $field->getId(), index: $index, value: 'file' . $index . '.txt');
+        $this->assertTrue($dynamics->storeValues($object->id));
+
+        $file = GALETTE_FILES_PATH . $field->getFileName($object->id, $index);
+        $this->files[] = $file;
+        file_put_contents($file, 'content');
+
+        return $file;
+    }
+
+    /**
+     * Test the files of a member are removed with the member
+     */
+    public function testFilesRemovedWithMember(): void
+    {
+        $this->logSuperAdmin();
+        /** @var \Galette\DynamicFields\File $field */
+        $field = $this->createField(\Galette\DynamicFields\DynamicField::FILE, 'Member files', 2);
+
+        $two = $this->getMemberTwo();
+        $kept = $this->storeFile($two, $field, 1);
+
+        $one = $this->getMemberOne();
+        $first = $this->storeFile($one, $field, 1);
+        $second = $this->storeFile($one, $field, 2);
+        //files uploaded before Galette 1.2 are prefixed with "member" whatever the form; same name here
+        $this->assertStringContainsString('member_' . $one->id . '_field_', $first);
+
+        $members = new \Galette\Repository\Members();
+        $this->assertTrue($members->removeMembers($one->id));
+
+        $this->assertFileDoesNotExist($first);
+        $this->assertFileDoesNotExist($second);
+        $this->assertFileExists($kept);
+    }
+
+    /**
+     * Test the files of a contribution are removed with the contribution,
+     * including those named the legacy way
+     */
+    public function testFilesRemovedWithContribution(): void
+    {
+        $this->logSuperAdmin();
+        /** @var \Galette\DynamicFields\File $field */
+        $field = $this->createField(
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            name: 'Contribution files',
+            repeat: 2,
+            form: 'contrib'
+        );
+
+        $this->getMemberOne();
+        $this->createContribution();
+        $contrib = $this->contrib;
+
+        $current = $this->storeFile($contrib, $field, 1);
+        $this->assertStringContainsString('contrib_' . $contrib->id . '_field_', $current);
+
+        //a file uploaded before Galette 1.2 is prefixed with "member"
+        $legacy = GALETTE_FILES_PATH . $field->getFileName($contrib->id, 2, 'member');
+        $this->storeFile($contrib, $field, 2);
+        rename(GALETTE_FILES_PATH . $field->getFileName($contrib->id, 2), $legacy);
+        $this->files[] = $legacy;
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $contrib->id);
+        $this->assertTrue($contrib->remove());
+
+        $this->assertFileDoesNotExist($current);
+        $this->assertFileDoesNotExist($legacy);
+    }
+
+    /**
+     * Test the files of a field are removed with the field
+     */
+    public function testFilesRemovedWithField(): void
+    {
+        $this->logSuperAdmin();
+        /** @var \Galette\DynamicFields\File $field */
+        $field = $this->createField(\Galette\DynamicFields\DynamicField::FILE, 'Removed files', 2);
+        /** @var \Galette\DynamicFields\File $other */
+        $other = $this->createField(\Galette\DynamicFields\DynamicField::FILE, 'Kept files', 1);
+
+        $two = $this->getMemberTwo();
+        $two_file = $this->storeFile($two, $field, 1);
+
+        $one = $this->getMemberOne();
+        $one_file = $this->storeFile($one, $field, 2);
+        $kept = $this->storeFile($one, $other, 1);
+
+        $this->assertTrue($field->remove());
+
+        $this->assertFileDoesNotExist($one_file);
+        $this->assertFileDoesNotExist($two_file);
+        $this->assertFileExists($kept);
+    }
+
+    /**
+     * Test files of a contribution removed within a transaction wait for it to be committed
+     */
+    public function testFilesRemovedOnCommit(): void
+    {
+        $this->logSuperAdmin();
+        /** @var \Galette\DynamicFields\File $field */
+        $field = $this->createField(
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            name: 'Committed files',
+            repeat: 1,
+            form: 'contrib'
+        );
+
+        $this->getMemberOne();
+        $this->createContribution();
+        $file = $this->storeFile($this->contrib, $field, 1);
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
+        $this->assertTrue($contrib->remove(transaction: false));
+        $this->assertFileExists($file);
+
+        $this->zdb->commit();
+        $this->assertFileDoesNotExist($file);
+    }
+
+    /**
+     * Test files of a contribution removed within a transaction that is rolled back are kept
+     */
+    public function testFilesKeptOnRollback(): void
+    {
+        $this->logSuperAdmin();
+        /** @var \Galette\DynamicFields\File $field */
+        $field = $this->createField(
+            type: \Galette\DynamicFields\DynamicField::FILE,
+            name: 'Rolled back files',
+            repeat: 1,
+            form: 'contrib'
+        );
+
+        $this->getMemberOne();
+        $this->createContribution();
+        $file = $this->storeFile($this->contrib, $field, 1);
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $this->contrib->id);
+        $this->assertTrue($contrib->remove(transaction: false));
+
+        //the caller fails after the removal: everything is rolled back
+        $this->zdb->rollback();
+        $this->assertFileExists($file);
+
+        //and nothing is left waiting for a later commit
+        $this->zdb->beginTransaction();
+        $this->zdb->commit();
+        $this->assertFileExists($file);
+    }
+
+    /**
+     * Store two files on a repeatable field, and drop the first occurrence within a transaction
+     *
+     * @return array<string> First and second files
+     */
+    private function dropFirstFileOccurrence(string $name): array
+    {
+        $this->logSuperAdmin();
+        $field = $this->createField(\Galette\DynamicFields\DynamicField::FILE, $name, 2);
+
+        $this->getMemberOne();
+        $fid = $field->getId();
+
+        $adh = $this->getMemberWithDynamics();
+        $dynamics = $adh->getDynamicFields();
+        $dynamics->setValue(item: $adh->id, field: $fid, index: 1, value: 'first.txt');
+        $dynamics->setValue(item: $adh->id, field: $fid, index: 2, value: 'second.txt');
+        $this->assertTrue($dynamics->storeValues($adh->id));
+
+        /** @var \Galette\DynamicFields\File $stored_field */
+        $stored_field = $dynamics->getFields()[$fid];
+        $first = GALETTE_FILES_PATH . $stored_field->getFileName($adh->id, 1);
+        $second = GALETTE_FILES_PATH . $stored_field->getFileName($adh->id, 2);
+        $this->files = [$first, $second];
+        file_put_contents($first, 'first');
+        file_put_contents($second, 'second');
+
+        $adh = $this->getMemberWithDynamics();
+        $dynamics = $adh->getDynamicFields();
+        $dynamics->unsetValue($fid, 1);
+        $this->assertTrue($dynamics->storeValues($adh->id, transaction: true));
+
+        //nothing is touched on disk while the transaction is pending
+        $this->assertSame('first', file_get_contents($first));
+        $this->assertSame('second', file_get_contents($second));
+
+        return [$first, $second];
+    }
+
+    /**
+     * Test files of occurrences removed from the form wait for the transaction to be committed
+     */
+    public function testOccurrenceFilesUpdatedOnCommit(): void
+    {
+        [$first, $second] = $this->dropFirstFileOccurrence('Committed occurrences');
+
+        $this->zdb->commit();
+        $this->assertSame('second', file_get_contents($first));
+        $this->assertFileDoesNotExist($second);
+    }
+
+    /**
+     * Test files of occurrences removed from the form are kept when the transaction is rolled back
+     */
+    public function testOccurrenceFilesKeptOnRollback(): void
+    {
+        [$first, $second] = $this->dropFirstFileOccurrence('Rolled back occurrences');
+
+        $this->zdb->rollback();
+        $this->zdb->beginTransaction();
+        $this->zdb->commit();
+        $this->assertSame('first', file_get_contents($first));
+        $this->assertSame('second', file_get_contents($second));
+    }
+
+    /**
+     * Test files are left untouched when the first one cannot be removed once committed
+     *
+     * Renumbering after a failure would overwrite files that have not been moved.
+     */
+    public function testOccurrenceFilesStopOnFailure(): void
+    {
+        $this->logSuperAdmin();
+        $field = $this->createField(\Galette\DynamicFields\DynamicField::FILE, 'Failing occurrences', 3);
+
+        $this->getMemberOne();
+        $fid = $field->getId();
+
+        $adh = $this->getMemberWithDynamics();
+        $dynamics = $adh->getDynamicFields();
+        $dynamics->setValue(item: $adh->id, field: $fid, index: 1, value: 'first.txt');
+        $dynamics->setValue(item: $adh->id, field: $fid, index: 2, value: 'second.txt');
+        $dynamics->setValue(item: $adh->id, field: $fid, index: 3, value: 'third.txt');
+        $this->assertTrue($dynamics->storeValues($adh->id));
+
+        /** @var \Galette\DynamicFields\File $stored_field */
+        $stored_field = $dynamics->getFields()[$fid];
+        //a directory cannot be unlinked
+        $first = GALETTE_FILES_PATH . $stored_field->getFileName($adh->id, 1);
+        $second = GALETTE_FILES_PATH . $stored_field->getFileName($adh->id, 2);
+        $third = GALETTE_FILES_PATH . $stored_field->getFileName($adh->id, 3);
+        $this->files = [$second, $third];
+        mkdir($first);
+        file_put_contents($second, 'second');
+        file_put_contents($third, 'third');
+
+        try {
+            $adh = $this->getMemberWithDynamics();
+            $dynamics = $adh->getDynamicFields();
+            $dynamics->unsetValue($fid, 1);
+            $this->assertTrue($dynamics->storeValues($adh->id, transaction: true));
+            $this->zdb->commit();
+
+            $this->assertDirectoryExists($first);
+            $this->assertSame('second', file_get_contents($second));
+            $this->assertSame('third', file_get_contents($third));
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to update files of removed dynamic fields values');
+        } finally {
+            rmdir($first);
+        }
+    }
+
+    /**
+     * Test occurrences are not removed when their files cannot be renumbered
+     */
+    public function testOccurrenceRemovalRefusedOnReadOnlyDirectory(): void
+    {
+        if (posix_geteuid() === 0) {
+            $this->markTestSkipped('Directories are always writable for root.');
+        }
+
+        $this->logSuperAdmin();
+        $field = $this->createField(\Galette\DynamicFields\DynamicField::FILE, 'Read-only occurrences', 2);
+
+        $this->getMemberOne();
+        $fid = $field->getId();
+
+        $adh = $this->getMemberWithDynamics();
+        $dynamics = $adh->getDynamicFields();
+        $dynamics->setValue(item: $adh->id, field: $fid, index: 1, value: 'first.txt');
+        $dynamics->setValue(item: $adh->id, field: $fid, index: 2, value: 'second.txt');
+        $this->assertTrue($dynamics->storeValues($adh->id));
+
+        /** @var \Galette\DynamicFields\File $stored_field */
+        $stored_field = $dynamics->getFields()[$fid];
+        $first = GALETTE_FILES_PATH . $stored_field->getFileName($adh->id, 1);
+        $second = GALETTE_FILES_PATH . $stored_field->getFileName($adh->id, 2);
+        $this->files = [$first, $second];
+        file_put_contents($first, 'first');
+        file_put_contents($second, 'second');
+
+        $adh = $this->getMemberWithDynamics();
+        $dynamics = $adh->getDynamicFields();
+        $dynamics->unsetValue($fid, 1);
+
+        $mode = fileperms(GALETTE_FILES_PATH) & 0o777;
+        chmod(GALETTE_FILES_PATH, 0o555);
+        try {
+            $dynamics->storeValues($adh->id, transaction: true);
+            $this->fail('Removal should have been refused');
+        } catch (\RuntimeException $e) {
+            $this->assertSame(
+                'Files directory ' . GALETTE_FILES_PATH . ' is not writable, dynamic files cannot be updated.',
+                $e->getMessage()
+            );
+        } finally {
+            chmod(GALETTE_FILES_PATH, $mode);
+        }
+        $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred storing dynamic field. Form name: adh');
+
+        //the caller rolls its transaction back, and nothing is left waiting for a later commit
+        $this->zdb->rollback();
+        $this->zdb->beginTransaction();
+        $this->zdb->commit();
+        $this->assertSame('first', file_get_contents($first));
+        $this->assertSame('second', file_get_contents($second));
     }
 }

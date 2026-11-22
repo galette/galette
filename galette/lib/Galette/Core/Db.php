@@ -63,6 +63,8 @@ class Db
     private array $options;
     private string $last_query;
     private bool $no_commit = false;
+    /** @var array<callable(): void> Callbacks waiting for the current transaction to be committed */
+    private array $after_commit = [];
 
     public const string MYSQL = 'mysql';
     public const string PGSQL = 'pgsql';
@@ -653,11 +655,20 @@ class Db
      */
     public function commit(): void
     {
-        if ($this->no_commit) {
-            //never commit from tests
-            return;
+        if (!$this->no_commit) {
+            $this->db->getDriver()->getConnection()->commit();
+            if ($this->inTransaction()) {
+                //nested transaction: nothing is committed until the outer one is
+                return;
+            }
         }
-        $this->db->getDriver()->getConnection()->commit();
+        //from tests, nothing is ever committed: behave as if it were
+
+        $callbacks = $this->after_commit;
+        $this->after_commit = [];
+        foreach ($callbacks as $callback) {
+            $callback();
+        }
     }
 
     /**
@@ -665,9 +676,29 @@ class Db
      */
     public function rollback(): void
     {
+        //the whole transaction is rolled back, nested ones included
+        $this->after_commit = [];
         $this->db->getDriver()->getConnection()->rollback();
         //rows read during the transaction may not exist anymore
         RowsCache::clear();
+    }
+
+    /**
+     * Run a callback once the current transaction is committed
+     *
+     * For changes outside the database (files, ...) that must not happen if the
+     * transaction is rolled back. The callback runs at once when no transaction
+     * is running, and is dropped if the transaction is rolled back.
+     *
+     * @param callable(): void $callback Callback
+     */
+    public function afterCommit(callable $callback): void
+    {
+        if (!$this->inTransaction()) {
+            $callback();
+            return;
+        }
+        $this->after_commit[] = $callback;
     }
 
     /**
