@@ -916,4 +916,50 @@ class Db extends BaseGaletteTestCase
             "does_not_exists"
         );
     }
+
+    /**
+     * Test callbacks wait for the transaction to be committed
+     */
+    public function testAfterCommit(): void
+    {
+        $calls = new \ArrayObject();
+        $callback = function () use ($calls): void {
+            $calls->append(value: true);
+        };
+
+        //tests run in a transaction that is never committed: commit() behaves as if it were
+        $this->assertTrue($this->zdb->inTransaction());
+        $this->zdb->afterCommit($callback);
+        $this->assertCount(0, $calls);
+        $this->zdb->commit();
+        $this->assertCount(1, $calls);
+
+        //only once
+        $this->zdb->commit();
+        $this->assertCount(1, $calls);
+
+        //committing a nested transaction commits nothing
+        $this->zdb->setNoCommit(no_commit: false);
+        try {
+            $this->zdb->beginTransaction();
+            $this->zdb->afterCommit($callback);
+            $this->zdb->commit();
+            $this->assertTrue($this->zdb->inTransaction());
+            $this->assertCount(1, $calls);
+        } finally {
+            $this->zdb->setNoCommit();
+        }
+
+        //rolled back: dropped, even nested ones
+        $this->zdb->rollback();
+        $this->assertFalse($this->zdb->inTransaction());
+        $this->zdb->beginTransaction();
+        $this->zdb->commit();
+        $this->assertCount(1, $calls);
+
+        //no transaction: run at once
+        $this->zdb->rollback();
+        $this->zdb->afterCommit($callback);
+        $this->assertCount(2, $calls);
+    }
 }

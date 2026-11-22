@@ -12,6 +12,11 @@ namespace Galette\Tests\DynamicFields;
 
 use Galette\Tests\GaletteTestCase;
 
+use function Safe\file_put_contents;
+use function Safe\mkdir;
+use function Safe\rmdir;
+use function Safe\unlink;
+
 /**
  * Dynamic file test
  *
@@ -109,5 +114,33 @@ class File extends GaletteTestCase
             'anything',
             $this->file->getDisplayValue('anything')
         );
+    }
+
+    /**
+     * Test a file that cannot be removed does not stop the removal of the others
+     */
+    public function testRemoveFiles(): void
+    {
+        $suffix = uniqid();
+        $dir = GALETTE_FILES_PATH . 'not_removable_' . $suffix;
+        $file = GALETTE_FILES_PATH . 'removable_' . $suffix;
+        mkdir($dir);
+        file_put_contents($file, 'content');
+
+        try {
+            \Galette\DynamicFields\File::removeFiles([
+                $dir,
+                GALETTE_FILES_PATH . 'missing_' . $suffix,
+                $file
+            ]);
+            $this->assertDirectoryExists($dir);
+            $this->assertFileDoesNotExist($file);
+            $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove dynamic field file ' . $dir);
+        } finally {
+            rmdir($dir);
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
     }
 }
