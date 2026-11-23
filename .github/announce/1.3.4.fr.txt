@@ -1,0 +1,13 @@
+Galette 1.3.4 sort du four ! 🥧
+
+Une fournée de corrections, à ne pas laisser refroidir : la mise à jour est recommandée.
+
+🔒 Corrections de sécurité
+🔐 La double authentification n'est plus expérimentale
+🐘 Compatible avec PHP 8.6
+📎 Fichiers des champs dynamiques supprimés avec leur fiche
+🐛 Et quelques autres corrections
+
+https://galette.eu/site/fr/post/2026/11/24/galette-1-3-4/
+
+#Galette #LogicielLibre #Associations
