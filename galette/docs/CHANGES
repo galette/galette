@@ -39,6 +39,10 @@ Plugins and development
 - New plugin releases were not checked for plugins extracted from the official archives, whose directory was not renamed
 - Plugins information page links to the official plugins website
 - Two-factor authentication is no longer experimental; making it mandatory is still behind the 'two-factor-required' feature flag
+- PHP 8.6 support
+- Saved searches showed fields names instead of their labels, except for the first one read
+- Telemetry was never sent again after installation, unless sent by hand
+- Telemetry sends which features are used, the installation mode, and more reliable server information; it remains anonymous
 - Fewer database queries: dynamic fields of contributions and transactions, print logo, contextualized plural translations and preferences legend were looked up twice
 - Files of dynamic fields were left on disk when their member, contribution, transaction or field was removed
 - Documents with an uppercase extension, or a .jpeg one, could not be downloaded
