@@ -1958,10 +1958,10 @@ msgstr "- Neveljaven e-poštni naslov %1$s (%2$s)"
 msgid "- Value for '%1$s' must be a positive number!"
 msgstr "- Vrednost za '%1$s' mora biti pozitivno število!"
 
-#. TRANS: first parameter is the setting name, second the lowest value it takes
 msgid "- Unknown two-factor authentication mode!"
 msgstr "- Neznan način dvofaktorske avtentikacije!"
 
+#. TRANS: first parameter is the setting name, second the lowest value it takes
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr "- Vrednost za '%1$s' mora biti %2$s poskusov ali več!"
@@ -1976,23 +1976,22 @@ msgstr "- Vrednost za '%1$s' mora biti %2$s sekund ali več!"
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "- Neznana vidljivost za »%1$s«!"
 
-#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#. TRANS: first parameter is the setting name, second an example web address; 'self' and 'none' must not be translated
 #, php-format
 msgid ""
-"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
-"example.org separated by spaces!"
-msgstr ""
-"- Vrednost za '%1$s' mora biti 'self', 'none' ali spletni naslovi, kot je "
-"https://example.org, ločeni s presledki!"
-
-#. TRANS: parameter is the setting name; the URL must not be translated
-#, php-format
-msgid ""
-"- Value for '%1$s' must be web addresses such as https://example.org "
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as %2$s "
 "separated by spaces!"
 msgstr ""
-"- Vrednost za '%1$s' mora biti spletni naslov, kot je https://example.org, "
-"ločen s presledki!"
+"- Vrednost za '%1$s' mora biti 'self', 'none' ali spletni naslovi, kot je "
+"%2$s, ločeni s presledki!"
+
+#. TRANS: first parameter is the setting name, second an example web address
+#, php-format
+msgid ""
+"- Value for '%1$s' must be web addresses such as %2$s separated by spaces!"
+msgstr ""
+"- Vrednost za '%1$s' mora biti spletni naslov, kot je %2$s, ločen s "
+"presledki!"
 
 msgid "Missing required field name!"
 msgstr "Manjka ime obveznega polja!"

@@ -1997,10 +1997,10 @@ msgstr "- Adresse courriel non valide %1$s (%2$s)"
 msgid "- Value for '%1$s' must be a positive number!"
 msgstr "- La valeur de '%1$s' doit être un nombre positif !"
 
-#. TRANS: first parameter is the setting name, second the lowest value it takes
 msgid "- Unknown two-factor authentication mode!"
 msgstr "- Mode d'authentification deux facteurs inconnu !"
 
+#. TRANS: first parameter is the setting name, second the lowest value it takes
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr "- La valeur de '%1$s' doit être de %2$s tentatives ou plus !"
@@ -2015,23 +2015,22 @@ msgstr "- La valeur de '%1$s' doit être de %2$s secondes ou plus !"
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "- Visibilité inconnue pour « %1$s » !"
 
-#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#. TRANS: first parameter is the setting name, second an example web address; 'self' and 'none' must not be translated
 #, php-format
 msgid ""
-"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
-"example.org separated by spaces!"
-msgstr ""
-"- La valeur de « %1$s » doit être 'self', 'none' ou des adresses web telles "
-"que https://example.org séparées par des espaces !"
-
-#. TRANS: parameter is the setting name; the URL must not be translated
-#, php-format
-msgid ""
-"- Value for '%1$s' must be web addresses such as https://example.org "
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as %2$s "
 "separated by spaces!"
 msgstr ""
-"- La valeur de « %1$s » doit être des adresses web telles que https://"
-"example.org séparées par des espaces !"
+"- La valeur de « %1$s » doit être 'self', 'none' ou des adresses web telles "
+"que %2$s séparées par des espaces !"
+
+#. TRANS: first parameter is the setting name, second an example web address
+#, php-format
+msgid ""
+"- Value for '%1$s' must be web addresses such as %2$s separated by spaces!"
+msgstr ""
+"- La valeur de « %1$s » doit être des adresses web telles que %2$s séparées "
+"par des espaces !"
 
 msgid "Missing required field name!"
 msgstr "Nom du champ manquant !"

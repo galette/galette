@@ -2933,11 +2933,11 @@ msgstr "- Invalid E-Mail address %1$s (%2$s)"
 msgid "- Value for '%1$s' must be a positive number!"
 msgstr "- Value for '%1$s' must be a positive number!"
 
-#. TRANS: first parameter is the setting name, second the lowest value it takes
 #: ../lib/Galette/Core/PreferencesSchema.php:1233
 msgid "- Unknown two-factor authentication mode!"
 msgstr "- Unknown two-factor authentication mode!"
 
+#. TRANS: first parameter is the setting name, second the lowest value it takes
 #: ../lib/Galette/Core/PreferencesSchema.php:1234
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
@@ -2955,25 +2955,23 @@ msgstr "- Value for '%1$s' must be %2$s seconds or more!"
 msgid "- Unknown visibility for '%1$s'!"
 msgstr "- Unknown visibility for '%1$s'!"
 
-#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#. TRANS: first parameter is the setting name, second an example web address; 'self' and 'none' must not be translated
 #: ../lib/Galette/Core/PreferencesSchema.php:1240
 #, php-format
 msgid ""
-"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
-"example.org separated by spaces!"
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as %2$s "
+"separated by spaces!"
 msgstr ""
-"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
-"example.org separated by spaces!"
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as %2$s "
+"separated by spaces!"
 
-#. TRANS: parameter is the setting name; the URL must not be translated
+#. TRANS: first parameter is the setting name, second an example web address
 #: ../lib/Galette/Core/PreferencesSchema.php:1242
 #, php-format
 msgid ""
-"- Value for '%1$s' must be web addresses such as https://example.org "
-"separated by spaces!"
+"- Value for '%1$s' must be web addresses such as %2$s separated by spaces!"
 msgstr ""
-"- Value for '%1$s' must be web addresses such as https://example.org "
-"separated by spaces!"
+"- Value for '%1$s' must be web addresses such as %2$s separated by spaces!"
 
 #: ../lib/Galette/DynamicFields/DynamicField.php:518
 msgid "Missing required field name!"

@@ -1999,12 +1999,12 @@ msgstr "- Geçersiz e-posta adresi %1$s (%2$s)"
 msgid "- Value for '%1$s' must be a positive number!"
 msgstr ""
 
-#. TRANS: first parameter is the setting name, second the lowest value it takes
 #, fuzzy
 #| msgid "- Unknown contribution type!"
 msgid "- Unknown two-factor authentication mode!"
 msgstr "Bilinmeyen Katkı türü!"
 
+#. TRANS: first parameter is the setting name, second the lowest value it takes
 #, php-format
 msgid "- Value for '%1$s' must be %2$s attempts or more!"
 msgstr ""
@@ -2019,18 +2019,17 @@ msgstr ""
 msgid "- Unknown visibility for '%1$s'!"
 msgstr ""
 
-#. TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
+#. TRANS: first parameter is the setting name, second an example web address; 'self' and 'none' must not be translated
 #, php-format
 msgid ""
-"- Value for '%1$s' must be 'self', 'none', or web addresses such as https://"
-"example.org separated by spaces!"
+"- Value for '%1$s' must be 'self', 'none', or web addresses such as %2$s "
+"separated by spaces!"
 msgstr ""
 
-#. TRANS: parameter is the setting name; the URL must not be translated
+#. TRANS: first parameter is the setting name, second an example web address
 #, php-format
 msgid ""
-"- Value for '%1$s' must be web addresses such as https://example.org "
-"separated by spaces!"
+"- Value for '%1$s' must be web addresses such as %2$s separated by spaces!"
 msgstr ""
 
 msgid "Missing required field name!"

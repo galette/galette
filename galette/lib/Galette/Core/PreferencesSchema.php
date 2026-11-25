@@ -1246,18 +1246,18 @@ final class PreferencesSchema
             self::ERR_EMAIL => _T('- Invalid E-Mail address %1$s (%2$s)'),
             //TRANS: parameter is the setting name
             self::ERR_POSITIVE_NUMBER => _T('- Value for \'%1$s\' must be a positive number!'),
+            self::ERR_2FA_MODE => _T("- Unknown two-factor authentication mode!"),
             //throttling can be made as generous as wanted, but not turned off
             //TRANS: first parameter is the setting name, second the lowest value it takes
-            self::ERR_2FA_MODE => _T("- Unknown two-factor authentication mode!"),
             self::ERR_THROTTLE_ATTEMPTS => _T('- Value for \'%1$s\' must be %2$s attempts or more!'),
             //TRANS: first parameter is the setting name, second the lowest value it takes
             self::ERR_THROTTLE_SECONDS => _T('- Value for \'%1$s\' must be %2$s seconds or more!'),
             //TRANS: parameter is the setting name
             self::ERR_PUBLIC_PAGE_VISIBILITY => _T('- Unknown visibility for \'%1$s\'!'),
-            //TRANS: parameter is the setting name; 'self', 'none' and the URL must not be translated
-            self::ERR_CSP_SOURCES => _T("- Value for '%1\$s' must be 'self', 'none', or web addresses such as https://example.org separated by spaces!"),
-            //TRANS: parameter is the setting name; the URL must not be translated
-            self::ERR_CSP_ORIGINS => _T("- Value for '%1\$s' must be web addresses such as https://example.org separated by spaces!"),
+            //TRANS: first parameter is the setting name, second an example web address; 'self' and 'none' must not be translated
+            self::ERR_CSP_SOURCES => _T("- Value for '%1\$s' must be 'self', 'none', or web addresses such as %2\$s separated by spaces!"),
+            //TRANS: first parameter is the setting name, second an example web address
+            self::ERR_CSP_ORIGINS => _T("- Value for '%1\$s' must be web addresses such as %2\$s separated by spaces!"),
             //TRANS: parameter is the setting name; pdf and odt must not be translated
             self::ERR_EXTENSIONS => _T("- Value for '%1\$s' must be file extensions such as pdf or odt separated by spaces!"),
             //TRANS: first parameter is the setting name, second a list of file extensions
@@ -1272,10 +1272,12 @@ final class PreferencesSchema
         }
 
         //the floor belongs to the message: no caller knows which of the two
-        //applies, and neither should it
+        //applies, and neither should it; the example address stays out of the
+        //translatable string, where gettext warns about it
         $args = [...$args, ...match ($id) {
             self::ERR_THROTTLE_ATTEMPTS => [(string)AuthThrottle::MIN_ATTEMPTS],
             self::ERR_THROTTLE_SECONDS => [(string)AuthThrottle::MIN_SECONDS],
+            self::ERR_CSP_SOURCES, self::ERR_CSP_ORIGINS => ['https://example.org'],
             default => [],
         }];
 

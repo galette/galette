@@ -371,6 +371,17 @@ class PreferencesSchema extends GaletteTestCase
             Schema::getErrorMessage(Schema::ERR_EMAIL, 'admin', 'pref_email')
         );
 
+        //the example address is not part of the translatable string
+        $this->assertSame(
+            "- Value for 'pref_csp_img_src' must be 'self', 'none', or web addresses such as "
+            . 'https://example.org separated by spaces!',
+            Schema::getErrorMessage(Schema::ERR_CSP_SOURCES, 'pref_csp_img_src')
+        );
+        $this->assertSame(
+            "- Value for 'pref_csp_frame_ancestors' must be web addresses such as https://example.org separated by spaces!",
+            Schema::getErrorMessage(Schema::ERR_CSP_ORIGINS, 'pref_csp_frame_ancestors')
+        );
+
         //a message with no placeholder is untouched
         $this->assertSame(
             Schema::getErrorMessage(Schema::ERR_CARD_HEIGHT),
