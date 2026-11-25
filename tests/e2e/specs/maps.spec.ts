@@ -16,7 +16,8 @@ import { test, expect } from '../fixtures/auth.fixture';
 import { AclHelper } from '../helpers/acl';
 import { expectNoViolation, format, listenViolations, violations } from '../fixtures/csp.fixture';
 
-//his town is not a real one: no town is proposed when the map opens
+//no town is proposed when the map opens: the server-side search answers from
+//what the test API has kept, never from nominatim
 const MEMBER_NAME = 'PENDRAGON Arthur';
 const EDITED_NAME = 'Pendragon, not saved';
 
@@ -81,6 +82,7 @@ test.describe.serial('Member position', () => {
   test.beforeEach(async ({ page }) => {
     await testApi(page, { action: 'enable_maps' });
     await testApi(page, { action: 'remove_position', member: memberId });
+    await testApi(page, { action: 'no_towns', member: memberId });
   });
 
   test.afterAll(async ({ browser }) => {

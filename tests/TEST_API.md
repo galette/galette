@@ -139,12 +139,16 @@ Content-Type: application/json
 { "action": "enable_maps" }
 { "action": "disable_maps" }
 { "action": "remove_position", "member": 42 }
+{ "action": "no_towns", "member": 42 }
 ```
 
 - `enable_maps` enables maps on a raster background (OpenStreetMap), so tests
   do not depend on WebGL, and with no maps center
 - `disable_maps` disables them, and restores the default background
 - `remove_position` removes the position of a member, given by its id
+- `no_towns` keeps an empty nominatim answer for the town of a member, given
+  by its id: its position page proposes no town, and does not wait for
+  nominatim (up to 5 seconds on a slow network)
 
 #### Get Current Configuration
 

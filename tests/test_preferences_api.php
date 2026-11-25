@@ -28,15 +28,23 @@ declare(strict_types=1);
  * - enable_maps: Enable maps, on a raster background and with no center set
  * - disable_maps: Disable maps and restore their default background
  * - remove_position: Remove the position of a member (member: its id)
+ * - no_towns: Have the town search of a member find no town, without querying
+ *   nominatim (member: its id)
  */
 
 use Galette\Core\Db;
 use Galette\Core\GaletteMail;
 use Galette\Core\Preferences;
+use Galette\Entity\Adherent;
 use Galette\Maps\Center;
 use Galette\Maps\Coordinates;
+use Galette\Maps\NominatimTowns;
 use Galette\Maps\Positions;
 use Galette\Maps\TileProviders;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 
 use function Safe\file_get_contents;
 use function Safe\json_decode;
@@ -200,6 +208,26 @@ try {
             case 'remove_position':
                 (new Positions($zdb))->remove(Coordinates::TYPE, (int)($input['member'] ?? 0));
                 echo json_encode(['success' => true, 'message' => 'Position removed']);
+                break;
+
+            case 'no_towns':
+                //the position page searches the member town before it answers:
+                //an empty answer is kept, so nominatim is never waited for
+                $select = $zdb->select(Adherent::TABLE)
+                    ->columns(['ville_adh', 'pays_adh'])
+                    ->where([Adherent::PK => (int)($input['member'] ?? 0)]);
+                $member = $zdb->execute($select)->current();
+                if ($member === null) {
+                    throw new \RuntimeException('Unknown member');
+                }
+                $client = new Client([
+                    'handler' => HandlerStack::create(new MockHandler([new Response(200, [], '[]')]))
+                ]);
+                (new NominatimTowns($preferences, $client))->search(
+                    (string)$member->ville_adh,
+                    $member->pays_adh
+                );
+                echo json_encode(['success' => true, 'message' => 'No towns']);
                 break;
 
             default:
