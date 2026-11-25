@@ -123,6 +123,36 @@ jobs:
               } >> "$GITHUB_OUTPUT"
             done
             echo "Announcing with the texts shipped in .github/announce/"
+
+            # Each text may come with an image, <version>.<lang>.png or .jpg — a
+            # screenshot shows the interface in the language of the toot — and its
+            # alternative text in <version>.<lang>.alt.txt. An image without one
+            # is left out rather than failing the announcement.
+            for lang in en fr; do
+              image=""
+              for ext in png jpg; do
+                candidate=".github/announce/${VERSION}.${lang}.${ext}"
+                if [[ -f "$candidate" ]]; then
+                  image="$candidate"
+                  break
+                fi
+              done
+              alt=".github/announce/${VERSION}.${lang}.alt.txt"
+              if [[ -n "$image" && ! -s "$alt" ]]; then
+                echo "::warning::${image} has no alternative text in ${alt}, the ${lang} toot goes without it."
+                image=""
+              fi
+              echo "${lang}_media=${image}" >> "$GITHUB_OUTPUT"
+              delimiter="EOF_$(openssl rand -hex 8)"
+              {
+                echo "${lang}_media_description<<${delimiter}"
+                if [[ -n "$image" ]]; then cat "$alt"; fi
+                echo "${delimiter}"
+              } >> "$GITHUB_OUTPUT"
+              if [[ -n "$image" ]]; then
+                echo "The ${lang} toot comes with ${image}."
+              fi
+            done
           else
             echo "custom=false" >> "$GITHUB_OUTPUT"
             echo "No announcement texts for ${VERSION}, the generic one is used."
@@ -147,6 +177,8 @@ jobs:
         with:
           status: ${{ steps.texts.outputs.en }}
           language: en
+          media: ${{ steps.texts.outputs.en_media }}
+          media-description: ${{ steps.texts.outputs.en_media_description }}
           token: ${{ secrets.MASTODON_TOKEN }}
           instance: ${{ vars.MASTODON_INSTANCE }}
           idempotency-key: galette-${{ steps.version.outputs.version }}-en
@@ -158,6 +190,8 @@ jobs:
         with:
           status: ${{ steps.texts.outputs.fr }}
           language: fr
+          media: ${{ steps.texts.outputs.fr_media }}
+          media-description: ${{ steps.texts.outputs.fr_media_description }}
           token: ${{ secrets.MASTODON_TOKEN }}
           instance: ${{ vars.MASTODON_INSTANCE }}
           idempotency-key: galette-${{ steps.version.outputs.version }}-fr
