@@ -4,6 +4,7 @@
 [![GitHub license](https://img.shields.io/github/license/galette/galette.svg)](https://github.com/galette/galette/blob/master/galette/docs/COPYING)
 [![Build Status](https://github.com/galette/galette/actions/workflows/ci-linux.yml/badge.svg)](https://github.com/galette/galette/actions/workflows/ci-linux.yml)
 [![Translation status](https://hosted.weblate.org/widgets/galette/-/galette/svg-badge.svg)](https://hosted.weblate.org/engage/galette/?utm_source=widget)
+[![Docker pulls](https://img.shields.io/docker/pulls/galette/galette.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/galette/galette)
 
 ### English
 
@@ -25,6 +26,7 @@ To use Galette, you can either:
 
 * download latest stable version available from [Galette website](https://galette.eu)
 * use the [nightly build](https://galette.eu/download/galette-dev.tar.bz2) to test new features
+* run the [Docker image](https://hub.docker.com/r/galette/galette): `docker pull galette/galette` (also on [ghcr.io](https://github.com/galette/docker/pkgs/container/galette))
 * use [Galette source code from repository](https://doc.galette.eu/en/develop/source_code.html) (make sure you install third party dependencies), this solution requires some technical skills
   * after checkout, `bin/serve` can brings up a ready-to-test instance, database included
 
@@ -50,5 +52,6 @@ Pour utiliser Galette, vous pouvez, au choix :
 
 * télécharger la dernière version stable depuis le [site web de Galette](https://galette.eu)
 * utiliser [l'archive quotidienne (nightly build)](https://galette.eu/download/galette-dev.tar.bz2) pour tester les nouvelles fonctionnalités
+* lancer l'[image Docker](https://hub.docker.com/r/galette/galette) : `docker pull galette/galette` (aussi sur [ghcr.io](https://github.com/galette/docker/pkgs/container/galette))
 * utiliser [le code source de Galette depuis le dépôt](https://doc.galette.eu/fr/develop/source_code.html) (assurez-vous d'installer les bibliothèques tierces), cette solution requiert quelques compétences techniques
   * après la copie, `bin/serve` pourra monter une instance prête à tester, base de données comprise
