@@ -13,7 +13,9 @@ namespace Galette\Controllers;
 use Galette\Controllers\Attributes\Route;
 use Galette\Core\AuthThrottle;
 use Galette\Core\BehaviorConstants;
+use Galette\Core\CacheManager;
 use Galette\Core\FeatureFlagManager;
+use Galette\Core\Opcache;
 use Galette\Core\PreferencesSchema;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
@@ -35,7 +37,7 @@ class AdvancedConfigController extends AbstractController
     private const string CONFIRM_KEY = 'advanced_config_confirmed_at';
 
     /** Tabs of the page, the first one being the default */
-    private const array TABS = ['settings', 'features', 'constants'];
+    private const array TABS = ['settings', 'features', 'constants', 'cache'];
 
     /**
      * Advanced configuration page
@@ -45,8 +47,12 @@ class AdvancedConfigController extends AbstractController
         pattern: '/advanced-config',
         methods: ['GET']
     )]
-    public function advancedConfig(Request $request, Response $response): Response
-    {
+    public function advancedConfig(
+        Request $request,
+        Response $response,
+        CacheManager $cache,
+        Opcache $opcache
+    ): Response {
         $tab = $this->getTab($request->getQueryParams()['tab'] ?? null);
 
         if (!$this->isConfirmed()) {
@@ -59,6 +65,8 @@ class AdvancedConfigController extends AbstractController
             'entries'       => $this->getEntries(),
             'constants'     => BehaviorConstants::getStatus(),
             'previews'      => $this->getPreviews(),
+            'cache_entries' => $cache->getEntries(),
+            'opcache'       => $opcache->getStatus(),
             'tab'           => $tab,
         ];
 
@@ -299,6 +307,71 @@ class AdvancedConfigController extends AbstractController
                     : _Tn('Feature turned off: %1$s.', 'Features turned off: %1$s.', count($changed)),
                 implode(', ', $changed)
             )]
+        );
+    }
+
+    /**
+     * Clear the cache, previous versions ones, or OPcache
+     */
+    #[Route(
+        name: 'clearCacheAdvancedConfig',
+        pattern: '/advanced-config/cache',
+        methods: ['POST']
+    )]
+    public function clearCacheAdvancedConfig(
+        Request $request,
+        Response $response,
+        CacheManager $cache,
+        Opcache $opcache
+    ): Response {
+        $redirect_url = $this->getPageUrl('cache');
+
+        if (!$this->isConfirmed()) {
+            return $this->redirect(
+                response: $response,
+                redirect_url: $redirect_url,
+                errors: [_T("Please confirm your password again.")]
+            );
+        }
+
+        $key = (string)($request->getParsedBody()['cache'] ?? '');
+
+        if ($key === 'opcache') {
+            $reset = $opcache->reset();
+            return $this->redirect(
+                response: $response,
+                redirect_url: $redirect_url,
+                successes: $reset ? [_T("OPcache has been reset.")] : [],
+                errors: $reset ? [] : [_T("OPcache could not be reset.")]
+            );
+        }
+
+        //caches are cleared one by one from the command line only
+        if (
+            !in_array(
+                $key,
+                [CacheManager::ALL, CacheManager::OLD_VERSIONS],
+                strict: true
+            )
+        ) {
+            return $this->redirect(
+                response: $response,
+                redirect_url: $redirect_url,
+                errors: [_T("Unknown cache.")]
+            );
+        }
+
+        $cleared = $cache->clear($key);
+
+        return $this->redirect(
+            response: $response,
+            redirect_url: $redirect_url,
+            successes: $cleared ? [
+                $key === CacheManager::ALL
+                    ? _T("Cache has been cleared.")
+                    : _T("Previous versions caches have been deleted.")
+            ] : [],
+            errors: $cache->getErrors()
         );
     }
 

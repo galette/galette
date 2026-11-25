@@ -9,6 +9,7 @@ New features
 - Roles granted for some groups never reach beyond these groups; administrator rights, reminders and staff statuses stay global
 - A debug bar is available to the super administrator in debug mode, when development dependencies are installed
 - Members maps are part of Galette, replacing the maps plugin: members set their position, shown next to their card and on a public map; positions precision, background map and maps center are chosen from the maps settings, with a preview
+- Caches can be inspected and cleared from a new tab of the advanced configuration, which also resets OPcache, or with the galette:cache:clear command
 
 Improvements
 

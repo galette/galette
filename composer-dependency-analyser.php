@@ -11,6 +11,12 @@ use ShipMonk\ComposerDependencyAnalyser\Config\ErrorType;
 
 $config = new Configuration();
 
+// Optional, functions checked before use; only reported where loaded,
+// and an unused ignore is an error
+if (extension_loaded('Zend OPcache')) {
+    $config->ignoreErrorsOnExtension('ext-zend-opcache', [ErrorType::SHADOW_DEPENDENCY]);
+}
+
 return $config
     ->addPathsToScan([
         'galette/includes',

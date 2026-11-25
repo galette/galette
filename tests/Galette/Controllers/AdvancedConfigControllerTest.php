@@ -11,12 +11,18 @@ declare(strict_types=1);
 namespace Galette\Tests\Controllers;
 
 use Galette\Controllers\AdvancedConfigController;
+use Galette\Core\CacheManager;
 use Galette\Tests\GaletteRoutingTestCase;
 use PHPUnit\Framework\Attributes\PreserveGlobalState;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 
 use function Safe\define;
+use function Safe\file_put_contents;
+use function Safe\glob;
+use function Safe\mkdir;
 use function Safe\preg_match;
+use function Safe\rmdir;
+use function Safe\unlink;
 
 /**
  * Advanced configuration controller tests
@@ -91,7 +97,15 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
     {
         $authenticate = $this->container->get(\Galette\Middleware\Authenticate::class);
 
-        foreach (['advancedConfig', 'saveAdvancedConfig', 'resetAdvancedConfig', 'saveFeatureFlagAdvancedConfig'] as $route) {
+        foreach (
+            [
+                'advancedConfig',
+                'saveAdvancedConfig',
+                'resetAdvancedConfig',
+                'saveFeatureFlagAdvancedConfig',
+                'clearCacheAdvancedConfig',
+            ] as $route
+        ) {
             $this->assertSame(
                 'superadmin',
                 $authenticate->getAclFor($route),
@@ -360,6 +374,104 @@ class AdvancedConfigControllerTest extends GaletteRoutingTestCase
 
         $body = (string)$this->app->handle($this->createRequest('advancedConfig'))->getBody();
         $this->assertStringContainsString('name="password"', $body);
+    }
+
+    /**
+     * The cache tab sums caches up, and clears them all at once
+     */
+    public function testClearCache(): void
+    {
+        $this->reachPage();
+        $redirect = ['Location' => [$this->routeparser->urlFor('advancedConfig') . '?tab=cache']];
+        $cfile = GALETTE_CACHE_DIR . 'releases.cache';
+        file_put_contents($cfile, 'releases');
+
+        try {
+            $body = (string)$this->app->handle(
+                $this->createRequest('advancedConfig', query_params: ['tab' => 'cache'])
+            )->getBody();
+            $this->assertStringContainsString('class="ui active tab segment" data-tab="cache"', $body);
+            $this->assertStringContainsString('<div class="card" data-cache="all">', $body);
+            $this->assertStringContainsString('name="cache" value="all"', $body);
+            //tests cache directory has no previous versions next to it
+            $this->assertStringNotContainsString('data-cache="old_versions"', $body);
+            $this->assertStringNotContainsString('value="old_versions"', $body);
+
+            //one cache only is for the command line
+            $request = $this->createRequest('clearCacheAdvancedConfig', method: 'POST')
+                ->withParsedBody(['cache' => 'releases']);
+            $test_response = $this->app->handle($request);
+
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['Unknown cache.']]);
+            $this->assertFileExists($cfile);
+
+            $request = $this->createRequest('clearCacheAdvancedConfig', method: 'POST')
+                ->withParsedBody(['cache' => 'all']);
+            $test_response = $this->app->handle($request);
+
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->assertSame($redirect, $test_response->getHeaders());
+            $this->expectFlashData(['success_detected' => ['Cache has been cleared.']]);
+            $this->assertFileDoesNotExist($cfile);
+        } finally {
+            if (file_exists($cfile)) {
+                unlink($cfile);
+            }
+        }
+    }
+
+    /**
+     * Caches "Clear cache" keeps are not counted in its figures
+     */
+    public function testClearCacheFiguresLeaveSensitiveOut(): void
+    {
+        $this->reachPage();
+        $dir = GALETTE_DATA_PATH . 'cachefigures-' . bin2hex(random_bytes(4));
+        mkdir($dir);
+        file_put_contents($dir . '/telemetry.cache', 'sent');
+        $this->container->set(CacheManager::class, new CacheManager($dir));
+
+        try {
+            $body = (string)$this->app->handle(
+                $this->createRequest('advancedConfig', query_params: ['tab' => 'cache'])
+            )->getBody();
+            $this->assertMatchesRegularExpression('/<div class="meta">0 files?<\/div>/', $body);
+            $this->assertMatchesRegularExpression('/value="all"[^>]* disabled>/', $body);
+
+            file_put_contents($dir . '/releases.cache', 'releases');
+            $body = (string)$this->app->handle(
+                $this->createRequest('advancedConfig', query_params: ['tab' => 'cache'])
+            )->getBody();
+            $this->assertMatchesRegularExpression('/<div class="meta">1 file<\/div>/', $body);
+            $this->assertDoesNotMatchRegularExpression('/value="all"[^>]* disabled>/', $body);
+        } finally {
+            array_map(unlink(...), glob($dir . '/*'));
+            rmdir($dir);
+        }
+    }
+
+    /**
+     * Clearing cache requires a fresh password confirmation
+     */
+    public function testClearCacheRequiresConfirmation(): void
+    {
+        $this->reachPage();
+        $this->session->advanced_config_confirmed_at = time() - AdvancedConfigController::CONFIRM_LIFETIME - 1;
+        $cfile = GALETTE_CACHE_DIR . 'releases.cache';
+        file_put_contents($cfile, 'releases');
+
+        try {
+            $request = $this->createRequest('clearCacheAdvancedConfig', method: 'POST')
+                ->withParsedBody(['cache' => 'all']);
+            $test_response = $this->app->handle($request);
+
+            $this->assertSame(301, $test_response->getStatusCode());
+            $this->expectFlashData(['error_detected' => ['Please confirm your password again.']]);
+            $this->assertFileExists($cfile);
+        } finally {
+            unlink($cfile);
+        }
     }
 
     /**

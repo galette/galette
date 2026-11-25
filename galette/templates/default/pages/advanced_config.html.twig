@@ -25,6 +25,7 @@
         <a href="{{ url_for('advancedConfig') }}?tab=features" class="item{{ tab == 'features' ? ' active' }}" data-tab="features">{{ _T("Experimental features") }}</a>
 {% endif %}
         <a href="{{ url_for('advancedConfig') }}?tab=constants" class="item{{ tab == 'constants' ? ' active' }}" data-tab="constants">{{ _T("Constants") }}</a>
+        <a href="{{ url_for('advancedConfig') }}?tab=cache" class="item{{ tab == 'cache' ? ' active' }}" data-tab="cache">{{ _T("Cache") }}</a>
     </div>
 
     <div class="ui{{ tab == 'settings' ? ' active' }} tab segment" data-tab="settings">
@@ -248,6 +249,87 @@
 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <div class="ui{{ tab == 'cache' ? ' active' }} tab segment" data-tab="cache">
+    {# totals: variables set inside a loop do not outlive it #}
+    {# sensitive caches are left out by "Clear cache", so are they from its figures #}
+    {% set current_entries = cache_entries|filter(entry => entry.key != 'old_versions' and not entry.sensitive) %}
+    {% set old_entries = cache_entries|filter(entry => entry.key == 'old_versions') %}
+    {% set cache_files = current_entries|reduce((carry, entry) => carry + entry.files, 0) %}
+    {% set cache_size = current_entries|reduce((carry, entry) => carry + entry.size, 0) %}
+    {% set old_count = old_entries|reduce((carry, entry) => carry + entry.paths|length, 0) %}
+    {% set old_size = old_entries|reduce((carry, entry) => carry + entry.size, 0) %}
+        <form action="{{ url_for('clearCacheAdvancedConfig') }}" method="post" class="ui form">
+    {% set cards_count = 1 + (old_entries|length > 0 ? 1 : 0) + (opcache is not null ? 1 : 0) %}
+            <div class="ui {{ ['one', 'two', 'three'][cards_count - 1] }} stackable cards" id="cache_cards">
+                <div class="card" data-cache="all">
+                    <div class="center aligned content">
+                        <div class="header">{{ _T("Galette cache") }}</div>
+                        <div class="ui small statistic">
+                            <div class="value">{{ callstatic('\\Galette\\Util\\Filesize', 'fromBytes', cache_size) }}</div>
+                        </div>
+                        <div class="meta">{{ _Tn('%1$s file', '%1$s files', cache_files)|format(cache_files) }}</div>
+                    </div>
+                    <div class="center aligned extra content">
+                        <button type="submit" name="cache" value="all" class="ui labeled icon primary button"{% if cache_files == 0 %} disabled{% endif %}>
+                            <i class="trash alternate icon" aria-hidden="true"></i>
+                            {{ _T("Clear cache") }}
+                        </button>
+                    </div>
+                </div>
+{% if old_entries|length > 0 %}
+                <div class="card" data-cache="old_versions">
+                    <div class="center aligned content">
+                        <div class="header">{{ _T("Previous versions") }}</div>
+                        <div class="ui small statistic">
+                            <div class="value">{{ callstatic('\\Galette\\Util\\Filesize', 'fromBytes', old_size) }}</div>
+                        </div>
+                        <div class="meta">{{ _Tn('%1$s directory', '%1$s directories', old_count)|format(old_count) }}</div>
+                    </div>
+                    <div class="center aligned extra content">
+                        <button type="submit" name="cache" value="old_versions" class="ui labeled icon button"{% if old_count == 0 %} disabled{% endif %}>
+                            <i class="trash alternate icon" aria-hidden="true"></i>
+                            {{ _T("Delete previous versions") }}
+                        </button>
+                    </div>
+                </div>
+{% endif %}
+{% if opcache is not null %}
+                <div class="card" data-cache="opcache">
+                    <div class="center aligned content">
+                        <div class="header">{{ _T("OPcache used") }}</div>
+                        <div class="ui small statistic">
+                            <div class="value">{{ opcache.memory_total > 0 ? (opcache.memory_used * 100 / opcache.memory_total)|round : 0 }}&nbsp;%</div>
+                        </div>
+                        <div class="meta">
+                            {{ _T("%1$s of %2$s")|format(
+                                callstatic('\\Galette\\Util\\Filesize', 'fromBytes', opcache.memory_used),
+                                callstatic('\\Galette\\Util\\Filesize', 'fromBytes', opcache.memory_total)
+                            ) }}
+                        </div>
+                    </div>
+                    <div class="center aligned extra content">
+                        <button type="submit" name="cache" value="opcache" class="ui labeled icon button">
+                            <i class="redo icon" aria-hidden="true"></i>
+                            {{ _T("Reset OPcache") }}
+                        </button>
+                    </div>
+                </div>
+{% endif %}
+            </div>
+        </form>
+
+        <div class="ui icon info message">
+            <i class="info circle icon" aria-hidden="true"></i>
+            <div class="content">
+                <p>{{ _T("Clearing the cache loses no data: the next pages may only be slower to display.") }}</p>
+{% if opcache is not null %}
+                <p>{{ _T("Resetting OPcache applies to every application of the same PHP pool.") }}</p>
+{% endif %}
+                <p>{{ _T("To clear one cache only, as the web server user:") }} <code>bin/console galette:cache:clear --list</code></p>
+            </div>
+        </div>
     </div>
 
         <div id="legende" class="ui modal">
