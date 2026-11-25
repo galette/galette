@@ -749,8 +749,8 @@ final class PreferencesSchema
             // === Two-factor authentication ===
             'pref_2fa_mode' => [
                 'type' => self::TYPE_INT,
-                'default' => TwoFactorAuth::MODE_DISABLED,
-                'min' => TwoFactorAuth::MODE_DISABLED,
+                'default' => TwoFactorAuth::MODE_OPTIONAL,
+                'min' => TwoFactorAuth::MODE_OPTIONAL,
                 'max' => TwoFactorAuth::MODE_REQUIRED_ALL,
                 'error' => self::ERR_2FA_MODE,
             ],
@@ -779,6 +779,18 @@ final class PreferencesSchema
                 'acl' => self::ACL_SUPERADMIN,
             ],
             'pref_2fa_superadmin_timeslice' => [
+                'type' => self::TYPE_INT,
+                'default' => 0,
+                'readonly' => true,
+                'demo_locked' => true,
+                'acl' => self::ACL_SUPERADMIN,
+            ],
+            /*
+             * Timestamp until which no second factor is asked for, written by
+             * galette:twofactor:suspend only. Locked on a demonstration
+             * instance like the rest of the section.
+             */
+            'pref_2fa_suspended_until' => [
                 'type' => self::TYPE_INT,
                 'default' => 0,
                 'readonly' => true,

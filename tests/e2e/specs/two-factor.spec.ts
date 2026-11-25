@@ -62,21 +62,12 @@ test.describe('Two-factor authentication', () => {
     await TwoFactorHelper.reset(page);
   });
 
-  test('2FA - The menu offers it only while the policy allows it', async ({ page, loggedInAs }) => {
+  test('2FA - The menu offers it out of the box', async ({ page, loggedInAs }) => {
     await page.goto('/login');
     await TwoFactorHelper.reset(page);
 
+    //no policy to set first: "optional" is the default, and the lowest one
     const member = await loggedInAs('member');
-    await expect(member.locator('a[href$="/two-factor/manage"]')).toHaveCount(0);
-
-    //and the URL is not a way round the missing menu entry: a secret enrolled
-    //while the policy is disabled would never be asked for
-    await member.goto('/two-factor/manage');
-    await expect(member).not.toHaveURL(/two-factor/);
-    await member.goto('/two-factor/enrol');
-    await expect(member).not.toHaveURL(/two-factor/);
-
-    await TwoFactorHelper.setMode(member, TWO_FACTOR_MODE.OPTIONAL);
     await member.goto('/dashboard');
     //presence rather than visibility: the entry sits in a collapsed "My
     //account" menu, and twice over -- one menu for wide screens, one for narrow

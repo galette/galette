@@ -183,12 +183,7 @@ class TwoFactorAuthTest extends GaletteTestCase
         $this->login->logIn($member->login, 'J^B-()f');
         $this->assertFalse($this->login->isAdmin());
 
-        $this->preferences->pref_2fa_mode = TwoFactorAuth::MODE_DISABLED;
-        $this->assertFalse($this->tfa->isEnabled());
-        $this->assertFalse($this->tfa->isRequiredFor($this->login));
-
         $this->preferences->pref_2fa_mode = TwoFactorAuth::MODE_OPTIONAL;
-        $this->assertTrue($this->tfa->isEnabled());
         $this->assertFalse($this->tfa->isRequiredFor($this->login));
 
         $this->preferences->pref_2fa_mode = TwoFactorAuth::MODE_REQUIRED_STAFF;
@@ -202,6 +197,40 @@ class TwoFactorAuthTest extends GaletteTestCase
         $this->logSuperAdmin();
         $this->preferences->pref_2fa_mode = TwoFactorAuth::MODE_REQUIRED_STAFF;
         $this->assertTrue($this->tfa->isRequiredFor($this->login));
+    }
+
+    /**
+     * A suspension runs until its end, excluded, and lifts every obligation
+     * while it does: enrolling means typing a code
+     */
+    public function testSuspension(): void
+    {
+        $tfa = new TwoFactorAuth($this->preferences, $this->frozenClockAt(1000), $this->zdb);
+
+        try {
+            $this->preferences->pref_2fa_suspended_until = 0;
+            $this->assertNull(TwoFactorAuth::suspendedUntil($this->preferences, 1000));
+            $this->assertFalse($tfa->isSuspended());
+
+            $this->preferences->pref_2fa_suspended_until = 1001;
+            $this->assertSame(1001, TwoFactorAuth::suspendedUntil($this->preferences, 1000));
+            $this->assertNull(TwoFactorAuth::suspendedUntil($this->preferences, 1001));
+            $this->assertTrue($tfa->isSuspended());
+
+            $this->preferences->pref_2fa_mode = TwoFactorAuth::MODE_REQUIRED_ALL;
+            $member = $this->createMember($this->dataAdherentOne());
+            $this->login->logIn($member->login, 'J^B-()f');
+            $this->assertFalse($tfa->isRequiredFor($this->login));
+
+            $this->preferences->pref_2fa_suspended_until = 1000;
+            $this->assertFalse($tfa->isSuspended());
+            $this->assertTrue($tfa->isRequiredFor($this->login));
+        } finally {
+            TwoFactorAuth::forceRequiredAvailable(available: true);
+            $this->login->logOut();
+            $this->preferences->pref_2fa_mode = TwoFactorAuth::MODE_OPTIONAL;
+            $this->preferences->pref_2fa_suspended_until = 0;
+        }
     }
 
     /**
@@ -261,9 +290,7 @@ class TwoFactorAuthTest extends GaletteTestCase
 
             $this->assertFalse(TwoFactorAuth::isRequiredAvailable());
             $this->assertSame(TwoFactorAuth::MODE_OPTIONAL, $tfa->getMode());
-            //still in use: an enrolled member is still asked for their code
-            $this->assertTrue($tfa->isEnabled());
-            //but nothing is compulsory any more, which is what could lock an
+            //nothing is compulsory any more, which is what could lock an
             //association out of its own instance
             $this->assertFalse($tfa->isRequiredFor($this->login));
 
@@ -279,30 +306,27 @@ class TwoFactorAuthTest extends GaletteTestCase
             $member = $this->createMember($this->dataAdherentOne());
             $this->assertTrue($this->login->logIn($member->login, 'J^B-()f'));
             $this->assertContains('two-factor-manage', $this->myAccountRoutes());
-
-            //a policy that is off stays off: the clamp is a ceiling, it never
-            //turns anything on
-            $this->preferences->pref_2fa_mode = TwoFactorAuth::MODE_DISABLED;
-            $this->assertSame(TwoFactorAuth::MODE_DISABLED, $tfa->getMode());
-            $this->assertFalse($tfa->isEnabled());
-            $this->assertNotContains('two-factor-manage', $this->myAccountRoutes());
         } finally {
             TwoFactorAuth::forceRequiredAvailable(available: true);
         }
 
         $this->login->logOut();
-        $this->preferences->pref_2fa_mode = TwoFactorAuth::MODE_DISABLED;
+        $this->preferences->pref_2fa_mode = TwoFactorAuth::MODE_OPTIONAL;
     }
 
     /**
-     * Clamping a stored policy: a ceiling, never a switch
+     * Clamping a stored policy: nothing reads below "optional", nothing above
+     * what the flag allows
      */
-    public function testClampIsACeiling(): void
+    public function testClampMode(): void
     {
         try {
             TwoFactorAuth::forceRequiredAvailable(available: false);
 
-            $this->assertSame(TwoFactorAuth::MODE_DISABLED, TwoFactorAuth::clampMode(TwoFactorAuth::MODE_DISABLED));
+            //the former "disabled", left by an instance that skipped its
+            //upgrade, does not switch off anybody's second factor
+            $this->assertSame(TwoFactorAuth::MODE_OPTIONAL, TwoFactorAuth::clampMode(0));
+            $this->assertSame(TwoFactorAuth::MODE_OPTIONAL, TwoFactorAuth::clampMode(-1));
             $this->assertSame(TwoFactorAuth::MODE_OPTIONAL, TwoFactorAuth::clampMode(TwoFactorAuth::MODE_OPTIONAL));
             $this->assertSame(
                 TwoFactorAuth::MODE_OPTIONAL,
@@ -318,18 +342,22 @@ class TwoFactorAuthTest extends GaletteTestCase
             TwoFactorAuth::forceRequiredAvailable(available: true);
         }
 
-        //with the flag, what is stored is what applies
-        foreach ([0, 1, 2, 3, 7] as $mode) {
+        //with the flag, a stored policy is what applies
+        foreach ([1, 2, 3] as $mode) {
             $this->assertSame($mode, TwoFactorAuth::clampMode($mode));
+        }
+        //and anything else still reads as "optional"
+        foreach ([-1, 0, 7] as $mode) {
+            $this->assertSame(TwoFactorAuth::MODE_OPTIONAL, TwoFactorAuth::clampMode($mode));
         }
     }
 
     /**
      * A preference blanked by a form that did not render it comes back as an
      * empty string, which compares unequal to every mode: read through the
-     * cast, or the second factor turns itself on
+     * cast and the clamp, it is the lowest policy there is
      */
-    public function testBlankPolicyReadsAsDisabled(): void
+    public function testBlankPolicyReadsAsOptional(): void
     {
         global $preferences;
 
@@ -344,18 +372,17 @@ class TwoFactorAuthTest extends GaletteTestCase
         $preferences = $blanked;
 
         try {
-            $this->assertSame(TwoFactorAuth::MODE_DISABLED, TwoFactorAuth::modeFrom($blanked));
+            $this->assertSame(TwoFactorAuth::MODE_OPTIONAL, TwoFactorAuth::modeFrom($blanked));
 
-            //and the menu offers nothing: comparing the raw value would find
-            //'' unequal to every mode, and show the entry
+            //and members can still reach their second factor
             $member = $this->createMember($this->dataAdherentOne());
             $this->assertTrue($this->login->logIn($member->login, 'J^B-()f'));
-            $this->assertNotContains('two-factor-manage', $this->myAccountRoutes());
+            $this->assertContains('two-factor-manage', $this->myAccountRoutes());
         } finally {
             $preferences = $kept;
             $this->login->logOut();
             $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
-            $update->set(['val_pref' => (string)TwoFactorAuth::MODE_DISABLED])
+            $update->set(['val_pref' => (string)TwoFactorAuth::MODE_OPTIONAL])
                 ->where(['nom_pref' => 'pref_2fa_mode']);
             $this->zdb->execute($update);
         }

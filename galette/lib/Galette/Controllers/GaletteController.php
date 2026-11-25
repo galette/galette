@@ -194,7 +194,7 @@ class GaletteController extends AbstractController
         //instance that stored one keeps it, but the form must offer -- and
         //re-post -- what actually applies: rendering a stored 3 with only two
         //options selects none, the browser keeps the first, and the next save
-        //would silently write "disabled" over a policy in force.
+        //would silently write "optional" over a policy in force.
         $pref['pref_2fa_mode'] = TwoFactorAuth::clampMode((int)$pref['pref_2fa_mode']);
 
         //List available themes

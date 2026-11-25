@@ -10,7 +10,6 @@ import { Page } from '@playwright/test';
  * Second factor policy, mirroring Galette\Core\TwoFactorAuth
  */
 export const TWO_FACTOR_MODE = {
-  DISABLED: 0,
   OPTIONAL: 1,
   REQUIRED_STAFF: 2,
   REQUIRED_ALL: 3,

@@ -276,9 +276,9 @@ class AuthController extends AbstractController
             return;
         }
 
-        //nothing to suggest when the instance does not use it, and nothing to
-        //say when the policy already requires it: that is the middleware's job
-        if (!$tfa->isEnabled() || $tfa->isRequiredFor($this->login)) {
+        //nothing to say when the policy already requires it: that is the
+        //middleware's job; nor while it is suspended, enrolment would fail
+        if ($tfa->isSuspended() || $tfa->isRequiredFor($this->login)) {
             return;
         }
 

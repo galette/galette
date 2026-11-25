@@ -1123,9 +1123,8 @@
 {% if login.isAdmin() %}
         <div class="ui{{ tab == 'security' ? ' active' }} tab segment" data-tab="security">
                 <div class="inline field">
-                    <label for="pref_2fa_mode" title="{{ _T("Asks for a code from an application on the member's phone in addition to their password, so that a stolen password is not enough on its own. Members who have to hold one are sent to enrolment at their next login; switching back to disabled lets everyone in again without a code.") }}">{{ _T("Two-factor authentication:") }}</label>
+                    <label for="pref_2fa_mode" title="{{ _T("Asks for a code from an application on the member's phone in addition to their password, so that a stolen password is not enough on its own. Every member can turn it on from their account; members who have to hold one are sent to enrolment at their next login.") }}">{{ _T("Two-factor authentication:") }}</label>
                     <select name="pref_2fa_mode" id="pref_2fa_mode" class="ui dropdown">
-                        <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_DISABLED') %} selected="selected"{% endif %}>{{ _T("Disabled (default)") }}</option>
                         <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_OPTIONAL') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_OPTIONAL') %} selected="selected"{% endif %}>{{ _T("Optional, each member decides") }}</option>
 {% if tfa_required_available %}
                         <option value="{{ constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_STAFF') }}"{% if pref.pref_2fa_mode == constant('Galette\\Core\\TwoFactorAuth::MODE_REQUIRED_STAFF') %} selected="selected"{% endif %}>{{ _T("Required for administrators and staff") }}</option>

@@ -192,29 +192,12 @@ class TwoFactorReset extends GaletteTestCase
     }
 
     /**
-     * Test --policy-off disables the policy and keeps second factors
+     * There is no switch to turn the second factor off for the whole instance
      */
-    public function testPolicyOff(): void
+    public function testNoPolicyOff(): void
     {
-        $member = $this->createMember($this->dataAdherentOne());
-        $this->enrolMember($member->id);
-        $this->enrolSuperAdmin();
-
-        $commandTester = $this->runCommand(['--policy-off' => true, '--force' => true]);
-
-        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode(), $commandTester->getDisplay());
-        $this->assertSame(TwoFactorAuth::MODE_DISABLED, TwoFactorAuth::modeFrom($this->preferences));
-        $this->assertSame(1, $this->countRows(TwoFactorSecret::TABLE, $member->id));
-        $this->assertTrue((new TwoFactorSuperAdmin($this->preferences))->isEnabled());
-
-        //stored, not only changed in memory
-        $select = $this->zdb->select(\Galette\Core\Preferences::TABLE);
-        $select->where(['nom_pref' => 'pref_2fa_mode']);
-        $this->assertSame(TwoFactorAuth::MODE_DISABLED, (int)$this->zdb->execute($select)->current()->val_pref);
-
-        //and cannot be mixed with an account
-        $commandTester = $this->runCommand(['--policy-off' => true, '--login' => $member->login, '--force' => true]);
-        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+        $command = $this->container->make(TwoFactorResetCommand::class, ['basepath' => GALETTE_ROOT]);
+        $this->assertFalse($command->getDefinition()->hasOption('policy-off'));
     }
 
     /**

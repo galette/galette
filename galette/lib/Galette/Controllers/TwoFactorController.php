@@ -144,10 +144,6 @@ class TwoFactorController extends AbstractController
     )]
     public function manage(Response $response, TwoFactorAuth $tfa): Response
     {
-        if (!$tfa->isEnabled()) {
-            return $this->unavailable($response);
-        }
-
         $secret = $tfa->storeFor($this->login);
 
         $this->view->render(
@@ -180,10 +176,6 @@ class TwoFactorController extends AbstractController
     )]
     public function enrol(Response $response, TwoFactorAuth $tfa): Response
     {
-        if (!$tfa->isEnabled()) {
-            return $this->unavailable($response);
-        }
-
         $secret = $tfa->storeFor($this->login);
 
         if ($secret->isEnabled()) {
@@ -227,10 +219,6 @@ class TwoFactorController extends AbstractController
     )]
     public function doEnrol(Request $request, Response $response, TwoFactorAuth $tfa): Response
     {
-        if (!$tfa->isEnabled()) {
-            return $this->unavailable($response);
-        }
-
         $secret = $tfa->storeFor($this->login);
         if (!$secret->isLoaded() || $secret->isEnabled()) {
             return $this->redirectTo($response, 'two-factor-manage');
@@ -432,24 +420,6 @@ class TwoFactorController extends AbstractController
         return $response
             ->withStatus(301)
             ->withHeader('Location', $this->routeparser->urlFor('member', ['id' => (string)$id]));
-    }
-
-    /**
-     * Send back a session asking for a second factor the instance does not use.
-     *
-     * Enrolling under a disabled policy would store a secret that is never
-     * asked for, and would come back to life the day the policy is turned on.
-     *
-     * @param Response $response Response
-     */
-    private function unavailable(Response $response): Response
-    {
-        $this->flash->addMessage(
-            'warning_detected',
-            _T("Two-factor authentication is not enabled on this instance.")
-        );
-
-        return $this->redirectHome($response);
     }
 
     /**

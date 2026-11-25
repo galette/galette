@@ -22,3 +22,10 @@
         {{ _T("Maintenance") }}
     </span>
 {% endif %}
+{% set two_factor_suspended_until = callstatic('\\Galette\\Core\\TwoFactorAuth', 'suspendedUntil', preferences) %}
+{% if two_factor_suspended_until is not null and (login.isSuperAdmin() or login.isAdmin() or login.isStaff()) %}
+    <span class="tooltip ui orange icon circular label" title="{{ _T("Two-factor authentication is suspended until %1$s: members log in with their password alone. It resumes on its own, or with galette:twofactor:suspend --resume.")|format(two_factor_suspended_until|date(_T("Y-m-d H:i:s"))) }}">
+        <i class="unlock icon" aria-hidden="true"></i>
+        {{ _T("Two-factor suspended") }}
+    </span>
+{% endif %}

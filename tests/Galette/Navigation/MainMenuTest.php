@@ -186,7 +186,6 @@ class MainMenuTest extends GaletteTestCase
         //the super administrator holds a second factor of its own, kept in
         //preferences no form may write: without this entry, that account has
         //no way to enrol from the interface
-        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
         $menus = $this->mainMenu()->getMenus(public: true);
         $this->assertCount(2, $menus['myaccount']->items);
         $this->assertSame(
@@ -197,7 +196,6 @@ class MainMenuTest extends GaletteTestCase
             'two-factor-manage',
             $menus['myaccount']->items[1]->route?->name
         );
-        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
     }
 
     /**
@@ -254,7 +252,6 @@ class MainMenuTest extends GaletteTestCase
         );
 
         $this->logSuperAdmin();
-        $this->preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
         $menus = (new MainMenu(
             login: $this->login,
             preferences: $this->preferences,
@@ -263,7 +260,6 @@ class MainMenuTest extends GaletteTestCase
             releases: $this->releases(),
             publicMenu: new \Galette\Navigation\PublicMenu($this->login, $this->preferences, $plugins)
         ))->getMenus();
-        $this->preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
         $this->login->logOut();
 
         //plugin entry is added before the ones the core keeps at the end

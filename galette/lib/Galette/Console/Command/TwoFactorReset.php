@@ -18,7 +18,6 @@ use Galette\Core\Galette;
 use Galette\Core\History;
 use Galette\Core\Login;
 use Galette\Core\Preferences;
-use Galette\Core\TwoFactorAuth;
 use Galette\Core\TwoFactorSecret;
 use Galette\Core\TwoFactorStore;
 use Galette\Core\TwoFactorSuperAdmin;
@@ -36,6 +35,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  * its second factor from the interface: losing its device used to mean writing
  * preferences in database by hand. Running this command requires access to the
  * server, which stands as the authentication here - just like the installer.
+ *
+ * When nobody can produce an accepted code - the server clock drifted -
+ * resetting every account is the wrong tool: galette:twofactor:suspend stops
+ * asking for codes for a while and keeps every enrolment in place.
  *
  * @author Johan Cwiklinski <johan@x-tnd.be>
  */
@@ -74,13 +77,6 @@ class TwoFactorReset extends AbstractCommand
                     . ' (after the server clock went backwards)'
             )
             ->addOption(
-                name: 'policy-off',
-                shortcut: null,
-                mode: InputOption::VALUE_NONE,
-                description: 'Disable two-factor authentication for the whole instance;'
-                    . ' second factors are kept'
-            )
-            ->addOption(
                 name: 'force',
                 shortcut: null,
                 mode: InputOption::VALUE_NONE,
@@ -105,16 +101,6 @@ class TwoFactorReset extends AbstractCommand
         }
 
         $member_login = $input->getOption('login');
-        $policy_off = (bool)$input->getOption('policy-off');
-        if ($policy_off && ($member_login !== null || $input->getOption('clock'))) {
-            $this->io->error('--policy-off cannot be combined with --login nor --clock.');
-            return Command::FAILURE;
-        }
-
-        if ($policy_off) {
-            return $this->disablePolicy($preferences, $login, $input);
-        }
-
         if ($member_login !== null) {
             //login only: Adherent::loadFromLoginOrMail() also matches an email address
             $select = $zdb->select(Adherent::TABLE);
@@ -232,45 +218,5 @@ class TwoFactorReset extends AbstractCommand
             sprintf('Two-factor authentication reset for %s from command line', $owner),
             Analog::INFO
         );
-    }
-
-    /**
-     * Disable two-factor authentication for the whole instance
-     *
-     * @param Preferences    $preferences Preferences
-     * @param Login          $login       Login
-     * @param InputInterface $input       Input
-     */
-    private function disablePolicy(Preferences $preferences, Login $login, InputInterface $input): int
-    {
-        if (TwoFactorAuth::modeFrom($preferences) === TwoFactorAuth::MODE_DISABLED) {
-            $this->io->warning('Two-factor authentication is already disabled.');
-            return Command::SUCCESS;
-        }
-
-        if (
-            !$this->confirm(
-                $input,
-                'Disable two-factor authentication for everyone? Members keep their second factor,'
-                . ' and are asked for it again once a policy is set.'
-            )
-        ) {
-            return Command::FAILURE;
-        }
-
-        $login->logAdmin($preferences->pref_admin_login, $preferences, challenge: false);
-        if (!$preferences->setValue('pref_2fa_mode', TwoFactorAuth::MODE_DISABLED, $login)) {
-            $this->io->error(
-                array_merge(
-                    ['Two-factor authentication has not been disabled:'],
-                    $preferences->getErrors()
-                )
-            );
-            return Command::FAILURE;
-        }
-
-        Analog::log('Two-factor authentication disabled from command line', Analog::INFO);
-        $this->io->success('Two-factor authentication has been disabled.');
-        return Command::SUCCESS;
     }
 }

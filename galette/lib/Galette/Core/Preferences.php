@@ -169,6 +169,7 @@ use function Safe\preg_replace;
  * @property      string   $pref_2fa_superadmin_secret
  * @property      bool     $pref_2fa_superadmin_enabled
  * @property      int      $pref_2fa_superadmin_timeslice
+ * @property      int      $pref_2fa_suspended_until
  * @property      string   $pref_feature_flags
  * @property      int      $pref_throttle_ip_attempts
  * @property      int      $pref_throttle_ip_window
@@ -1412,6 +1413,21 @@ class Preferences
             'pref_registration_date',
             date('Y-m-d H:i:s')
         );
+    }
+
+    /**
+     * Update the end of the second factor suspension only
+     *
+     * Not through store(): that one commits the preferences, then the social
+     * networks and dynamic fields, and reports a failure of the latter as a
+     * failure of the whole -- the suspension would be running while its
+     * command says it is not.
+     *
+     * @param int $until Timestamp the suspension ends at, 0 for none
+     */
+    public function updateTwoFactorSuspension(int $until): bool
+    {
+        return $this->updateOneField('pref_2fa_suspended_until', $until);
     }
 
     /**

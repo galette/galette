@@ -16,12 +16,15 @@ Improvements
 - Plugins with an invalid definition file are disabled and reported as such, instead of stopping Galette or being reported as incompatible
 - PDF are generated with tc-lib-pdf instead of TCPDF; default PDF models use standard HTML
 - Fewer database queries: one connection per request, reference data (statuses, titles, contribution and payment types, fields configuration, dynamic translations) read once, members, contributions, transactions, scheduled payments and roles lists no longer query each of their rows
+- Two-factor authentication is always available: every member can turn it on from their account, nobody has to
+- New galette:twofactor:suspend console command, to stop asking for a second factor on the whole instance for a few hours (when the server clock drifted, for instance), keeping every enrolment
 - Documents, mailings attachments and dynamic fields files are restricted to a list of extensions, set from the advanced configuration; it defaults to office documents, pictures, text and zip archives, and an empty list lets any file in
 
 Removals and requirements
 
 - Database version is now 1.400
 - The maps plugin cannot be enabled anymore; members positions it stored are taken over on update
+- The "disabled" two-factor authentication policy has been removed: "optional" is the default, and instances where it was disabled switch to it on update; galette:twofactor:reset --policy-off has been replaced by galette:twofactor:suspend, which ends on its own
 - Rights settings from the preferences - members creation, and groups managers rights on members, groups, mailings, exports, contributions and transactions - become system roles on update, and are removed from the preferences
 
 Plugins and development

@@ -196,6 +196,37 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
+     * Staff are told while the second factor is suspended, members are not
+     */
+    public function testDashboardTwoFactorSuspended(): void
+    {
+        $label = 'Two-factor suspended';
+        $this->logSuperAdmin();
+        try {
+            $test_response = $this->app->handle($this->createRequest('dashboard'));
+            $this->expectOK($test_response);
+            $this->assertStringNotContainsString($label, (string)$test_response->getBody());
+
+            $this->preferences->pref_2fa_suspended_until = time() + 3600;
+            $test_response = $this->app->handle($this->createRequest('dashboard'));
+            $this->expectOK($test_response);
+            $body = (string)$test_response->getBody();
+            $this->assertStringContainsString($label, $body);
+            $this->assertStringContainsString('galette:twofactor:suspend --resume', $body);
+
+            $this->getMemberOne();
+            $mdata = $this->dataAdherentOne();
+            $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+            $test_response = $this->app->handle($this->createRequest('dashboard'));
+            $this->expectOK($test_response);
+            $this->assertStringNotContainsString($label, (string)$test_response->getBody());
+        } finally {
+            $this->preferences->pref_2fa_suspended_until = 0;
+            $this->logSuperAdmin();
+        }
+    }
+
+    /**
      * Test dashboard route when the browser does not send the display cookie
      */
     public function testDashboardWithoutCookie(): void
@@ -309,13 +340,15 @@ class GaletteController extends GaletteRoutingTestCase
             //as shipped: the setting is there, the two mandatory policies are not
             $body = (string)$this->app->handle($request)->getBody();
             $this->assertStringContainsString('name="pref_2fa_mode"', $body);
+            //and there is no policy below "optional" any more
+            $this->assertStringNotContainsString('Disabled (default)', $body);
             $this->assertStringNotContainsString('Required for administrators and staff', $body);
             $this->assertStringNotContainsString('Required for everyone', $body);
 
             //an instance carrying a mandatory policy keeps it stored, and the
             //form re-posts what applies: rendering none of the options as
             //selected would have the browser keep the first, and the next save
-            //would write "disabled" over a policy in force
+            //would write whatever comes first over a policy in force
             $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_REQUIRED_ALL;
             $body = (string)$this->app->handle($request)->getBody();
             $this->assertStringContainsString(
@@ -324,7 +357,7 @@ class GaletteController extends GaletteRoutingTestCase
             );
         } finally {
             \Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: true);
-            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
+            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
         }
     }
 

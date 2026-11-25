@@ -61,12 +61,10 @@ class Login extends Authentication
         //administrator's.
         if (
             $challenge
-            && TwoFactorAuth::modeFrom($preferences) !== TwoFactorAuth::MODE_DISABLED
+            && TwoFactorAuth::suspendedUntil($preferences) === null
+            && (new TwoFactorSuperAdmin($preferences))->isEnabled()
         ) {
-            $secret = new TwoFactorSuperAdmin($preferences);
-            if ($secret->isEnabled()) {
-                $this->requireTwoFactor();
-            }
+            $this->requireTwoFactor();
         }
 
         return true;
@@ -271,45 +269,43 @@ class Login extends Authentication
             return false;
         }
 
-        if (!isset($this->id) || $this->getTwoFactorMode() === TwoFactorAuth::MODE_DISABLED) {
+        if (!isset($this->id)) {
             return false;
         }
 
         $secret = new TwoFactorSecret($this->zdb);
-        return $secret->load($this->id) && $secret->isEnabled();
+        return $secret->load($this->id) && $secret->isEnabled() && !$this->isTwoFactorSuspended();
     }
 
     /**
-     * Configured second factor policy.
+     * Has galette:twofactor:suspend stopped asking for codes?
      *
      * Preferences are not injected: this object is serialized into the session,
      * and carrying the whole preference set in there would both bloat it and
      * serve stale values.
      */
-    private function getTwoFactorMode(): int
+    private function isTwoFactorSuspended(): bool
     {
         global $preferences;
 
         if ($preferences instanceof Preferences) {
-            return TwoFactorAuth::modeFrom($preferences);
+            return TwoFactorAuth::suspendedUntil($preferences) !== null;
         }
 
         try {
             $select = $this->zdb->select(Preferences::TABLE);
-            $select->columns(['val_pref'])->where(['nom_pref' => 'pref_2fa_mode'])->limit(1);
+            $select->columns(['val_pref'])->where(['nom_pref' => 'pref_2fa_suspended_until'])->limit(1);
             $results = $this->zdb->execute($select);
             if ($results->count() > 0) {
-                //the one read that does not go through Preferences, and so the
-                //one the clamp has to be spelled out for
-                return TwoFactorAuth::clampMode((int)$results->current()->val_pref);
+                return (int)$results->current()->val_pref > time();
             }
         } catch (Throwable $e) {
-            Logs::exception($e, 'Cannot read second factor policy', Analog::WARNING);
+            Logs::exception($e, 'Cannot read second factor suspension', Analog::WARNING);
         }
 
-        //a member holding an enabled secret expects to be asked for it, so an
-        //unreadable policy must not silently skip the second factor
-        return TwoFactorAuth::MODE_OPTIONAL;
+        //a suspension that cannot be read is not one: members holding a second
+        //factor keep being asked for it
+        return false;
     }
 
     /**

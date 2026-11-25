@@ -168,6 +168,18 @@ class PreferencesSchema extends GaletteTestCase
     }
 
     /**
+     * The second factor is optional out of the box, and a suspension is not
+     * running: a fresh instance asks enrolled members for their code
+     */
+    public function testTwoFactorDefaults(): void
+    {
+        $defaults = Schema::getDefaults();
+        $this->assertSame(\Galette\Core\TwoFactorAuth::MODE_OPTIONAL, $defaults['pref_2fa_mode']);
+        $this->assertSame(\Galette\Core\TwoFactorAuth::MODE_OPTIONAL, Schema::get('pref_2fa_mode')['min']);
+        $this->assertSame(0, $defaults['pref_2fa_suspended_until']);
+    }
+
+    /**
      * Only the superadmin credentials require the superadmin level
      */
     public function testAcl(): void
@@ -191,6 +203,8 @@ class PreferencesSchema extends GaletteTestCase
                 'pref_2fa_superadmin_secret',
                 'pref_2fa_superadmin_enabled',
                 'pref_2fa_superadmin_timeslice',
+                //lifting every second factor for a while
+                'pref_2fa_suspended_until',
                 //preview features, which may lift what the instance allows
                 'pref_feature_flags',
             ],
@@ -235,6 +249,7 @@ class PreferencesSchema extends GaletteTestCase
                 'pref_2fa_superadmin_secret',
                 'pref_2fa_superadmin_enabled',
                 'pref_2fa_superadmin_timeslice',
+                'pref_2fa_suspended_until',
                 'pref_throttle_second_factor_attempts',
                 'pref_throttle_second_factor_window',
             ] as $name

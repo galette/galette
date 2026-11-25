@@ -939,13 +939,7 @@ class AuthControllerTest extends GaletteRoutingTestCase
         $this->flash_data = [];
         $this->login->logOut();
 
-        //nothing to suggest while the instance does not use it
-        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
-        $this->app->handle($this->loginRequest($admin->login, 'J^B-()f'));
-        $this->expectFlashData([]);
-        $this->login->logOut();
-
-        //nor when the policy already requires it: that is the middleware's job
+        //nothing to suggest when the policy already requires it: that is the middleware's job
         $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_REQUIRED_STAFF;
         $this->app->handle($this->loginRequest($admin->login, 'J^B-()f'));
         $this->expectFlashData([]);
@@ -1166,41 +1160,6 @@ class AuthControllerTest extends GaletteRoutingTestCase
         );
         $this->assertSame(301, $test_response->getStatusCode());
         $this->assertFalse($still_there->load($admin->id));
-        $this->flash_data = [];
-    }
-
-    /**
-     * Nothing about the second factor is offered while the policy is disabled:
-     * a secret enrolled then would never be asked for, and would come back to
-     * life the day the policy is turned on
-     */
-    public function testNothingIsOfferedWhileThePolicyIsDisabled(): void
-    {
-        global $preferences;
-
-        $member = $this->createMember($this->dataAdherentOne());
-        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
-        $this->assertTrue($this->login->logIn($member->login, 'J^B-()f'));
-
-        foreach (['two-factor-manage', 'two-factor-enrol'] as $route) {
-            $test_response = $this->app->handle($this->createRequest($route));
-            $this->assertSame(301, $test_response->getStatusCode());
-            $this->assertSame(
-                ['Location' => [$this->routeparser->urlFor('slash')]],
-                $test_response->getHeaders()
-            );
-            $flash = $this->flash_data['slimFlash']['warning_detected'][0] ?? '';
-            $this->assertStringContainsString('not enabled on this instance', $flash);
-            $this->flash_data = [];
-        }
-
-        //and no secret has been created along the way
-        $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
-        $this->assertFalse($secret->load($member->id));
-
-        $test_response = $this->app->handle($this->postTo('do-two-factor-enrol', '000000'));
-        $this->assertSame(301, $test_response->getStatusCode());
-        $this->assertFalse($secret->load($member->id));
         $this->flash_data = [];
     }
 

@@ -130,7 +130,7 @@ try {
                 break;
 
             case 'set_two_factor_mode':
-                $preferences->pref_2fa_mode = (int)($input['mode'] ?? 0);
+                $preferences->pref_2fa_mode = (int)($input['mode'] ?? \Galette\Core\TwoFactorAuth::MODE_OPTIONAL);
                 $preferences->store();
                 echo json_encode(['success' => true, 'message' => 'Second factor mode set']);
                 break;
@@ -140,7 +140,8 @@ try {
                 $preferences->pref_2fa_superadmin_secret = '';
                 $preferences->pref_2fa_superadmin_enabled = false;
                 $preferences->pref_2fa_superadmin_timeslice = 0;
-                $preferences->pref_2fa_mode = 0;
+                $preferences->pref_2fa_suspended_until = 0;
+                $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
                 $preferences->store();
 
                 //members have rows, and so do the throttling counters: a run

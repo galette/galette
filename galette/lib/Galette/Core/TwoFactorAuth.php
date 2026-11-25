@@ -31,8 +31,9 @@ class TwoFactorAuth
     /**
      * Feature flag the two mandatory policies live behind.
      *
-     * The second factor itself ships, disabled by default. Making it compulsory is a feature flag the super
-     * administrator turns on from the advanced configuration page: a clock
+     * The second factor itself is always available, optional by default.
+     * Making it compulsory is a feature flag the super administrator turns
+     * on from the advanced configuration page: a clock
      * that drifts or a botched enrolment can put members outside their own
      * instance, and galette:twofactor:reset is the way back. Until the flag is
      * on, those two policies read as "optional" -- see clampMode().
@@ -42,14 +43,15 @@ class TwoFactorAuth
     /** Forced answer of isRequiredAvailable(), for the test suite */
     private static ?bool $required_available = null;
 
-    /** Second factor is off for everyone */
-    public const int MODE_DISABLED = 0;
-    /** Members may enrol if they want to */
+    /** Members may enrol if they want to; the lowest policy there is */
     public const int MODE_OPTIONAL = 1;
     /** Administrators and staff must enrol */
     public const int MODE_REQUIRED_STAFF = 2;
     /** Everyone must enrol */
     public const int MODE_REQUIRED_ALL = 3;
+
+    /** Longest suspension galette:twofactor:suspend grants, in hours */
+    public const int SUSPEND_MAX_HOURS = 72;
 
     /** How many periods either side of the current one are accepted */
     public const int TOLERANCE = 1;
@@ -100,14 +102,6 @@ class TwoFactorAuth
     }
 
     /**
-     * Is the second factor in use at all on this instance?
-     */
-    public function isEnabled(): bool
-    {
-        return $this->getMode() !== self::MODE_DISABLED;
-    }
-
-    /**
      * Policy in force on this instance
      */
     public function getMode(): int
@@ -136,21 +130,51 @@ class TwoFactorAuth
      *
      * Without the flag, anything above "optional" reads as "optional": the
      * mandatory policies are held back, but a member who enrolled while one was
-     * in force keeps being asked for their code. Clamping to "disabled" instead
-     * would drop that protection unannounced, and bring it back the day
-     * somebody declares the flag. Written as a ceiling rather than a match on
-     * the two values, so it can only ever lower a policy -- including a stored
-     * value that is no policy at all.
+     * in force keeps being asked for their code. Nothing reads lower than
+     * "optional" either: the "disabled" policy is gone, and a 0 left by an
+     * instance that skipped its upgrade, or a preference blanked by a form,
+     * must not switch off the second factor of the members who hold one. Any
+     * value that is no policy at all reads as "optional" for the same reason.
      *
      * @param int $mode Stored policy
      */
     public static function clampMode(int $mode): int
     {
-        if (self::isRequiredAvailable()) {
-            return $mode;
+        $ceiling = self::isRequiredAvailable() ? self::MODE_REQUIRED_ALL : self::MODE_OPTIONAL;
+        if ($mode < self::MODE_OPTIONAL || $mode > $ceiling) {
+            return self::MODE_OPTIONAL;
         }
 
-        return min($mode, self::MODE_OPTIONAL);
+        return $mode;
+    }
+
+    /**
+     * End of the running suspension of the second factor, if any.
+     *
+     * galette:twofactor:suspend stops asking for codes until a given instant,
+     * for when the whole instance cannot check them: a server clock that
+     * drifted, an authenticator library broken by an update. Unlike a reset,
+     * it leaves every enrolment in place; unlike a policy, it ends on its own
+     * and cannot be forgotten switched on. Static for the same reasons as
+     * modeFrom().
+     *
+     * @param Preferences $preferences Preferences to read
+     * @param ?int        $now         Current timestamp, time() by default
+     *
+     * @return ?int timestamp the suspension ends at, null when none is running
+     */
+    public static function suspendedUntil(Preferences $preferences, ?int $now = null): ?int
+    {
+        $until = (int)$preferences->pref_2fa_suspended_until;
+        return $until > ($now ?? time()) ? $until : null;
+    }
+
+    /**
+     * Is the second factor suspended right now?
+     */
+    public function isSuspended(): bool
+    {
+        return self::suspendedUntil($this->preferences, $this->clock->now()->getTimestamp()) !== null;
     }
 
     /**
@@ -194,6 +218,12 @@ class TwoFactorAuth
      */
     public function isRequiredFor(Authentication $login): bool
     {
+        //enrolling means typing a code, which is what cannot be done while
+        //the second factor is suspended
+        if ($this->isSuspended()) {
+            return false;
+        }
+
         return match ($this->getMode()) {
             self::MODE_REQUIRED_ALL => true,
             self::MODE_REQUIRED_STAFF => $login->isSuperAdmin() || $login->isAdmin() || $login->isStaff(),

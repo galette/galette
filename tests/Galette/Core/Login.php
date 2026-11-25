@@ -491,8 +491,7 @@ class Login extends GaletteTestCase
 
     /**
      * A mandatory policy is held back by a flag, and reads as optional: the
-     * member enrolled while it applied is still asked for a code. Reading it as
-     * disabled would drop that protection without saying so.
+     * member enrolled while it applied is still asked for a code.
      */
     public function testMandatoryPolicyStillChallengesWithoutTheFlag(): void
     {
@@ -517,39 +516,19 @@ class Login extends GaletteTestCase
             $this->assertFalse($this->login->isLogged());
             $this->assertTrue($this->login->isTwoFactorPending());
             $this->login->logOut();
-
-            //same answer when the policy has to be read from the table rather
-            //than from the global, which is the one read that bypasses
-            //Preferences entirely
-            $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
-            $update->set(['val_pref' => (string)\Galette\Core\TwoFactorAuth::MODE_REQUIRED_ALL])
-                ->where(['nom_pref' => 'pref_2fa_mode']);
-            $this->zdb->execute($update);
-
-            $kept = $preferences;
-            $preferences = null;
-            try {
-                $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
-                $this->assertTrue($this->login->isTwoFactorPending());
-            } finally {
-                $preferences = $kept;
-                $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
-                $update->set(['val_pref' => (string)\Galette\Core\TwoFactorAuth::MODE_DISABLED])
-                    ->where(['nom_pref' => 'pref_2fa_mode']);
-                $this->zdb->execute($update);
-            }
         } finally {
             \Galette\Core\TwoFactorAuth::forceRequiredAvailable(available: true);
             $this->login->logOut();
-            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
+            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
         }
     }
 
     /**
-     * Turning the feature off globally must let enrolled members back in: it is
-     * the escape hatch when something goes wrong instance wide
+     * There is no policy that turns the second factor off: the 0 the former
+     * "disabled" policy left behind, in an instance that skipped its upgrade,
+     * still asks an enrolled member for a code
      */
-    public function testDisabledPolicySkipsTheSecondFactor(): void
+    public function testFormerDisabledPolicyStillChallenges(): void
     {
         global $preferences;
 
@@ -564,11 +543,64 @@ class Login extends GaletteTestCase
         $secret->create($id_adh, 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ');
         $secret->enable();
 
-        $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_DISABLED;
+        $preferences->pref_2fa_mode = 0;
 
-        $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
-        $this->assertTrue($this->login->isLogged());
-        $this->assertFalse($this->login->isTwoFactorPending());
+        try {
+            $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+            $this->assertFalse($this->login->isLogged());
+            $this->assertTrue($this->login->isTwoFactorPending());
+        } finally {
+            $this->login->logOut();
+            $preferences->pref_2fa_mode = \Galette\Core\TwoFactorAuth::MODE_OPTIONAL;
+        }
+    }
+
+    /**
+     * A running suspension lets an enrolled member, and the super
+     * administrator, in with their password alone; an ended one does not
+     */
+    public function testSuspensionSkipsTheSecondFactor(): void
+    {
+        global $preferences;
+
+        $this->createUser();
+        $this->login->logOut();
+
+        $select = $this->zdb->select(\Galette\Entity\Adherent::TABLE);
+        $select->columns([\Galette\Entity\Adherent::PK])->where([\Galette\Core\Login::PK => $this->login_adh]);
+        $id_adh = (int)$this->zdb->execute($select)->current()->id_adh;
+
+        $secret = new \Galette\Core\TwoFactorSecret($this->zdb);
+        $secret->create($id_adh, 'GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ');
+        $secret->enable();
+        $superadmin = new \Galette\Core\TwoFactorSuperAdmin($preferences);
+        $this->assertTrue($superadmin->create('GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ'));
+        $this->assertTrue($superadmin->enable());
+
+        try {
+            $preferences->pref_2fa_suspended_until = time() + 3600;
+            $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+            $this->assertTrue($this->login->isLogged());
+            $this->assertFalse($this->login->isTwoFactorPending());
+            $this->login->logOut();
+
+            $this->assertTrue($this->login->logAdmin($preferences->pref_admin_login, $preferences));
+            $this->assertFalse($this->login->isTwoFactorPending());
+            $this->login->logOut();
+
+            $preferences->pref_2fa_suspended_until = time() - 1;
+            $this->assertTrue($this->login->logIn($this->login_adh, $this->mdp_adh));
+            $this->assertFalse($this->login->isLogged());
+            $this->assertTrue($this->login->isTwoFactorPending());
+            $this->login->logOut();
+
+            $this->assertTrue($this->login->logAdmin($preferences->pref_admin_login, $preferences));
+            $this->assertTrue($this->login->isTwoFactorPending());
+        } finally {
+            $this->login->logOut();
+            $preferences->pref_2fa_suspended_until = 0;
+            $superadmin->remove();
+        }
     }
 
     /**

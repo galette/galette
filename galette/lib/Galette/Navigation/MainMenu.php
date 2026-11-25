@@ -14,7 +14,6 @@ use Galette\Access\AccessControl;
 use Galette\Core\Login;
 use Galette\Core\Plugins;
 use Galette\Core\Preferences;
-use Galette\Core\TwoFactorAuth;
 use Galette\Entity\Contribution;
 
 /**
@@ -150,13 +149,11 @@ class MainMenu
         //member, but it does hold a second factor of its own. That one lives in
         //the preferences, which are read only in the settings -- no form may
         //write them -- so this entry is the only way in from the interface.
-        if (TwoFactorAuth::modeFrom($this->preferences) !== TwoFactorAuth::MODE_DISABLED) {
-            $items[] = new MenuEntry(
-                label: _T('Two-factor authentication'),
-                route: new RouteTarget('two-factor-manage'),
-                title: _T('Manage my two-factor authentication')
-            );
-        }
+        $items[] = new MenuEntry(
+            label: _T('Two-factor authentication'),
+            route: new RouteTarget('two-factor-manage'),
+            title: _T('Manage my two-factor authentication')
+        );
 
         return new Menu(_T("My Account"), 'user', $items);
     }

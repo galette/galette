@@ -69,7 +69,6 @@ class Telemetry
 
     /** Two-factor authentication policies, by TwoFactorAuth::MODE_* value */
     private const array TWO_FACTOR_MODES = [
-        TwoFactorAuth::MODE_DISABLED       => 'disabled',
         TwoFactorAuth::MODE_OPTIONAL       => 'optional',
         TwoFactorAuth::MODE_REQUIRED_STAFF => 'required_staff',
         TwoFactorAuth::MODE_REQUIRED_ALL   => 'required_all',

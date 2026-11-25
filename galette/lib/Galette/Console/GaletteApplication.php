@@ -69,6 +69,7 @@ class GaletteApplication extends Application
                 $this->make($container, Command\SeedFixtures::class),
                 $this->make($container, Command\SuperAdminPassword::class),
                 $this->make($container, Command\TwoFactorReset::class),
+                $this->make($container, Command\TwoFactorSuspend::class),
                 $this->make($container, Command\FeatureEnable::class),
                 $this->make($container, Command\FeatureDisable::class),
                 $this->make($container, Command\ProcessMailingQueue::class)

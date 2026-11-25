@@ -40,6 +40,8 @@ Removed without replacement:
 - `FeatureFlagManager::getAccessedFlags()`
 - `I18n::updateTranslation()` (protected trait method)
 - `FakeData::addSuccess()`, `FakeData::addWarning()`
+- `TwoFactorAuth::MODE_DISABLED` and `TwoFactorAuth::isEnabled()`: two-factor
+  authentication can no longer be turned off, "optional" is the lowest policy
 
 `config/local_acls.inc.php` is no longer looked for. It was never included,
 so ACLs overrides must still be declared in the plugin `_define.php`.

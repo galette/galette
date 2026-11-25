@@ -46,3 +46,6 @@ CREATE TABLE galette_positions (
 
 -- adhesion form sentence has been renamed in 1.3.0: models stored before are no longer translated
 UPDATE galette_pdfmodels SET model_body = REPLACE(model_body, 'in order to complete your subscription.")', 'in order to complete your membership.")');
+
+-- the "disabled" two-factor policy is gone: "optional" is the lowest one
+UPDATE galette_preferences SET val_pref = '1' WHERE nom_pref = 'pref_2fa_mode' AND val_pref IN ('0', '');

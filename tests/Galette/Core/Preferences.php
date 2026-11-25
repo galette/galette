@@ -1228,6 +1228,29 @@ class Preferences extends GaletteTestCase
     }
 
     /**
+     * Test updateTwoFactorSuspension writes that preference alone
+     */
+    public function testUpdateTwoFactorSuspension(): void
+    {
+        $until = time() + 3600;
+        try {
+            //a pending change elsewhere must not be committed along
+            $this->preferences->pref_nom = 'Not stored';
+            $this->assertTrue($this->preferences->updateTwoFactorSuspension($until));
+
+            $this->preferences->load();
+            $this->assertSame($until, $this->preferences->pref_2fa_suspended_until);
+            $this->assertNotSame('Not stored', $this->preferences->pref_nom);
+
+            $this->assertTrue($this->preferences->updateTwoFactorSuspension(0));
+            $this->preferences->load();
+            $this->assertSame(0, $this->preferences->pref_2fa_suspended_until);
+        } finally {
+            $this->preferences->load();
+        }
+    }
+
+    /**
      * Test generateUUID
      */
     public function testGenerateUUID(): void
