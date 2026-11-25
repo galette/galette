@@ -74,6 +74,7 @@ class GaletteApplication extends Application
                 $this->make($container, Command\ProcessMailingQueue::class)
             ]);
         }
+        $this->addCommand($this->make($container, Command\CacheClear::class));
         $this->addCommand($this->make($container, Command\MakeTwigCache::class));
         $this->addCommand($this->make($container, Command\TwigPotReferences::class));
         $this->addCommand($this->make($container, Command\CompileLocales::class));
