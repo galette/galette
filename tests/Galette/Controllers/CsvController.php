@@ -494,6 +494,31 @@ class CsvController extends GaletteRoutingTestCase
             trim($body)
         );
 
+        //fields that are not offered by the model editor are not stored
+        $store_request = $store_request->withParsedBody(
+            [
+                'fields' => ['id_adh', 'nom_adh', 'not_a_field', 'email_adh']
+            ]
+        );
+        $store_response = $this->app->handle($store_request);
+        $this->assertSame(301, $store_response->getStatusCode());
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'attempted to store non importable field "id_adh" in import model'
+        );
+        $this->expectLogEntry(
+            \Analog\Analog::WARNING,
+            'attempted to store non importable field "not_a_field" in import model'
+        );
+        $this->expectFlashData(['success_detected' => ['Import model has been successfully stored :)']]);
+
+        $test_response = $this->app->handle($get_request);
+        $this->expectOK($test_response, $expected_headers);
+        $this->assertSame(
+            '"nom_adh";"email_adh"',
+            trim((string)$test_response->getBody())
+        );
+
         $this->login->logOut();
     }
 

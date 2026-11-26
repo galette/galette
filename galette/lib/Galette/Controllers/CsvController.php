@@ -499,34 +499,15 @@ class CsvController extends AbstractController
     }
 
     /**
-     * Import model page
+     * Get fields an import model can be built from
+     *
+     * @param DynamicFieldsSet $fieldset Dynamic fields set
+     * @param array<string>    $fields   Fields of the current model
+     *
+     * @return array<string,mixed>
      */
-    #[Route(
-        name: 'importModel',
-        pattern: '/import/model',
-        methods: ['GET']
-    )]
-    public function importModel(Request $request, Response $response, ImportModel $model, DynamicFieldsSet $fieldset): Response
+    private function getImportableFields(DynamicFieldsSet $fieldset, array $fields): array
     {
-        $model->load();
-
-        if (isset($request->getQueryParams()['remove'])) {
-            $model->remove($this->zdb);
-            $model->load();
-        }
-
-        /** FIXME:
-         * - set fields that should not be part of import
-         */
-        $fields = $model->getFields();
-        $defaults = $this->csvin->getDefaultFields();
-        $defaults_loaded = false;
-
-        if ($fields === null) {
-            $fields = $defaults;
-            $defaults_loaded = true;
-        }
-
         $import_fields = $this->members_form_fields;
         //get dynamic fields
         $dynamic_import_fields = [];
@@ -568,6 +549,40 @@ class CsvController extends AbstractController
                 $import_fields[$key] = ['label' => $label];
             }
         }
+
+        return $import_fields;
+    }
+
+    /**
+     * Import model page
+     */
+    #[Route(
+        name: 'importModel',
+        pattern: '/import/model',
+        methods: ['GET']
+    )]
+    public function importModel(Request $request, Response $response, ImportModel $model, DynamicFieldsSet $fieldset): Response
+    {
+        $model->load();
+
+        if (isset($request->getQueryParams()['remove'])) {
+            $model->remove($this->zdb);
+            $model->load();
+        }
+
+        /** FIXME:
+         * - set fields that should not be part of import
+         */
+        $fields = $model->getFields();
+        $defaults = $this->csvin->getDefaultFields();
+        $defaults_loaded = false;
+
+        if ($fields === null) {
+            $fields = $defaults;
+            $defaults_loaded = true;
+        }
+
+        $import_fields = $this->getImportableFields($fieldset, $fields);
 
         //Active tab on page
         $tab = $request->getQueryParams()['tab'] ?? 'current';
@@ -640,11 +655,36 @@ class CsvController extends AbstractController
         pattern: '/import/model/store',
         methods: ['POST']
     )]
-    public function storeModel(Request $request, Response $response, ImportModel $model): Response
-    {
+    public function storeModel(
+        Request $request,
+        Response $response,
+        ImportModel $model,
+        DynamicFieldsSet $fieldset
+    ): Response {
         $model->load();
 
-        $model->setFields($request->getParsedBody()['fields']);
+        $posted = $request->getParsedBody()['fields'] ?? [];
+        if (!is_array($posted)) {
+            $posted = [];
+        }
+        $importable = $this->getImportableFields($fieldset, $model->getFields() ?? $this->csvin->getDefaultFields());
+        $fields = [];
+        foreach ($posted as $field) {
+            if (!is_string($field) || !isset($importable[$field])) {
+                Analog::log(
+                    sprintf(
+                        'User %1$s attempted to store non importable field "%2$s" in import model',
+                        $this->login->login,
+                        is_scalar($field) ? (string)$field : gettype($field)
+                    ),
+                    Analog::WARNING
+                );
+                continue;
+            }
+            $fields[] = $field;
+        }
+
+        $model->setFields($fields);
         $res = $model->store($this->zdb);
         if ($res === true) {
             $this->flash->addMessage(
