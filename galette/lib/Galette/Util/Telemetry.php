@@ -647,6 +647,52 @@ class Telemetry
     }
 
     /**
+     * Check with the telemetry server whether the registration form has been sent,
+     * and record the registration if so
+     */
+    public function checkRegistration(): bool
+    {
+        if ($this->isRegistered()) {
+            return true;
+        }
+
+        try {
+            $registered = $this->requestRegistrationStatus();
+        } catch (Throwable $e) {
+            Logs::exception($e, 'Unable to check registration', Analog::INFO);
+            return false;
+        }
+
+        //not recorded, not registered: the page keeps checking, and the next check writes it again
+        return $registered && $this->prefs->updateRegistrationDate();
+    }
+
+    /**
+     * Ask the telemetry server whether the registration UUID has been registered
+     *
+     * @throws RuntimeException When the answer is not the expected one
+     */
+    protected function requestRegistrationStatus(): bool
+    {
+        $uri = GALETTE_TELEMETRY_URI . 'reference/status';
+        $ch = curl_init($uri);
+        curl_setopt_array($ch, [
+            CURLOPT_USERAGENT       => 'Galette/' . GALETTE_VERSION,
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_CONNECTTIMEOUT  => 3,
+            CURLOPT_TIMEOUT         => 5,
+            CURLOPT_POSTFIELDS      => json_encode(['uuid' => $this->getRegistrationUuid()]),
+            CURLOPT_HTTPHEADER      => ['Content-Type: application/json'],
+        ]);
+
+        $content = json_decode(json: (string)curl_exec($ch), associative: true, flags: JSON_THROW_ON_ERROR);
+        if (!is_array($content) || !is_bool($content['registered'] ?? null)) {
+            throw new RuntimeException('Unexpected registration status answer');
+        }
+        return $content['registered'];
+    }
+
+    /**
      * Should telemetry information sent again?
      *
      * @throws Exception

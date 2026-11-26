@@ -11,7 +11,7 @@
 {% block content %}
     <div class="ui grid">
 {% if not hide_telemetry and not callstatic('\\Galette\\Core\\Galette', 'isDemo') %}
-        <div class="sixteen wide column">
+        <div class="sixteen wide column" id="telemetry_share">
             <div class="ui yellow message">
                 <div class="header">{{ _T("Help us know about you!") }}</div>
                 <div class="ui stackable grid">
@@ -29,7 +29,7 @@
                             </button>
             {% endif %}
             {% if not registered %}
-                            <a class="large ui blue button" href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" title="{{ _T("Register your organization as a Galette user") }}" target="_blank">
+                            <a class="large ui blue button" href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ reguuid }}" id="register" title="{{ _T("Register your organization as a Galette user") }}" target="_blank" rel="noopener">
                                 <i class="id card icon" aria-hidden="true"></i>
                                 {{ _T("Register") }}
                             </a>

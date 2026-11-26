@@ -233,6 +233,7 @@
                             tip: _T("Date on which you registered your Galette instance.")
                         } only %}
                         <span>
+                            <span id="registration_date">
                             {% if pref.pref_registration_date %}
                                 {% set regtxt = _T("Update your information") %}
                                 {{ preferences.getRegistrationDate() }}
@@ -240,7 +241,8 @@
                                 {% set regtxt = _T("Register") %}
                                 {{ _T("Not registered") }}
                             {% endif %}
-                            - <a href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ pref.pref_registration_uuid }}" id="register" target="_blank" class="ui labeled icon button"><i class="pen alternate icon" aria-hidden="true"></i>{{ regtxt }}</a>
+                            </span>
+                            - <a href="{{ constant('GALETTE_TELEMETRY_URI') }}reference?showmodal&uuid={{ pref.pref_registration_uuid }}" id="register" target="_blank" rel="noopener" class="ui labeled icon button"><i class="pen alternate icon" aria-hidden="true"></i><span class="register-text">{{ regtxt }}</span></a>
                         </span>
                     </div>
                 </div>{# /column #}
@@ -1419,7 +1421,8 @@
                         extra_data: "pref_password_length: \$('#pref_password_length').val(),pref_password_blacklist: \$('#pref_password_blacklist').is(':checked'),pref_password_strength: \$('#pref_password_strength').val(),"
                 } %}
 
-                {% include "modals/telemetry.html.twig" with {part: "jsregister"} %}
+                {# once registered, the button only updates information: nothing to wait for #}
+                {% include "modals/telemetry.html.twig" with {part: "jsregister", registered: pref.pref_registration_date is not empty} %}
 
                 {% set modal_onapprove = "
                     $('.modal-form form #redirect_uri').val(window.location.href);

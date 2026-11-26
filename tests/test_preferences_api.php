@@ -30,6 +30,7 @@ declare(strict_types=1);
  * - remove_position: Remove the position of a member (member: its id)
  * - no_towns: Have the town search of a member find no town, without querying
  *   nominatim (member: its id)
+ * - reset_registration: Forget the instance has been registered on the telemetry server
  */
 
 use Galette\Core\Db;
@@ -228,6 +229,14 @@ try {
                     $member->pays_adh
                 );
                 echo json_encode(['success' => true, 'message' => 'No towns']);
+                break;
+
+            case 'reset_registration':
+                //Galette maintains it itself: no preference setter takes it
+                $update = $zdb->update(Preferences::TABLE);
+                $update->set(['val_pref' => ''])->where(['nom_pref' => 'pref_registration_date']);
+                $zdb->execute($update);
+                echo json_encode(['success' => true, 'message' => 'Registration reset']);
                 break;
 
             default:

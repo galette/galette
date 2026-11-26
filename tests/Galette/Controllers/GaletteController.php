@@ -299,6 +299,42 @@ class GaletteController extends GaletteRoutingTestCase
     }
 
     /**
+     * The registration link always carries a UUID, the registration check
+     * looks the reference up with it
+     */
+    public function testPreferencesRegistrationLinkHasUuid(): void
+    {
+        global $preferences;
+
+        $request = $this->createRequest('preferences');
+        $this->logSuperAdmin();
+
+        $original = $preferences->pref_registration_uuid;
+        try {
+            //never generated yet
+            $preferences->pref_registration_uuid = '';
+
+            $body = (string)$this->app->handle($request)->getBody();
+            $uuid = $preferences->pref_registration_uuid;
+            $this->assertMatchesRegularExpression('/^[0-9A-Za-z]{40}$/', $uuid);
+            $this->assertStringContainsString(
+                '<a href="' . GALETTE_TELEMETRY_URI . 'reference?showmodal&uuid=' . $uuid . '" id="register"',
+                $body
+            );
+            $this->assertStringContainsString(
+                '<input type="hidden" name="pref_registration_uuid" value="' . $uuid . '"/>',
+                $body
+            );
+        } finally {
+            //generated in database as well
+            $update = $this->zdb->update(\Galette\Core\Preferences::TABLE);
+            $update->set(['val_pref' => $original])->where(['nom_pref' => 'pref_registration_uuid']);
+            $this->zdb->execute($update);
+            $preferences->load();
+        }
+    }
+
+    /**
      * Get a select element out of a rendered page
      *
      * @param string $body Rendered page

@@ -165,8 +165,13 @@ class GaletteController extends AbstractController
         pattern: '/preferences',
         methods: ['GET']
     )]
-    public function preferences(Request $request, Response $response, PaymentTypes $ptypes, Members $m): Response
-    {
+    public function preferences(
+        Request $request,
+        Response $response,
+        PaymentTypes $ptypes,
+        Members $m,
+        Telemetry $telemetry
+    ): Response {
         // flagging required fields
         $required = $this->preferences->getRequiredFields();
 
@@ -189,6 +194,11 @@ class GaletteController extends AbstractController
             $pref = array_merge($pref, $this->session->entered_preferences);
             $this->session->entered_preferences = null;
         }
+
+        //the registration link carries this UUID, and the registration check
+        //sends it later: it must exist before the form is opened, an empty one
+        //would register a reference that can never be found back
+        $pref['pref_registration_uuid'] = $telemetry->getRegistrationUuid();
 
         //the mandatory second factor policies are held back by a flag. An
         //instance that stored one keeps it, but the form must offer -- and

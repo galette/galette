@@ -31,8 +31,8 @@
                                     if (data.success) {
     {% if orig is defined and orig == 'desktop' %}
                                         $('#telemetry').remove();
-                                        if ($('#share a').length == 0) {
-                                            $('#share').remove();
+                                        if ($('#register').length == 0) {
+                                            $('#telemetry_share').remove();
                                         }
     {% endif %}
     {% if renew_telemetry is defined %}
@@ -146,16 +146,82 @@
             ;
 {% endif %}
 {% if part == "jsregister" %}
-            $('#register').on('click', function(e) {
+    {% if registered is not defined or not registered %}
+            {# the registration form is on the telemetry server: the link opens it, then the server is asked whether it has been sent #}
+            $('#register').on('click auxclick', function(e) {
+                //a middle click opens it as well; the other buttons only show a menu
+                if (e.type === 'auxclick' && e.button !== 1) {
+                    return;
+                }
+                //registered since the page has been rendered: only updating information
+                if (!registeredHere) {
+                    setRegistrationPending();
+                }
+            });
+            {# storage is shared by every instance on the same host: the key holds this one route #}
+            var registrationPending = 'galette_registration_pending:{{ url_for('telemetryRegistration')|e('js') }}';
+            //each check waits for the telemetry server: a form left unsent, or a
+            //server that cannot be reached, must not cost it on every return
+            var registrationPendingFor = 60 * 60 * 1000;
+            //kept in memory as well: storage may be unavailable, or refuse writes
+            var registrationPendingHere = 0;
+            var registrationChecking = false;
+            var registeredHere = false;
+            var setRegistrationPending = function() {
+                registrationPendingHere = Date.now();
+                try {
+                    localStorage.setItem(registrationPending, String(registrationPendingHere));
+                } catch (e) {}
+            };
+            var clearRegistrationPending = function() {
+                registrationPendingHere = 0;
+                try {
+                    localStorage.removeItem(registrationPending);
+                } catch (e) {}
+            };
+            var isRegistrationPending = function() {
+                var since = registrationPendingHere;
+                if (!since) {
+                    try {
+                        since = parseInt(localStorage.getItem(registrationPending), 10) || 0;
+                    } catch (e) {}
+                }
+                if (!since) {
+                    return false;
+                }
+                if (Date.now() - since > registrationPendingFor) {
+                    clearRegistrationPending();
+                    return false;
+                }
+                return true;
+            };
+            var checkRegistration = function() {
+                if (registeredHere || registrationChecking || !isRegistrationPending()) {
+                    return;
+                }
+                registrationChecking = true;
                 $.ajax({
-                    url:  '{{ url_for('setRegistered') }}',
+                    url: '{{ url_for('telemetryRegistration') }}',
+                    method: 'POST',
+                    complete: function() {
+                        registrationChecking = false;
+                    },
                     success: function(data) {
-    {%  if orig is defined and orig == 'desktop' %}
-                        $('#register').remove();
-                        if ($('#share a').length == 0) {
-                            $('#share').remove();
+                        if (!data.registered) {
+                            return;
                         }
-    {% endif %}
+                        registeredHere = true;
+                        clearRegistrationPending();
+        {%  if orig is defined and orig == 'desktop' %}
+                        $('#register').remove();
+                        //nothing left to share: hidden, as it would be on the next load
+                        if ($('#telemetry').length == 0) {
+                            $('#telemetry_share').remove();
+                        }
+        {% else %}
+                        $('#registration_date').text(data.date);
+                        $('#register .register-text').text('{{ _T("Update your information")|e("js") }}');
+        {% endif %}
                         {% include "elements/js/modal.js.twig" with {
                             modal_without_title: true,
                             modal_content: "data.message",
@@ -165,5 +231,18 @@
                         } %}
                     }
                 });
+            };
+
+            //checked each time the page is shown again, until the form has been sent:
+            //coming back before sending it must not end the checks
+            $(window).on('focus', checkRegistration);
+            $(document).on('visibilitychange', function() {
+                if (document.visibilityState === 'visible') {
+                    checkRegistration();
+                }
             });
+
+            //registration form opened earlier, but not confirmed yet
+            checkRegistration();
+    {% endif %}
 {% endif %}
