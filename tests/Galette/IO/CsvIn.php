@@ -1311,6 +1311,51 @@ class CsvIn extends GaletteTestCase
     }
 
     /**
+     * Test an import cannot update an existing member
+     */
+    public function testImportCannotUpdateExistingMember(): void
+    {
+        $this->seed = 95842354;
+        $member = $this->getMemberOne();
+        $login = $member->login;
+        $email = $member->email;
+
+        $fields = ['id_adh', 'nom_adh', 'login_adh', 'email_adh', 'fingerprint'];
+        $file_name = 'test-import-id-adh.csv';
+        $members_list = [
+            'FAKER_ID_ADH' => [
+                'id_adh' => $member->id,
+                'nom_adh' => 'Takeover',
+                'login_adh' => 'takeover_login',
+                'email_adh' => 'takeover@example.com',
+                'fingerprint' => 'FAKER_ID_ADH'
+            ]
+        ];
+        $error = 'Import model cannot contain the member identifier, existing members cannot be updated by an import.';
+        $flash_messages = [
+            'error_detected' => [
+                'File does not comply with requirements.',
+                $error
+            ]
+        ];
+
+        $this->doImportFileTest(
+            fields: $fields,
+            file_name: $file_name,
+            flash_messages: $flash_messages,
+            members_list: $members_list,
+            count_before: 1,
+            count_after: 1
+        );
+        $this->expectLogEntry(\Analog\Analog::ERROR, $error);
+
+        $reloaded = new Adherent($this->zdb, (int)$member->id);
+        $this->assertSame($login, $reloaded->login);
+        $this->assertSame($email, $reloaded->email);
+        $this->assertSame($member->name, $reloaded->name);
+    }
+
+    /**
      * Test missing columns
      */
     public function testMissingColumn(): void

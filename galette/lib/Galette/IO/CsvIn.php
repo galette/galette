@@ -222,6 +222,15 @@ class CsvIn extends Csv
             return false;
         }
 
+        //existing members must never be updated from an import
+        if (in_array('id_adh', $this->fields, strict: true)) {
+            fclose($handle);
+            $this->addError(
+                _T('Import model cannot contain the member identifier, existing members cannot be updated by an import.')
+            );
+            return false;
+        }
+
         $cnt_fields = count($this->fields);
 
         //check required fields
@@ -607,6 +616,8 @@ class CsvIn extends Csv
                     if (isset($values['mdp_adh'])) {
                         $values['mdp_adh2'] = $values['mdp_adh'];
                     }
+                    //imported rows are always new members
+                    unset($values['id_adh']);
 
                     $valid = $member->check($values, $this->required, []);
                     if ($valid === true) {
