@@ -1406,9 +1406,14 @@ class Members extends GaletteTestCase
 
         //listed from the picture file only
         $this->assertTrue($adh->picture->delete());
+        $this->assertSame(1, $members->getFilters()->counter);
         $this->assertSame(['staff' => [], 'members' => []], $members->getPublicList(with_photos: true));
         $this->assertSame(0, $members->getCount());
+        //pagination follows the empty result
+        $this->assertSame(0, $members->getFilters()->counter);
+        $members->getFilters()->setCounter(1);
         $this->assertSame(['staff' => [], 'groups' => []], $members->getPublicStaffList(with_photos: true));
+        $this->assertSame(0, $members->getFilters()->counter);
     }
 
     /**

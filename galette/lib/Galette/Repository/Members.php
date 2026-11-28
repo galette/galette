@@ -434,22 +434,25 @@ class Members
             );
             $zdb->execute($del_qry);
 
+            //pictures are removed once the outermost transaction is committed: a rollback must not lose them
+            $zdb->afterCommit(function () use ($pictures, $hist): void {
+                foreach ($pictures as $str_adh => $picture) {
+                    if ($picture->delete()) {
+                        $hist->add(
+                            _T("Member Picture deleted"),
+                            $str_adh
+                        );
+                    } else {
+                        Analog::log(
+                            'Unable to delete picture for member ' . $str_adh,
+                            Analog::ERROR
+                        );
+                    }
+                }
+            });
+
             //commit all changes
             $zdb->commit();
-
-            foreach ($pictures as $str_adh => $picture) {
-                if ($picture->delete()) {
-                    $hist->add(
-                        _T("Member Picture deleted"),
-                        $str_adh
-                    );
-                } else {
-                    Analog::log(
-                        'Unable to delete picture for member ' . $str_adh,
-                        Analog::ERROR
-                    );
-                }
-            }
 
             foreach ($processed as $p) {
                 $emitter->dispatch(new GaletteEvent('member.remove', $p));
@@ -521,6 +524,7 @@ class Members
 
         if ($with_photos && Picture::getStoredIds() === []) {
             $this->count = 0;
+            $this->filters->setCounter(0);
             return [
                 'staff'     => [],
                 'members'   => []
@@ -584,6 +588,7 @@ class Members
 
         if ($with_photos && Picture::getStoredIds() === []) {
             $this->count = 0;
+            $this->filters->setCounter(0);
             return [
                 'staff' => [],
                 'groups' => []
