@@ -408,9 +408,9 @@ class Contribution implements AccessManagementInterface
         $transpk = Transaction::PK;
         if ($r->$transpk != '') {
             $this->transaction_id = (int)$r->$transpk;
-            $transaction = new Transaction($this->zdb, $this->login, $this->transaction_id);
+            $transaction = new Transaction($this->zdb, $this->login);
             //a transaction current user cannot load is not shown, and is kept as is on store
-            $this->transaction = $transaction->id !== null ? $transaction : null;
+            $this->transaction = $transaction->load($this->transaction_id, quiet: true) ? $transaction : null;
         } else {
             $this->transaction_id = null;
             $this->transaction = null;
@@ -603,11 +603,11 @@ class Contribution implements AccessManagementInterface
                         break;
                     case Transaction::PK:
                         if ($value != '') {
-                            $transaction = new Transaction($this->zdb, $this->login, (int)$value);
-                            if ($transaction->id === null && (int)$value === $this->transaction_id) {
+                            if ($this->isHiddenTransactionPart() && (int)$value === $this->transaction_id) {
                                 //current transaction is hidden from current user: keep it as is
                                 break;
                             }
+                            $transaction = new Transaction($this->zdb, $this->login, (int)$value);
                             if ($this->transaction === null && $this->transaction_id !== null) {
                                 //current transaction is hidden from current user: it cannot be detached
                                 Analog::log(
@@ -1109,6 +1109,16 @@ class Contribution implements AccessManagementInterface
     public function isTransactionPart(): bool
     {
         return $this->transaction != null;
+    }
+
+    /**
+     * Is current contribution part of a transaction current user cannot load
+     *
+     * Only the link can be shown, never any detail of the transaction.
+     */
+    public function isHiddenTransactionPart(): bool
+    {
+        return $this->transaction === null && $this->transaction_id !== null;
     }
 
     /**

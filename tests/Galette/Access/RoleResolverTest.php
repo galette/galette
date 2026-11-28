@@ -542,10 +542,8 @@ class RoleResolverTest extends GaletteTestCase
             $this->assertTrue($edited->load((int)$contribution->id));
             //transaction is not shown...
             $this->assertFalse($edited->isTransactionPart());
-            $this->expectLogEntry(
-                \Analog\Analog::ERROR,
-                'No transaction #' . $transaction->id . ' (user ' . $member_one->id . ')'
-            );
+            //...apart from the link itself, without logging any error
+            $this->assertTrue($edited->isHiddenTransactionPart());
 
             //...but kept, as the form posts no transaction
             $posted = ['type_paiement_cotis' => 2, \Galette\Entity\Transaction::PK => ''] + $data;
@@ -559,10 +557,6 @@ class RoleResolverTest extends GaletteTestCase
                 $edited->getRequired(),
                 []
             ));
-            $this->expectLogEntry(
-                \Analog\Analog::ERROR,
-                'No transaction #' . $transaction->id . ' (user ' . $member_one->id . ')'
-            );
             $this->assertTrue($edited->store());
             $this->assertSame((int)$transaction->id, $stored());
             $errors = $edited->check(
@@ -593,10 +587,6 @@ class RoleResolverTest extends GaletteTestCase
             $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been threw attempting to edit/store a contribution');
             $this->assertSame((int)$transaction->id, $stored());
             $this->assertTrue($edited->load((int)$contribution->id));
-            $this->expectLogEntry(
-                \Analog\Analog::ERROR,
-                'No transaction #' . $transaction->id . ' (user ' . $member_one->id . ')'
-            );
 
             //its amount cannot change, transaction balance would be disclosed checking it
             foreach ([91, 93] as $amount) {
