@@ -625,4 +625,53 @@ class Transaction extends GaletteTestCase
             );
         }
     }
+
+    /**
+     * Test a member can list its contribution that is part of a transaction from another member
+     */
+    public function testContributionInOtherMemberTransaction(): void
+    {
+        $this->logSuperAdmin();
+        $member_two = $this->getMemberTwo();
+        $this->getMemberOne();
+        //transaction from member one
+        $this->createTransaction();
+        $tid = $this->transaction->id;
+
+        //contribution for member two, part of member one transaction
+        $now = new DateTime();
+        $data = [
+            'id_adh' => $member_two->id,
+            'id_type_cotis' => 4, //donation
+            'montant_cotis' => 50,
+            'type_paiement_cotis' => 3,
+            'info_cotis' => 'FAKER' . $this->seed,
+            'date_enreg' => $now->format('Y-m-d'),
+            'date_debut_cotis' => $now->format('Y-m-d'),
+            \Galette\Entity\Transaction::PK => $tid
+        ];
+        $contrib = $this->createContrib($data);
+        $contrib_id = $contrib->id;
+        $this->login->logOut();
+
+        //member two is not allowed to load member one transaction
+        $mdata = $this->dataAdherentTwo();
+        $this->assertTrue($this->login->login($mdata['login_adh'], $mdata['mdp_adh']));
+        $this->assertFalse($this->login->isAdmin());
+        $this->assertFalse($this->login->isStaff());
+
+        $contrib = new \Galette\Entity\Contribution($this->zdb, $this->login, $contrib_id);
+        $this->assertSame($contrib_id, $contrib->id);
+        $this->assertTrue($contrib->isTransactionPart());
+        //no error logged for a transaction member two cannot load
+        $this->expectNoLogEntry();
+
+        //still logged on a direct load
+        $transaction = new \Galette\Entity\Transaction($this->zdb, $this->login);
+        $this->assertFalse($transaction->load($tid));
+        $this->expectLogEntry(
+            \Analog\Analog::ERROR,
+            'No transaction #' . $tid
+        );
+    }
 }

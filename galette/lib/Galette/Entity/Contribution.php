@@ -389,7 +389,10 @@ class Contribution implements AccessManagementInterface
 
         $transpk = Transaction::PK;
         if ($r->$transpk != '') {
-            $this->transaction = new Transaction($this->zdb, $this->login, (int)$r->$transpk);
+            //current user may not be allowed to load the transaction
+            //(a member whose contribution is part of a transaction from another member)
+            $this->transaction = new Transaction($this->zdb, $this->login);
+            $this->transaction->load((int)$r->$transpk, quiet: true);
         } else {
             $this->transaction = null;
         }
