@@ -10,25 +10,19 @@ declare(strict_types=1);
 
 namespace Galette\Core;
 
-use Laminas\Db\Adapter\Driver\StatementInterface;
-use Laminas\Db\Sql\Select;
 use Psr\Http\Message\UploadedFileInterface;
 use Safe\Exceptions\FilesystemException;
 use Safe\Exceptions\ImageException;
 use Slim\Psr7\Response;
 use Throwable;
 use Analog\Analog;
-use Galette\Entity\Adherent;
 use Galette\Exception\MissingAssetException;
 use Galette\IO\FileTrait;
 use Galette\IO\UploadSize;
 use UnhandledMatchError;
 
 use function Safe\file_get_contents;
-use function Safe\file_put_contents;
-use function Safe\fclose;
 use function Safe\fopen;
-use function Safe\fread;
 use function Safe\fwrite;
 use function Safe\getimagesize;
 use function Safe\imagealphablending;
@@ -36,6 +30,7 @@ use function Safe\imagecreatetruecolor;
 use function Safe\imagesavealpha;
 use function Safe\imagecopyresampled;
 use function Safe\mkdir;
+use function Safe\preg_match;
 use function Safe\readfile;
 use function Safe\realpath;
 use function Safe\rewind;
@@ -55,18 +50,7 @@ class Picture
         upload as protected trait_upload;
     }
 
-    //constants that will not be overridden
-    public const int SQL_ERROR = -10;
-    public const int SQL_BLOB_ERROR = -11;
-    //constants that can be overridden
-    //(do not use self::CONSTANT, but get_class[$this]::CONSTANT)
-    public const string TABLE = 'pictures';
-    public const string PK = Adherent::PK;
-
-    protected string $tbl_prefix = '';
-
     protected string|int $id;
-    protected int $db_id;
     protected int $height;
     protected int $width;
     protected int $optimal_height;
@@ -82,7 +66,6 @@ class Picture
     protected string $store_path = GALETTE_PHOTOS_PATH;
     protected int $max_width = 200;
     protected int $max_height = 200;
-    private StatementInterface $insert_stmt;
     /** @var ?array<string, mixed> */
     private ?array $cropping = null;
 
@@ -108,18 +91,7 @@ class Picture
         // '!==' needed, otherwise ''==0
         if (!empty($id_adh)) {
             $this->id = $id_adh;
-            if (!isset($this->db_id)) {
-                $this->db_id = (int)$id_adh;
-            }
-
-            //if file does not exist on the FileSystem, check for it in the database
-            if (!$this->checkFileOnFS()) {
-                if ($this->checkFileInDB()) {
-                    $this->has_picture = true;
-                }
-            } else {
-                $this->has_picture = true;
-            }
+            $this->has_picture = $this->checkFileOnFS();
         }
 
         // if we still have no picture, take the default one
@@ -148,15 +120,8 @@ class Picture
         if (isset($data['id'])) {
             $this->id = $data['id'];
         }
-        //if file has been deleted since we store our object in the session,
-        //we try to retrieve it
-        if (isset($this->id) && !$this->checkFileOnFS()) {
-            //if file does not exist on the FileSystem,
-            //check for it in the database
-            //$this->checkFileInDB();
-        } else {
-            $this->has_picture = false;
-        }
+        //file may have been deleted since the object has been serialized
+        $this->has_picture = isset($this->id) && $this->checkFileOnFS();
 
         // if we still have no picture, take the default one
         if (empty($this->file_path)) {
@@ -204,75 +169,6 @@ class Picture
             return true;
         }
         return false;
-    }
-
-    /**
-     * Check if current file is present in the database,
-     *   and copy it to the File System
-     *
-     * @return bool true if file is present in the DB, false otherwise
-     */
-    private function checkFileInDB(): bool
-    {
-        global $zdb;
-
-        try {
-            $select = $this->getCheckFileQuery();
-            $results = $zdb->execute($select);
-            $pic = $results->current();
-
-            if ($pic && $this->ensureStorePath()) {
-                // we must regenerate the picture file
-                $file_wo_ext = $this->store_path . $this->id;
-                file_put_contents(
-                    $file_wo_ext . '.' . $pic->format,
-                    $pic->picture
-                );
-
-                $this->format = $pic->format;
-                switch ($this->format) {
-                    case 'jpg':
-                        $this->mime = 'image/jpeg';
-                        break;
-                    case 'png':
-                        $this->mime = 'image/png';
-                        break;
-                    case 'gif':
-                        $this->mime = 'image/gif';
-                        break;
-                    case 'webp':
-                        $this->mime = 'image/webp';
-                        break;
-                }
-                $this->file_path = realpath($file_wo_ext . '.' . $this->format);
-                return true;
-            }
-        } catch (Throwable $e) {
-            Logs::exception($e, 'Unable to restore picture ' . $this->id . ' from database', Analog::WARNING);
-            return false;
-        }
-        return false;
-    }
-
-    /**
-     * Returns the relevant query to check if picture exists in database.
-     *
-     * @return Select SELECT query
-     */
-    protected function getCheckFileQuery(): Select
-    {
-        global $zdb;
-        $class = static::class;
-
-        $select = $zdb->select($this->tbl_prefix . $class::TABLE);
-        $select->columns(
-            [
-                'picture',
-                'format'
-            ]
-        );
-        $select->where([$class::PK => $this->db_id]);
-        return $select;
     }
 
     /**
@@ -405,87 +301,37 @@ class Picture
     }
 
     /**
-     * Deletes a picture, from both database and filesystem
-     *
-     * @param bool $transaction Whether to use a transaction here or not
+     * Deletes a picture file
      *
      * @return bool true if image was successfully deleted, false otherwise
      */
-    public function delete(bool $transaction = true): bool
+    public function delete(): bool
     {
-        global $zdb;
-        $class = static::class;
+        $file_wo_ext = $this->store_path . $this->id;
 
-        try {
-            if ($transaction === true) {
-                $zdb->beginTransaction();
+        // take back default picture
+        $this->getDefaultPicture();
+        // fix sizes
+        $this->setSizes();
+
+        foreach (['jpg', 'png', 'gif', 'webp'] as $ext) {
+            $file = $file_wo_ext . '.' . $ext;
+            if (!file_exists($file)) {
+                continue;
             }
-
-            $delete = $zdb->delete($this->tbl_prefix . $class::TABLE);
-            $delete->where([$class::PK => $this->db_id]);
-            $del = $zdb->execute($delete);
-
-            if (!$del->count() > 0) {
-                Analog::log(
-                    'Unable to remove picture database entry for ' . $this->db_id,
-                    Analog::ERROR
-                );
-                //it may be possible image is missing in the database.
-                //let's try to remove file anyway.
-            }
-
-            $file_wo_ext = $this->store_path . $this->id;
-
-            // take back default picture
-            $this->getDefaultPicture();
-            // fix sizes
-            $this->setSizes();
-
-            $success = false;
-            $_file = null;
-            if (file_exists($file_wo_ext . '.jpg')) {
-                $_file = $file_wo_ext . '.jpg';
-                $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
-            } elseif (file_exists($file_wo_ext . '.png')) {
-                $_file = $file_wo_ext . '.png';
-                $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
-            } elseif (file_exists($file_wo_ext . '.gif')) {
-                $_file = $file_wo_ext . '.gif';
-                $success = unlink($_file); //@phpstan-ignore theCodingMachineSafe.function
-            } elseif (file_exists($file_wo_ext . '.webp')) {
-                $_file = $file_wo_ext . '.webp';
-                $success = unlink($_file); // @phpstan-ignore theCodingMachineSafe.function
-            }
-
-            if ($_file !== null && $success !== true) {
+            if (unlink($file) !== true) { //@phpstan-ignore theCodingMachineSafe.function
                 //unable to remove file that exists!
-                if ($transaction === true) {
-                    $zdb->rollback();
-                }
                 Analog::log(
-                    'The file ' . $_file
-                    . ' was found on the disk but cannot be removed.',
+                    'The file ' . $file . ' was found on the disk but cannot be removed.',
                     Analog::ERROR
                 );
                 return false;
-            } else {
-                if ($transaction === true) {
-                    $zdb->commit();
-                }
-                $this->has_picture = false;
-                return true;
             }
-        } catch (Throwable $e) {
-            if ($transaction === true) {
-                $zdb->rollback();
-            }
-            Logs::exception(
-                $e,
-                'An error occurred attempting to delete picture ' . $this->db_id . ' from database',
-                Analog::ERROR
-            );
-            return false;
+            break;
         }
+
+        $this->has_picture = false;
+        return true;
     }
 
     /**
@@ -512,7 +358,7 @@ class Picture
     }
 
     /**
-     * Stores an image on the disk and in the database
+     * Stores an image on the disk
      *
      * @param UploadedFileInterface $file     The uploaded file
      * @param ?array<string, mixed> $cropping Cropping properties
@@ -558,8 +404,6 @@ class Picture
      */
     public function writeOnDisk(UploadedFileInterface $file): bool|int
     {
-        global $zdb;
-
         if (!$this->ensureStorePath()) {
             return self::CANT_WRITE;
         }
@@ -600,7 +444,8 @@ class Picture
             );
         }
 
-        return $this->storeInDb(zdb: $zdb, id: $this->db_id, file: $this->buildDestPath(), ext: $this->extension);
+        $this->has_picture = true;
+        return true;
     }
 
     /**
@@ -636,70 +481,6 @@ class Picture
             '[' . static::class . '] Pictures directory `' . $this->store_path . '` has been created',
             Analog::INFO
         );
-        return true;
-    }
-
-    /**
-     * Stores an image in the database
-     *
-     * @param Db     $zdb  Database instance
-     * @param int    $id   Member ID
-     * @param string $file File path on disk
-     * @param string $ext  File extension
-     *
-     * @return true|int
-     */
-    private function storeInDb(Db $zdb, int $id, string $file, string $ext): bool|int
-    {
-        $f = fopen($file, 'r');
-        $picture = '';
-        while ($r = fread($f, 8192)) {
-            $picture .= $r;
-        }
-        fclose($f);
-
-        $class = static::class;
-
-        try {
-            $zdb->beginTransaction();
-
-            if (isset($this->insert_stmt)) {
-                $stmt = $this->insert_stmt;
-            } else {
-                $insert = $zdb->insert($this->tbl_prefix . $class::TABLE);
-                $insert->values(
-                    [
-                        $class::PK  => ':' . $class::PK,
-                        'picture'   => ':picture',
-                        'format'    => ':format'
-                    ]
-                );
-                $stmt = $zdb->sql->prepareStatementForSqlObject($insert);
-                $container = $stmt->getParameterContainer();
-                $container->offsetSet(
-                    'picture', //'picture',
-                    ':picture',
-                    $container::TYPE_LOB
-                );
-                $stmt->setParameterContainer($container);
-                $this->insert_stmt = $stmt;
-            }
-
-            $stmt->execute(
-                [
-                    $class::PK  => $id,
-                    'picture'   => $picture,
-                    'format'    => $ext
-                ]
-            );
-            $zdb->commit();
-            $this->has_picture = true;
-        } catch (Throwable $e) {
-            $zdb->rollback();
-            Logs::exception($e, 'An error occurred storing picture in database', Analog::ERROR);
-            return self::SQL_ERROR;
-        }
-
         return true;
     }
 
@@ -1027,16 +808,31 @@ class Picture
      */
     public function getErrorMessage(int $code): string
     {
-        $error = null;
-        switch ($code) {
-            case self::SQL_ERROR:
-            case self::SQL_BLOB_ERROR:
-                $error = _T("An SQL error has occurred.");
-                break;
+        return $this->getErrorMessageFromCode($code);
+    }
+
+    /**
+     * Get ids of members that have a picture stored on disk
+     *
+     * @return array<int>
+     */
+    public static function getStoredIds(): array
+    {
+        if (!is_dir(GALETTE_PHOTOS_PATH)) {
+            return [];
         }
 
-        $error ??= $this->getErrorMessageFromCode($code);
-
-        return $error;
+        $ids = [];
+        foreach (new \DirectoryIterator(GALETTE_PHOTOS_PATH) as $file) {
+            if (
+                $file->isFile()
+                && preg_match('/^(\d+)\.(?:jpg|png|gif|webp)$/', $file->getFilename(), $matches) === 1
+            ) {
+                $id = (int)$matches[1];
+                $ids[$id] = $id;
+            }
+        }
+        sort($ids);
+        return $ids;
     }
 }

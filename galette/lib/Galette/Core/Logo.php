@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use Safe\DateTime;
-use Laminas\Db\Sql\Select;
 
 /**
  * This class stores and serve the logo.
@@ -22,9 +21,6 @@ use Laminas\Db\Sql\Select;
 class Logo extends Picture
 {
     protected string|int $id = 'custom_logo';
-    // Database wants a member id (integer), not a string.
-    // Will be used to query the correct id
-    protected int $db_id = 0;
     protected bool $custom = true;
 
     /**
@@ -69,28 +65,6 @@ class Logo extends Picture
                 $special
             )
         );
-    }
-
-    /**
-     * Returns the relevant query to check if picture exists in database.
-     *
-     * @see picture::getCheckFileQuery()
-     *
-     * @return Select SELECT query
-     */
-    protected function getCheckFileQuery(): Select
-    {
-        global $zdb;
-
-        $select = $zdb->select(self::TABLE);
-        $select->columns(
-            [
-                'picture',
-                'format'
-            ]
-        );
-        $select->where([self::PK => $this->db_id]);
-        return $select;
     }
 
     /**

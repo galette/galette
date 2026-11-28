@@ -49,23 +49,17 @@ class PrintLogo extends BaseGaletteTestCase
         $zdb = $this->zdb;
 
         $logo = new \Galette\Core\Logo();
-        $pictures = PREFIX_DB . \Galette\Core\Picture::TABLE;
-        $this->assertSame(
-            //only the print logo itself is looked up
-            1,
-            $this->countQueries(
-                fn() => new \Galette\Core\PrintLogo($logo),
-                $pictures
-            )
-        );
-        $this->assertSame(
-            //print logo, then logo
-            2,
-            $this->countQueries(
-                fn() => new \Galette\Core\PrintLogo(),
-                $pictures
-            )
-        );
+        $property = new \ReflectionProperty(\Galette\Core\PrintLogo::class, 'logo');
+
+        //the given logo is the one used...
+        $print_logo = new \Galette\Core\PrintLogo($logo);
+        $this->assertSame($logo, $property->getValue($print_logo));
+        $this->assertSame($logo->getFormat(), $print_logo->getFormat());
+
+        //...otherwise, one is built when needed
+        $print_logo = new \Galette\Core\PrintLogo();
+        $this->assertNull($property->getValue($print_logo));
+        $this->assertSame($logo->getFormat(), $print_logo->getFormat());
     }
 
     /**

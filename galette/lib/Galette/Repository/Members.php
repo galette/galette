@@ -332,6 +332,7 @@ class Members
         global $zdb, $hist, $emitter, $login;
 
         $processed = [];
+        $pictures = [];
         $list = (is_array($ids) ? $ids : [$ids]);
 
         try {
@@ -353,21 +354,8 @@ class Members
 
                 $p = new Picture($member->id_adh);
                 if ($p->hasPicture()) {
-                    if (!$p->delete(transaction: false)) {
-                        Analog::log(
-                            'Unable to delete picture for member ' . $str_adh,
-                            Analog::ERROR
-                        );
-                        throw new \Exception(
-                            'Unable to delete picture for member '
-                            . $str_adh
-                        );
-                    } else {
-                        $hist->add(
-                            _T("Member Picture deleted"),
-                            $str_adh
-                        );
-                    }
+                    //files are removed once changes are committed: a rollback could not restore them
+                    $pictures[$str_adh] = $p;
                 }
 
                 $processed[] = $member;
@@ -446,6 +434,23 @@ class Members
             );
             $zdb->execute($del_qry);
 
+            //pictures are removed once the outermost transaction is committed: a rollback must not lose them
+            $zdb->afterCommit(function () use ($pictures, $hist): void {
+                foreach ($pictures as $str_adh => $picture) {
+                    if ($picture->delete()) {
+                        $hist->add(
+                            _T("Member Picture deleted"),
+                            $str_adh
+                        );
+                    } else {
+                        Analog::log(
+                            'Unable to delete picture for member ' . $str_adh,
+                            Analog::ERROR
+                        );
+                    }
+                }
+            });
+
             //commit all changes
             $zdb->commit();
 
@@ -517,6 +522,15 @@ class Members
     {
         global $zdb;
 
+        if ($with_photos && Picture::getStoredIds() === []) {
+            $this->count = 0;
+            $this->filters->setCounter(0);
+            return [
+                'staff'     => [],
+                'members'   => []
+            ];
+        }
+
         try {
             $this->extra_order = ['priorite_statut ASC'];
             $select = $this->buildSelect(
@@ -571,6 +585,15 @@ class Members
     public function getPublicStaffList(bool $with_photos): array
     {
         global $zdb, $preferences;
+
+        if ($with_photos && Picture::getStoredIds() === []) {
+            $this->count = 0;
+            $this->filters->setCounter(0);
+            return [
+                'staff' => [],
+                'groups' => []
+            ];
+        }
 
         try {
             $this->extra_order = ['priorite_statut ASC'];
@@ -870,11 +893,8 @@ class Members
                 case self::SHOW_PUBLIC_LIST:
                 case self::SHOW_STAFF_PUBLIC_LIST:
                     if ($photos) {
-                        $select->join(
-                            ['picture' => PREFIX_DB . Picture::TABLE],
-                            'a.' . self::PK . '= picture.' . self::PK,
-                            []
-                        );
+                        //callers return early when no picture is stored, avoiding an empty IN ()
+                        $select->where->in('a.' . self::PK, Picture::getStoredIds());
                     }
 
                     $select->join(

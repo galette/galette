@@ -516,7 +516,6 @@ class Db extends BaseGaletteTestCase
             'galette_dynamic_fields',
             'galette_fields_config',
             'galette_tmppasswds',
-            'galette_pictures',
             'galette_adherents',
             'galette_l10n',
             'galette_import_model',

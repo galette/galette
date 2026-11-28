@@ -28,6 +28,10 @@ class UpgradeTo140 extends AbstractUpdater
 {
     /** Members positions, created by the maps plugin before it became part of Galette */
     private const string MAPS_TABLE = 'maps_coordinates';
+    /** Id the custom logo was stored under in the pictures table */
+    private const int LOGO_ID = 0;
+    /** Id the custom print logo was stored under in the pictures table */
+    private const int PRINT_LOGO_ID = 999999;
 
     protected ?string $db_version = '1.40';
 
@@ -46,7 +50,19 @@ class UpgradeTo140 extends AbstractUpdater
     protected function update(): bool
     {
         $this->rehashL10nKeys();
-        return true;
+
+        //pictures are no longer stored in the database, which is dropped by the SQL script:
+        //write those missing on disk first. On failure, the table is kept and update can be run again.
+        return $this->restorePictures(
+            table: 'pictures',
+            pk: 'id_adh',
+            store_path: GALETTE_PHOTOS_PATH,
+            filename: fn(int|string $id): string => match ((int)$id) {
+                self::LOGO_ID => 'custom_logo',
+                self::PRINT_LOGO_ID => 'custom_print_logo',
+                default => (string)$id
+            }
+        );
     }
 
     /**

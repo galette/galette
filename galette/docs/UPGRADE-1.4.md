@@ -521,3 +521,40 @@ $position = $positions->get('events_event', $event->getId()); //null, or latitud
 
 Nothing removes a position when its object is removed: the plugin calls
 ``$positions->remove('events_event', $ids)`` when it removes its objects.
+
+## Pictures
+
+Pictures are no longer stored in the database: the file on disk is the only
+copy. `Galette\Core\Picture` no longer reads nor writes any table, and a
+missing file is no longer restored from the database.
+
+Removed from `Galette\Core\Picture` and its subclasses:
+
+- the `TABLE` and `PK` constants, and the `$tbl_prefix` property, that told
+  which table a subclass stored its pictures in;
+- the `SQL_ERROR` and `SQL_BLOB_ERROR` error codes;
+- the `$transaction` parameter of `delete()`: it only removes the file,
+  call ``$picture->delete()``.
+
+`Picture::getStoredIds()` returns the ids of members having a picture on disk.
+
+A plugin that stored its pictures in a table drops it in its update SQL
+scripts, and from its install scripts. Its update class writes first the
+pictures missing on disk with `AbstractUpdater::restorePictures()`, from
+`update()`, which runs before the SQL scripts: if a picture cannot be written,
+the update stops and the table is kept.
+
+```php
+protected function update(): bool
+{
+    return $this->restorePictures(
+        MYPLUGIN_PREFIX . 'pictures',   //table, without Galette prefix
+        'object_id',                    //id column
+        GALETTE_PHOTOS_PATH . 'myplugin/'
+    );
+}
+```
+
+A file is written only if none exists for that id, whatever its extension.
+A fourth argument builds the file name from the id, when it is not the id
+itself. A missing table is ignored.

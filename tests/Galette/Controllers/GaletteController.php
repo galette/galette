@@ -483,7 +483,6 @@ class GaletteController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for 0');
         $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
 
         //check for new logo presence
@@ -526,7 +525,6 @@ class GaletteController extends GaletteRoutingTestCase
         $test_response = $this->app->handle($request);
         $this->assertEquals(301, $test_response->getStatusCode());
         $this->assertSame(['Location' => [$this->routeparser->urlFor('preferences')]], $test_response->getHeaders());
-        $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to remove picture database entry for 999999');
         $this->expectNoLogEntry();
         $this->expectFlashData(['success_detected' =>  ['Preferences has been saved.']]);
 

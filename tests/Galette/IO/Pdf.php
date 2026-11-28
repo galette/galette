@@ -75,18 +75,30 @@ class Pdf extends BaseGaletteTestCase
         global $container;
 
         //logo is already built when a PDF is generated
-        $container->get(\Galette\Core\Logo::class);
-        $pdf = new class ($container->get(\Galette\Core\Preferences::class)) extends \Galette\IO\Pdf {
-        };
-        $pdf->newPage();
+        $logo = new class extends \Galette\Core\Logo {
+            public int $calls = 0;
 
-        $this->assertSame(
-            //only the print logo itself is looked up
-            1,
-            $this->countQueries(
-                fn() => $pdf->PageHeader('Header test'),
-                PREFIX_DB . \Galette\Core\Picture::TABLE
-            )
-        );
+            /**
+             * Count print logo lookups of the default path
+             */
+            protected function getDefaultPath(): ?string
+            {
+                ++$this->calls;
+                return parent::getDefaultPath();
+            }
+        };
+        $previous = $container->get(\Galette\Core\Logo::class);
+        $container->set(\Galette\Core\Logo::class, $logo);
+        try {
+            $pdf = new class ($container->get(\Galette\Core\Preferences::class)) extends \Galette\IO\Pdf {
+            };
+            $pdf->newPage();
+            $pdf->PageHeader('Header test');
+        } finally {
+            $container->set(\Galette\Core\Logo::class, $previous);
+        }
+
+        //print logo has been built upon the existing logo
+        $this->assertSame(1, $logo->calls);
     }
 }
