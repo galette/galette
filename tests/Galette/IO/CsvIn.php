@@ -1304,7 +1304,8 @@ class CsvIn extends GaletteTestCase
             count_before: 0,
             count_after: 0
         );
-        $this->assertFalse($this->zdb->inTransaction());
+        //rolled back to its savepoint: the test transaction survives
+        $this->assertTrue($this->zdb->inTransaction());
         $this->expectLogEntry(\Analog\Analog::ERROR, 'Some errors has been thew attempting to edit/store a member');
         $this->expectLogEntry(\Analog\Analog::ERROR, 'An error occurred storing member at row 2 (SECOND ):');
         $this->expectLogEntry(\Analog\Analog::ERROR, '- This username is already in use, please choose another one!');

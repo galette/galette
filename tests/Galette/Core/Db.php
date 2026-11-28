@@ -988,4 +988,112 @@ class Db extends BaseGaletteTestCase
         $this->zdb->afterCommit($callback);
         $this->assertCount(2, $calls);
     }
+
+    /**
+     * Count titles with a given short label, from both APIs
+     *
+     * @param string $label Short label
+     *
+     * @return array{int, int} Count from Laminas, count from DBAL
+     */
+    private function countTitles(string $label): array
+    {
+        $select = $this->zdb->select('titles', 't');
+        $select->where(['t.short_label' => $label]);
+        $laminas = $this->zdb->execute($select)->count();
+
+        $dbal = (int)$this->zdb->dbal->fetchOne(
+            'SELECT COUNT(*) FROM ' . PREFIX_DB . 'titles WHERE short_label = ?',
+            [$label]
+        );
+
+        return [$laminas, $dbal];
+    }
+
+    /**
+     * Write with both APIs
+     *
+     * @param string $laminas Short label written with Laminas
+     * @param string $dbal    Short label written with DBAL
+     */
+    private function writeTitles(string $laminas, string $dbal): void
+    {
+        $insert = $this->zdb->insert('titles');
+        $insert->values(['short_label' => $laminas, 'long_label' => 'Written with Laminas']);
+        $this->zdb->execute($insert);
+
+        $this->zdb->dbal->insert(
+            PREFIX_DB . 'titles',
+            ['short_label' => $dbal, 'long_label' => 'Written with DBAL']
+        );
+    }
+
+    /**
+     * Test Laminas and DBAL share one connection and one transaction
+     */
+    public function testSharedTransaction(): void
+    {
+        $this->assertSame(
+            $this->zdb->connection->getResource(),
+            $this->zdb->dbal->getNativeConnection()
+        );
+
+        //drop the test transaction to roll back a real one
+        $this->zdb->rollback();
+        $this->assertFalse($this->zdb->inTransaction());
+        $this->zdb->setNoCommit(no_commit: false);
+        try {
+            $this->zdb->beginTransaction();
+            $this->writeTitles('LamOut', 'DbalOut');
+            //each API sees what the other one wrote
+            $this->assertSame([1, 1], $this->countTitles('LamOut'));
+            $this->assertSame([1, 1], $this->countTitles('DbalOut'));
+            $this->zdb->rollback();
+            $this->assertFalse($this->zdb->inTransaction());
+            $this->assertSame([0, 0], $this->countTitles('LamOut'));
+            $this->assertSame([0, 0], $this->countTitles('DbalOut'));
+        } finally {
+            $this->zdb->setNoCommit();
+        }
+    }
+
+    /**
+     * Test nested transactions are rolled back to their savepoint
+     */
+    public function testNestedRollback(): void
+    {
+        $this->writeTitles('LamKeep', 'DbalKeep');
+
+        $this->zdb->beginTransaction();
+        $this->writeTitles('LamDrop', 'DbalDrop');
+        $this->assertSame([1, 1], $this->countTitles('LamDrop'));
+        $this->zdb->rollback();
+
+        //the outer transaction, and what it wrote, survive
+        $this->assertTrue($this->zdb->inTransaction());
+        $this->assertSame([0, 0], $this->countTitles('LamDrop'));
+        $this->assertSame([0, 0], $this->countTitles('DbalDrop'));
+        $this->assertSame([1, 1], $this->countTitles('LamKeep'));
+        $this->assertSame([1, 1], $this->countTitles('DbalKeep'));
+
+        //transactions driven from the Laminas connection, as some plugins do, land in the same one
+        $this->zdb->connection->beginTransaction();
+        $this->assertSame(2, $this->zdb->dbal->getTransactionNestingLevel());
+        $this->writeTitles('LamPlugin', 'DbalPlugin');
+        $this->zdb->connection->rollBack();
+        $this->assertSame(1, $this->zdb->dbal->getTransactionNestingLevel());
+        $this->assertTrue($this->zdb->connection->inTransaction());
+        $this->assertSame([0, 0], $this->countTitles('LamPlugin'));
+        $this->assertSame([1, 1], $this->countTitles('LamKeep'));
+
+        //a failing query inside a nested transaction does not break the outer one, PostgreSQL included
+        $this->zdb->beginTransaction();
+        try {
+            $this->zdb->dbal->executeQuery('SELECT * FROM ' . PREFIX_DB . 'does_not_exist');
+            $this->fail('Query should have failed');
+        } catch (\Doctrine\DBAL\Exception\TableNotFoundException) {
+            $this->zdb->rollback();
+        }
+        $this->assertSame([1, 1], $this->countTitles('DbalKeep'));
+    }
 }

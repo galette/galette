@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace Galette\Core;
 
 use ArrayObject;
+use Doctrine\DBAL\Connection as DbalConnection;
+use Doctrine\DBAL\DriverManager;
 use Exception;
 use Laminas\Db\Adapter\Driver\Pdo\Result;
 use Laminas\Db\Metadata\Object\ColumnObject;
@@ -19,6 +21,7 @@ use LogicException;
 use RuntimeException;
 use Throwable;
 use Analog\Analog;
+use Galette\Core\Db\LaminasConnection;
 use Galette\Core\Db\MysqlPlatform;
 use Galette\Debug\QueryProfiler;
 use Galette\Core\Db\PostgresqlPlatform;
@@ -47,6 +50,7 @@ use function Safe\preg_replace;
  * @author Johan Cwiklinski <johan@x-tnd.be>
  *
  * @property Adapter            $db
+ * @property DbalConnection     $dbal
  * @property Sql                $sql
  * @property DriverInterface    $driver
  * @property AbstractConnection $connection
@@ -57,13 +61,14 @@ use function Safe\preg_replace;
 class Db
 {
     private Adapter $db;
+    private DbalConnection $dbal;
     private string $type_db;
     private Sql $sql;
     /** @var array<string, array<int, bool>|string> */
     private array $options;
     private string $last_query;
     private bool $no_commit = false;
-    /** @var array<callable(): void> Callbacks waiting for the current transaction to be committed */
+    /** @var array<array{int, callable(): void}> Callbacks waiting for the current transaction to be committed, with the nesting level they were registered at */
     private array $after_commit = [];
 
     public const string MYSQL = 'mysql';
@@ -149,8 +154,24 @@ class Db
      */
     private function doConnection(): void
     {
-        /** @var Pdo $driver */
-        $driver = (new Adapter($this->options))->getDriver();
+        $params = [
+            'driver'   => $this->type_db === self::PGSQL ? 'pdo_pgsql' : 'pdo_mysql',
+            'host'     => (string)$this->options['hostname'],
+            'port'     => (int)$this->options['port'],
+            'user'     => (string)$this->options['username'],
+            'password' => (string)$this->options['password'],
+            'dbname'   => (string)$this->options['database'],
+        ];
+        if (isset($this->options['charset'])) {
+            $params['charset'] = (string)$this->options['charset'];
+        }
+        if (isset($this->options['driver_options']) && is_array($this->options['driver_options'])) {
+            $params['driverOptions'] = $this->options['driver_options'];
+        }
+        $this->dbal = DriverManager::getConnection($params);
+
+        //Laminas runs on the very same PDO instance, see LaminasConnection
+        $driver = new Pdo(new LaminasConnection($this->dbal));
         $this->db = new Adapter(
             $driver,
             $this->type_db === self::PGSQL ? new PostgresqlPlatform($driver) : new MysqlPlatform($driver)
@@ -644,10 +665,13 @@ class Db
 
     /**
      * Start a transaction
+     *
+     * Nested transactions use savepoints: an inner rollback only cancels what
+     * was done since the matching beginTransaction().
      */
     public function beginTransaction(): void
     {
-        $this->db->getDriver()->getConnection()->beginTransaction();
+        $this->dbal->beginTransaction();
     }
 
     /**
@@ -655,18 +679,20 @@ class Db
      */
     public function commit(): void
     {
-        if (!$this->no_commit) {
-            $this->db->getDriver()->getConnection()->commit();
-            if ($this->inTransaction()) {
+        //from tests, the outermost transaction belongs to the test and is never committed
+        $floor = $this->no_commit ? 1 : 0;
+        if ($this->dbal->getTransactionNestingLevel() > $floor) {
+            //releases the savepoint of a nested transaction
+            $this->dbal->commit();
+            if ($this->dbal->getTransactionNestingLevel() > $floor) {
                 //nested transaction: nothing is committed until the outer one is
                 return;
             }
         }
-        //from tests, nothing is ever committed: behave as if it were
 
         $callbacks = $this->after_commit;
         $this->after_commit = [];
-        foreach ($callbacks as $callback) {
+        foreach ($callbacks as [, $callback]) {
             $callback();
         }
     }
@@ -676,9 +702,13 @@ class Db
      */
     public function rollback(): void
     {
-        //the whole transaction is rolled back, nested ones included
-        $this->after_commit = [];
-        $this->db->getDriver()->getConnection()->rollback();
+        //nested transactions are rolled back to their savepoint: only drop what they registered
+        $level = $this->dbal->getTransactionNestingLevel();
+        $this->after_commit = array_values(array_filter(
+            $this->after_commit,
+            fn(array $entry): bool => $entry[0] < $level
+        ));
+        $this->dbal->rollBack();
         //rows read during the transaction may not exist anymore
         RowsCache::clear();
     }
@@ -698,7 +728,7 @@ class Db
             $callback();
             return;
         }
-        $this->after_commit[] = $callback;
+        $this->after_commit[] = [$this->dbal->getTransactionNestingLevel(), $callback];
     }
 
     /**
@@ -706,7 +736,7 @@ class Db
      */
     public function inTransaction(): bool
     {
-        return $this->db->getDriver()->getConnection()->inTransaction(); //@phpstan-ignore method.notFound (inTransaction is part of the abstract class, not the interface -- thanks Laminas!)
+        return $this->dbal->isTransactionActive();
     }
 
     /**
@@ -756,6 +786,7 @@ class Db
     {
         return match ($name) {
             'db' => $this->db,
+            'dbal' => $this->dbal,
             'sql' => $this->sql,
             'driver' => $this->db->getDriver(),
             'connection' => $this->db->getDriver()->getConnection(),
@@ -775,7 +806,7 @@ class Db
     public function __isset(string $name): bool
     {
         return match ($name) {
-            'db', 'sql', 'driver', 'connection', 'platform', 'query_string', 'type_db' => true,
+            'db', 'dbal', 'sql', 'driver', 'connection', 'platform', 'query_string', 'type_db' => true,
             default => property_exists($this, $name),
         };
     }
