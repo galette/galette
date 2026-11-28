@@ -24,7 +24,9 @@ use function Safe\file_put_contents;
 use function Safe\mkdir;
 use function Safe\opendir;
 use function Safe\preg_match;
+use function Safe\rename;
 use function Safe\stream_get_contents;
+use function Safe\unlink;
 
 /**
  * Galette abstract updater script
@@ -367,6 +369,8 @@ abstract class AbstractUpdater
                 }
             }
 
+            //written aside then renamed: an interrupted write must not look like a restored picture
+            $tmp_file = $store_path . $name . '.' . $format . '.tmp';
             try {
                 if (!is_dir($store_path)) {
                     mkdir($store_path, 0o755, recursive: true);
@@ -376,9 +380,17 @@ abstract class AbstractUpdater
                     //pgsql returns bytea as a stream
                     $picture = stream_get_contents($picture);
                 }
-                file_put_contents($store_path . $name . '.' . $format, $picture);
+                file_put_contents($tmp_file, $picture);
+                rename($tmp_file, $store_path . $name . '.' . $format);
                 ++$restored;
             } catch (Throwable $e) {
+                if (file_exists($tmp_file)) {
+                    try {
+                        unlink($tmp_file);
+                    } catch (Throwable) {
+                        // no log: the write failure is logged below; a leftover temporary file is never taken for a picture
+                    }
+                }
                 Logs::exception($e, 'Unable to restore picture ' . $name . ' from ' . $full_table);
                 $this->addError(
                     sprintf(

@@ -148,6 +148,8 @@ class PicturesRestore extends GaletteTestCase
         $this->assertSame($image, file_get_contents($restored));
         $this->assertSame('on disk', file_get_contents($existing));
         $this->assertFalse(file_exists(GALETTE_PHOTOS_PATH . $other->id . '.png'));
+        //temporary files have been renamed
+        $this->assertSame([], glob(GALETTE_PHOTOS_PATH . '*.tmp'));
 
         $this->assertSame(
             [
@@ -199,6 +201,7 @@ class PicturesRestore extends GaletteTestCase
         );
         $this->assertTrue($updater->hasErrors());
         $this->assertSame('Unable to write picture ' . $file . '/42.jpg.', $updater->getReport()[0]['message']);
+        $this->assertFalse(file_exists($file . '/42.jpg.tmp'));
         $this->expectLogEntry(\Analog\Analog::ERROR, 'Unable to restore picture 42 from ' . PREFIX_DB . self::TABLE);
 
         //table is kept, update can be run again
