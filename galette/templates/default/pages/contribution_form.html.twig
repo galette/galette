@@ -19,7 +19,7 @@
     {% else %}
                     {{ _T("Select contributor and donation type") }}
     {% endif %}
-    {% if contribution.isTransactionPart() %}
+    {% if contribution.isTransactionPart() or contribution.isHiddenTransactionPart() %}
                     <span class="ui teal horizontal label">
                         {{ _T("Transaction related") }}
                     </span>
