@@ -30,6 +30,7 @@ use function Safe\imagecreatetruecolor;
 use function Safe\imagesavealpha;
 use function Safe\imagecopyresampled;
 use function Safe\mkdir;
+use function Safe\preg_match;
 use function Safe\readfile;
 use function Safe\realpath;
 use function Safe\rewind;
@@ -825,10 +826,9 @@ class Picture
         foreach (new \DirectoryIterator(GALETTE_PHOTOS_PATH) as $file) {
             if (
                 $file->isFile()
-                && in_array($file->getExtension(), ['jpg', 'png', 'gif', 'webp'], strict: true)
-                && ctype_digit($file->getBasename('.' . $file->getExtension()))
+                && preg_match('/^(\d+)\.(?:jpg|png|gif|webp)$/', $file->getFilename(), $matches) === 1
             ) {
-                $id = (int)$file->getBasename('.' . $file->getExtension());
+                $id = (int)$matches[1];
                 $ids[$id] = $id;
             }
         }
