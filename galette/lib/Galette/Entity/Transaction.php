@@ -128,11 +128,13 @@ class Transaction implements AccessManagementInterface
     /**
      * Loads a transaction from its id
      *
-     * @param int $id the identifier for the transaction to load
+     * @param int  $id    the identifier for the transaction to load
+     * @param bool $quiet do not log when transaction cannot be loaded
+     *                    (missing, or not allowed for current user)
      *
      * @return bool true if query succeed, false otherwise
      */
-    public function load(int $id): bool
+    public function load(int $id, bool $quiet = false): bool
     {
         if (!$this->login->isLogged()) {
             Analog::log(
@@ -184,10 +186,12 @@ class Transaction implements AccessManagementInterface
                 $this->loadFromRS($result);
                 return true;
             } else {
-                Analog::log(
-                    'No transaction #' . $id . ' (user ' . $this->login->id . ')',
-                    Analog::ERROR
-                );
+                if (!$quiet) {
+                    Analog::log(
+                        'No transaction #' . $id . ' (user ' . $this->login->id . ')',
+                        Analog::ERROR
+                    );
+                }
                 return false;
             }
         } catch (Throwable $e) {
