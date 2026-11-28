@@ -54,10 +54,10 @@ class UpgradeTo140 extends AbstractUpdater
         //pictures are no longer stored in the database, which is dropped by the SQL script:
         //write those missing on disk first. On failure, the table is kept and update can be run again.
         return $this->restorePictures(
-            'pictures',
-            'id_adh',
-            GALETTE_PHOTOS_PATH,
-            fn(int|string $id): string => match ((int)$id) {
+            table: 'pictures',
+            pk: 'id_adh',
+            store_path: GALETTE_PHOTOS_PATH,
+            filename: fn(int|string $id): string => match ((int)$id) {
                 self::LOGO_ID => 'custom_logo',
                 self::PRINT_LOGO_ID => 'custom_print_logo',
                 default => (string)$id

@@ -825,7 +825,7 @@ class Picture
         foreach (new \DirectoryIterator(GALETTE_PHOTOS_PATH) as $file) {
             if (
                 $file->isFile()
-                && in_array($file->getExtension(), ['jpg', 'png', 'gif', 'webp'], true)
+                && in_array($file->getExtension(), ['jpg', 'png', 'gif', 'webp'], strict: true)
                 && ctype_digit($file->getBasename('.' . $file->getExtension()))
             ) {
                 $id = (int)$file->getBasename('.' . $file->getExtension());

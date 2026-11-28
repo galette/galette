@@ -348,7 +348,7 @@ abstract class AbstractUpdater
             if ($format === 'jpeg') {
                 $format = 'jpg';
             }
-            if (!in_array($format, $extensions, true)) {
+            if (!in_array($format, $extensions, strict: true)) {
                 $this->addReportEntry(
                     sprintf(
                         //TRANS: %1$s is the picture identifier, %2$s its format
