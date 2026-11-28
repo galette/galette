@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Galette\Tests\Entity;
 
 use Galette\Tests\GaletteTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Status tests
@@ -128,5 +129,89 @@ class Social extends GaletteTestCase
 
         $this->assertTrue($social->remove());
         $this->assertCount(2, \Galette\Entity\Social::getListForMember(id_adh: null));
+    }
+
+    /**
+     * URLs provider
+     *
+     * @return array<string, array{string, bool}>
+     */
+    public static function webUrlProvider(): array
+    {
+        return [
+            'simple' => ['https://galette.eu', true],
+            'subdomain and path' => ['http://www.galette.eu/', true],
+            'mastodon' => ['https://mastodon.social/@galette', true],
+            'port, query and fragment' => ['https://a.b.example.org:8443/x?y=1&z=2#f', true],
+            'IDN TLD' => ['https://example.xn--p1ai', true],
+            'apostrophe' => ["https://example.org/O'Reilly", true],
+            'no TLD' => ['https://galette', false],
+            'other scheme' => ['javascript:alert(1)', false],
+            'space' => ['https://galette.eu/a b', false],
+            'trailing newline' => ["https://galette.eu\n", false],
+            'quote' => ['https://galette.eu" onmouseover="alert(1)', false],
+            'tag' => ['https://galette.eu/<script>', false],
+        ];
+    }
+
+    /**
+     * Test web URL validation
+     *
+     * @param string $url      URL to check
+     * @param bool   $expected Expected result
+     */
+    #[DataProvider('webUrlProvider')]
+    public function testIsValidWebUrl(string $url, bool $expected): void
+    {
+        $this->assertSame($expected, isValidWebUrl($url));
+    }
+
+    /**
+     * URL display provider
+     *
+     * @return array<string, array{string, string}>
+     */
+    public static function displayUrlProvider(): array
+    {
+        return [
+            'web' => [
+                'https://galette.eu/?a=1&b=2',
+                '<a href="https://galette.eu/?a=1&amp;b=2">https://galette.eu/?a=1&amp;b=2</a>'
+            ],
+            'email' => [
+                'contact@galette.eu',
+                '<a href="mailto:contact@galette.eu">contact@galette.eu</a>'
+            ],
+            'other' => [
+                '@galette',
+                '@galette'
+            ],
+            'attribute injection' => [
+                'https://a.co" onmouseover="alert(1)" x="',
+                'https://a.co&quot; onmouseover=&quot;alert(1)&quot; x=&quot;'
+            ],
+            'apostrophe' => [
+                "https://example.org/O'Reilly",
+                '<a href="https://example.org/O&#039;Reilly">https://example.org/O&#039;Reilly</a>'
+            ],
+            'markup' => [
+                '<img src=x onerror=alert(1)>',
+                '&lt;img src=x onerror=alert(1)&gt;'
+            ],
+        ];
+    }
+
+    /**
+     * Test URL display
+     *
+     * @param string $url      Stored URL
+     * @param string $expected Expected HTML
+     */
+    #[DataProvider('displayUrlProvider')]
+    public function testDisplayUrl(string $url, string $expected): void
+    {
+        $social = new \Galette\Entity\Social($this->zdb);
+        $social->setUrl($url);
+        $this->assertSame($expected, $social->displayUrl());
     }
 }

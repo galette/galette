@@ -21,7 +21,7 @@ const NOT_TRANSLATED = ' (not translated)';
 function isValidWebUrl(string $url): bool
 {
     return preg_match( // @phpstan-ignore theCodingMachineSafe.function
-        '#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i',
+        '#^https?://[a-z0-9\-]+(\.[a-z0-9\-]+)*\.[a-z][a-z0-9\-]*(:\d+)?([/?\#][^\s"<>]*)?$#iD',
         $url
     ) === 1;
 }

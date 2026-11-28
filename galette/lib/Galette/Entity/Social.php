@@ -236,15 +236,17 @@ class Social
      */
     public function displayUrl(): string
     {
+        $url = htmlspecialchars($this->url, ENT_QUOTES);
+
         if (isValidWebUrl($this->url)) {
-            return sprintf('<a href="%1$s">%1$s</a>', $this->url);
+            return sprintf('<a href="%1$s">%1$s</a>', $url);
         }
 
         if (GaletteMail::isValidEmail($this->url)) {
-            return sprintf('<a href="mailto:%1$s">%1$s</a>', $this->url);
+            return sprintf('<a href="mailto:%1$s">%1$s</a>', $url);
         }
 
-        return $this->url;
+        return $url;
     }
 
     /**
